@@ -111,7 +111,9 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
           {links
             .filter((item) => {
               if (!item.moduleKey) return true;
-              return auth?.permissions && hasPermission(auth.permissions, item.moduleKey, 'view');
+              // if permissions not yet loaded, show links to avoid empty nav during initialization
+              if (!auth?.permissions) return true;
+              return hasPermission(auth.permissions, item.moduleKey, 'view');
             })
             .map((item) => {
               const Icon = item.icon;
@@ -157,7 +159,9 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
             {links
               .filter((item) => {
                 if (!item.moduleKey) return true;
-                return auth?.permissions && hasPermission(auth.permissions, item.moduleKey, 'view');
+                // if permissions not yet loaded, show links to avoid empty nav during initialization
+                if (!auth?.permissions) return true;
+                return hasPermission(auth.permissions, item.moduleKey, 'view');
               })
               .map((item) => {
                 const Icon = item.icon;

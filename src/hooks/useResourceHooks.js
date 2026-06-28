@@ -52,26 +52,22 @@ export function useSearchResource(resource) {
 
 export function useBulkImport(resource) {
   const qc = useQueryClient();
-  return useMutation(
-    (formData) => api.post(`/${getEndpoint(resource)}/import`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
-    {
-      onSuccess: () => qc.invalidateQueries([resource]),
-      onError: (err) => { throw parseApiError(err); },
-    },
-  );
+  return useMutation({
+    mutationFn: (formData) => api.post(`/${getEndpoint(resource)}/import`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+    onSuccess: () => qc.invalidateQueries([resource]),
+    onError: (err) => { throw parseApiError(err); },
+  });
 }
 
 export function useBulkExport(resource) {
   const qc = useQueryClient();
-  return useMutation(
-    async (params = {}) => {
+  return useMutation({
+    mutationFn: async (params = {}) => {
       const response = await uploadService.download(resource, params);
       return response;
     },
-    {
-      onError: (err) => { throw parseApiError(err); },
-    },
-  );
+    onError: (err) => { throw parseApiError(err); },
+  });
 }
 
 export default {

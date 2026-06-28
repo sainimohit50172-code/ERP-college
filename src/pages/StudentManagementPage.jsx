@@ -266,12 +266,6 @@ export default function StudentManagementPage() {
   } = useForm({ defaultValues: { date: new Date().toISOString().slice(0, 10), status: 'Present', remarks: '' } });
 
   useEffect(() => {
-    if (!selectedStudentId && filteredStudents.length) {
-      setSelectedStudentId(filteredStudents[0].id);
-    }
-  }, [filteredStudents, selectedStudentId]);
-
-  useEffect(() => {
     if (!isModalOpen && courses.length && semesters.length && sections.length && departments.length) {
       reset({
         ...defaultFormValues,
@@ -292,7 +286,63 @@ export default function StudentManagementPage() {
 
   const allDepartments = [{ value: 'All', label: 'All departments' }, ...departments.map((department) => ({ value: department.name, label: department.name }))];
 
+  const filteredStudents = useMemo(() => {
+    return students
+      .filter((student) => {
+        const searchTerm = search.toLowerCase();
+        const courseName = getLabel(courses, student.courseId, 'title');
+        const semesterName = getLabel(semesters, student.semesterId, 'name');
+        const sectionName = getLabel(sections, student.sectionId, 'name');
+        const departmentName = getLabel(departments, student.departmentId, 'name');
+        const fields = [
+          student.name,
+          student.email,
+          student.rollNo,
+          student.enrollmentNo,
+          student.admissionNo,
+          student.phone,
+          student.fatherName,
+          student.motherName,
+          student.guardianName,
+          student.guardianMobile,
+          student.guardianEmail,
+          student.guardianAddress,
+          student.emergencyContact,
+          student.address,
+          courseName,
+          semesterName,
+          sectionName,
+          departmentName,
+          student.status,
+          student.feeStatus,
+          student.totalFee,
+        ];
+        const matchesSearch = fields
+          .filter(Boolean)
+          .some((field) => String(field).toLowerCase().includes(searchTerm));
+        const matchesStatus = statusFilter === 'All' || student.status === statusFilter;
+        const matchesDepartment = departmentFilter === 'All' || departmentName === departmentFilter;
+        return matchesSearch && matchesStatus && matchesDepartment;
+      })
+      .sort((a, b) => {
+        const valueA = String(sortValue(a)).toLowerCase();
+        const valueB = String(sortValue(b)).toLowerCase();
+        if (valueA < valueB) return sortDirection === 'asc' ? -1 : 1;
+        if (valueA > valueB) return sortDirection === 'asc' ? 1 : -1;
+        return 0;
+      });
+  }, [students, search, statusFilter, departmentFilter, courses, semesters, sections, departments, sortBy, sortDirection]);
+
+  const pageCount = Math.max(1, Math.ceil(filteredStudents.length / pageSize));
+  const displayedStudents = filteredStudents.slice((page - 1) * pageSize, page * pageSize);
+
   const selectedStudent = useMemo(() => students.find((student) => student.id === selectedStudentId) || filteredStudents[0] || null, [students, selectedStudentId, filteredStudents]);
+
+  useEffect(() => {
+    if (!selectedStudentId && filteredStudents.length) {
+      setSelectedStudentId(filteredStudents[0].id);
+    }
+  }, [filteredStudents, selectedStudentId]);
 
   const openCreateModal = () => {
     setSelectedStudentId(null);
@@ -384,56 +434,6 @@ export default function StudentManagementPage() {
         return student[sortBy] || '';
     }
   };
-
-  const filteredStudents = useMemo(() => {
-    return students
-      .filter((student) => {
-        const searchTerm = search.toLowerCase();
-        const courseName = getLabel(courses, student.courseId, 'title');
-        const semesterName = getLabel(semesters, student.semesterId, 'name');
-        const sectionName = getLabel(sections, student.sectionId, 'name');
-        const departmentName = getLabel(departments, student.departmentId, 'name');
-        const fields = [
-          student.name,
-          student.email,
-          student.rollNo,
-          student.enrollmentNo,
-          student.admissionNo,
-          student.phone,
-          student.fatherName,
-          student.motherName,
-          student.guardianName,
-          student.guardianMobile,
-          student.guardianEmail,
-          student.guardianAddress,
-          student.emergencyContact,
-          student.address,
-          courseName,
-          semesterName,
-          sectionName,
-          departmentName,
-          student.status,
-          student.feeStatus,
-          student.totalFee,
-        ];
-        const matchesSearch = fields
-          .filter(Boolean)
-          .some((field) => String(field).toLowerCase().includes(searchTerm));
-        const matchesStatus = statusFilter === 'All' || student.status === statusFilter;
-        const matchesDepartment = departmentFilter === 'All' || departmentName === departmentFilter;
-        return matchesSearch && matchesStatus && matchesDepartment;
-      })
-      .sort((a, b) => {
-        const valueA = String(sortValue(a)).toLowerCase();
-        const valueB = String(sortValue(b)).toLowerCase();
-        if (valueA < valueB) return sortDirection === 'asc' ? -1 : 1;
-        if (valueA > valueB) return sortDirection === 'asc' ? 1 : -1;
-        return 0;
-      });
-  }, [students, search, statusFilter, departmentFilter, courses, semesters, sections, departments, sortBy, sortDirection]);
-
-  const pageCount = Math.max(1, Math.ceil(filteredStudents.length / pageSize));
-  const displayedStudents = filteredStudents.slice((page - 1) * pageSize, page * pageSize);
 
   useEffect(() => {
     if (page > pageCount) {
