@@ -11,6 +11,7 @@ import TablePagination from '../components/tables/TablePagination.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import FormField from '../components/forms/FormField.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
+import Button from '../components/ui/Button.jsx';
 
 const statusOptions = [
   { value: 'All', label: 'All statuses' },
@@ -112,10 +113,10 @@ export default function AssignmentsPage() {
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <WithPermission moduleKey="assignments" action="import">
-              <button className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700"><FaFileUpload /> Import</button>
+              <Button variant="secondary" className="inline-flex items-center gap-2 px-4 py-3 text-sm"><FaFileUpload /> Import</Button>
             </WithPermission>
             <WithPermission moduleKey="assignments" action="create">
-              <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"><FaPlus /> New assignment</button>
+              <Button onClick={() => setIsModalOpen(true)} variant="primary" className="inline-flex items-center gap-2 px-4 py-3 text-sm"><FaPlus /> New assignment</Button>
             </WithPermission>
           </div>
         </div>
@@ -143,7 +144,7 @@ export default function AssignmentsPage() {
         <div className="mt-6"><TablePagination page={page} pageCount={pageCount} onPageChange={setPage} /></div>
       </div>
 
-      <Modal title="Create new assignment" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<button onClick={handleSubmit(onSubmit)} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">Create assignment</button>}>
+      <Modal title="Create new assignment" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<Button onClick={handleSubmit(onSubmit)} variant="primary">Create assignment</Button>}>
         <form className="grid gap-5 lg:grid-cols-2">
           <FormField label="Title"><input type="text" {...register('title', { required: 'Title is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Implement Stack using Arrays" />{errors.title && <p className="mt-1 text-sm text-rose-400">{errors.title.message}</p>}</FormField>
           <FormField label="Subject"><input type="text" {...register('subject', { required: 'Subject is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Data Structures" />{errors.subject && <p className="mt-1 text-sm text-rose-400">{errors.subject.message}</p>}</FormField>

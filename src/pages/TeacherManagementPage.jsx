@@ -24,6 +24,7 @@ import StatusBadge from '../components/ui/StatusBadge.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import FormField from '../components/forms/FormField.jsx';
 import { usePermissions } from '../services/permissionHelpers.js';
+import Button from '../components/ui/Button.jsx';
 
 const statusOptions = [
   { value: 'All', label: 'All statuses' },
@@ -384,31 +385,13 @@ export default function TeacherManagementPage() {
         action={
           <div className="flex flex-wrap items-center gap-3">
             {perms.canExport('teachers') && (
-              <button
-                type="button"
-                onClick={handleExport}
-                className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700"
-              >
-                <FaDownload /> Export roster
-              </button>
+              <Button type="button" onClick={handleExport} variant="secondary" className="inline-flex items-center gap-2 px-4 py-3 text-sm"><FaDownload /> Export roster</Button>
             )}
             {perms.canImport('teachers') && (
-              <button
-                type="button"
-                onClick={() => importInputRef.current?.click()}
-                className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700"
-              >
-                <FaFileImport /> Import CSV
-              </button>
+              <Button type="button" onClick={() => importInputRef.current?.click()} variant="secondary" className="inline-flex items-center gap-2 px-4 py-3 text-sm"><FaFileImport /> Import CSV</Button>
             )}
             {perms.canCreate('teachers') && (
-              <button
-                type="button"
-                onClick={openNewTeacherModal}
-                className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"
-              >
-                <FaPlus /> Add teacher
-              </button>
+              <Button type="button" onClick={openNewTeacherModal} variant="primary" className="inline-flex items-center gap-2 px-4 py-3 text-sm"><FaPlus /> Add teacher</Button>
             )}
           </div>
         }
@@ -653,14 +636,9 @@ export default function TeacherManagementPage() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         footer={
-          <button
-            type="button"
-            onClick={handleSubmit(onSubmit)}
-            disabled={isSubmitting}
-            className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-60"
-          >
+          <Button type="button" onClick={handleSubmit(onSubmit)} isLoading={isSubmitting} variant="primary">
             {isEditMode ? 'Update teacher' : 'Save teacher'}
-          </button>
+          </Button>
         }
       >
         <form className="grid gap-5 lg:grid-cols-2">
@@ -769,14 +747,7 @@ export default function TeacherManagementPage() {
         isOpen={isAssignmentModalOpen}
         onClose={() => setIsAssignmentModalOpen(false)}
         footer={
-          <button
-            type="button"
-            onClick={handleSubmitAssignment(handleAssignmentSubmit)}
-            disabled={isAssignmentSubmitting}
-            className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            Save assignment
-          </button>
+          <Button type="button" onClick={handleSubmitAssignment(handleAssignmentSubmit)} isLoading={isAssignmentSubmitting} variant="primary">Save assignment</Button>
         }
       >
         <form className="grid gap-5 lg:grid-cols-2">
@@ -860,14 +831,7 @@ export default function TeacherManagementPage() {
         isOpen={isLectureModalOpen}
         onClose={() => setIsLectureModalOpen(false)}
         footer={
-          <button
-            type="button"
-            onClick={handleSubmitLecture(handleLectureSubmit)}
-            disabled={isLectureSubmitting}
-            className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            Save lecture
-          </button>
+          <Button type="button" onClick={handleSubmitLecture(handleLectureSubmit)} isLoading={isLectureSubmitting} variant="primary">Save lecture</Button>
         }
       >
         <form className="grid gap-5 lg:grid-cols-2">

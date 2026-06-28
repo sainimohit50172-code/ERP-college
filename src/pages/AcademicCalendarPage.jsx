@@ -10,6 +10,7 @@ import TablePagination from '../components/tables/TablePagination.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import FormField from '../components/forms/FormField.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
+import Button from '../components/ui/Button.jsx';
 import { useERP } from '../services/ERPContext.jsx';
 
 const eventTypeOptions = [
@@ -84,8 +85,8 @@ export default function AcademicCalendarPage() {
             <p className="text-sm text-slate-400">View and manage academic calendar events including sessions, exams and holidays.</p>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <button className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700"><FaDownload /> Export</button>
-            <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"><FaPlus /> Add event</button>
+              <Button className="inline-flex items-center gap-2 px-4 py-3 text-sm" variant="secondary"><FaDownload /> Export</Button>
+              <Button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 px-4 py-3 text-sm" variant="primary"><FaPlus /> Add event</Button>
           </div>
         </div>
 
@@ -106,7 +107,7 @@ export default function AcademicCalendarPage() {
         <div className="mt-6"><TablePagination page={page} pageCount={pageCount} onPageChange={setPage} /></div>
       </div>
 
-      <Modal title="Add calendar event" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<button onClick={handleSubmit(onSubmit)} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">Save event</button>}>
+      <Modal title="Add calendar event" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<Button onClick={handleSubmit(onSubmit)} variant="primary">Save event</Button>}>
         <form className="grid gap-5 lg:grid-cols-2">
           <FormField label="Event name"><input type="text" {...register('event', { required: 'Event name is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Semester 5 Classes Begin" />{errors.event && <p className="mt-1 text-sm text-rose-400">{errors.event.message}</p>}</FormField>
           <FormField label="Event type"><select {...register('eventType', { required: 'Event type is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"><option value="Session Start">Session Start</option><option value="Holiday">Holiday</option><option value="Examination">Examination</option><option value="Assessment">Assessment</option></select>{errors.eventType && <p className="mt-1 text-sm text-rose-400">{errors.eventType.message}</p>}</FormField>

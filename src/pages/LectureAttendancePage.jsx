@@ -6,6 +6,7 @@ import SearchFilter from '../components/forms/SearchFilter.jsx';
 import DataTable from '../components/ui/DataTable.jsx';
 import TablePagination from '../components/tables/TablePagination.jsx';
 import Modal from '../components/ui/Modal.jsx';
+import Button from '../components/ui/Button.jsx';
 import FormField from '../components/forms/FormField.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
 import { useLectureAttendance } from '../hooks/useLectureAttendance';
@@ -111,7 +112,7 @@ export default function LectureAttendancePage() {
         <div className="mt-6"><TablePagination page={page} pageCount={pageCount} onPageChange={setPage} /></div>
       </div>
 
-      <Modal title="Record lecture attendance" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<button onClick={handleSubmit(onSubmit)} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">Save attendance</button>}>
+      <Modal title="Record lecture attendance" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<Button onClick={handleSubmit(onSubmit)} variant="primary">Save attendance</Button>}>
         <form className="grid gap-5 lg:grid-cols-2">
           <FormField label="Date"><input type="date" {...register('date', { required: 'Date is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />{errors.date && <p className="mt-1 text-sm text-rose-400">{errors.date.message}</p>}</FormField>
           <FormField label="Time slot"><input type="text" {...register('time', { required: 'Time is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="09:00-10:00" />{errors.time && <p className="mt-1 text-sm text-rose-400">{errors.time.message}</p>}</FormField>

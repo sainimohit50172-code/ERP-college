@@ -9,6 +9,7 @@ import DataTable from '../components/ui/DataTable.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
 import TablePagination from '../components/tables/TablePagination.jsx';
 import Modal from '../components/ui/Modal.jsx';
+import Button from '../components/ui/Button.jsx';
 import FormField from '../components/forms/FormField.jsx';
 import { useERP } from '../services/ERPContext.jsx';
 
@@ -130,7 +131,7 @@ export default function DepartmentManagementPage() {
         </div>
       </div>
 
-      <Modal title="Add department" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<button onClick={handleSubmit(onSubmit)} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">Save department</button>}>
+      <Modal title="Add department" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<Button onClick={handleSubmit(onSubmit)} variant="primary">Save department</Button>}>
         <form className="grid gap-5 lg:grid-cols-2">
           <FormField label="Department code">
             <input type="text" {...register('code', { required: 'Code is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="CS" />

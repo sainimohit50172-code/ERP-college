@@ -1,9 +1,9 @@
 export default function FormField({ label, children, hint }) {
   return (
     <div className="space-y-3">
-      <label className="block text-sm font-medium text-slate-200">{label}</label>
+      <label className="block">{label}</label>
       {children}
-      {hint && <p className="text-sm text-slate-400">{hint}</p>}
+      {hint && <p className="form-help">{hint}</p>}
     </div>
   );
 }
