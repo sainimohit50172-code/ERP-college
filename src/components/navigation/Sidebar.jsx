@@ -97,14 +97,14 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden md:fixed md:left-0 md:top-0 md:z-40 md:h-full md:w-80 md:border-r md:border-slate-200/10 md:bg-[#05331e] md:px-4 md:py-6 md:shadow-[0_35px_80px_rgba(7,43,22,0.18)] md:backdrop-blur-xl">
-        <div className="mb-12 flex items-center gap-3 px-2">
+      <aside className="block md:fixed md:left-0 md:top-0 md:z-50 md:h-full md:w-80 md:border-r md:border-slate-200/10 md:bg-[#05331e] md:px-4 md:py-6 md:shadow-[0_35px_80px_rgba(7,43,22,0.18)] md:backdrop-blur-xl">
+          <div className="mb-12 flex items-center gap-3 px-2">
           <div className="flex h-10 w-10 items-center justify-center rounded-3xl bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-400/20">
             <ShieldCheck className="h-5 w-5" />
           </div>
           <div>
-            <p className="text-sm uppercase tracking-[0.28em] text-emerald-200/80">Enterprise</p>
-            <h2 className="text-lg font-semibold text-slate-50">College ERP</h2>
+            <p className="text-sm uppercase tracking-[0.28em] text-emerald-100">Enterprise</p>
+            <h2 className="text-lg font-semibold text-white">College ERP</h2>
           </div>
         </div>
         <nav className="space-y-1">
@@ -120,12 +120,12 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
                   key={item.label}
                   to={item.to}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 rounded-3xl px-4 py-3 text-sm font-medium transition ${
-                      isActive
-                        ? 'bg-white/10 text-white shadow-[0_20px_45px_rgba(255,255,255,0.08)] ring-1 ring-white/10'
-                        : 'text-slate-200 hover:bg-white/5 hover:text-white'
-                    }`
-                  }
+                      `flex items-center gap-3 rounded-3xl px-4 py-3 text-sm font-medium transition ${
+                        isActive
+                          ? 'bg-white/10 text-white shadow-[0_20px_45px_rgba(255,255,255,0.08)] ring-1 ring-white/10'
+                          : 'text-white/90 hover:bg-white/5 hover:text-white'
+                      }`
+                    }
                 >
                   <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-white/5 text-emerald-200 transition group-hover:bg-white/10">
                     <Icon className="h-4 w-4" />
