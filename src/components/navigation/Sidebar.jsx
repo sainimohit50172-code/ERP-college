@@ -85,7 +85,7 @@ export default function Sidebar() {
   return (
     <aside className="fixed left-0 top-0 z-40 h-full w-full max-w-[280px] border-r border-slate-200/10 bg-[#05331e] px-4 py-6 shadow-[0_35px_80px_rgba(7,43,22,0.18)] backdrop-blur-xl md:w-80 xl:w-80">
       <div className="mb-12 flex items-center gap-3 px-2">
-        <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-400/20">
+        <div className="flex h-10 w-10 items-center justify-center rounded-3xl bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-400/20">
           <ShieldCheck className="h-5 w-5" />
         </div>
         <div>
