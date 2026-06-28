@@ -1,0 +1,12 @@
+import { Link } from 'react-router-dom';
+
+export default function NotFoundPage() {
+  return (
+    <div className="mx-auto flex max-w-4xl flex-col items-center justify-center gap-6 px-4 py-24 text-center text-slate-200">
+      <p className="text-sm uppercase tracking-[0.3em] text-sky-300/80">Page not found</p>
+      <h1 className="text-6xl font-semibold text-white">404</h1>
+      <p className="max-w-xl text-lg text-slate-400">The page you are looking for does not exist or has been moved. Return to the dashboard to continue working.</p>
+      <Link to="/" className="inline-flex rounded-3xl bg-sky-400 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">Back to dashboard</Link>
+    </div>
+  );
+}
