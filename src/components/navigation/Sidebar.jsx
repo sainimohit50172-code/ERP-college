@@ -34,6 +34,7 @@ import {
   Settings2,
 } from 'lucide-react';
 import { useAuth } from '../../services/AuthContext.jsx';
+import { useEffect } from 'react';
 import { hasPermission } from '../../services/rbac.js';
 
 const links = [
@@ -79,48 +80,111 @@ const links = [
   { label: 'Settings', to: '/settings', icon: Settings2, moduleKey: 'settings' },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen = false, onClose = () => {} }) {
   const { auth } = useAuth();
 
+  // close on ESC
+  useEffect(() => {
+    function handleKey(e) {
+      if (e.key === 'Escape') onClose();
+    }
+    if (isOpen) window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [isOpen, onClose]);
+
+  // lock body scroll handled in RootLayout; ensure sidebar cleans up
+
   return (
-    <aside className="fixed left-0 top-0 z-40 h-full w-full max-w-[280px] border-r border-slate-200/10 bg-[#05331e] px-4 py-6 shadow-[0_35px_80px_rgba(7,43,22,0.18)] backdrop-blur-xl md:w-80 xl:w-80">
-      <div className="mb-12 flex items-center gap-3 px-2">
-        <div className="flex h-10 w-10 items-center justify-center rounded-3xl bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-400/20">
-          <ShieldCheck className="h-5 w-5" />
+    <>
+      {/* Desktop sidebar */}
+      <aside className="hidden md:fixed md:left-0 md:top-0 md:z-40 md:h-full md:w-80 md:border-r md:border-slate-200/10 md:bg-[#05331e] md:px-4 md:py-6 md:shadow-[0_35px_80px_rgba(7,43,22,0.18)] md:backdrop-blur-xl">
+        <div className="mb-12 flex items-center gap-3 px-2">
+          <div className="flex h-10 w-10 items-center justify-center rounded-3xl bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-400/20">
+            <ShieldCheck className="h-5 w-5" />
+          </div>
+          <div>
+            <p className="text-sm uppercase tracking-[0.28em] text-emerald-200/80">Enterprise</p>
+            <h2 className="text-lg font-semibold text-slate-50">College ERP</h2>
+          </div>
         </div>
-        <div>
-          <p className="text-sm uppercase tracking-[0.28em] text-emerald-200/80">Enterprise</p>
-          <h2 className="text-lg font-semibold text-slate-50">College ERP</h2>
-        </div>
+        <nav className="space-y-1">
+          {links
+            .filter((item) => {
+              if (!item.moduleKey) return true;
+              return auth?.permissions && hasPermission(auth.permissions, item.moduleKey, 'view');
+            })
+            .map((item) => {
+              const Icon = item.icon;
+              return (
+                <NavLink
+                  key={item.label}
+                  to={item.to}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 rounded-3xl px-4 py-3 text-sm font-medium transition ${
+                      isActive
+                        ? 'bg-white/10 text-white shadow-[0_20px_45px_rgba(255,255,255,0.08)] ring-1 ring-white/10'
+                        : 'text-slate-200 hover:bg-white/5 hover:text-white'
+                    }`
+                  }
+                >
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-white/5 text-emerald-200 transition group-hover:bg-white/10">
+                    <Icon className="h-4 w-4" />
+                  </span>
+                  <span>{item.label}</span>
+                </NavLink>
+              );
+            })}
+        </nav>
+      </aside>
+
+      {/* Mobile drawer */}
+      <div className={`fixed inset-0 z-50 md:hidden ${isOpen ? 'block' : 'hidden'}`} role="dialog" aria-modal="true">
+        <div className="fixed inset-0 bg-black/40" onClick={onClose} />
+        <aside className={`fixed left-0 top-0 h-full w-72 bg-[#05331e] p-4 transform transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+          <div className="mb-8 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-3xl bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-400/20">
+                <ShieldCheck className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-sm uppercase tracking-[0.28em] text-emerald-200/80">Enterprise</p>
+                <h2 className="text-lg font-semibold text-slate-50">College ERP</h2>
+              </div>
+            </div>
+            <button onClick={onClose} className="text-slate-200">Close</button>
+          </div>
+          <nav className="space-y-1">
+            {links
+              .filter((item) => {
+                if (!item.moduleKey) return true;
+                return auth?.permissions && hasPermission(auth.permissions, item.moduleKey, 'view');
+              })
+              .map((item) => {
+                const Icon = item.icon;
+                return (
+                  <NavLink
+                    key={item.label}
+                    to={item.to}
+                    onClick={() => onClose()}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 rounded-3xl px-4 py-3 text-sm font-medium transition ${
+                        isActive
+                          ? 'bg-white/10 text-white'
+                          : 'text-slate-200 hover:bg-white/5 hover:text-white'
+                      }`
+                    }
+                  >
+                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-white/5 text-emerald-200 transition group-hover:bg-white/10">
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <span>{item.label}</span>
+                  </NavLink>
+                );
+              })}
+          </nav>
+        </aside>
       </div>
-      <nav className="space-y-1">
-        {links
-          .filter((item) => {
-            if (!item.moduleKey) return true;
-            return auth?.permissions && hasPermission(auth.permissions, item.moduleKey, 'view');
-          })
-          .map((item) => {
-            const Icon = item.icon;
-            return (
-              <NavLink
-                key={item.label}
-                to={item.to}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-3xl px-4 py-3 text-sm font-medium transition ${
-                    isActive
-                      ? 'bg-white/10 text-white shadow-[0_20px_45px_rgba(255,255,255,0.08)] ring-1 ring-white/10'
-                      : 'text-slate-200 hover:bg-white/5 hover:text-white'
-                  }`
-                }
-              >
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-white/5 text-emerald-200 transition group-hover:bg-white/10">
-                  <Icon className="h-4 w-4" />
-                </span>
-                <span>{item.label}</span>
-              </NavLink>
-            );
-          })}
-      </nav>
-    </aside>
+    </>
   );
 }
+

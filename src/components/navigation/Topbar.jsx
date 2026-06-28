@@ -1,4 +1,4 @@
-import { Bell, Search, Sparkles, UserCircle2 } from 'lucide-react';
+import { Menu, Bell, Search, Sparkles, UserCircle2 } from 'lucide-react';
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -7,7 +7,7 @@ const formatBreadcrumb = (segment) =>
     .replace(/-/g, ' ')
     .replace(/\b\w/g, (char) => char.toUpperCase());
 
-export default function Topbar() {
+export default function Topbar({ onToggleSidebar }) {
   const location = useLocation();
   const pathSegments = location.pathname.split('/').filter(Boolean);
   const breadcrumbs = useMemo(
@@ -19,13 +19,23 @@ export default function Topbar() {
     <header className="sticky top-0 z-20 border-b border-slate-200/80 bg-white/95 px-4 py-4 shadow-sm backdrop-blur-xl md:px-8 xl:px-10">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex flex-col gap-3">
-          <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.24em] text-slate-500">
-            {breadcrumbs.map((crumb, index) => (
-              <span key={crumb} className="inline-flex items-center gap-2">
-                {index > 0 && <span className="text-slate-300">/</span>}
-                <span>{crumb}</span>
-              </span>
-            ))}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={onToggleSidebar}
+              className="md:hidden inline-flex items-center justify-center rounded-2xl p-2 text-slate-700 hover:bg-slate-100"
+              aria-label="Toggle menu"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+            <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.24em] text-slate-500">
+              {breadcrumbs.map((crumb, index) => (
+                <span key={crumb} className="inline-flex items-center gap-2">
+                  {index > 0 && <span className="text-slate-300">/</span>}
+                  <span>{crumb}</span>
+                </span>
+              ))}
+            </div>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
