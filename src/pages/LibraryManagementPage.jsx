@@ -10,15 +10,12 @@ import TablePagination from '../components/tables/TablePagination.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import FormField from '../components/forms/FormField.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
-import { usePermissions } from '../services/permissionHelpers.js';
-
 const statusOptions = [
   { value: 'All', label: 'All statuses' },
   { value: 'Available', label: 'Available' },
   { value: 'Checked Out', label: 'Checked out' },
   { value: 'Overdue', label: 'Overdue' },
 ];
-
 const defaultBookValues = {
   title: '',
   author: '',
@@ -28,36 +25,30 @@ const defaultBookValues = {
   borrowerId: '',
   dueDate: '',
 };
-
 export default function LibraryManagementPage() {
   const { data: libraryBooksData } = useResourceList('libraryBooks', { page: 1, pageSize: 200 });
   const libraryBooks = libraryBooksData?.items || [];
   const createLibraryBook = useCreateResource('libraryBooks');
-
   const { data: studentsData } = useResourceList('students', { page: 1, pageSize: 200 });
   const students = studentsData?.items || [];
   const { data: teachersData } = useResourceList('teachers', { page: 1, pageSize: 200 });
   const teachers = teachersData?.items || [];
-
   const borrowerMap = useMemo(() => {
     const map = new Map();
     students.forEach((student) => map.set(`student-${student.id}`, `${student.name} (Student)`));
     teachers.forEach((teacher) => map.set(`teacher-${teacher.id}`, `${teacher.name} (Staff)`));
     return map;
   }, [students, teachers]);
-
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('All');
   const [page, setPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm({ defaultValues: defaultBookValues });
-
   const filteredBooks = useMemo(() => {
     return libraryBooks.filter((book) => {
       const searchTerm = search.toLowerCase();
@@ -69,19 +60,14 @@ export default function LibraryManagementPage() {
       return matchesSearch && matchesFilter;
     });
   }, [libraryBooks, search, filter, borrowerMap]);
-
   const pageSize = 6;
-  const perms = usePermissions();
   const pageCount = Math.max(1, Math.ceil(filteredBooks.length / pageSize));
   const displayedBooks = filteredBooks.slice((page - 1) * pageSize, page * pageSize);
-
   const totalBooks = libraryBooks.length;
   const checkedOutBooks = libraryBooks.filter((book) => book.status === 'Checked Out').length;
   const availableBooks = libraryBooks.filter((book) => book.status === 'Available').length;
   const overdueBooks = libraryBooks.filter((book) => book.status === 'Overdue').length;
-
   const resetForm = () => reset(defaultBookValues);
-
   const onSubmit = (data) => {
     createLibraryBook.mutate({
       ...data,
@@ -95,7 +81,6 @@ export default function LibraryManagementPage() {
       },
     });
   };
-
   return (
     <div className="space-y-8">
       <SectionHeader
@@ -113,7 +98,6 @@ export default function LibraryManagementPage() {
           </WithPermission>
         }
       />
-
       <div className="grid gap-6 md:grid-cols-4">
         <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
           <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Total books</p>
@@ -132,8 +116,7 @@ export default function LibraryManagementPage() {
           <p className="mt-4 text-3xl font-semibold text-white">{overdueBooks}</p>
         </div>
       </div>
-
-      <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
+      <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
           <div>
             <h2 className="text-xl font-semibold text-white">Book inventory</h2>
@@ -143,7 +126,6 @@ export default function LibraryManagementPage() {
             <SearchFilter search={search} onSearch={setSearch} filter={filter} onFilter={setFilter} options={statusOptions} />
           </div>
         </div>
-
         <div className="mt-6">
           <DataTable
             columns={['Title', 'Author', 'ISBN', 'Category', 'Status', 'Due date', 'Borrower']}
@@ -161,12 +143,10 @@ export default function LibraryManagementPage() {
             ])}
           />
         </div>
-
         <div className="mt-6">
           <TablePagination page={page} pageCount={pageCount} onPageChange={setPage} />
         </div>
       </div>
-
       <Modal
         title="Add new library book"
         isOpen={isModalOpen}

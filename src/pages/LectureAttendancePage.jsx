@@ -22,7 +22,7 @@ const statusOptions = [
 
 export default function LectureAttendancePage() {
   // currentUser removed; audit createdBy at backend if required
-  const { data: attendance = [], isLoading, isError, error, refetch, createLectureAttendance } = useLectureAttendance();
+  const { data: attendance = [], _isLoading, _isError, _error, _refetch, createLectureAttendance } = useLectureAttendance();
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('All');
   const [page, setPage] = useState(1);
@@ -33,14 +33,21 @@ export default function LectureAttendancePage() {
     defaultValues: { date: '', time: '', subject: '', section: 'A', teacher: '', totalStudents: '58', present: '0', absent: '0', late: '0', status: 'Completed' },
   });
 
+  const attendanceItems = useMemo(() => {
+    if (Array.isArray(attendance)) return attendance;
+    if (attendance && Array.isArray(attendance.items)) return attendance.items;
+    if (attendance && Array.isArray(attendance.data)) return attendance.data;
+    return [];
+  }, [attendance]);
+
   const filteredAttendance = useMemo(() => {
-    return (attendance || []).filter((record) => {
+    return attendanceItems.filter((record) => {
       const searchTerm = search.toLowerCase();
       const matchesSearch = [record.subject || '', record.teacher || '', record.section || ''].some((value) => String(value).toLowerCase().includes(searchTerm));
       const matchesFilter = filter === 'All' || record.status === filter;
       return matchesSearch && matchesFilter;
     });
-  }, [attendance, search, filter]);
+  }, [attendanceItems, search, filter]);
 
   const pageCount = Math.max(1, Math.ceil(filteredAttendance.length / pageSize));
   const displayedAttendance = filteredAttendance.slice((page - 1) * pageSize, page * pageSize);
@@ -54,9 +61,9 @@ export default function LectureAttendancePage() {
     setIsModalOpen(false);
   };
 
-  const totalLectures = (attendance || []).length;
-  const completed = (attendance || []).filter((a) => a.status === 'Completed').length;
-  const avgAttendancePercentage = ((attendance || []).reduce((acc, a) => acc + parseFloat(a.percentage || '0'), 0) / Math.max(1, (attendance || []).length)).toFixed(1);
+  const totalLectures = attendanceItems.length;
+  const completed = attendanceItems.filter((a) => a.status === 'Completed').length;
+  const avgAttendancePercentage = (attendanceItems.reduce((acc, a) => acc + parseFloat(a.percentage || '0'), 0) / Math.max(1, attendanceItems.length)).toFixed(1);
 
   return (
     <div className="space-y-8">
@@ -77,7 +84,7 @@ export default function LectureAttendancePage() {
         </div>
       </div>
 
-      <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
+      <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
           <div>
             <h2 className="text-xl font-semibold text-white">Lecture attendance records</h2>

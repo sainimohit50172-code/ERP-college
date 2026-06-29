@@ -8,36 +8,28 @@ import TablePagination from '../components/tables/TablePagination.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import FormField from '../components/forms/FormField.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
-import { usePermissions } from '../services/permissionHelpers.js';
 import { useResults } from '../hooks/useResults';
 import { useERP } from '../services/ERPContext.jsx';
-
 // Results are provided by API
-
 const statusOptions = [
   { value: 'All', label: 'All statuses' },
   { value: 'Pending', label: 'Pending' },
   { value: 'In Review', label: 'In Review' },
   { value: 'Published', label: 'Published' },
 ];
-
 export default function ResultProcessingPage() {
-  const perms = usePermissions();
   const { currentUser, setNotifications } = useERP();
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('All');
   const [page, setPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const pageSize = 5;
-
-  const { data, isLoading, isError, error, createResult, publishResult } = useResults({ page, pageSize, search, filter });
+  const { data, _isLoading, _isError, _error, createResult, publishResult } = useResults({ page, pageSize, search, filter });
   const results = data?.items || [];
   const isPublishing = publishResult.isLoading;
-
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: { student: '', rollNo: '', subject: '', internal: '0', practical: '0', external: '0', status: 'Pending' },
   });
-
   const filteredResults = useMemo(() => {
     return (results || []).filter((result) => {
       const searchTerm = search.toLowerCase();
@@ -46,10 +38,8 @@ export default function ResultProcessingPage() {
       return matchesSearch && matchesFilter;
     });
   }, [results, search, filter]);
-
   const pageCount = Math.max(1, Math.ceil(filteredResults.length / pageSize));
   const displayedResults = filteredResults.slice((page - 1) * pageSize, page * pageSize);
-
   const getGrade = (percentage) => {
     const pct = parseInt(percentage);
     if (pct >= 85) return 'A';
@@ -58,7 +48,6 @@ export default function ResultProcessingPage() {
     if (pct >= 55) return 'D';
     return 'F';
   };
-
   const onSubmit = (data) => {
     const total = parseInt(data.internal) + parseInt(data.practical) + parseInt(data.external);
     const percentage = ((total / 200) * 100).toFixed(1);
@@ -72,7 +61,6 @@ export default function ResultProcessingPage() {
     setPage(1);
     setIsModalOpen(false);
   };
-
   const onPublishResult = async (resultId) => {
     try {
       await publishResult.mutateAsync(resultId);
@@ -81,45 +69,39 @@ export default function ResultProcessingPage() {
       setNotifications((prev) => [{ id: `NOTIF-${Date.now()}`, title: 'Publish failed', date: new Date().toISOString().split('T')[0], details: 'Could not publish result', type: 'error' }, ...prev]);
     }
   };
-
   const totalRecords = (results || []).length;
   const published = (results || []).filter((r) => r.status === 'Published').length;
   const avgPercentage = ((results || []).reduce((acc, r) => acc + parseFloat(r.percentage || '0'), 0) / Math.max(1, (results || []).length)).toFixed(1);
-
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <SectionHeader title="Result processing" subtitle="Compile final results from internal, practical and external exam marks." />
-
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Total results</p>
-          <p className="mt-4 text-3xl font-semibold text-white">{totalRecords}</p>
+      <div className="grid gap-3 md:grid-cols-3">
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Total results</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{totalRecords}</p>
         </div>
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Published</p>
-          <p className="mt-4 text-3xl font-semibold text-white">{published}</p>
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Published</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{published}</p>
         </div>
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Average percentage</p>
-          <p className="mt-4 text-3xl font-semibold text-white">{avgPercentage}%</p>
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Average percentage</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{avgPercentage}%</p>
         </div>
       </div>
-
-      <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
-        <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+      <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+        <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-white">Result processing</h2>
+            <h2 className="text-lg font-semibold text-white">Result processing</h2>
             <p className="text-sm text-slate-400">Process, compile and publish final results combining all assessment components.</p>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <button className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700"><FaDownload /> Export</button>
-            <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"><FaPlus /> Process result</button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button className="inline-flex items-center gap-2 rounded-2xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 transition hover:bg-slate-700"><FaDownload /> Export</button>
+            <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 rounded-2xl bg-sky-400 px-3 py-2 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"><FaPlus /> Process result</button>
           </div>
         </div>
-
-        <div className="mt-6 grid gap-4 md:grid-cols-2"><SearchFilter search={search} onSearch={setSearch} filter={filter} onFilter={setFilter} options={statusOptions} /></div>
-
-        <div className="mt-6">
+        <div className="mt-4 grid gap-3 md:grid-cols-2"><SearchFilter search={search} onSearch={setSearch} filter={filter} onFilter={setFilter} options={statusOptions} /></div>
+        <div className="mt-4">
           <DataTable
             columns={['Student', 'Roll No', 'Subject', 'Internal', 'Practical', 'External', 'Total', 'Percent', 'Grade', 'Status', 'Actions']}
             rows={displayedResults.map((result) => [
@@ -145,9 +127,8 @@ export default function ResultProcessingPage() {
             ])}
           />
         </div>
-        <div className="mt-6"><TablePagination page={page} pageCount={pageCount} onPageChange={setPage} /></div>
+        <div className="mt-4"><TablePagination page={page} pageCount={pageCount} onPageChange={setPage} /></div>
       </div>
-
       <Modal title="Process result" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<button onClick={handleSubmit(onSubmit)} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">Process result</button>}>
         <form className="grid gap-5 lg:grid-cols-2">
           <FormField label="Student name"><input type="text" {...register('student', { required: 'Student name is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Raj Kumar" />{errors.student && <p className="mt-1 text-sm text-rose-400">{errors.student.message}</p>}</FormField>

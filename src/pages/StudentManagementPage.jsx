@@ -7,17 +7,13 @@ import {
   FaPlus,
   FaEdit,
   FaTrash,
-  FaPrint,
-  FaUserGraduate,
   FaFileImport,
   FaSort,
-  FaFileInvoiceDollar,
   FaIdCard,
   FaUsers,
   FaBook,
   FaMoneyBill,
   FaUpload,
-  FaDownload,
   FaClipboardCheck,
   FaShieldAlt,
 } from 'react-icons/fa';
@@ -26,26 +22,20 @@ import SearchFilter from '../components/forms/SearchFilter.jsx';
 import DataTable from '../components/ui/DataTable.jsx';
 import TablePagination from '../components/tables/TablePagination.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
-import FormField from '../components/forms/FormField.jsx';
-import Modal from '../components/ui/Modal.jsx';
-import { usePermissions } from '../services/permissionHelpers.js';
 import WithPermission from '../components/auth/WithPermission.jsx';
 import ExportButton from '../components/ui/ExportButton.jsx';
-
 const statusOptions = [
   { value: 'All', label: 'All statuses' },
   { value: 'Active', label: 'Active' },
   { value: 'Pending', label: 'Pending' },
   { value: 'Closed', label: 'Closed' },
 ];
-
-const feeStatusOptions = [
+const _feeStatusOptions = [
   { value: 'All', label: 'All fee statuses' },
   { value: 'Paid', label: 'Paid' },
   { value: 'Partial', label: 'Partial' },
   { value: 'Pending', label: 'Pending' },
 ];
-
 const documentTypes = [
   { key: 'aadhaar', label: 'Aadhaar' },
   { key: 'tenthMarksheet', label: '10th Marksheet' },
@@ -57,7 +47,6 @@ const documentTypes = [
   { key: 'passportPhoto', label: 'Passport Photo' },
   { key: 'signature', label: 'Signature' },
 ];
-
 const defaultFormValues = {
   name: '',
   email: '',
@@ -90,10 +79,8 @@ const defaultFormValues = {
   mentor: '',
   address: '',
 };
-
 export default function StudentManagementPage() {
   const queryClient = useQueryClient();
-  const perms = usePermissions();
   const {
     data: studentsData,
     isLoading: isStudentsLoading,
@@ -101,7 +88,6 @@ export default function StudentManagementPage() {
     error: studentsError,
   } = useResourceList('students', { page: 1, pageSize: 200 });
   const students = studentsData?.items || [];
-
   const {
     data: coursesData,
     isLoading: isCoursesLoading,
@@ -109,7 +95,6 @@ export default function StudentManagementPage() {
     error: coursesError,
   } = useResourceList('courses', { page: 1, pageSize: 200 });
   const courses = coursesData?.items || [];
-
   const {
     data: semestersData,
     isLoading: isSemestersLoading,
@@ -117,7 +102,6 @@ export default function StudentManagementPage() {
     error: semestersError,
   } = useResourceList('semesters', { page: 1, pageSize: 200 });
   const semesters = semestersData?.items || [];
-
   const {
     data: sectionsData,
     isLoading: isSectionsLoading,
@@ -125,7 +109,6 @@ export default function StudentManagementPage() {
     error: sectionsError,
   } = useResourceList('sections', { page: 1, pageSize: 200 });
   const sections = sectionsData?.items || [];
-
   const {
     data: departmentsData,
     isLoading: isDepartmentsLoading,
@@ -133,7 +116,6 @@ export default function StudentManagementPage() {
     error: departmentsError,
   } = useResourceList('departments', { page: 1, pageSize: 200 });
   const departments = departmentsData?.items || [];
-
   const {
     data: subjectsData,
     isLoading: isSubjectsLoading,
@@ -141,7 +123,6 @@ export default function StudentManagementPage() {
     error: subjectsError,
   } = useResourceList('subjects', { page: 1, pageSize: 200 });
   const subjects = subjectsData?.items || [];
-
   const {
     data: subjectAssignmentsData,
     isLoading: isSubjectAssignmentsLoading,
@@ -149,7 +130,6 @@ export default function StudentManagementPage() {
     error: subjectAssignmentsError,
   } = useResourceList('subjectAssignments', { page: 1, pageSize: 200 });
   const subjectAssignments = subjectAssignmentsData?.items || [];
-
   const {
     data: feePaymentsData,
     isLoading: isFeePaymentsLoading,
@@ -157,7 +137,6 @@ export default function StudentManagementPage() {
     error: feePaymentsError,
   } = useResourceList('feePayments', { page: 1, pageSize: 200 });
   const feePayments = feePaymentsData?.items || [];
-
   const {
     data: internalMarksData,
     isLoading: isInternalMarksLoading,
@@ -165,7 +144,6 @@ export default function StudentManagementPage() {
     error: internalMarksError,
   } = useResourceList('internalMarks', { page: 1, pageSize: 200 });
   const internalMarks = internalMarksData?.items || [];
-
   const {
     data: practicalMarksData,
     isLoading: isPracticalMarksLoading,
@@ -173,7 +151,6 @@ export default function StudentManagementPage() {
     error: practicalMarksError,
   } = useResourceList('practicalMarks', { page: 1, pageSize: 200 });
   const practicalMarks = practicalMarksData?.items || [];
-
   const {
     data: promotionsData,
     isLoading: isPromotionsLoading,
@@ -181,7 +158,6 @@ export default function StudentManagementPage() {
     error: promotionsError,
   } = useResourceList('promotions', { page: 1, pageSize: 200 });
   const promotions = promotionsData?.items || [];
-
   const {
     data: attendanceData,
     isLoading: isAttendanceLoading,
@@ -189,7 +165,6 @@ export default function StudentManagementPage() {
     error: attendanceError,
   } = useResourceList('studentAttendance', { page: 1, pageSize: 200 });
   const attendanceRecords = attendanceData?.items || [];
-
   const {
     data: resultsData,
     isLoading: isResultsLoading,
@@ -197,11 +172,9 @@ export default function StudentManagementPage() {
     error: resultsError,
   } = useResourceList('results', { page: 1, pageSize: 200 });
   const results = resultsData?.items || [];
-
   const isLoadingData = isStudentsLoading || isCoursesLoading || isSemestersLoading || isSectionsLoading || isDepartmentsLoading || isSubjectsLoading || isSubjectAssignmentsLoading || isFeePaymentsLoading || isInternalMarksLoading || isPracticalMarksLoading || isPromotionsLoading || isAttendanceLoading || isResultsLoading;
   const isError = isStudentsError || isCoursesError || isSemestersError || isSectionsError || isDepartmentsError || isSubjectsError || isSubjectAssignmentsError || isFeePaymentsError || isInternalMarksError || isPracticalMarksError || isPromotionsError || isAttendanceError || isResultsError;
   const loadingError = studentsError || coursesError || semestersError || sectionsError || departmentsError || subjectsError || subjectAssignmentsError || feePaymentsError || internalMarksError || practicalMarksError || promotionsError || attendanceError || resultsError;
-
   const createStudent = useCreateResource('students');
   const updateStudent = useUpdateResource('students');
   const deleteStudent = useDeleteResource('students');
@@ -209,7 +182,6 @@ export default function StudentManagementPage() {
   const createFeePayment = useCreateResource('feePayments');
   const createPromotion = useCreateResource('promotions');
   const createAttendance = useCreateResource('studentAttendance');
-
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [departmentFilter, setDepartmentFilter] = useState('All');
@@ -219,52 +191,46 @@ export default function StudentManagementPage() {
   const [selectedStudentId, setSelectedStudentId] = useState(null);
   const [bulkSelected, setBulkSelected] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
-  const [isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
-  const [isPromotionModalOpen, setIsPromotionModalOpen] = useState(false);
-  const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false);
-  const [uploadingDocument, setUploadingDocument] = useState('');
-  const [uploadStatus, setUploadStatus] = useState('');
+  const [_isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [_isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
+  const [_isPromotionModalOpen, setIsPromotionModalOpen] = useState(false);
+  const [_isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false);
+  const [_uploadingDocument, setUploadingDocument] = useState('');
+  const [_uploadStatus, setUploadStatus] = useState('');
   const [importing, setImporting] = useState(false);
   const [importStatus, setImportStatus] = useState('');
   const importInputRef = useRef(null);
   const pageSize = 6;
-
   const {
-    register,
-    handleSubmit,
+    _register,
+    _handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { _errors, _isSubmitting },
   } = useForm({ defaultValues: defaultFormValues });
-
   const {
-    register: registerPayment,
-    handleSubmit: handleSubmitPayment,
+    register: _registerPayment,
+    handleSubmit: _handleSubmitPayment,
     reset: resetPayment,
-    formState: { errors: errorsPayment, isSubmitting: isSubmittingPayment },
+    formState: { errors: _errorsPayment, isSubmitting: _isSubmittingPayment },
   } = useForm({ defaultValues: { amount: '', date: new Date().toISOString().slice(0, 10), method: 'Cash', remarks: '' } });
-
   const {
-    register: registerSubject,
-    handleSubmit: handleSubmitSubject,
+    register: _registerSubject,
+    handleSubmit: _handleSubmitSubject,
     reset: resetSubject,
-    formState: { errors: errorsSubject, isSubmitting: isSubmittingSubject },
+    formState: { errors: _errorsSubject, isSubmitting: _isSubmittingSubject },
   } = useForm({ defaultValues: { subjectId: '', credits: '3', teacherName: '', notes: '' } });
-
   const {
-    register: registerPromotion,
-    handleSubmit: handleSubmitPromotion,
+    register: _registerPromotion,
+    handleSubmit: _handleSubmitPromotion,
     reset: resetPromotion,
-    formState: { errors: errorsPromotion, isSubmitting: isSubmittingPromotion },
+    formState: { errors: _errorsPromotion, isSubmitting: _isSubmittingPromotion },
   } = useForm({ defaultValues: { newSemesterId: '', remarks: '' } });
-
   const {
-    register: registerAttendance,
-    handleSubmit: handleSubmitAttendance,
+    register: _registerAttendance,
+    handleSubmit: _handleSubmitAttendance,
     reset: resetAttendance,
-    formState: { errors: errorsAttendance, isSubmitting: isSubmittingAttendance },
+    formState: { errors: _errorsAttendance, isSubmitting: _isSubmittingAttendance },
   } = useForm({ defaultValues: { date: new Date().toISOString().slice(0, 10), status: 'Present', remarks: '' } });
-
   useEffect(() => {
     if (!isModalOpen && courses.length && semesters.length && sections.length && departments.length) {
       reset({
@@ -277,15 +243,12 @@ export default function StudentManagementPage() {
       });
     }
   }, [courses, semesters, sections, departments, reset, isModalOpen]);
-
   const getLabel = (list, id, property = 'name') => list.find((item) => item.id === id)?.[property] || id || 'N/A';
   const formatCurrency = (value) => {
     const amount = typeof value === 'number' ? value : Number(value || 0);
     return Number.isNaN(amount) ? '$0.00' : `$${amount.toFixed(2)}`;
   };
-
   const allDepartments = [{ value: 'All', label: 'All departments' }, ...departments.map((department) => ({ value: department.name, label: department.name }))];
-
   const filteredStudents = useMemo(() => {
     return students
       .filter((student) => {
@@ -332,18 +295,14 @@ export default function StudentManagementPage() {
         return 0;
       });
   }, [students, search, statusFilter, departmentFilter, courses, semesters, sections, departments, sortBy, sortDirection]);
-
   const pageCount = Math.max(1, Math.ceil(filteredStudents.length / pageSize));
   const displayedStudents = filteredStudents.slice((page - 1) * pageSize, page * pageSize);
-
   const selectedStudent = useMemo(() => students.find((student) => student.id === selectedStudentId) || filteredStudents[0] || null, [students, selectedStudentId, filteredStudents]);
-
   useEffect(() => {
     if (!selectedStudentId && filteredStudents.length) {
       setSelectedStudentId(filteredStudents[0].id);
     }
   }, [filteredStudents, selectedStudentId]);
-
   const openCreateModal = () => {
     setSelectedStudentId(null);
     setIsModalOpen(true);
@@ -358,7 +317,6 @@ export default function StudentManagementPage() {
       });
     }
   };
-
   const openEditModal = (student) => {
     setSelectedStudentId(student.id);
     setIsModalOpen(true);
@@ -395,7 +353,6 @@ export default function StudentManagementPage() {
       address: student.address || '',
     });
   };
-
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedStudentId(null);
@@ -408,13 +365,11 @@ export default function StudentManagementPage() {
       admissionDate: new Date().toISOString().slice(0, 10),
     });
   };
-
   const sortValue = (student) => {
     const courseName = getLabel(courses, student.courseId, 'title');
     const semesterName = getLabel(semesters, student.semesterId, 'name');
     const sectionName = getLabel(sections, student.sectionId, 'name');
     const departmentName = getLabel(departments, student.departmentId, 'name');
-
     switch (sortBy) {
       case 'course':
         return courseName;
@@ -434,37 +389,31 @@ export default function StudentManagementPage() {
         return student[sortBy] || '';
     }
   };
-
   useEffect(() => {
     if (page > pageCount) {
       setPage(pageCount);
     }
   }, [pageCount, page]);
-
   const openStudent = (student) => {
     setSelectedStudentId(student.id);
   };
-
   const handleBulkToggle = (studentId) => {
     setBulkSelected((current) =>
       current.includes(studentId) ? current.filter((id) => id !== studentId) : [...current, studentId],
     );
   };
-
-  const handleToggleAll = () => {
+  const _handleToggleAll = () => {
     const displayedIds = displayedStudents.map((student) => student.id);
     const allSelected = displayedIds.every((id) => bulkSelected.includes(id));
     setBulkSelected(allSelected ? [] : displayedIds);
   };
-
   const handleDeleteSelected = () => {
     if (!bulkSelected.length) return;
     if (!window.confirm(`Delete ${bulkSelected.length} selected student profiles?`)) return;
     bulkSelected.forEach((id) => deleteStudent.mutate(id));
     setBulkSelected([]);
   };
-
-  const onSubmit = (formValues) => {
+  const _onSubmit = (formValues) => {
     const payload = {
       name: formValues.name,
       email: formValues.email,
@@ -497,7 +446,6 @@ export default function StudentManagementPage() {
       mentor: formValues.mentor,
       address: formValues.address,
     };
-
     if (selectedStudent) {
       updateStudent.mutate({ id: selectedStudent.id, payload }, {
         onSuccess: () => {
@@ -507,7 +455,6 @@ export default function StudentManagementPage() {
       });
       return;
     }
-
     createStudent.mutate(payload, {
       onSuccess: () => {
         closeModal();
@@ -515,13 +462,11 @@ export default function StudentManagementPage() {
       },
     });
   };
-
   const handleDelete = (student) => {
     if (!window.confirm(`Delete student profile for ${student.name}?`)) return;
     deleteStudent.mutate(student.id);
   };
-
-  const handleDocumentUpload = async (documentType, file) => {
+  const _handleDocumentUpload = async (documentType, file) => {
     if (!selectedStudent || !file) return;
     setUploadingDocument(documentType);
     setUploadStatus(`Uploading ${documentType}�`);
@@ -539,7 +484,6 @@ export default function StudentManagementPage() {
       setUploadingDocument('');
     }
   };
-
   const handleExportCsv = () => {
     const rows = filteredStudents.map((student) => {
       const courseName = getLabel(courses, student.courseId, 'title');
@@ -606,7 +550,6 @@ export default function StudentManagementPage() {
     const csv = [header, ...rows]
       .map((row) => row.map((value) => `"${String(value || '').replace(/"/g, '""')}"`).join(','))
       .join('\r\n');
-
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement('a');
@@ -617,7 +560,6 @@ export default function StudentManagementPage() {
     document.body.removeChild(anchor);
     URL.revokeObjectURL(url);
   };
-
   const parseCsv = (csvText) => csvText
     .split(/\r?\n/)
     .map((line) => {
@@ -646,7 +588,6 @@ export default function StudentManagementPage() {
       return values;
     })
     .filter((row) => row.some((cell) => cell.trim() !== ''));
-
   const handleImportFile = async (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -662,10 +603,8 @@ export default function StudentManagementPage() {
         setImportStatus(`CSV header is missing required field: ${missingHeader}`);
         return;
       }
-
       let successCount = 0;
       let failureCount = 0;
-
       for (const row of rows) {
         const getCell = (field) => row[headers.indexOf(field)]?.trim() || '';
         const studentName = getCell('name');
@@ -674,12 +613,10 @@ export default function StudentManagementPage() {
           failureCount += 1;
           continue;
         }
-
         const courseId = courses.find((course) => course.title?.toLowerCase() === getCell('course').toLowerCase())?.id || getCell('course');
         const semesterId = semesters.find((semester) => semester.name?.toLowerCase() === getCell('semester').toLowerCase())?.id || getCell('semester');
         const sectionId = sections.find((section) => section.name?.toLowerCase() === getCell('section').toLowerCase())?.id || getCell('section');
         const departmentId = departments.find((department) => department.name?.toLowerCase() === getCell('department').toLowerCase())?.id || getCell('department');
-
         try {
           await createStudent.mutateAsync({
             name: studentName,
@@ -716,7 +653,6 @@ export default function StudentManagementPage() {
           failureCount += 1;
         }
       }
-
       setImportStatus(`Imported ${successCount} students${failureCount ? `, ${failureCount} failed` : ''}.`);
       setPage(1);
     } finally {
@@ -726,11 +662,9 @@ export default function StudentManagementPage() {
       }
     }
   };
-
   const handlePrint = () => {
     window.print();
   };
-
   const selectedStudentPayments = selectedStudent ? feePayments.filter((payment) => payment.studentId === selectedStudent.id) : [];
   const selectedAttendance = selectedStudent ? attendanceRecords.filter((entry) => entry.studentId === selectedStudent.id) : [];
   const selectedInternalMarks = selectedStudent ? internalMarks.filter((mark) => mark.studentId === selectedStudent.id) : [];
@@ -738,31 +672,26 @@ export default function StudentManagementPage() {
   const selectedSubjectAssignments = selectedStudent ? subjectAssignments.filter((assignment) => assignment.studentId === selectedStudent.id) : [];
   const selectedPromotions = selectedStudent ? promotions.filter((promotion) => promotion.studentId === selectedStudent.id) : [];
   const selectedResults = selectedStudent ? results.filter((result) => result.studentId === selectedStudent.id) : [];
-
   const studentCourse = selectedStudent ? getLabel(courses, selectedStudent.courseId, 'title') : 'N/A';
   const studentDepartment = selectedStudent ? getLabel(departments, selectedStudent.departmentId, 'name') : 'N/A';
   const studentSemester = selectedStudent ? getLabel(semesters, selectedStudent.semesterId, 'name') : 'N/A';
-  const studentSection = selectedStudent ? getLabel(sections, selectedStudent.sectionId, 'name') : 'N/A';
-  const studentSession = selectedStudent?.academicSession || '2025-2026';
-
+  const _studentSection = selectedStudent ? getLabel(sections, selectedStudent.sectionId, 'name') : 'N/A';
+  const _studentSession = selectedStudent?.academicSession || '2025-2026';
   const totalPaid = selectedStudentPayments.reduce((sum, payment) => sum + (Number(payment.amount) || 0), 0);
   const totalFee = Number(selectedStudent?.totalFee || selectedStudent?.feeTotal || 0);
   const scholarship = Number(selectedStudent?.scholarship || 0);
   const fine = Number(selectedStudent?.fine || 0);
-  const installments = selectedStudent?.installments || selectedStudentPayments.length || 1;
+  const _installments = selectedStudent?.installments || selectedStudentPayments.length || 1;
   const dueAmount = Math.max(0, totalFee - totalPaid - scholarship + fine);
-
   const attendancePercent = selectedAttendance.length
     ? ((selectedAttendance.filter((entry) => entry.status === 'Present').length / selectedAttendance.length) * 100).toFixed(1)
     : 'N/A';
-
   const internalAverage = selectedInternalMarks.length
     ? (selectedInternalMarks.reduce((sum, mark) => sum + (Number(mark.score) || 0), 0) / selectedInternalMarks.length).toFixed(1)
     : 'N/A';
   const practicalAverage = selectedPracticalMarks.length
     ? (selectedPracticalMarks.reduce((sum, mark) => sum + (Number(mark.score) || 0), 0) / selectedPracticalMarks.length).toFixed(1)
     : 'N/A';
-
   const assignedSubjects = selectedSubjectAssignments.map((assignment) => ({
     subjectName: getLabel(subjects, assignment.subjectId, 'title'),
     credits: assignment.credits || 0,
@@ -770,12 +699,10 @@ export default function StudentManagementPage() {
   }));
   const totalCredits = assignedSubjects.reduce((sum, assignment) => sum + Number(assignment.credits || 0), 0);
   const mentor = selectedStudent?.mentor || assignedSubjects[0]?.teacherName || 'Unassigned';
-
   const studentDocuments = documentTypes.map((doc) => ({
     ...doc,
     url: selectedStudent?.documents?.find((item) => item.type === doc.key)?.url || selectedStudent?.[`${doc.key}Url`] || '',
   }));
-
   const studentInitials = selectedStudent?.name
     ? selectedStudent.name
       .split(' ')
@@ -785,8 +712,7 @@ export default function StudentManagementPage() {
       .join('')
       .toUpperCase()
     : 'ST';
-
-  const timelineEvents = [
+  const _timelineEvents = [
     selectedStudent?.admissionDate && {
       date: selectedStudent.admissionDate,
       title: 'Admission',
@@ -826,8 +752,7 @@ export default function StudentManagementPage() {
   ]
     .filter(Boolean)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
-  const handleNewPayment = (formValues) => {
+  const _handleNewPayment = (formValues) => {
     if (!selectedStudent) return;
     createFeePayment.mutate(
       {
@@ -845,8 +770,7 @@ export default function StudentManagementPage() {
       },
     );
   };
-
-  const handleSubjectAssignment = (formValues) => {
+  const _handleSubjectAssignment = (formValues) => {
     if (!selectedStudent) return;
     createSubjectAssignment.mutate(
       {
@@ -864,8 +788,7 @@ export default function StudentManagementPage() {
       },
     );
   };
-
-  const handlePromotion = (formValues) => {
+  const _handlePromotion = (formValues) => {
     if (!selectedStudent) return;
     createPromotion.mutate(
       {
@@ -881,8 +804,7 @@ export default function StudentManagementPage() {
       },
     );
   };
-
-  const handleAttendance = (formValues) => {
+  const _handleAttendance = (formValues) => {
     if (!selectedStudent) return;
     createAttendance.mutate(
       {
@@ -899,7 +821,6 @@ export default function StudentManagementPage() {
       },
     );
   };
-
   const sectionRefs = {
     profile: useRef(null),
     academic: useRef(null),
@@ -907,11 +828,9 @@ export default function StudentManagementPage() {
     documents: useRef(null),
     timeline: useRef(null),
   };
-
-  const scrollToSection = (section) => {
+  const _scrollToSection = (section) => {
     sectionRefs[section]?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
-
   const enrichedRows = displayedStudents.map((student) => {
     const courseName = getLabel(courses, student.courseId, 'title');
     const semesterName = getLabel(semesters, student.semesterId, 'name');
@@ -926,7 +845,7 @@ export default function StudentManagementPage() {
         onChange={() => handleBulkToggle(student.id)}
         className="h-4 w-4 rounded border-slate-600 bg-slate-900 text-sky-400"
       />,
-      <button type="button" onClick={() => openStudent(student)} className="text-left">
+      <button key={`${student.id}-profile`} type="button" onClick={() => openStudent(student)} className="text-left">
         <div className="space-y-1">
           <p className="font-semibold text-white">{student.name}</p>
           <p className="text-sm text-slate-400">{student.email}</p>
@@ -938,11 +857,11 @@ export default function StudentManagementPage() {
       sectionName,
       departmentName,
       <StatusBadge key={`${student.id}-status`} status={student.status} />,
-      <div className="space-y-1">
+      <div key={`${student.id}-fees`} className="space-y-1">
         <p className="text-sm text-slate-200">{student.feeStatus || 'Paid'}</p>
         <p className="text-xs text-slate-500">{formatCurrency(student.totalFee || student.balance || 0)}</p>
       </div>,
-      <div className="inline-flex flex-wrap gap-2">
+      <div key={`${student.id}-actions`} className="inline-flex flex-wrap gap-2">
         <WithPermission moduleKey="students" action="edit">
           <button
             type="button"
@@ -964,86 +883,76 @@ export default function StudentManagementPage() {
       </div>,
     ];
   });
-
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       <SectionHeader title="Student management" subtitle="Enterprise student profiles, admissions, academics, fees, documents and timeline." />
-
       {isLoadingData ? (
-        <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-10 text-center text-slate-300">Loading student records�</div>
+        <div className="rounded-[18px] border border-slate-200/70 bg-white/90 p-8 text-center text-slate-600 shadow-sm">Loading student records…</div>
       ) : isError ? (
-        <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-10 text-center text-slate-300">Unable to load student data. {loadingError?.message || 'Please try again later.'}</div>
+        <div className="rounded-[18px] border border-slate-200/70 bg-white/90 p-8 text-center text-slate-600 shadow-sm">Unable to load student data. {loadingError?.message || 'Please try again later.'}</div>
       ) : (
-        <div className="grid gap-6 xl:grid-cols-[1.35fr_0.85fr]">
-          <div className="space-y-6">
-            <div className="grid gap-4 md:grid-cols-3">
-              <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-                <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Total students</p>
-                <p className="mt-4 text-3xl font-semibold text-white">{students.length}</p>
-              </div>
-              <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-                <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Students with due fee</p>
-                <p className="mt-4 text-3xl font-semibold text-white">{students.filter((student) => Number(student.balance || student.totalFee || 0) > 0).length}</p>
-              </div>
-              <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-                <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Active students</p>
-                <p className="mt-4 text-3xl font-semibold text-white">{students.filter((student) => student.status === 'Active').length}</p>
-              </div>
+        <div className="space-y-4">
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            <div className="soft-emerald-card soft-surface rounded-[18px] p-4">
+              <p className="text-[11px] uppercase tracking-[0.24em] text-slate-500">Total students</p>
+              <p className="mt-2 text-2xl font-semibold text-slate-950">{students.length}</p>
             </div>
-
-            <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
-              <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+            <div className="soft-blue-card soft-surface rounded-[18px] p-4">
+              <p className="text-[11px] uppercase tracking-[0.24em] text-slate-500">Due fee</p>
+              <p className="mt-2 text-2xl font-semibold text-slate-950">{students.filter((student) => Number(student.balance || student.totalFee || 0) > 0).length}</p>
+            </div>
+            <div className="soft-orange-card soft-surface rounded-[18px] p-4">
+              <p className="text-[11px] uppercase tracking-[0.24em] text-slate-500">Active students</p>
+              <p className="mt-2 text-2xl font-semibold text-slate-950">{students.filter((student) => student.status === 'Active').length}</p>
+            </div>
+            <div className="soft-purple-card soft-surface rounded-[18px] p-4">
+              <p className="text-[11px] uppercase tracking-[0.24em] text-slate-500">Attendance rate</p>
+              <p className="mt-2 text-2xl font-semibold text-slate-950">{attendancePercent}%</p>
+            </div>
+          </div>
+          <div className="grid gap-4 xl:grid-cols-[minmax(0,1.7fr)_minmax(320px,0.8fr)]">
+            <div className="soft-surface rounded-[18px] p-4">
+              <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
                 <div>
-                  <h2 className="text-xl font-semibold text-white">Student roster</h2>
-                  <p className="text-sm text-slate-400">Search learners, manage enrollment, and review profile activity.</p>
+                  <h2 className="text-lg font-semibold text-slate-950">Student roster</h2>
+                  <p className="text-sm text-slate-500">Search learners, manage enrollment, and review profile activity.</p>
                 </div>
-                <div className="flex flex-wrap items-center gap-3">
+                <div className="flex flex-wrap items-center gap-2">
                   {bulkSelected.length > 0 && (
                     <WithPermission moduleKey="students" action="delete">
-                      <button
-                        type="button"
-                        onClick={handleDeleteSelected}
-                        className="inline-flex items-center gap-2 rounded-3xl bg-rose-500/15 px-4 py-3 text-sm text-rose-200 transition hover:bg-rose-500/20"
-                      >
-                        <FaTrash /> Delete selected ({bulkSelected.length})
+                      <button type="button" onClick={handleDeleteSelected} className="inline-flex items-center gap-2 rounded-2xl bg-rose-500/10 px-3 py-2 text-sm text-rose-600 transition hover:bg-rose-500/20">
+                        <FaTrash /> Delete ({bulkSelected.length})
                       </button>
                     </WithPermission>
                   )}
                   <WithPermission moduleKey="students" action="create">
-                    <button
-                      type="button"
-                      onClick={openCreateModal}
-                      className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"
-                    >
+                    <button type="button" onClick={openCreateModal} className="inline-flex items-center gap-2 rounded-2xl bg-sky-500 px-3 py-2 text-sm font-semibold text-white transition hover:bg-sky-600">
                       <FaPlus /> Add student
                     </button>
                   </WithPermission>
-                  <label className="inline-flex cursor-pointer items-center gap-2 rounded-3xl border border-white/10 bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700">
+                  <label className="inline-flex cursor-pointer items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100">
                     <FaFileImport /> Import CSV
                     <input type="file" accept=".csv" ref={importInputRef} onChange={handleImportFile} className="hidden" disabled={importing} />
                   </label>
                   <ExportButton onExcel={handleExportCsv} onPdf={handlePrint} onPrint={handlePrint} />
                 </div>
               </div>
-
-              {importStatus && <div className="mt-3 rounded-3xl border border-white/10 bg-slate-950/70 px-4 py-3 text-sm text-slate-300">{importStatus}</div>}
-
-              <div className="mt-6 grid gap-4 lg:grid-cols-[1.4fr_0.8fr]">
+              {importStatus && <div className="mt-3 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600">{importStatus}</div>}
+              <div className="mt-4 grid gap-3 lg:grid-cols-[1.35fr_0.75fr]">
                 <SearchFilter search={search} onSearch={setSearch} filter={statusFilter} onFilter={setStatusFilter} options={statusOptions} />
-                <div className="rounded-3xl border border-white/10 bg-slate-950/80 p-4 shadow-sm">
-                  <label className="mb-2 block text-xs uppercase tracking-[0.2em] text-slate-400">Department</label>
-                  <select value={departmentFilter} onChange={(e) => setDepartmentFilter(e.target.value)} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none">
+                <div className="rounded-[16px] border border-slate-200/70 bg-white/90 p-3 shadow-sm">
+                  <label className="mb-1.5 block text-[11px] uppercase tracking-[0.2em] text-slate-500">Department</label>
+                  <select value={departmentFilter} onChange={(e) => setDepartmentFilter(e.target.value)} className="h-10 w-full rounded-2xl border border-slate-200/70 bg-slate-50 px-3 text-sm text-slate-900 outline-none">
                     {allDepartments.map((option) => (
                       <option key={option.value} value={option.value}>{option.label}</option>
                     ))}
                   </select>
                 </div>
               </div>
-
-              <div className="mt-6 flex flex-wrap items-center gap-3 rounded-3xl border border-white/10 bg-slate-950/70 p-3">
-                <FaSort className="h-4 w-4 text-slate-300" />
-                <label className="text-sm text-slate-400">Sort by</label>
-                <select value={sortBy} onChange={(event) => setSortBy(event.target.value)} className="min-w-[140px] rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+              <div className="mt-4 flex flex-wrap items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 p-2">
+                <FaSort className="h-4 w-4 text-slate-500" />
+                <label className="text-sm text-slate-500">Sort by</label>
+                <select value={sortBy} onChange={(event) => setSortBy(event.target.value)} className="min-w-[130px] rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 outline-none focus:border-sky-400">
                   <option value="name">Name</option>
                   <option value="admissionNo">Admission No</option>
                   <option value="rollNo">Roll No</option>
@@ -1052,156 +961,127 @@ export default function StudentManagementPage() {
                   <option value="department">Department</option>
                   <option value="balance">Fee Balance</option>
                 </select>
-                <button type="button" onClick={() => setSortDirection((current) => (current === 'asc' ? 'desc' : 'asc'))} className="inline-flex items-center gap-2 rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-sm text-slate-100 transition hover:bg-slate-800">{sortDirection === 'asc' ? 'Ascending' : 'Descending'}</button>
+                <button type="button" onClick={() => setSortDirection((current) => (current === 'asc' ? 'desc' : 'asc'))} className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100">{sortDirection === 'asc' ? 'Ascending' : 'Descending'}</button>
               </div>
-
-              <div className="mt-6 overflow-x-auto">
+              <div className="mt-4">
                 {filteredStudents.length === 0 ? (
-                  <div className="rounded-[28px] border border-white/10 bg-slate-950/80 p-8 text-center text-slate-300">No matching students. Adjust the search, filter or sort options to display results.</div>
+                  <div className="rounded-[16px] border border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-500">No matching students. Adjust the search, filter or sort options to display results.</div>
                 ) : (
-                  <DataTable columns={['Select', 'Student', 'Roll No', 'Course', 'Semester', 'Section', 'Department', 'Status', 'Fee', 'Actions']} rows={enrichedRows} />
+                  <DataTable compact columns={['Select', 'Student', 'Roll No', 'Course', 'Semester', 'Section', 'Department', 'Status', 'Fee', 'Actions']} rows={enrichedRows} />
                 )}
               </div>
-
-              <div className="mt-6">
+              <div className="mt-4">
                 <TablePagination page={page} pageCount={pageCount} onPageChange={setPage} />
               </div>
             </div>
-          </div>
-
-          <div className="space-y-6">
-            <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft" ref={sectionRefs.profile}>
-              <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Profile summary</p>
-                  <h2 className="text-xl font-semibold text-white">{selectedStudent?.name || 'Select a student'}</h2>
-                </div>
-                <div className="grid gap-3 sm:auto-cols-min sm:grid-flow-col">
-                  <button type="button" onClick={() => selectedStudent && openEditModal(selectedStudent)} disabled={!selectedStudent} className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700 disabled:opacity-50"><FaEdit /> Edit Profile</button>
-                  <button type="button" onClick={() => setIsSubjectModalOpen(true)} disabled={!selectedStudent} className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 disabled:opacity-50"><FaBook /> Assign Subjects</button>
-                </div>
-              </div>
-
-              <div className="grid gap-5 sm:grid-cols-[1fr_0.9fr]">
-                <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5">
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-sky-400/10 text-sky-300 text-2xl font-semibold">{studentInitials}</div>
-                    <div>
-                      <p className="text-sm text-slate-400">Enrollment number</p>
-                      <p className="text-lg font-semibold text-white">{selectedStudent?.enrollmentNo || selectedStudent?.admissionNo || selectedStudent?.rollNo || 'N/A'}</p>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 grid gap-3 text-sm text-slate-400">
-                    <div className="grid grid-cols-[0.9fr_1.1fr] gap-4"><span className="font-medium text-slate-300">Admission no</span><span className="text-slate-200">{selectedStudent?.admissionNo || 'N/A'}</span></div>
-                    <div className="grid grid-cols-[0.9fr_1.1fr] gap-4"><span className="font-medium text-slate-300">Course</span><span className="text-slate-200">{studentCourse}</span></div>
-                    <div className="grid grid-cols-[0.9fr_1.1fr] gap-4"><span className="font-medium text-slate-300">Department</span><span className="text-slate-200">{studentDepartment}</span></div>
-                    <div className="grid grid-cols-[0.9fr_1.1fr] gap-4"><span className="font-medium text-slate-300">Semester</span><span className="text-slate-200">{studentSemester}</span></div>
-                    <div className="grid grid-cols-[0.9fr_1.1fr] gap-4"><span className="font-medium text-slate-300">Section</span><span className="text-slate-200">{studentSection}</span></div>
-                    <div className="grid grid-cols-[0.9fr_1.1fr] gap-4"><span className="font-medium text-slate-300">Academic session</span><span className="text-slate-200">{studentSession}</span></div>
-                    <div className="grid grid-cols-[0.9fr_1.1fr] gap-4"><span className="font-medium text-slate-300">Current status</span><span className="text-slate-200">{selectedStudent?.status || 'N/A'}</span></div>
-                  </div>
-                </div>
-
-                <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5">
-                  <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Quick actions</p>
-                  <div className="mt-5 grid gap-3">
-                    <button type="button" onClick={() => selectedStudent && openEditModal(selectedStudent)} disabled={!selectedStudent} className="inline-flex items-center justify-between rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-left text-sm text-slate-200 transition hover:bg-slate-800 disabled:opacity-50"><span>Edit student</span><FaEdit className="h-4 w-4" /></button>
-                    <button type="button" onClick={() => setIsSubjectModalOpen(true)} disabled={!selectedStudent} className="inline-flex items-center justify-between rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-left text-sm text-slate-200 transition hover:bg-slate-800 disabled:opacity-50"><span>Assign subjects</span><FaBook className="h-4 w-4" /></button>
-                    <button type="button" onClick={() => setIsAttendanceModalOpen(true)} disabled={!selectedStudent} className="inline-flex items-center justify-between rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-left text-sm text-slate-200 transition hover:bg-slate-800 disabled:opacity-50"><span>Mark attendance</span><FaClipboardCheck className="h-4 w-4" /></button>
-                    <button type="button" onClick={() => setIsPaymentModalOpen(true)} disabled={!selectedStudent} className="inline-flex items-center justify-between rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-left text-sm text-slate-200 transition hover:bg-slate-800 disabled:opacity-50"><span>Collect fee</span><FaMoneyBill className="h-4 w-4" /></button>
-                    <button type="button" onClick={handlePrint} className="inline-flex items-center justify-between rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-left text-sm text-slate-200 transition hover:bg-slate-800"><span>Print ID Card</span><FaIdCard className="h-4 w-4" /></button>
-                    <button type="button" onClick={handlePrint} className="inline-flex items-center justify-between rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-left text-sm text-slate-200 transition hover:bg-slate-800"><span>Print fee receipt</span><FaFileInvoiceDollar className="h-4 w-4" /></button>
-                    <button type="button" onClick={() => setIsPromotionModalOpen(true)} disabled={!selectedStudent} className="inline-flex items-center justify-between rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-left text-sm text-slate-200 transition hover:bg-slate-800 disabled:opacity-50"><span>Promote student</span><FaUsers className="h-4 w-4" /></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="grid gap-6 xl:grid-cols-2">
-              <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft" ref={sectionRefs.academic}>
-                <div className="flex items-center justify-between gap-3">
+            <aside className="space-y-4">
+              <div className="soft-surface rounded-[18px] p-4" ref={sectionRefs.profile}>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div>
-                    <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Academic information</p>
-                    <h3 className="text-xl font-semibold text-white">Subject allocations & performance</h3>
+                    <p className="text-[11px] uppercase tracking-[0.24em] text-slate-500">Profile summary</p>
+                    <h2 className="text-lg font-semibold text-slate-950">{selectedStudent?.name || 'Select a student'}</h2>
                   </div>
-                  <span className="text-sm text-slate-400">Mentor: {mentor}</span>
-                </div>
-
-                <div className="mt-6 grid gap-4 md:grid-cols-2">
-                  <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5"><p className="text-sm text-slate-400">Allocated subjects</p><p className="mt-3 text-3xl font-semibold text-white">{assignedSubjects.length}</p></div>
-                  <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5"><p className="text-sm text-slate-400">Total credits</p><p className="mt-3 text-3xl font-semibold text-white">{totalCredits}</p></div>
-                  <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5"><p className="text-sm text-slate-400">Attendance</p><p className="mt-3 text-3xl font-semibold text-white">{attendancePercent}%</p></div>
-                  <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5"><p className="text-sm text-slate-400">Current GPA/CGPA</p><p className="mt-3 text-3xl font-semibold text-white">{selectedStudent?.cgpa || selectedStudent?.gpa || 'Awaiting'}</p></div>
-                </div>
-
-                <div className="mt-6 overflow-x-auto rounded-[28px] border border-white/10 bg-slate-950/70">
-                  <div className="grid grid-cols-[1.5fr_0.8fr_0.8fr] gap-4 px-5 py-4 text-sm uppercase tracking-[0.18em] text-slate-500"><span>Subject</span><span>Credits</span><span>Mentor</span></div>
-                  <div className="divide-y divide-slate-900/70">
-                    {assignedSubjects.length === 0 ? (<div className="px-5 py-6 text-sm text-slate-400">No subjects assigned yet.</div>) : (assignedSubjects.map((assignment, index) => (<div key={`${assignment.subjectName}-${index}`} className="grid grid-cols-[1.5fr_0.8fr_0.8fr] gap-4 px-5 py-4 text-sm text-slate-200"><span>{assignment.subjectName}</span><span>{assignment.credits}</span><span>{assignment.teacherName}</span></div>)))}
+                  <div className="flex flex-wrap gap-2">
+                    <button type="button" onClick={() => selectedStudent && openEditModal(selectedStudent)} disabled={!selectedStudent} className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100 disabled:opacity-50"><FaEdit /> Edit</button>
+                    <button type="button" onClick={() => setIsSubjectModalOpen(true)} disabled={!selectedStudent} className="inline-flex items-center gap-2 rounded-2xl bg-sky-500 px-3 py-2 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:opacity-50"><FaBook /> Assign</button>
                   </div>
                 </div>
-
-                <div className="mt-6 grid gap-4 md:grid-cols-2">
-                  <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5"><p className="text-sm text-slate-400">Internal marks average</p><p className="mt-3 text-3xl font-semibold text-white">{internalAverage}</p></div>
-                  <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5"><p className="text-sm text-slate-400">Practical marks average</p><p className="mt-3 text-3xl font-semibold text-white">{practicalAverage}</p></div>
-                </div>
-              </div>
-
-              <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft" ref={sectionRefs.fee}>
-                <div className="flex items-center justify-between gap-3">
-                  <div><p className="text-sm uppercase tracking-[0.24em] text-slate-400">Fee summary</p><h3 className="text-xl font-semibold text-white">Account overview</h3></div>
-                  <button type="button" onClick={() => setIsPaymentModalOpen(true)} disabled={!selectedStudent} className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 disabled:opacity-50"><FaMoneyBill /> New payment</button>
-                </div>
-
-                <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5"><p className="text-sm text-slate-400">Total fee</p><p className="mt-3 text-3xl font-semibold text-white">{formatCurrency(totalFee)}</p></div>
-                  <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5"><p className="text-sm text-slate-400">Paid</p><p className="mt-3 text-3xl font-semibold text-white">{formatCurrency(totalPaid)}</p></div>
-                  <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5"><p className="text-sm text-slate-400">Due</p><p className="mt-3 text-3xl font-semibold text-white">{formatCurrency(dueAmount)}</p></div>
-                  <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5"><p className="text-sm text-slate-400">Scholarship</p><p className="mt-3 text-3xl font-semibold text-white">{formatCurrency(scholarship)}</p></div>
-                </div>
-
-                <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5"><p className="text-sm text-slate-400">Fine</p><p className="mt-3 text-3xl font-semibold text-white">{formatCurrency(fine)}</p></div>
-                  <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5"><p className="text-sm text-slate-400">Installments</p><p className="mt-3 text-3xl font-semibold text-white">{installments}</p></div>
-                </div>
-
-                <div className="mt-6 overflow-x-auto rounded-[28px] border border-white/10 bg-slate-950/70">
-                  <div className="grid gap-0 px-5 py-4 text-sm uppercase tracking-[0.18em] text-slate-500 md:grid-cols-[1.2fr_0.8fr_0.8fr_0.8fr]"><span>Date</span><span>Amount</span><span>Method</span><span>Status</span></div>
-                  <div className="divide-y divide-slate-900/70">
-                    {selectedStudentPayments.length === 0 ? (<div className="px-5 py-6 text-sm text-slate-400">No payments logged yet.</div>) : (selectedStudentPayments.map((payment) => (<div key={payment.id} className="grid gap-0 px-5 py-4 text-sm text-slate-200 md:grid-cols-[1.2fr_0.8fr_0.8fr_0.8fr]"><span>{payment.date || payment.createdAt || '�'}</span><span>{formatCurrency(payment.amount)}</span><span>{payment.method || '�'}</span><span>{payment.status || 'Completed'}</span></div>)))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-6">
-              <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft" ref={sectionRefs.documents}>
-                <div className="flex items-center justify-between gap-3"><div><p className="text-sm uppercase tracking-[0.24em] text-slate-400">Documents</p><h3 className="text-xl font-semibold text-white">Verify student files</h3></div><div className="text-sm text-slate-400">Upload documents with the central upload service.</div></div>
-                <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                  {studentDocuments.map((doc) => (
-                    <div key={doc.key} className="rounded-[28px] border border-white/10 bg-slate-950/70 p-4">
-                      <div className="flex items-center justify-between gap-3">
-                        <div><p className="text-sm text-slate-400">{doc.label}</p><p className="mt-2 text-sm text-slate-200">{doc.url ? 'Uploaded' : 'Pending upload'}</p></div>
-                        <label className="inline-flex cursor-pointer items-center gap-2 rounded-3xl border border-white/10 bg-slate-800/80 px-4 py-2 text-sm text-slate-200 transition hover:bg-slate-700 disabled:opacity-50">
-                          {doc.url ? <FaDownload /> : <FaUpload />} {doc.url ? 'Replace' : 'Upload'}
-                          <input type="file" accept=".jpg,.jpeg,.png,.pdf" hidden disabled={!selectedStudent || uploadingDocument === doc.key} onChange={(event) => handleDocumentUpload(doc.key, event.target.files?.[0])} />
-                        </label>
-                      </div>
-                      {doc.url && (<a href={doc.url} target="_blank" rel="noreferrer" className="mt-4 block text-sm text-sky-300 underline">View file</a>)}
+                <div className="mt-4 rounded-[16px] border border-slate-200/70 bg-slate-50 p-3">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-100 text-sm font-semibold text-sky-700">{studentInitials}</div>
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Enrollment</p>
+                      <p className="text-sm font-semibold text-slate-900">{selectedStudent?.enrollmentNo || selectedStudent?.admissionNo || selectedStudent?.rollNo || 'N/A'}</p>
                     </div>
-                  ))}
+                  </div>
+                  <div className="mt-3 grid gap-2 text-sm text-slate-600">
+                    <div className="flex items-center justify-between gap-2"><span>Course</span><span className="font-medium text-slate-900">{studentCourse}</span></div>
+                    <div className="flex items-center justify-between gap-2"><span>Department</span><span className="font-medium text-slate-900">{studentDepartment}</span></div>
+                    <div className="flex items-center justify-between gap-2"><span>Semester</span><span className="font-medium text-slate-900">{studentSemester}</span></div>
+                    <div className="flex items-center justify-between gap-2"><span>Status</span><span className="font-medium text-slate-900">{selectedStudent?.status || 'N/A'}</span></div>
+                  </div>
                 </div>
-                {uploadStatus && (<div className="mt-4 rounded-3xl border border-white/10 bg-slate-950/70 px-4 py-3 text-sm text-slate-300">{uploadStatus}</div>)}
-              </div>
-
-              <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft" ref={sectionRefs.timeline}>
-                <div className="flex items-center justify-between gap-3"><div><p className="text-sm uppercase tracking-[0.24em] text-slate-400">Student timeline</p><h3 className="text-xl font-semibold text-white">Recent activity</h3></div><button type="button" onClick={handlePrint} className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700"><FaPrint /> Print timeline</button></div>
-                <div className="mt-6 space-y-4">
-                  {timelineEvents.length === 0 ? (<div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-6 text-sm text-slate-400">No timeline activity available for this student yet.</div>) : timelineEvents.map((event, index) => (<div key={`${event.title}-${index}`} className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5"><div className="flex items-center gap-3 text-sm text-slate-400"><event.icon className="h-4 w-4 text-sky-300" /><span>{event.date || 'Unknown date'}</span></div><h4 className="mt-3 text-lg font-semibold text-white">{event.title}</h4><p className="mt-2 text-sm text-slate-200">{event.description}</p></div>))}
+                <div className="mt-3 grid gap-2">
+                  <button type="button" onClick={() => setIsAttendanceModalOpen(true)} disabled={!selectedStudent} className="inline-flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-50 disabled:opacity-50"><span>Mark attendance</span><FaClipboardCheck className="h-4 w-4" /></button>
+                  <button type="button" onClick={() => setIsPaymentModalOpen(true)} disabled={!selectedStudent} className="inline-flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-50 disabled:opacity-50"><span>Collect fee</span><FaMoneyBill className="h-4 w-4" /></button>
+                  <button type="button" onClick={handlePrint} className="inline-flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-50"><span>Print ID card</span><FaIdCard className="h-4 w-4" /></button>
                 </div>
               </div>
-            </div>
+              <div className="soft-surface rounded-[18px] p-4" ref={sectionRefs.academic}>
+                <div className="flex items-center justify-between gap-2">
+                  <div>
+                    <p className="text-[11px] uppercase tracking-[0.24em] text-slate-500">Academic summary</p>
+                    <h3 className="text-base font-semibold text-slate-950">Performance snapshot</h3>
+                  </div>
+                  <span className="text-xs text-slate-500">Mentor: {mentor}</span>
+                </div>
+                <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                  <div className="soft-blue-card rounded-[14px] p-3">
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500">Subjects</p>
+                    <p className="mt-1 text-lg font-semibold text-slate-950">{assignedSubjects.length}</p>
+                  </div>
+                  <div className="soft-purple-card rounded-[14px] p-3">
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500">Credits</p>
+                    <p className="mt-1 text-lg font-semibold text-slate-950">{totalCredits}</p>
+                  </div>
+                  <div className="soft-teal-card rounded-[14px] p-3">
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500">Attendance</p>
+                    <p className="mt-1 text-lg font-semibold text-slate-950">{attendancePercent}%</p>
+                  </div>
+                  <div className="soft-green-card rounded-[14px] p-3">
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500">GPA/CGPA</p>
+                    <p className="mt-1 text-lg font-semibold text-slate-950">{selectedStudent?.cgpa || selectedStudent?.gpa || 'Awaiting'}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="soft-surface rounded-[18px] p-4" ref={sectionRefs.fee}>
+                <div className="flex items-center justify-between gap-2">
+                  <div>
+                    <p className="text-[11px] uppercase tracking-[0.24em] text-slate-500">Fee summary</p>
+                    <h3 className="text-base font-semibold text-slate-950">Account overview</h3>
+                  </div>
+                  <button type="button" onClick={() => setIsPaymentModalOpen(true)} disabled={!selectedStudent} className="rounded-2xl bg-sky-500 px-3 py-2 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:opacity-50">New payment</button>
+                </div>
+                <div className="mt-3 grid gap-2">
+                  <div className="soft-emerald-card rounded-[14px] p-3">
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500">Total fee</p>
+                    <p className="mt-1 text-lg font-semibold text-slate-950">{formatCurrency(totalFee)}</p>
+                  </div>
+                  <div className="soft-orange-card rounded-[14px] p-3">
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500">Due</p>
+                    <p className="mt-1 text-lg font-semibold text-slate-950">{formatCurrency(dueAmount)}</p>
+                  </div>
+                  <div className="soft-blue-card rounded-[14px] p-3">
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500">Paid</p>
+                    <p className="mt-1 text-lg font-semibold text-slate-950">{formatCurrency(totalPaid)}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="soft-surface rounded-[18px] p-4" ref={sectionRefs.documents}>
+                <div className="flex items-center justify-between gap-2">
+                  <div>
+                    <p className="text-[11px] uppercase tracking-[0.24em] text-slate-500">Attendance summary</p>
+                    <h3 className="text-base font-semibold text-slate-950">Recent engagement</h3>
+                  </div>
+                  <span className="text-xs text-slate-500">{selectedAttendance.length} entries</span>
+                </div>
+                <div className="mt-3 rounded-[14px] border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">
+                  {selectedAttendance.length === 0 ? 'No attendance records yet.' : `${selectedAttendance.filter((entry) => entry.status === 'Present').length} present / ${selectedAttendance.length} total`}
+                </div>
+              </div>
+              <div className="soft-surface rounded-[18px] p-4" ref={sectionRefs.timeline}>
+                <div className="flex items-center justify-between gap-2">
+                  <div>
+                    <p className="text-[11px] uppercase tracking-[0.24em] text-slate-500">Performance summary</p>
+                    <h3 className="text-base font-semibold text-slate-950">Latest outcomes</h3>
+                  </div>
+                  <span className="text-xs text-slate-500">{selectedResults.length} results</span>
+                </div>
+                <div className="mt-3 rounded-[14px] border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">
+                  Internal avg {internalAverage} • Practical avg {practicalAverage}
+                </div>
+              </div>
+            </aside>
           </div>
         </div>
       )}

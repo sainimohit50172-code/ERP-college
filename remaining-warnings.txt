@@ -1,0 +1,263 @@
+D:\Users\pop\Desktop\new pr\src\api\axios.js
+  3:10 no-unused-vars 'logout' is defined but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\components\ui\Button.jsx
+  1:8 no-unused-vars 'React' is defined but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\hooks\useResource.js
+  1:10 no-unused-vars 'useMemo' is defined but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\hooks\useResourceHooks.js
+  63:9 no-unused-vars 'qc' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\AcademicCalendarPage.jsx
+  2:10 no-unused-vars 'FaCalendarAlt' is defined but never used. Allowed unused vars must match /^_/u.
+  14:10 no-unused-vars 'useERP' is defined but never used. Allowed unused vars must match /^_/u.
+  33:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\AssignmentsPage.jsx
+  46:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\AttendancePage.jsx
+  16:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\AuditLogPage.jsx
+  4:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\ClassroomManagementPage.jsx
+  15:10 no-unused-vars 'useERP' is defined but never used. Allowed unused vars must match /^_/u.
+  33:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\CourseManagementPage.jsx
+  15:10 no-unused-vars 'useERP' is defined but never used. Allowed unused vars must match /^_/u.
+  34:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\DashboardPage.jsx
+  8:3 no-unused-vars 'TrendingUp' is defined but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\DepartmentManagementPage.jsx
+  14:10 no-unused-vars 'useERP' is defined but never used. Allowed unused vars must match /^_/u.
+  31:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  33:63 no-unused-vars 'isSubmitting' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\EmployeeAttendancePage.jsx
+  2:39 no-unused-vars 'FaSearch' is defined but never used. Allowed unused vars must match /^_/u.
+  2:49 no-unused-vars 'FaUserTie' is defined but never used. Allowed unused vars must match /^_/u.
+  11:10 no-unused-vars 'useERP' is defined but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\EmployeeManagementPage.jsx
+  92:10 no-unused-vars 'isExporting' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  96:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\ExaminationAttendancePage.jsx
+  7:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\ExaminationDashboardPage.jsx
+  1:8 no-unused-vars 'React' is defined but never used. Allowed unused vars must match /^_/u.
+  6:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\ExaminationPage.jsx
+  36:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  49:17 no-unused-vars 'isLoading' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  49:28 no-unused-vars 'error' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  86:9 no-unused-vars 'ineligibleStudents' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\ExaminationReportsPage.jsx
+  1:8 no-unused-vars 'React' is defined but never used. Allowed unused vars must match /^_/u.
+  6:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\FeeManagementPage.jsx
+  13:3 no-unused-vars 'FaSearch' is defined but never used. Allowed unused vars must match /^_/u.
+  67:10 no-unused-vars 'isExporting' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  100:9 no-unused-vars 'pendingCount' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  124:9 no-unused-vars 'HeaderActions' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\GradeCardPage.jsx
+  4:8 no-unused-vars 'DataTable' is defined but never used. Allowed unused vars must match /^_/u.
+  9:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  12:16 no-unused-vars 'setPage' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\HostelManagementPage.jsx
+  88:9 no-unused-vars 'roomInspections' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  103:10 no-unused-vars 'isExporting' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\InternalMarksPage.jsx
+  33:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\InventoryPage.jsx
+  20:3 no-unused-vars 'FileText' is defined but never used. Allowed unused vars must match /^_/u.
+  29:3 no-unused-vars 'ArrowUpRight' is defined but never used. Allowed unused vars must match /^_/u.
+  299:9 no-unused-vars 'importCategories' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  305:9 no-unused-vars 'importAssets' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  311:9 no-unused-vars 'importVendors' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  317:9 no-unused-vars 'importPurchases' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  404:118 no-unused-vars 'purchaseErrors' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  405:109 no-unused-vars 'stockErrors' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  406:124 no-unused-vars 'assignmentErrors' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  407:127 no-unused-vars 'maintenanceErrors' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  420:9 no-unused-vars 'assetCategoryDistribution' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  608:9 no-unused-vars 'expiredWarranties' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  610:9 no-unused-vars 'insuranceExpiredCount' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  1031:9 no-unused-vars 'lowStockAssets' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\InvigilatorAssignmentPage.jsx
+  1:8 no-unused-vars 'React' is defined but never used. Allowed unused vars must match /^_/u.
+  14:24 no-unused-vars 'setSelectedExam' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  15:27 no-unused-vars 'setSelectedTeacher' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  16:24 no-unused-vars 'setSelectedRoom' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\LeadsPage.jsx
+  2:27 no-unused-vars 'FaUserCheck' is defined but never used. Allowed unused vars must match /^_/u.
+  2:40 no-unused-vars 'FaUserPlus' is defined but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\LectureAttendancePage.jsx
+  25:34 no-unused-vars 'isLoading' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  25:45 no-unused-vars 'isError' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  25:54 no-unused-vars 'error' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  25:61 no-unused-vars 'refetch' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\LectureNotesPage.jsx
+  2:10 no-unused-vars 'FaFileDownload' is defined but never used. Allowed unused vars must match /^_/u.
+  2:34 no-unused-vars 'FaTrash' is defined but never used. Allowed unused vars must match /^_/u.
+  16:17 no-unused-vars 'isLoading' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\LectureSchedulingPage.jsx
+  2:10 no-unused-vars 'FaClock' is defined but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\LibraryManagementPage.jsx
+  74:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\PracticalMarksPage.jsx
+  32:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  34:17 no-unused-vars 'isLoading' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  34:28 no-unused-vars 'isError' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  34:37 no-unused-vars 'error' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\QuestionBankPage.jsx
+  25:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  33:17 no-unused-vars 'isLoading' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  33:28 no-unused-vars 'isError' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  33:37 no-unused-vars 'error' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\ResultProcessingPage.jsx
+  25:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  33:17 no-unused-vars 'isLoading' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  33:28 no-unused-vars 'isError' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  33:37 no-unused-vars 'error' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\SeatingPlanPage.jsx
+  1:8 no-unused-vars 'React' is defined but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\SectionManagementPage.jsx
+  2:30 no-unused-vars 'FaSearch' is defined but never used. Allowed unused vars must match /^_/u.
+  62:9 no-unused-vars 'avgEnrollment' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\SecurityGuardAttendancePage.jsx
+  2:10 no-unused-vars 'FaCalendarCheck' is defined but never used. Allowed unused vars must match /^_/u.
+  2:39 no-unused-vars 'FaSearch' is defined but never used. Allowed unused vars must match /^_/u.
+  22:17 no-unused-vars 'isLoading' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\SecurityPage.jsx
+  29:8 no-unused-vars 'DataTable' is defined but never used. Allowed unused vars must match /^_/u.
+  246:9 no-unused-vars 'deleteVisitor' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  251:9 no-unused-vars 'deleteGatePass' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  256:9 no-unused-vars 'deleteVehicle' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  261:9 no-unused-vars 'deleteIncident' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  311:115 no-unused-vars 'vehicleErrors' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\StudentAttendancePage.jsx
+  2:10 no-unused-vars 'FaCalendarAlt' is defined but never used. Allowed unused vars must match /^_/u.
+  2:37 no-unused-vars 'FaSearch' is defined but never used. Allowed unused vars must match /^_/u.
+  21:17 no-unused-vars 'isLoading' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\StudentManagementPage.jsx
+  10:3 no-unused-vars 'FaPrint' is defined but never used. Allowed unused vars must match /^_/u.
+  11:3 no-unused-vars 'FaUserGraduate' is defined but never used. Allowed unused vars must match /^_/u.
+  14:3 no-unused-vars 'FaFileInvoiceDollar' is defined but never used. Allowed unused vars must match /^_/u.
+  20:3 no-unused-vars 'FaDownload' is defined but never used. Allowed unused vars must match /^_/u.
+  29:8 no-unused-vars 'FormField' is defined but never used. Allowed unused vars must match /^_/u.
+  30:8 no-unused-vars 'Modal' is defined but never used. Allowed unused vars must match /^_/u.
+  42:7 no-unused-vars 'feeStatusOptions' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  96:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  222:10 no-unused-vars 'isPaymentModalOpen' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  223:10 no-unused-vars 'isSubjectModalOpen' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  224:10 no-unused-vars 'isPromotionModalOpen' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  225:10 no-unused-vars 'isAttendanceModalOpen' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  226:10 no-unused-vars 'uploadingDocument' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  227:10 no-unused-vars 'uploadStatus' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  234:5 no-unused-vars 'register' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  235:5 no-unused-vars 'handleSubmit' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  237:18 no-unused-vars 'errors' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  237:26 no-unused-vars 'isSubmitting' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  241:15 no-unused-vars 'registerPayment' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  242:19 no-unused-vars 'handleSubmitPayment' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  244:26 no-unused-vars 'errorsPayment' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  244:55 no-unused-vars 'isSubmittingPayment' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  248:15 no-unused-vars 'registerSubject' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  249:19 no-unused-vars 'handleSubmitSubject' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  251:26 no-unused-vars 'errorsSubject' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  251:55 no-unused-vars 'isSubmittingSubject' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  255:15 no-unused-vars 'registerPromotion' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  256:19 no-unused-vars 'handleSubmitPromotion' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  258:26 no-unused-vars 'errorsPromotion' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  258:57 no-unused-vars 'isSubmittingPromotion' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  262:15 no-unused-vars 'registerAttendance' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  263:19 no-unused-vars 'handleSubmitAttendance' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  265:26 no-unused-vars 'errorsAttendance' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  265:58 no-unused-vars 'isSubmittingAttendance' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  454:9 no-unused-vars 'handleToggleAll' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  467:9 no-unused-vars 'onSubmit' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  524:9 no-unused-vars 'handleDocumentUpload' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  745:9 no-unused-vars 'studentSection' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  746:9 no-unused-vars 'studentSession' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  752:9 no-unused-vars 'installments' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  789:9 no-unused-vars 'timelineEvents' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  830:9 no-unused-vars 'handleNewPayment' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  849:9 no-unused-vars 'handleSubjectAssignment' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  868:9 no-unused-vars 'handlePromotion' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  885:9 no-unused-vars 'handleAttendance' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  911:9 no-unused-vars 'scrollToSection' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\SubjectAssignmentPage.jsx
+  2:30 no-unused-vars 'FaSearch' is defined but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\SubjectManagementPage.jsx
+  23:9 no-unused-vars 'courses' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  26:17 no-unused-vars 'isLoading' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\TeacherAttendancePage.jsx
+  22:17 no-unused-vars 'isLoading' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\TeacherManagementPage.jsx
+  124:10 no-unused-vars 'isExporting' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  125:10 no-unused-vars 'isExportingAssignments' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  126:10 no-unused-vars 'isExportingSchedule' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  225:9 no-unused-vars 'plannedAssignments' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\TeacherSemesterAssignmentPage.jsx
+  11:10 no-unused-vars 'useERP' is defined but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\TeacherWorkloadManagementPage.jsx
+  11:16 no-unused-vars 'setPage' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  21:9 no-unused-vars 'pageCount' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\TimetableGeneratorPage.jsx
+  2:10 no-unused-vars 'FaCalendarAlt' is defined but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\TimetableManagementPage.jsx
+  2:10 no-unused-vars 'FaClock' is defined but never used. Allowed unused vars must match /^_/u.
+  2:39 no-unused-vars 'FaSearch' is defined but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\TranscriptPage.jsx
+  9:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  14:16 no-unused-vars 'setPage' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\pages\TransportManagementPage.jsx
+  13:3 no-unused-vars 'FaCar' is defined but never used. Allowed unused vars must match /^_/u.
+  18:3 no-unused-vars 'FaPrint' is defined but never used. Allowed unused vars must match /^_/u.
+  19:3 no-unused-vars 'FaRoute' is defined but never used. Allowed unused vars must match /^_/u.
+  21:3 no-unused-vars 'FaUserTie' is defined but never used. Allowed unused vars must match /^_/u.
+  26:8 no-unused-vars 'StatusBadge' is defined but never used. Allowed unused vars must match /^_/u.
+  67:7 no-unused-vars 'defaultDriver' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  81:7 no-unused-vars 'defaultRoute' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  92:7 no-unused-vars 'defaultStop' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  100:7 no-unused-vars 'defaultStudentAssign' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  109:7 no-unused-vars 'defaultEmployeeAssign' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  116:7 no-unused-vars 'defaultVehicleAttendance' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  128:7 no-unused-vars 'defaultFuelEntry' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  137:7 no-unused-vars 'defaultMaintenance' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  178:9 no-unused-vars 'students' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  179:9 no-unused-vars 'employees' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  192:9 no-unused-vars 'createDriver' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  193:9 no-unused-vars 'updateDriver' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  194:9 no-unused-vars 'deleteDriver' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  195:9 no-unused-vars 'importDrivers' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  196:9 no-unused-vars 'exportDrivers' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  198:9 no-unused-vars 'createRoute' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  199:9 no-unused-vars 'updateRoute' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  200:9 no-unused-vars 'deleteRoute' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  201:9 no-unused-vars 'importRoutes' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  202:9 no-unused-vars 'exportRoutes' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  204:9 no-unused-vars 'createStop' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  205:9 no-unused-vars 'updateStop' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  206:9 no-unused-vars 'deleteStop' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  207:9 no-unused-vars 'importStops' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  208:9 no-unused-vars 'exportStops' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  210:9 no-unused-vars 'createStudentAssignment' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  211:9 no-unused-vars 'importStudentAssignments' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  212:9 no-unused-vars 'exportStudentAssignments' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  214:9 no-unused-vars 'createEmployeeAssignment' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  215:9 no-unused-vars 'importEmployeeAssignments' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  216:9 no-unused-vars 'exportEmployeeAssignments' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  218:9 no-unused-vars 'createAttendance' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  219:9 no-unused-vars 'importAttendance' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  220:9 no-unused-vars 'exportAttendance' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  222:9 no-unused-vars 'createFuelEntry' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  223:9 no-unused-vars 'importFuelEntries' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  224:9 no-unused-vars 'exportFuelEntries' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  226:9 no-unused-vars 'createMaintenance' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  227:9 no-unused-vars 'importMaintenance' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  228:9 no-unused-vars 'exportMaintenance' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  233:10 no-unused-vars 'activeTab' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  233:21 no-unused-vars 'setActiveTab' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  237:10 no-unused-vars 'importStatus' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  238:10 no-unused-vars 'isExporting' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  239:10 no-unused-vars 'isPrinting' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  239:22 no-unused-vars 'setIsPrinting' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  242:9 no-unused-vars 'perms' is assigned a value but never used. Allowed unused vars must match /^_/u.
+  248:26 no-unused-vars 'isSubmitting' is assigned a value but never used. Allowed unused vars must match /^_/u.
+D:\Users\pop\Desktop\new pr\src\services\rbac.js
+  66:7 no-unused-vars 'defaultAll' is assigned a value but never used. Allowed unused vars must match /^_/u.

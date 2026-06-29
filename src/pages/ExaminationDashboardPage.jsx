@@ -1,9 +1,6 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useResourceList } from '../hooks/useResourceHooks';
-import { usePermissions } from '../services/permissionHelpers.js';
-
 function ExaminationDashboardPage() {
-  const perms = usePermissions();
   const { data: examinationsData = {} } = useResourceList('examinations', { page: 1, pageSize: 1000 });
   const { data: attendanceData = {} } = useResourceList('examinationAttendance', { page: 1, pageSize: 1000 });
   const { data: seatingPlansData = {} } = useResourceList('seatingPlans', { page: 1, pageSize: 1000 });
@@ -14,21 +11,18 @@ function ExaminationDashboardPage() {
   const seatingPlans = seatingPlansData.items || [];
   const assignments = assignmentsData.items || [];
   const reports = reportsData.items || [];
-
   const examCount = examinations.length;
   const presentCount = attendanceList.filter((record) => record.status === 'present').length;
   const absentCount = attendanceList.filter((record) => record.status === 'absent').length;
   const seatingCount = seatingPlans.length;
   const invigilatorCount = assignments.length;
   const reportCount = reports.length;
-
   const examsByStatus = useMemo(() => {
     return examinations.reduce((acc, exam) => {
       acc[exam.status || 'scheduled'] = (acc[exam.status || 'scheduled'] || 0) + 1;
       return acc;
     }, {});
   }, [examinations]);
-
   return (
     <div className="p-6 space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -37,7 +31,6 @@ function ExaminationDashboardPage() {
           <p className="text-sm text-slate-500">At-a-glance exam status, attendance health, seating readiness, and reporting progress.</p>
         </div>
       </div>
-
       <section className="grid gap-4 sm:grid-cols-3">
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <p className="text-sm text-slate-500">Exams Scheduled</p>
@@ -52,7 +45,6 @@ function ExaminationDashboardPage() {
           <p className="mt-3 text-3xl font-semibold text-slate-900">{invigilatorCount}</p>
         </div>
       </section>
-
       <section className="grid gap-4 sm:grid-cols-3">
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <p className="text-sm text-slate-500">Present Students</p>
@@ -67,7 +59,6 @@ function ExaminationDashboardPage() {
           <p className="mt-3 text-3xl font-semibold text-slate-900">{seatingCount}</p>
         </div>
       </section>
-
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <h2 className="text-lg font-semibold">Exam Status Breakdown</h2>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -79,7 +70,6 @@ function ExaminationDashboardPage() {
           ))}
         </div>
       </section>
-
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <h2 className="text-lg font-semibold">Reports and Readiness</h2>
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
@@ -100,5 +90,4 @@ function ExaminationDashboardPage() {
     </div>
   );
 }
-
 export default ExaminationDashboardPage;

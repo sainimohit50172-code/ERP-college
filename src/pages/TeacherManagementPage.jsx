@@ -121,9 +121,9 @@ export default function TeacherManagementPage() {
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [importStatus, setImportStatus] = useState('');
-  const [isExporting, setIsExporting] = useState(false);
-  const [isExportingAssignments, setIsExportingAssignments] = useState(false);
-  const [isExportingSchedule, setIsExportingSchedule] = useState(false);
+  const [_isExporting, setIsExporting] = useState(false);
+  const [_isExportingAssignments, setIsExportingAssignments] = useState(false);
+  const [_isExportingSchedule, setIsExportingSchedule] = useState(false);
   const pageSize = 6;
   const assignmentPageSize = 4;
   const schedulePageSize = 4;
@@ -222,7 +222,7 @@ export default function TeacherManagementPage() {
   const totalSalary = teachers.reduce((sum, teacher) => sum + (Number(String(teacher.salary).replace(/[^0-9.]/g, '')) || 0), 0);
   const totalTeachingHours = semesterAssignments.reduce((sum, assignment) => sum + Number(assignment.totalHours || 0), 0);
   const lectureLoad = lectureSchedules.length;
-  const plannedAssignments = assignments.length;
+  const _plannedAssignments = assignments.length;
 
   const resetForm = () => {
     reset(defaultValues);
@@ -378,20 +378,20 @@ export default function TeacherManagementPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <SectionHeader
         title="Teacher management"
         subtitle="Faculty profiles, academic load planning, payroll and performance analytics."
         action={
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2">
             {perms.canExport('teachers') && (
-              <Button type="button" onClick={handleExport} variant="secondary" className="inline-flex items-center gap-2 px-4 py-3 text-sm"><FaDownload /> Export roster</Button>
+              <Button type="button" onClick={handleExport} variant="secondary" className="inline-flex items-center gap-2 px-3 py-2 text-xs"><FaDownload /> Export roster</Button>
             )}
             {perms.canImport('teachers') && (
-              <Button type="button" onClick={() => importInputRef.current?.click()} variant="secondary" className="inline-flex items-center gap-2 px-4 py-3 text-sm"><FaFileImport /> Import CSV</Button>
+              <Button type="button" onClick={() => importInputRef.current?.click()} variant="secondary" className="inline-flex items-center gap-2 px-3 py-2 text-xs"><FaFileImport /> Import CSV</Button>
             )}
             {perms.canCreate('teachers') && (
-              <Button type="button" onClick={openNewTeacherModal} variant="primary" className="inline-flex items-center gap-2 px-4 py-3 text-sm"><FaPlus /> Add teacher</Button>
+              <Button type="button" onClick={openNewTeacherModal} variant="primary" className="inline-flex items-center gap-2 px-3 py-2 text-xs"><FaPlus /> Add teacher</Button>
             )}
           </div>
         }
@@ -399,58 +399,59 @@ export default function TeacherManagementPage() {
 
       <input ref={importInputRef} type="file" accept=".csv" className="hidden" onChange={handleFileChange} />
 
-      <div className="grid gap-6 xl:grid-cols-[1.4fr_0.6fr]">
-        <div className="grid gap-6">
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-              <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Faculty count</p>
-              <p className="mt-4 text-3xl font-semibold text-white">{teachers.length}</p>
+      <div className="grid gap-4 xl:grid-cols-[1.4fr_0.6fr]">
+        <div className="grid gap-4">
+          <div className="grid gap-3 md:grid-cols-3">
+            <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Faculty count</p>
+              <p className="mt-3 text-2xl font-semibold text-white">{teachers.length}</p>
             </div>
-            <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-              <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Active faculty</p>
-              <p className="mt-4 text-3xl font-semibold text-white">{activeCount}</p>
+            <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Active faculty</p>
+              <p className="mt-3 text-2xl font-semibold text-white">{activeCount}</p>
             </div>
-            <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-              <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Average experience</p>
-              <p className="mt-4 text-3xl font-semibold text-white">{averageExperience} yrs</p>
+            <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Average experience</p>
+              <p className="mt-3 text-2xl font-semibold text-white">{averageExperience} yrs</p>
             </div>
           </div>
 
-          <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
-            <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+          <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-5 shadow-soft">
+            <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
               <div>
-                <h2 className="text-xl font-semibold text-white">Faculty roster</h2>
-                <p className="text-sm text-slate-400">Search, filter, and manage teaching staff records in one place.</p>
+                <h2 className="text-lg font-semibold text-white">Faculty roster</h2>
+                <p className="text-xs text-slate-400">Search, filter, and manage teaching staff records in one place.</p>
               </div>
-              <div className="flex flex-wrap items-center gap-3">
-                <div className="rounded-3xl bg-slate-950/70 px-4 py-3 text-sm text-slate-200">Top department: {topDepartment}</div>
-                <div className="rounded-3xl bg-slate-950/70 px-4 py-3 text-sm text-slate-200">Pending hires: {pendingCount}</div>
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="rounded-3xl bg-slate-950/70 px-3 py-2 text-xs text-slate-200">Top department: {topDepartment}</div>
+                <div className="rounded-3xl bg-slate-950/70 px-3 py-2 text-xs text-slate-200">Pending hires: {pendingCount}</div>
               </div>
             </div>
 
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
+            <div className="mt-5 grid gap-3 md:grid-cols-2">
               <SearchFilter search={search} onSearch={setSearch} filter={filter} onFilter={setFilter} options={statusOptions} />
             </div>
 
-            <div className="mt-6">
+            <div className="mt-5">
               <DataTable
+                compact
                 columns={['Faculty', 'Department', 'Subjects', 'Shift', 'Experience', 'Status', 'Actions']}
                 rows={displayedTeachers.map((teacher) => [
-                  <div className="space-y-1" key={teacher.id}>
-                    <p className="font-semibold text-white">{teacher.name}</p>
-                    <p className="text-sm text-slate-400">{teacher.email}</p>
+                  <div className="space-y-1" key={`${teacher.id}-profile`}>
+                    <p className="font-semibold text-white text-sm">{teacher.name}</p>
+                    <p className="text-[11px] text-slate-400">{teacher.email}</p>
                   </div>,
-                  teacher.department,
-                  teacher.subjects,
-                  teacher.shift,
-                  teacher.experience,
+                  <span key={`${teacher.id}-department`} className="text-[13px] text-slate-700">{teacher.department}</span>,
+                  <span key={`${teacher.id}-subjects`} className="text-[13px] text-slate-700">{teacher.subjects}</span>,
+                  <span key={`${teacher.id}-shift`} className="text-[13px] text-slate-700">{teacher.shift}</span>,
+                  <span key={`${teacher.id}-experience`} className="text-[13px] text-slate-700">{teacher.experience}</span>,
                   <StatusBadge key={`${teacher.id}-status`} status={teacher.status} />,
-                  <div className="flex flex-wrap gap-2">
+                  <div key={`${teacher.id}-actions`} className="flex flex-wrap gap-2">
                     {perms.canEdit('teachers') && (
                       <button
                         type="button"
                         onClick={() => openEditTeacherModal(teacher)}
-                        className="rounded-full border border-white/10 bg-slate-800/80 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700"
+                        className="rounded-full border border-white/10 bg-slate-800/80 px-3 py-2 text-[11px] text-slate-200 transition hover:bg-slate-700"
                       >
                         <FaEdit className="inline-block" /> Edit
                       </button>
@@ -459,7 +460,7 @@ export default function TeacherManagementPage() {
                       <button
                         type="button"
                         onClick={() => handleDelete(teacher)}
-                        className="rounded-full border border-white/10 bg-rose-500/10 px-3 py-2 text-xs text-rose-300 transition hover:bg-rose-500/20"
+                        className="rounded-full border border-white/10 bg-rose-500/10 px-3 py-2 text-[11px] text-rose-300 transition hover:bg-rose-500/20"
                       >
                         <FaTrash className="inline-block" /> Remove
                       </button>
@@ -468,53 +469,53 @@ export default function TeacherManagementPage() {
                 ])}
               />
             </div>
-            <div className="mt-6">
+            <div className="mt-5">
               <TablePagination page={page} pageCount={pageCount} onPageChange={setPage} />
             </div>
           </div>
         </div>
 
-        <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
-          <div className="mb-5 flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-sky-500/10 text-sky-300">
-              <FaChartLine className="h-5 w-5" />
+        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-5 shadow-soft">
+          <div className="mb-4 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-3xl bg-sky-500/10 text-sky-300">
+              <FaChartLine className="h-4 w-4" />
             </div>
             <div>
-              <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Faculty analytics</p>
-              <h3 className="text-xl font-semibold text-white">Academic coverage</h3>
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Faculty analytics</p>
+              <h3 className="text-lg font-semibold text-white">Academic coverage</h3>
             </div>
           </div>
-          <div className="grid gap-4">
-            <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5">
-              <p className="text-sm text-slate-400">Most staffed department</p>
-              <p className="mt-3 text-3xl font-semibold text-white">{topDepartment}</p>
+          <div className="grid gap-3">
+            <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
+              <p className="text-xs text-slate-400">Most staffed department</p>
+              <p className="mt-2 text-2xl font-semibold text-white">{topDepartment}</p>
             </div>
-            <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5">
-              <p className="text-sm text-slate-400">Staff utilization</p>
-              <p className="mt-3 text-3xl font-semibold text-white">{teachers.length ? `${Math.round((activeCount / teachers.length) * 100)}%` : '0%'}</p>
+            <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
+              <p className="text-xs text-slate-400">Staff utilization</p>
+              <p className="mt-2 text-2xl font-semibold text-white">{teachers.length ? `${Math.round((activeCount / teachers.length) * 100)}%` : '0%'}</p>
             </div>
-            <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5">
-              <p className="text-sm text-slate-400">Monthly payroll</p>
-              <p className="mt-3 text-3xl font-semibold text-white">${totalSalary.toLocaleString()}</p>
+            <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
+              <p className="text-xs text-slate-400">Monthly payroll</p>
+              <p className="mt-2 text-2xl font-semibold text-white">${totalSalary.toLocaleString()}</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-        <div className="grid gap-6">
-          <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
-            <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+      <div className="grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
+        <div className="grid gap-4">
+          <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-5 shadow-soft">
+            <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
               <div>
-                <h2 className="text-xl font-semibold text-white">Academic operations</h2>
-                <p className="text-sm text-slate-400">Manage course and semester assignments across the faculty pool.</p>
+                <h2 className="text-lg font-semibold text-white">Academic operations</h2>
+                <p className="text-xs text-slate-400">Manage course and semester assignments across the faculty pool.</p>
               </div>
-              <div className="flex flex-wrap items-center gap-3">
+              <div className="flex flex-wrap items-center gap-2">
                 {perms.canExport('teacherAssignments') && (
                   <button
                     type="button"
                     onClick={handleExportAssignments}
-                    className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700"
+                    className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700"
                   >
                     <FaDownload /> Export assignments
                   </button>
@@ -523,7 +524,7 @@ export default function TeacherManagementPage() {
                   <button
                     type="button"
                     onClick={() => setIsAssignmentModalOpen(true)}
-                    className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"
+                    className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-3 py-2 text-xs font-semibold text-slate-950 transition hover:bg-sky-300"
                   >
                     <FaPlus /> Assign course
                   </button>
@@ -531,54 +532,55 @@ export default function TeacherManagementPage() {
               </div>
             </div>
 
-            <div className="mt-6">
-              <div className="grid gap-4 md:grid-cols-3">
-                <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5">
-                  <p className="text-sm text-slate-400">Total assignments</p>
-                  <p className="mt-3 text-3xl font-semibold text-white">{assignments.length}</p>
+            <div className="mt-5">
+              <div className="grid gap-3 md:grid-cols-3">
+                <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
+                  <p className="text-xs text-slate-400">Total assignments</p>
+                  <p className="mt-2 text-2xl font-semibold text-white">{assignments.length}</p>
                 </div>
-                <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5">
-                  <p className="text-sm text-slate-400">Semester workload</p>
-                  <p className="mt-3 text-3xl font-semibold text-white">{semesterAssignments.length}</p>
+                <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
+                  <p className="text-xs text-slate-400">Semester workload</p>
+                  <p className="mt-2 text-2xl font-semibold text-white">{semesterAssignments.length}</p>
                 </div>
-                <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5">
-                  <p className="text-sm text-slate-400">Planned lectures</p>
-                  <p className="mt-3 text-3xl font-semibold text-white">{lectureLoad}</p>
+                <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
+                  <p className="text-xs text-slate-400">Planned lectures</p>
+                  <p className="mt-2 text-2xl font-semibold text-white">{lectureLoad}</p>
                 </div>
               </div>
             </div>
 
-            <div className="mt-6">
+            <div className="mt-5">
               <DataTable
+                compact
                 columns={['Teacher', 'Course', 'Semester', 'Subjects', 'Credits', 'Status']}
                 rows={displayedAssignments.map((assignment) => [
-                  <div key={assignment.id} className="font-semibold text-white">{assignment.teacher}</div>,
-                  assignment.course,
-                  assignment.semester,
-                  assignment.subjects,
-                  assignment.credits,
+                  <div key={`${assignment.id}-teacher`} className="font-semibold text-white text-sm">{assignment.teacher}</div>,
+                  <span key={`${assignment.id}-course`} className="text-[13px] text-slate-700">{assignment.course}</span>,
+                  <span key={`${assignment.id}-semester`} className="text-[13px] text-slate-700">{assignment.semester}</span>,
+                  <span key={`${assignment.id}-subjects`} className="text-[13px] text-slate-700">{assignment.subjects}</span>,
+                  <span key={`${assignment.id}-credits`} className="text-[13px] text-slate-700">{assignment.credits}</span>,
                   <StatusBadge key={`${assignment.id}-status`} status={assignment.status} />,
                 ])}
               />
             </div>
-            <div className="mt-6">
+            <div className="mt-5">
               <TablePagination page={assignmentPage} pageCount={assignmentPageCount} onPageChange={setAssignmentPage} />
             </div>
           </div>
         </div>
 
-        <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
-          <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-5 shadow-soft">
+          <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
             <div>
-              <h2 className="text-xl font-semibold text-white">Schedule planner</h2>
-              <p className="text-sm text-slate-400">Track confirmed lectures, rooms and section coverage.</p>
+              <h2 className="text-lg font-semibold text-white">Schedule planner</h2>
+              <p className="text-xs text-slate-400">Track confirmed lectures, rooms and section coverage.</p>
             </div>
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2">
               {perms.canExport('teacherSchedule') && (
                 <button
                   type="button"
                   onClick={handleExportSchedule}
-                  className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700"
+                  className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700"
                 >
                   <FaDownload /> Export schedule
                 </button>
@@ -587,7 +589,7 @@ export default function TeacherManagementPage() {
                 <button
                   type="button"
                   onClick={() => setIsLectureModalOpen(true)}
-                  className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"
+                  className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-3 py-2 text-xs font-semibold text-slate-950 transition hover:bg-sky-300"
                 >
                   <FaPlus /> Add lecture
                 </button>
@@ -595,33 +597,34 @@ export default function TeacherManagementPage() {
             </div>
           </div>
 
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
-            <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5">
-              <p className="text-sm text-slate-400">Total teaching hours</p>
-              <p className="mt-3 text-3xl font-semibold text-white">{totalTeachingHours}</p>
+          <div className="mt-5 grid gap-3 md:grid-cols-2">
+            <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
+              <p className="text-xs text-slate-400">Total teaching hours</p>
+              <p className="mt-2 text-2xl font-semibold text-white">{totalTeachingHours}</p>
             </div>
-            <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5">
-              <p className="text-sm text-slate-400">Pending schedule items</p>
-              <p className="mt-3 text-3xl font-semibold text-white">{lectureSchedules.filter((lecture) => lecture.status !== 'Completed').length}</p>
+            <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
+              <p className="text-xs text-slate-400">Pending schedule items</p>
+              <p className="mt-2 text-2xl font-semibold text-white">{lectureSchedules.filter((lecture) => lecture.status !== 'Completed').length}</p>
             </div>
           </div>
 
-          <div className="mt-6">
+          <div className="mt-5">
             <DataTable
+              compact
               columns={['Subject', 'Teacher', 'Course', 'Section', 'Day', 'Time', 'Room', 'Status']}
               rows={displayedSchedule.map((lecture) => [
-                <div key={lecture.id} className="font-semibold text-white">{subjectMap.get(lecture.subjectId)?.title || lecture.subjectId || 'Unknown'}</div>,
-                teacherMap.get(lecture.teacherId)?.name || lecture.teacherId || 'Unknown',
-                courseMap.get(lecture.courseId)?.code || lecture.courseId || 'Unknown',
-                sectionMap.get(lecture.sectionId)?.name || lecture.sectionId || 'Unknown',
-                lecture.day,
-                lecture.time,
-                lecture.room,
+                <div key={`${lecture.id}-subject`} className="font-semibold text-white text-sm">{subjectMap.get(lecture.subjectId)?.title || lecture.subjectId || 'Unknown'}</div>,
+                <span key={`${lecture.id}-teacher`} className="text-[13px] text-slate-700">{teacherMap.get(lecture.teacherId)?.name || lecture.teacherId || 'Unknown'}</span>,
+                <span key={`${lecture.id}-course`} className="text-[13px] text-slate-700">{courseMap.get(lecture.courseId)?.code || lecture.courseId || 'Unknown'}</span>,
+                <span key={`${lecture.id}-section`} className="text-[13px] text-slate-700">{sectionMap.get(lecture.sectionId)?.name || lecture.sectionId || 'Unknown'}</span>,
+                <span key={`${lecture.id}-day`} className="text-[13px] text-slate-700">{lecture.day}</span>,
+                <span key={`${lecture.id}-time`} className="text-[13px] text-slate-700">{lecture.time}</span>,
+                <span key={`${lecture.id}-room`} className="text-[13px] text-slate-700">{lecture.room}</span>,
                 <StatusBadge key={`${lecture.id}-status`} status={lecture.status} />,
               ])}
             />
           </div>
-          <div className="mt-6">
+          <div className="mt-5">
             <TablePagination page={schedulePage} pageCount={schedulePageCount} onPageChange={setSchedulePage} />
           </div>
         </div>

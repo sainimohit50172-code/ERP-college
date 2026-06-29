@@ -8,7 +8,6 @@ import TablePagination from '../components/tables/TablePagination.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import FormField from '../components/forms/FormField.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
-import { useERP } from '../services/ERPContext.jsx';
 import { useResourceList, useCreateResource } from '../hooks/useResourceHooks';
 
 // teacher semester assignments moved to ERPContext
@@ -78,7 +77,7 @@ export default function TeacherSemesterAssignmentPage() {
         </div>
       </div>
 
-      <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
+      <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
           <div>
             <h2 className="text-xl font-semibold text-white">Semester assignments</h2>

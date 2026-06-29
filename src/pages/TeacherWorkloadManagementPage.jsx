@@ -8,7 +8,7 @@ import { useResourceList } from '../hooks/useResourceHooks';
 
 export default function TeacherWorkloadManagementPage() {
   const [search, setSearch] = useState('');
-  const [page, setPage] = useState(1);
+  const [page, _setPage] = useState(1);
   const pageSize = 5;
 
   const { data: workloadsData } = useResourceList('teacherWorkloads', { page: 1, pageSize: 200 });
@@ -18,7 +18,7 @@ export default function TeacherWorkloadManagementPage() {
     return workloads.filter((workload) => [workload.teacher, workload.department].some((value) => (value || '').toLowerCase().includes(searchTerm)));
   }, [workloads, search]);
 
-  const pageCount = Math.max(1, Math.ceil(filteredWorkloads.length / pageSize));
+  const _pageCount = Math.max(1, Math.ceil(filteredWorkloads.length / pageSize));
   const displayedWorkloads = filteredWorkloads.slice((page - 1) * pageSize, page * pageSize);
 
   const avgTeacherHours = workloads.length ? (workloads.reduce((acc, w) => acc + parseInt(w.totalHours || 0), 0) / workloads.length).toFixed(1) : '0';
@@ -48,7 +48,7 @@ export default function TeacherWorkloadManagementPage() {
       </div>
 
       {/* Workload Distribution Chart */}
-      <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
+      <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
         <h3 className="text-lg font-semibold text-white mb-6">Workload Distribution</h3>
         <div className="grid gap-6 md:grid-cols-3">
           <div>
@@ -99,7 +99,7 @@ export default function TeacherWorkloadManagementPage() {
       </div>
 
       {/* Warnings and Recommendations */}
-      <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
+      <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
         <div className="flex items-center gap-2 mb-6">
           <FaExclamationTriangle className="text-amber-400" />
           <h3 className="text-lg font-semibold text-white">Workload Alerts</h3>
@@ -127,7 +127,7 @@ export default function TeacherWorkloadManagementPage() {
       </div>
 
       {/* Detailed Workload Table */}
-      <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
+      <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-xl font-semibold text-white">Detailed workload summary</h2>
@@ -170,7 +170,7 @@ export default function TeacherWorkloadManagementPage() {
       </div>
 
       {/* Recommendations */}
-      <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
+      <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
         <h3 className="text-lg font-semibold text-white mb-4">Workload Guidelines</h3>
         <div className="grid gap-4 md:grid-cols-3">
           <div className="rounded-2xl bg-emerald-400/10 px-4 py-3 border border-emerald-400/20">

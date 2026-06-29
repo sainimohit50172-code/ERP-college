@@ -1,6 +1,6 @@
 export default function LMSPage() {
   return (
-    <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-8 shadow-soft backdrop-blur-xl">
+    <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-5 shadow-sm backdrop-blur-xl">
       <h1 className="text-2xl font-semibold text-white">LMS</h1>
       <p className="mt-2 text-sm text-slate-400">Unified learning management for courses, content, notes, and assessments.</p>
       <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">

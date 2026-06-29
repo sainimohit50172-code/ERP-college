@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 import { FaDownload, FaPlus } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import { useResourceList, useCreateResource } from '../hooks/useResourceHooks';
-import { usePermissions } from '../services/permissionHelpers.js';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
 import WithPermission from '../components/auth/WithPermission.jsx';
 import SearchFilter from '../components/forms/SearchFilter.jsx';
@@ -12,15 +11,12 @@ import Modal from '../components/ui/Modal.jsx';
 import Button from '../components/ui/Button.jsx';
 import FormField from '../components/forms/FormField.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
-import { useERP } from '../services/ERPContext.jsx';
-
 const statusOptions = [
   { value: 'All', label: 'All statuses' },
   { value: 'Active', label: 'Active' },
   { value: 'Maintenance', label: 'Maintenance' },
   { value: 'Inactive', label: 'Inactive' },
 ];
-
 export default function ClassroomManagementPage() {
   const { data: classroomsData } = useResourceList('classrooms', { page: 1, pageSize: 200 });
   const classrooms = classroomsData?.items || [];
@@ -30,12 +26,9 @@ export default function ClassroomManagementPage() {
   const [page, setPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const pageSize = 5;
-  const perms = usePermissions();
-
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: { roomNumber: '', building: 'Academic Block A', capacity: '60', hasProjector: true, hasLab: false, hasAC: true, floor: '1', status: 'Active' },
   });
-
   const filteredClassrooms = useMemo(() => {
     return classrooms.filter((classroom) => {
       const searchTerm = search.toLowerCase();
@@ -44,59 +37,51 @@ export default function ClassroomManagementPage() {
       return matchesSearch && matchesFilter;
     });
   }, [classrooms, search, filter]);
-
   const pageCount = Math.max(1, Math.ceil(filteredClassrooms.length / pageSize));
   const displayedClassrooms = filteredClassrooms.slice((page - 1) * pageSize, page * pageSize);
-
   const onSubmit = (data) => {
     createClassroom(data);
     reset({ roomNumber: '', building: 'Academic Block A', capacity: '60', hasProjector: true, hasLab: false, hasAC: true, floor: '1', status: 'Active' });
     setPage(1);
     setIsModalOpen(false);
   };
-
   const totalClassrooms = classrooms.length;
   const activeRooms = classrooms.filter((c) => c.status === 'Active').length;
   const totalCapacity = classrooms.reduce((acc, c) => acc + parseInt(c.capacity), 0);
-
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <SectionHeader title="Classroom management" subtitle="Manage physical classrooms, facilities, capacity and resource allocation." />
-
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Total classrooms</p>
-          <p className="mt-4 text-3xl font-semibold text-white">{totalClassrooms}</p>
+      <div className="grid gap-3 md:grid-cols-3">
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Total classrooms</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{totalClassrooms}</p>
         </div>
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Available</p>
-          <p className="mt-4 text-3xl font-semibold text-white">{activeRooms}</p>
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Available</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{activeRooms}</p>
         </div>
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Total capacity</p>
-          <p className="mt-4 text-3xl font-semibold text-white">{totalCapacity}</p>
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Total capacity</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{totalCapacity}</p>
         </div>
       </div>
-
-      <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
-        <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+      <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+        <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-white">Classroom registry</h2>
+            <h2 className="text-lg font-semibold text-white">Classroom registry</h2>
             <p className="text-sm text-slate-400">Search classrooms by room number or building and manage facilities.</p>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2">
             <WithPermission moduleKey="classrooms" action="export">
-              <button className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700"><FaDownload /> Export</button>
+              <button className="inline-flex items-center gap-2 rounded-2xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 transition hover:bg-slate-700"><FaDownload /> Export</button>
             </WithPermission>
             <WithPermission moduleKey="classrooms" action="create">
-              <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"><FaPlus /> Add classroom</button>
+              <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 rounded-2xl bg-sky-400 px-3 py-2 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"><FaPlus /> Add classroom</button>
             </WithPermission>
           </div>
         </div>
-
-        <div className="mt-6 grid gap-4 md:grid-cols-2"><SearchFilter search={search} onSearch={setSearch} filter={filter} onFilter={setFilter} options={statusOptions} /></div>
-
-        <div className="mt-6">
+        <div className="mt-4 grid gap-3 md:grid-cols-2"><SearchFilter search={search} onSearch={setSearch} filter={filter} onFilter={setFilter} options={statusOptions} /></div>
+        <div className="mt-4">
           <DataTable
             columns={['Room', 'Building', 'Floor', 'Capacity', 'Projector', 'Lab', 'AC', 'Status']}
             rows={displayedClassrooms.map((classroom) => [
@@ -111,9 +96,8 @@ export default function ClassroomManagementPage() {
             ])}
           />
         </div>
-        <div className="mt-6"><TablePagination page={page} pageCount={pageCount} onPageChange={setPage} /></div>
+        <div className="mt-4"><TablePagination page={page} pageCount={pageCount} onPageChange={setPage} /></div>
       </div>
-
       <Modal title="Add new classroom" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<Button onClick={handleSubmit(onSubmit)} variant="primary">Save classroom</Button>}>
         <form className="grid gap-5 lg:grid-cols-2">
           <FormField label="Room number"><input type="text" {...register('roomNumber', { required: 'Room number is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="A-101" />{errors.roomNumber && <p className="mt-1 text-sm text-rose-400">{errors.roomNumber.message}</p>}</FormField>

@@ -1,10 +1,9 @@
 import { useMemo } from 'react';
-import { FaClipboardList, FaUserCheck, FaUserPlus } from 'react-icons/fa';
+import { FaClipboardList } from 'react-icons/fa';
 import { useResourceList, useCreateResource, useUpdateResource } from '../hooks/useResourceHooks';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
 import DataTable from '../components/ui/DataTable.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
-
 export default function LeadsPage() {
   const { data: leadsData } = useResourceList('leads', { page: 1, pageSize: 200 });
   const leads = leadsData?.items || [];
@@ -12,10 +11,8 @@ export default function LeadsPage() {
   const employees = employeesData?.items || [];
   const { data: coursesData } = useResourceList('courses', { page: 1, pageSize: 200 });
   const courses = coursesData?.items || [];
-
   const createStudent = useCreateResource('students');
   const updateLead = useUpdateResource('leads');
-
   const convertLeadToStudent = async (leadId) => {
     const lead = leads.find((l) => l.id === leadId);
     if (!lead) return;
@@ -26,7 +23,6 @@ export default function LeadsPage() {
       },
     });
   };
-
   const leadMetrics = useMemo(() => {
     return {
       hotLeads: leads.filter((lead) => lead.expectedConversion === 'High').length,
@@ -35,7 +31,6 @@ export default function LeadsPage() {
       confirmed: leads.filter((lead) => lead.status === 'Admission Confirmed').length,
     };
   }, [leads]);
-
   const leadRows = useMemo(
     () =>
       leads.map((lead) => {
@@ -51,6 +46,7 @@ export default function LeadsPage() {
           lead.stage,
           <StatusBadge key={`${lead.id}-status`} status={lead.status} />,
           <button
+            key={`${lead.id}-convert`}
             type="button"
             disabled={lead.status === 'Admission Confirmed'}
             onClick={() => convertLeadToStudent(lead.id)}
@@ -62,11 +58,9 @@ export default function LeadsPage() {
       }),
     [leads, employees, courses, convertLeadToStudent]
   );
-
   return (
     <div className="space-y-8">
       <SectionHeader title="Admission leads" subtitle="CRM-driven inquiry management with admissions conversion workflows." />
-
       <div className="grid gap-4 md:grid-cols-4">
         <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
           <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Hot leads</p>
@@ -85,8 +79,7 @@ export default function LeadsPage() {
           <p className="mt-4 text-3xl font-semibold text-white">{leadMetrics.confirmed}</p>
         </div>
       </div>
-
-      <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
+      <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
           <div>
             <h2 className="text-xl font-semibold text-white">Lead pipeline</h2>
@@ -96,7 +89,6 @@ export default function LeadsPage() {
             <FaClipboardList /> {leads.length} active leads
           </div>
         </div>
-
         <div className="mt-6 overflow-x-auto">
           <DataTable
             columns={['Name', 'Assigned', 'Source', 'Stage', 'Status', 'Action']}

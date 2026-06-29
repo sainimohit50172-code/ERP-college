@@ -1037,6 +1037,7 @@ api docs, reference,... _(risk: unknown)_
 
 - **docker-expert**: Docker containerization expert with deep knowledge of multi-stage builds, image optimization, container security, Docker Compose orchestration, and production deployment patterns. Use PROACTIVELY f... _(risk: unknown)_
 - **aegisops-ai**: Autonomous DevSecOps & FinOps Guardrails. Orchestrates Gemini 3 Flash to audit Linux Kernel patches, Terraform cost drifts, and K8s compliance. _(risk: safe)_
+- **cron-doctor**: Diagnose and validate cron expressions before they ship. Catches the five silent death-traps: impossible dates that never fire, OR-semantics that fire too often, midnight spikes, uneven step drift, and leap-year February 29. _(risk: safe)_
 - **deploy-to-vercel**: Deploy applications and websites to Vercel. Use when the user requests deployment actions like "deploy my app", "deploy and give me the link", "push this live", or "create a preview deployment". _(risk: safe)_
 - **github-actions-advanced**: Design, debug, and harden GitHub Actions CI/CD workflows, including reusable workflows, matrix builds, self-hosted runners, OIDC authentication, caching, environments, secrets, and release automation.
  _(risk: safe)_
@@ -1044,7 +1045,6 @@ api docs, reference,... _(risk: unknown)_
 - **kubestellar-console**: Multi-cluster Kubernetes dashboard with AI-powered operations via MCP server and 10+ built-in agent skills _(risk: critical)_
 - **mise-configurator**: Generate production-ready mise.toml setups for local development, CI/CD pipelines, and toolchain standardization. _(risk: safe)_
 - **vibecode-production-qa-validator**: 13-phase production QA for fullstack Next.js apps: build verification, SEO tags, OG images, favicon, route regression, API auth, page speed, lazy load, vulnerability scan, UI/UX cards, error boundaries, database, secure rendering, and cleanup. _(risk: safe)_
-- **cron-doctor**: Diagnose and validate cron expressions before they ship. Catches the five silent death-traps: impossible dates that never fire, OR-semantics that fire too often, midnight spikes, uneven step drift, and leap-year February 29. _(risk: safe)_
 
 ## document-processing
 
@@ -2090,13 +2090,13 @@ calculations
 
 ## workflow
 
+- **ai-loop**: Runs a bounded spec-build-review development loop with explicit scope, stop conditions, and human approval gates for risky or ambiguous work. _(risk: safe)_
 - **crossframe**: Use when the user explicitly invokes CrossFrame or 跨尺度结构诊断 for Chinese-canonical structural diagnosis of complex relationships, organizations, institutions, public disputes, or long-term evolution. _(risk: safe)_
 - **crossframe-public**: Use when CrossFrame Suite routes explicit Chinese analysis of public issues, platform governance, policy, institutional responsibility, appeals, or compliance evidence. _(risk: safe)_
 - **crossframe-review**: Use when explicit CrossFrame output needs review for reasoning fidelity, evidence boundaries, source anchors, concept drift, article collapse, or repair steps. _(risk: safe)_
 - **crossframe-suite**: Use when the user explicitly invokes CrossFrame Suite for Chinese structural diagnosis workflows across relationships, organizations, public issues, philosophy, research, or essay output. _(risk: safe)_
 - **git-pr-review**: Generate a concise and structured PR description from commit history with minimal token usage _(risk: safe)_
 - **pr-merge-champion**: Optimize pull requests for quick approval and merging by ensuring clean diffs, comprehensive self-reviews, and structured documentation. _(risk: safe)_
-- **ai-loop**: Runs a bounded spec-build-review development loop with explicit scope, stop conditions, and human approval gates for risky or ambiguous work. _(risk: safe)_
 
 ## workflow-bundle
 

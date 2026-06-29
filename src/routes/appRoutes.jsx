@@ -13,7 +13,6 @@ import StudentAttendancePage from '../pages/StudentAttendancePage.jsx';
 import StudentManagementPage from '../pages/StudentManagementPage.jsx';
 import TeacherAttendancePage from '../pages/TeacherAttendancePage.jsx';
 import TeacherManagementPage from '../pages/TeacherManagementPage.jsx';
-import EmployeeManagementPage from '../pages/EmployeeManagementPage.jsx';
 import FeeManagementPage from '../pages/FeeManagementPage.jsx';
 import TimetableManagementPage from '../pages/TimetableManagementPage.jsx';
 import SectionManagementPage from '../pages/SectionManagementPage.jsx';

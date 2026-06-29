@@ -61,7 +61,6 @@ const endpoints = {
   purchaseOrders: 'purchase-orders',
   stockMovements: 'stock-movements',
   assetAssignments: 'asset-assignments',
-  maintenanceRequests: 'maintenance-requests',
   subjectAssignments: 'subject-assignments',
   syllabi: 'syllabi',
   teacherAttendance: 'teacher-attendance',

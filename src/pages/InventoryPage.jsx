@@ -17,7 +17,6 @@ import {
   Truck,
   Tag,
   ClipboardList,
-  FileText,
   CheckSquare,
   ShieldCheck,
   CalendarCheck,
@@ -26,7 +25,6 @@ import {
   Plus,
   Edit3,
   Trash2,
-  ArrowUpRight,
   AlertTriangle,
 } from 'lucide-react';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
@@ -296,25 +294,25 @@ export default function InventoryPage() {
   const updateCategory = useUpdateResource('assetCategories');
   const deleteCategory = useDeleteResource('assetCategories');
   const exportCategories = useBulkExport('assetCategories');
-  const importCategories = useBulkImport('assetCategories');
+  const _importCategories = useBulkImport('assetCategories');
 
   const createAsset = useCreateResource('assets');
   const updateAsset = useUpdateResource('assets');
   const deleteAsset = useDeleteResource('assets');
   const exportAssets = useBulkExport('assets');
-  const importAssets = useBulkImport('assets');
+  const _importAssets = useBulkImport('assets');
 
   const createVendor = useCreateResource('vendors');
   const updateVendor = useUpdateResource('vendors');
   const deleteVendor = useDeleteResource('vendors');
   const exportVendors = useBulkExport('vendors');
-  const importVendors = useBulkImport('vendors');
+  const _importVendors = useBulkImport('vendors');
 
   const createPurchase = useCreateResource('purchaseOrders');
   const updatePurchase = useUpdateResource('purchaseOrders');
   const deletePurchase = useDeleteResource('purchaseOrders');
   const exportPurchases = useBulkExport('purchaseOrders');
-  const importPurchases = useBulkImport('purchaseOrders');
+  const _importPurchases = useBulkImport('purchaseOrders');
 
   const createStock = useCreateResource('stockMovements');
   const updateStock = useUpdateResource('stockMovements');
@@ -401,10 +399,10 @@ export default function InventoryPage() {
   const { register: registerCategory, handleSubmit: handleSubmitCategory, reset: resetCategory, formState: { errors: categoryErrors } } = categoryForm;
   const { register: registerAsset, handleSubmit: handleSubmitAsset, reset: resetAsset, formState: { errors: assetErrors } } = assetForm;
   const { register: registerVendor, handleSubmit: handleSubmitVendor, reset: resetVendor, formState: { errors: vendorErrors } } = vendorForm;
-  const { register: registerPurchase, handleSubmit: handleSubmitPurchase, reset: resetPurchase, formState: { errors: purchaseErrors } } = purchaseForm;
-  const { register: registerStock, handleSubmit: handleSubmitStock, reset: resetStock, formState: { errors: stockErrors } } = stockForm;
-  const { register: registerAssignment, handleSubmit: handleSubmitAssignment, reset: resetAssignment, formState: { errors: assignmentErrors } } = assignmentForm;
-  const { register: registerMaintenance, handleSubmit: handleSubmitMaintenance, reset: resetMaintenance, formState: { errors: maintenanceErrors } } = maintenanceForm;
+  const { register: registerPurchase, handleSubmit: handleSubmitPurchase, reset: resetPurchase, formState: { errors: _purchaseErrors } } = purchaseForm;
+  const { register: registerStock, handleSubmit: handleSubmitStock, reset: resetStock, formState: { errors: _stockErrors } } = stockForm;
+  const { register: registerAssignment, handleSubmit: handleSubmitAssignment, reset: resetAssignment, formState: { errors: _assignmentErrors } } = assignmentForm;
+  const { register: registerMaintenance, handleSubmit: handleSubmitMaintenance, reset: resetMaintenance, formState: { errors: _maintenanceErrors } } = maintenanceForm;
 
   const totalAssets = assets.length;
   const availableAssets = assets.filter((asset) => ['Available', 'In Stock', 'Received'].includes(asset.status)).length;
@@ -417,7 +415,7 @@ export default function InventoryPage() {
   const pendingRequests = assignments.filter((item) => item.status === 'Pending').length;
   const assetValue = assets.reduce((sum, asset) => sum + Number(asset.purchasePrice || 0), 0);
 
-  const assetCategoryDistribution = useMemo(() => {
+  const _assetCategoryDistribution = useMemo(() => {
     const counts = {};
     assets.forEach((asset) => {
       const category = asset.category || 'Uncategorized';
@@ -605,9 +603,9 @@ export default function InventoryPage() {
   }, [assets, insuranceSearch, insuranceFilter]);
 
   const expiringWarranties = useMemo(() => assets.filter((asset) => getWarrantyStatus(asset) === 'Expiring Soon').length, [assets]);
-  const expiredWarranties = useMemo(() => assets.filter((asset) => getWarrantyStatus(asset) === 'Expired').length, [assets]);
+  const _expiredWarranties = useMemo(() => assets.filter((asset) => getWarrantyStatus(asset) === 'Expired').length, [assets]);
   const insuranceRenewalPending = useMemo(() => assets.filter((asset) => getInsuranceStatus(asset) === 'Renewal Pending').length, [assets]);
-  const insuranceExpiredCount = useMemo(() => assets.filter((asset) => getInsuranceStatus(asset) === 'Expired').length, [assets]);
+  const _insuranceExpiredCount = useMemo(() => assets.filter((asset) => getInsuranceStatus(asset) === 'Expired').length, [assets]);
 
   const displayedMaintenance = maintenanceRows.slice((maintenancePage - 1) * maintenancePageSize, maintenancePage * maintenancePageSize);
   const maintenancePageCount = Math.max(1, Math.ceil(maintenanceRows.length / maintenancePageSize));
@@ -1028,12 +1026,12 @@ export default function InventoryPage() {
     }
   };
 
-  const lowStockAssets = assets.filter((asset) => Number(asset.quantity || 1) <= 5).slice(0, 4);
+  const _lowStockAssets = assets.filter((asset) => Number(asset.quantity || 1) <= 5).slice(0, 4);
   const recentActivity = maintenanceRequests.slice(-6).reverse();
 
   return (
     <div className="space-y-8">
-      <div className="rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+      <div className="rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-center xl:justify-between">
           <div>
             <p className="text-sm uppercase tracking-[0.24em] text-emerald-600">Inventory & Asset Management</p>
@@ -1091,7 +1089,7 @@ export default function InventoryPage() {
 
       {activeTab === 'overview' && (
         <div className="grid gap-6 xl:grid-cols-[1.25fr_0.85fr]">
-          <section className="space-y-6 rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+          <section className="space-y-6 rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h2 className="text-2xl font-semibold text-slate-950">Inventory overview</h2>
@@ -1211,7 +1209,7 @@ export default function InventoryPage() {
       )}
 
       {activeTab === 'categories' && (
-        <section className="space-y-6 rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+        <section className="space-y-6 rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
           <SectionHeader
             title="Asset Categories"
             subtitle="Configure inventory categories and track example asset groups."
@@ -1230,10 +1228,10 @@ export default function InventoryPage() {
           <DataTable
             columns={['Category', 'Description', 'Example items', 'Actions']}
             rows={displayedCategories.map((category) => [
-              <div className="font-semibold text-slate-950">{category.name}</div>,
+              <div key={`${category.id}-name`} className="font-semibold text-slate-950">{category.name}</div>,
               category.description || '—',
               category.exampleItems || '—',
-              <div className="flex items-center gap-2">
+              <div key={`${category.id}-actions`} className="flex items-center gap-2">
                 <button onClick={() => openEditCategoryModal(category)} className="rounded-2xl bg-slate-50 px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100"><Edit3 className="h-4 w-4" /></button>
                 <button onClick={() => handleDeleteCategory(category)} className="rounded-2xl bg-rose-50 px-3 py-2 text-sm text-rose-700 transition hover:bg-rose-100"><Trash2 className="h-4 w-4" /></button>
               </div>,
@@ -1244,7 +1242,7 @@ export default function InventoryPage() {
       )}
 
       {activeTab === 'assets' && (
-        <section className="space-y-6 rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+        <section className="space-y-6 rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
           <SectionHeader
             title="Asset Management"
             subtitle="Capture asset lifecycle details and attach photos or documents."
@@ -1266,12 +1264,12 @@ export default function InventoryPage() {
           <DataTable
             columns={['Asset', 'Category', 'Location', 'Status', 'Value', 'Actions']}
             rows={displayedAssets.map((asset) => [
-              <div className="font-semibold text-slate-950">{asset.name}<div className="text-sm text-slate-500">{asset.assetId}</div></div>,
+              <div key={`${asset.id}-name`} className="font-semibold text-slate-950">{asset.name}<div className="text-sm text-slate-500">{asset.assetId}</div></div>,
               asset.category,
               asset.currentLocation || asset.department || '—',
-              <StatusBadge status={asset.status} />,
+              <StatusBadge key={`${asset.id}-status`} status={asset.status} />,
               `₹${Number(asset.purchasePrice || 0).toLocaleString()}`,
-              <div className="flex items-center gap-2">
+              <div key={`${asset.id}-actions`} className="flex items-center gap-2">
                 <button onClick={() => openEditAssetModal(asset)} className="rounded-2xl bg-slate-50 px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100"><Edit3 className="h-4 w-4" /></button>
                 <button onClick={() => handleDeleteAsset(asset)} className="rounded-2xl bg-rose-50 px-3 py-2 text-sm text-rose-700 transition hover:bg-rose-100"><Trash2 className="h-4 w-4" /></button>
               </div>,
@@ -1282,7 +1280,7 @@ export default function InventoryPage() {
       )}
 
       {activeTab === 'vendors' && (
-        <section className="space-y-6 rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+        <section className="space-y-6 rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
           <SectionHeader
             title="Vendor Management"
             subtitle="Manage vendor details, GST, and supplier banking information."
@@ -1301,12 +1299,12 @@ export default function InventoryPage() {
           <DataTable
             columns={['Vendor', 'GST', 'Email', 'Phone', 'Contact', 'Actions']}
             rows={displayedVendors.map((vendor) => [
-              <div className="font-semibold text-slate-950">{vendor.name}</div>,
+              <div key={`${vendor.id}-name`} className="font-semibold text-slate-950">{vendor.name}</div>,
               vendor.gst || '—',
               vendor.email || '—',
               vendor.phone || '—',
               vendor.contactPerson || '—',
-              <div className="flex items-center gap-2">
+              <div key={`${vendor.id}-actions`} className="flex items-center gap-2">
                 <button onClick={() => openEditVendorModal(vendor)} className="rounded-2xl bg-slate-50 px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100"><Edit3 className="h-4 w-4" /></button>
                 <button onClick={() => handleDeleteVendor(vendor)} className="rounded-2xl bg-rose-50 px-3 py-2 text-sm text-rose-700 transition hover:bg-rose-100"><Trash2 className="h-4 w-4" /></button>
               </div>,
@@ -1317,7 +1315,7 @@ export default function InventoryPage() {
       )}
 
       {activeTab === 'purchases' && (
-        <section className="space-y-6 rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+        <section className="space-y-6 rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
           <SectionHeader
             title="Purchase Management"
             subtitle="Track purchase orders, invoices, and procurement value."
@@ -1341,7 +1339,7 @@ export default function InventoryPage() {
               purchase.invoiceNumber || '—',
               purchase.purchaseDate || '—',
               `₹${Number(purchase.grandTotal || 0).toLocaleString()}`,
-              <div className="flex items-center gap-2">
+              <div key={`${purchase.id}-actions`} className="flex items-center gap-2">
                 <button onClick={() => openEditPurchaseModal(purchase)} className="rounded-2xl bg-slate-50 px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100"><Edit3 className="h-4 w-4" /></button>
                 <button onClick={() => handleDeletePurchase(purchase)} className="rounded-2xl bg-rose-50 px-3 py-2 text-sm text-rose-700 transition hover:bg-rose-100"><Trash2 className="h-4 w-4" /></button>
               </div>,
@@ -1352,7 +1350,7 @@ export default function InventoryPage() {
       )}
 
       {activeTab === 'stock' && (
-        <section className="space-y-6 rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+        <section className="space-y-6 rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
           <SectionHeader
             title="Stock Management"
             subtitle="Manage stock movements, transfer history, returns, and adjustments."
@@ -1377,7 +1375,7 @@ export default function InventoryPage() {
               movement.quantity?.toString() || '—',
               movement.source || '—',
               movement.destination || '—',
-              <div className="flex items-center gap-2">
+              <div key={`${movement.id}-actions`} className="flex items-center gap-2">
                 <button onClick={() => openEditStockModal(movement)} className="rounded-2xl bg-slate-50 px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100"><Edit3 className="h-4 w-4" /></button>
                 <button onClick={() => handleDeleteStock(movement)} className="rounded-2xl bg-rose-50 px-3 py-2 text-sm text-rose-700 transition hover:bg-rose-100"><Trash2 className="h-4 w-4" /></button>
               </div>,
@@ -1388,7 +1386,7 @@ export default function InventoryPage() {
       )}
 
       {activeTab === 'assignments' && (
-        <section className="space-y-6 rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+        <section className="space-y-6 rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
           <SectionHeader
             title="Asset Assignment"
             subtitle="Track assignments for teachers, employees, labs, library and hostel."
@@ -1412,8 +1410,8 @@ export default function InventoryPage() {
               item.assignedTo || '—',
               item.assignedType || '—',
               item.department || item.location || '—',
-              <StatusBadge status={item.status || 'Pending'} />,
-              <div className="flex items-center gap-2">
+              <StatusBadge key={`${item.id}-status`} status={item.status || 'Pending'} />,
+              <div key={`${item.id}-actions`} className="flex items-center gap-2">
                 <button onClick={() => openEditAssignmentModal(item)} className="rounded-2xl bg-slate-50 px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100"><Edit3 className="h-4 w-4" /></button>
                 <button onClick={() => handleDeleteAssignment(item)} className="rounded-2xl bg-rose-50 px-3 py-2 text-sm text-rose-700 transition hover:bg-rose-100"><Trash2 className="h-4 w-4" /></button>
               </div>,
@@ -1424,7 +1422,7 @@ export default function InventoryPage() {
       )}
 
       {activeTab === 'maintenance' && (
-        <section className="space-y-6 rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+        <section className="space-y-6 rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
           <SectionHeader
             title="Maintenance Management"
             subtitle="Log service requests, repair details, AMC coverage and warranty claims."
@@ -1447,9 +1445,9 @@ export default function InventoryPage() {
               request.assetId || '—',
               request.issue || '—',
               request.vendor || '—',
-              <StatusBadge status={request.status || 'Requested'} />,
+              <StatusBadge key={`${request.id}-status`} status={request.status || 'Requested'} />,
               `₹${Number(request.repairCost || 0).toLocaleString()}`,
-              <div className="flex items-center gap-2">
+              <div key={`${request.id}-actions`} className="flex items-center gap-2">
                 <button onClick={() => openEditMaintenanceModal(request)} className="rounded-2xl bg-slate-50 px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100"><Edit3 className="h-4 w-4" /></button>
                 <button onClick={() => handleDeleteMaintenance(request)} className="rounded-2xl bg-rose-50 px-3 py-2 text-sm text-rose-700 transition hover:bg-rose-100"><Trash2 className="h-4 w-4" /></button>
               </div>,
@@ -1460,7 +1458,7 @@ export default function InventoryPage() {
       )}
 
       {activeTab === 'transfers' && (
-        <section className="space-y-6 rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+        <section className="space-y-6 rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
           <SectionHeader
             title="Transfer History"
             subtitle="Review stock transfers, asset movement, returns and inventory adjustments."
@@ -1488,7 +1486,7 @@ export default function InventoryPage() {
       )}
 
       {activeTab === 'warranty' && (
-        <section className="space-y-6 rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+        <section className="space-y-6 rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
           <SectionHeader
             title="Warranty Tracker"
             subtitle="Track warranty coverage across assets and flag upcoming expirations."
@@ -1507,11 +1505,11 @@ export default function InventoryPage() {
           <DataTable
             columns={['Asset', 'Category', 'Warranty', 'Expiry', 'Status', 'Vendor']}
             rows={displayedWarranty.map((asset) => [
-              <div className="font-semibold text-slate-950">{asset.name}<div className="text-sm text-slate-500">{asset.assetId}</div></div>,
+              <div key={`${asset.id}-name`} className="font-semibold text-slate-950">{asset.name}<div className="text-sm text-slate-500">{asset.assetId}</div></div>,
               asset.category || '—',
               asset.warranty || '—',
               asset.warrantyEnd || '—',
-              <StatusBadge status={asset.warrantyStatus} />,
+              <StatusBadge key={`${asset.id}-status`} status={asset.warrantyStatus} />,
               asset.vendor || '—',
             ])}
           />
@@ -1520,7 +1518,7 @@ export default function InventoryPage() {
       )}
 
       {activeTab === 'insurance' && (
-        <section className="space-y-6 rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+        <section className="space-y-6 rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
           <SectionHeader
             title="Insurance Tracker"
             subtitle="Monitor insurance coverage and renewal status for insured assets."
@@ -1539,11 +1537,11 @@ export default function InventoryPage() {
           <DataTable
             columns={['Asset', 'Category', 'Insurance', 'Expiry', 'Status', 'Premium']}
             rows={displayedInsurance.map((asset) => [
-              <div className="font-semibold text-slate-950">{asset.name}<div className="text-sm text-slate-500">{asset.assetId}</div></div>,
+              <div key={`${asset.id}-name`} className="font-semibold text-slate-950">{asset.name}<div className="text-sm text-slate-500">{asset.assetId}</div></div>,
               asset.category || '—',
               asset.insuranceCompany || '—',
               asset.insuranceExpiryDate || '—',
-              <StatusBadge status={asset.insuranceStatus} />,
+              <StatusBadge key={`${asset.id}-status`} status={asset.insuranceStatus} />,
               `₹${Number(asset.insurancePremium || 0).toLocaleString()}`,
             ])}
           />
@@ -1552,7 +1550,7 @@ export default function InventoryPage() {
       )}
 
       {activeTab === 'reports' && (
-        <section className="space-y-6 rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+        <section className="space-y-6 rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
           <SectionHeader
             title="Reports & Export"
             subtitle="Generate asset, vendor, procurement, maintenance and department reports."

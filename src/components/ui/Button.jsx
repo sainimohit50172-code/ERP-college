@@ -1,7 +1,6 @@
-import React from 'react';
 
 export default function Button({ children, className = '', isLoading = false, disabled = false, onClick, type = 'button', variant = 'primary', ...props }) {
-  const base = 'btn';
+  const base = 'btn h-10';
   const variantClass = {
     primary: 'btn-primary',
     secondary: 'btn-secondary',

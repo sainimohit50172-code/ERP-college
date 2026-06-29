@@ -18,6 +18,9 @@ import NotFoundPage from './pages/NotFoundPage.jsx';
 import SettingsPage from './pages/SettingsPage.jsx';
 import StudentManagementPage from './pages/StudentManagementPage.jsx';
 import TeacherManagementPage from './pages/TeacherManagementPage.jsx';
+import CourseManagementPage from './pages/CourseManagementPage.jsx';
+import DepartmentManagementPage from './pages/DepartmentManagementPage.jsx';
+import SemesterManagementPage from './pages/SemesterManagementPage.jsx';
 import SectionManagementPage from './pages/SectionManagementPage.jsx';
 import SubjectAssignmentPage from './pages/SubjectAssignmentPage.jsx';
 import TeacherSubjectAssignmentPage from './pages/TeacherSubjectAssignmentPage.jsx';
@@ -86,6 +89,9 @@ function App() {
               <Route path="students" element={<ProtectedRoute moduleKey="students"><StudentManagementPage /></ProtectedRoute>} />
               <Route path="teachers" element={<ProtectedRoute moduleKey="teachers"><TeacherManagementPage /></ProtectedRoute>} />
               <Route path="employees" element={<ProtectedRoute moduleKey="employees"><EmployeeManagementPage /></ProtectedRoute>} />
+              <Route path="courses" element={<ProtectedRoute moduleKey="students"><CourseManagementPage /></ProtectedRoute>} />
+              <Route path="departments" element={<ProtectedRoute moduleKey="students"><DepartmentManagementPage /></ProtectedRoute>} />
+              <Route path="semesters" element={<ProtectedRoute moduleKey="students"><SemesterManagementPage /></ProtectedRoute>} />
               <Route path="sections" element={<SectionManagementPage />} />
               <Route path="subjects" element={<SubjectAssignmentPage />} />
               <Route path="subject-assignments" element={<ProtectedRoute moduleKey="teacherAssignments"><TeacherSubjectAssignmentPage /></ProtectedRoute>} />
@@ -116,6 +122,7 @@ function App() {
               <Route path="inventory" element={<ProtectedRoute moduleKey="inventory"><InventoryPage /></ProtectedRoute>} />
               <Route path="examination-dashboard" element={<ProtectedRoute moduleKey="reports"><ExaminationDashboardPage /></ProtectedRoute>} />
               <Route path="examination-reports" element={<ProtectedRoute moduleKey="reports"><ExaminationReportsPage /></ProtectedRoute>} />
+              <Route path="reports" element={<ProtectedRoute moduleKey="reports"><ExaminationReportsPage /></ProtectedRoute>} />
               <Route path="result-processing" element={<ResultProcessingPage />} />
               <Route path="grade-card" element={<ProtectedRoute moduleKey="gradeCards"><GradeCardPage /></ProtectedRoute>} />
               <Route path="transcript" element={<ProtectedRoute moduleKey="transcripts"><TranscriptPage /></ProtectedRoute>} />

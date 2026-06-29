@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { useResourceList, useCreateResource, useUpdateResource, useDeleteResource } from './useResourceHooks';
 
 export function useResource(resource, params = { page: 1, pageSize: 20, search: '', filter: '' }) {

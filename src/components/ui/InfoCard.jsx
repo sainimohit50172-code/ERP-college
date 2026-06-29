@@ -1,7 +1,7 @@
 export default function InfoCard({ title, value, description, icon, accent }) {
   const accentClasses = accent || 'bg-emerald-50 text-emerald-700';
   return (
-    <div className="rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-soft">
+    <div className="rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-sm uppercase tracking-[0.24em] text-slate-500">{title}</p>

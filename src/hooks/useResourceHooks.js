@@ -60,7 +60,7 @@ export function useBulkImport(resource) {
 }
 
 export function useBulkExport(resource) {
-  const qc = useQueryClient();
+  const _qc = useQueryClient();
   return useMutation({
     mutationFn: async (params = {}) => {
       const response = await uploadService.download(resource, params);

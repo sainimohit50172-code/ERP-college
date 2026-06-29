@@ -1,0 +1,7 @@
+dist/
+.out/
+node_modules/
+coverage/
+scripts/
+fix-unused-vars.js
+parse-lint-warnings.js

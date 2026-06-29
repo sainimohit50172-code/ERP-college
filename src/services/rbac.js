@@ -63,7 +63,7 @@ const fillActions = (actions) => MODULES.reduce((acc, module) => {
   return acc;
 }, {});
 
-const defaultAll = MODULES.reduce((acc, module) => {
+const _defaultAll = MODULES.reduce((acc, module) => {
   acc[module.key] = [...ACTIONS];
   return acc;
 }, {});

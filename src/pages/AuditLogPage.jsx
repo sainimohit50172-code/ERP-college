@@ -1,7 +1,4 @@
-import { usePermissions } from '../services/permissionHelpers.js';
-
 export default function AuditLogPage() {
-  const perms = usePermissions();
   return (
     <div className="rounded-3xl border border-slate-200/80 bg-white p-8 shadow-sm">
       <h1 className="text-2xl font-semibold text-slate-900">Audit Log</h1>

@@ -1,33 +1,25 @@
 import { useEffect, useMemo, useState } from 'react';
 import { FaDownload, FaSearch } from 'react-icons/fa';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
-import DataTable from '../components/ui/DataTable.jsx';
 import { useGradeCards } from '../hooks/useGradeCards';
-import { usePermissions } from '../services/permissionHelpers.js';
-
 export default function GradeCardPage() {
-  const perms = usePermissions();
   const [search, setSearch] = useState('');
   const [selectedCard, setSelectedCard] = useState(null);
-  const [page, setPage] = useState(1);
+  const [page, _setPage] = useState(1);
   const [isRecalculating, setIsRecalculating] = useState(false);
   const pageSize = 5;
   const { data, isLoading, error, recalculateGradeCard } = useGradeCards({ page, pageSize, search, filter: 'All' });
-
   const gradeCards = data?.items || [];
-
   useEffect(() => {
     if (!selectedCard && gradeCards.length > 0) {
       setSelectedCard(gradeCards[0]);
     }
   }, [gradeCards, selectedCard]);
-
   const filtered = useMemo(() => {
     const term = search.trim().toLowerCase();
     if (!term) return gradeCards;
     return gradeCards.filter((g) => [g.student, g.rollNo, g.subject, g.course].some((v) => (v || '').toLowerCase().includes(term)));
   }, [gradeCards, search]);
-
   const handleRecalculate = async () => {
     if (!selectedCard) return;
     try {
@@ -39,21 +31,17 @@ export default function GradeCardPage() {
       setIsRecalculating(false);
     }
   };
-
   if (isLoading) return <div>Loading...</div>;
   if (error) {
     console.error('Failed to load grade cards', error);
     return <div>Error loading grade cards</div>;
   }
-
   return (
     <div className="space-y-8">
       <SectionHeader title="Grade cards" subtitle="View student grade cards with subject-wise breakdown and GPA/CGPA." />
-
       <div className="grid gap-6 lg:grid-cols-3">
-        <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft lg:col-span-1">
+        <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm lg:col-span-1">
           <h3 className="text-lg font-semibold text-white mb-4">Select student</h3>
-
           <div className="relative mb-4">
             <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
             <input
@@ -64,7 +52,6 @@ export default function GradeCardPage() {
               className="w-full rounded-3xl border border-white/10 bg-slate-950/70 pl-10 pr-4 py-3 text-slate-100 outline-none focus:border-sky-400"
             />
           </div>
-
           <div className="space-y-2 max-h-96 overflow-y-auto">
             {filtered.map((card) => (
               <button
@@ -77,8 +64,7 @@ export default function GradeCardPage() {
             ))}
           </div>
         </div>
-
-        <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft lg:col-span-2">
+        <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm lg:col-span-2">
           {selectedCard ? (
             <>
               <div className="flex items-center justify-between mb-6">
@@ -95,7 +81,6 @@ export default function GradeCardPage() {
                   </button>
                 </div>
               </div>
-
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-white mb-4">Subject Marks</h3>
                 <div className="overflow-x-auto">
@@ -131,7 +116,6 @@ export default function GradeCardPage() {
                   </table>
                 </div>
               </div>
-
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="rounded-[28px] border border-white/10 bg-slate-950/50 p-4">
                   <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Semester GPA</p>
@@ -148,8 +132,7 @@ export default function GradeCardPage() {
           )}
         </div>
       </div>
-
-      <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
+      <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
         <h3 className="text-lg font-semibold text-white mb-4">Grading Scale</h3>
         <div className="grid gap-3 md:grid-cols-5">
           <div className="rounded-2xl bg-emerald-400/10 px-4 py-3 border border-emerald-400/20">

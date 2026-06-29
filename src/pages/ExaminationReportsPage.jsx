@@ -1,16 +1,12 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useResourceList } from '../hooks/useResourceHooks';
-import { usePermissions } from '../services/permissionHelpers.js';
-
 function ExaminationReportsPage() {
-  const perms = usePermissions();
   const { data: reportsData = {}, isLoading } = useResourceList('examinationReports', { page: 1, pageSize: 1000 });
   const { data: examinationsData = {} } = useResourceList('examinations', { page: 1, pageSize: 1000 });
   const { data: studentsData = {} } = useResourceList('students', { page: 1, pageSize: 1000 });
   const reports = reportsData.items || [];
   const examinations = examinationsData.items || [];
   const students = studentsData.items || [];
-
   const groupedReports = useMemo(() => {
     return reports.reduce((acc, report) => {
       const exam = examinations.find((e) => e.id === report.examId) || { name: report.examId };
@@ -20,7 +16,6 @@ function ExaminationReportsPage() {
       return acc;
     }, {});
   }, [reports, examinations]);
-
   return (
     <div className="p-6 space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -29,7 +24,6 @@ function ExaminationReportsPage() {
           <p className="text-sm text-slate-500">Review exam report entries, export summaries, and see report status across exam cycles.</p>
         </div>
       </div>
-
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <p className="text-sm text-slate-500">Total Report Entries</p>
@@ -44,7 +38,6 @@ function ExaminationReportsPage() {
           <p className="mt-3 text-3xl font-semibold text-rose-600">{reports.filter((report) => report.status === 'pending').length}</p>
         </div>
       </section>
-
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <h2 className="text-lg font-semibold">Exam Reports</h2>
         <div className="mt-4 overflow-x-auto">
@@ -89,5 +82,4 @@ function ExaminationReportsPage() {
     </div>
   );
 }
-
 export default ExaminationReportsPage;

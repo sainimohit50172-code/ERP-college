@@ -10,7 +10,7 @@ import {
   FaDownload,
   FaFileImport,
   FaPlus,
-  FaSearch,
+  _FaSearch,
 } from 'react-icons/fa';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
 import SearchFilter from '../components/forms/SearchFilter.jsx';
@@ -64,7 +64,7 @@ export default function FeeManagementPage() {
   const [page, setPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [importStatus, setImportStatus] = useState('');
-  const [isExporting, setIsExporting] = useState(false);
+  const [_isExporting, setIsExporting] = useState(false);
   const pageSize = 6;
 
   const perms = usePermissions();
@@ -97,7 +97,7 @@ export default function FeeManagementPage() {
     () => feePayments.reduce((sum, payment) => sum + (Number(payment.amount) || 0), 0),
     [feePayments],
   );
-  const pendingCount = useMemo(() => feePayments.filter((payment) => payment.status === 'Pending').length, [feePayments]);
+  const _pendingCount = useMemo(() => feePayments.filter((payment) => payment.status === 'Pending').length, [feePayments]);
   const paidCount = useMemo(() => feePayments.filter((payment) => payment.status === 'Paid').length, [feePayments]);
   const overdueAmount = useMemo(
     () => feePayments.reduce((sum, payment) => (payment.status === 'Pending' ? sum + (Number(payment.amount) || 0) : sum), 0),
@@ -121,7 +121,7 @@ export default function FeeManagementPage() {
     event.target.value = '';
   };
 
-  const HeaderActions = (
+  const _HeaderActions = (
     <div className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200">
       {perms.canExport('feePayments') && <button onClick={() => exportFeePayments.mutateAsync().catch(() => {})}><FaDownload /> Export</button>}
       {perms.canImport('feePayments') && <button onClick={() => importInputRef.current?.click()} className="ml-2"><FaFileImport /> Import</button>}
@@ -152,7 +152,7 @@ export default function FeeManagementPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <SectionHeader
         title="Fee management"
         subtitle="Manage fee collections, overdue balances, receipts and payment reconciliation."
@@ -185,18 +185,18 @@ export default function FeeManagementPage() {
 
       <input ref={importInputRef} type="file" accept=".csv" className="hidden" onChange={handleFileChange} />
 
-      <div className="grid gap-6 md:grid-cols-3">
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Total collection</p>
-          <p className="mt-4 text-3xl font-semibold text-white">${totalCollection.toLocaleString()}</p>
+      <div className="grid gap-3 md:grid-cols-3">
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Total collection</p>
+          <p className="mt-3 text-2xl font-semibold text-white">${totalCollection.toLocaleString()}</p>
         </div>
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Paid transactions</p>
-          <p className="mt-4 text-3xl font-semibold text-white">{paidCount}</p>
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Paid transactions</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{paidCount}</p>
         </div>
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Pending balance</p>
-          <p className="mt-4 text-3xl font-semibold text-white">${overdueAmount.toLocaleString()}</p>
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Pending balance</p>
+          <p className="mt-3 text-2xl font-semibold text-white">${overdueAmount.toLocaleString()}</p>
         </div>
       </div>
 
@@ -204,8 +204,8 @@ export default function FeeManagementPage() {
         <div className="rounded-[28px] border border-emerald-500/20 bg-emerald-500/5 p-4 text-sm text-emerald-200">{importStatus}</div>
       )}
 
-      <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
-        <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+      <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+        <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
           <div>
             <h2 className="text-xl font-semibold text-white">Fee ledger</h2>
             <p className="text-sm text-slate-400">Review receipts, reconcile pending dues, and keep fee records audit-ready.</p>
@@ -215,8 +215,9 @@ export default function FeeManagementPage() {
           </div>
         </div>
 
-        <div className="mt-6">
+        <div className="mt-4">
           <DataTable
+            compact
             columns={['Student', 'Amount', 'Date', 'Method', 'Status']}
             rows={displayedPayments.map((payment) => [
               <div key={payment.id} className="space-y-1">
@@ -230,7 +231,7 @@ export default function FeeManagementPage() {
             ])}
           />
         </div>
-        <div className="mt-6">
+        <div className="mt-4">
           <TablePagination page={page} pageCount={pageCount} onPageChange={setPage} />
         </div>
       </div>

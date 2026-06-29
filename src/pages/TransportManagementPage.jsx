@@ -10,26 +10,19 @@ import {
 } from '../hooks/useResourceHooks';
 import {
   FaBus,
-  FaCar,
   FaDownload,
   FaEdit,
   FaFileImport,
   FaPlus,
-  FaPrint,
-  FaRoute,
   FaTrash,
-  FaUserTie,
 } from 'react-icons/fa';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
 import SearchFilter from '../components/forms/SearchFilter.jsx';
 import DataTable from '../components/ui/DataTable.jsx';
-import StatusBadge from '../components/ui/StatusBadge.jsx';
 import TablePagination from '../components/tables/TablePagination.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import FormField from '../components/forms/FormField.jsx';
-import { usePermissions } from '../services/permissionHelpers.js';
 import WithPermission from '../components/auth/WithPermission.jsx';
-
 const transportStatusOptions = [
   { value: 'All', label: 'All statuses' },
   { value: 'Active', label: 'Active' },
@@ -38,7 +31,6 @@ const transportStatusOptions = [
   { value: 'UnderMaintenance', label: 'Under Maintenance' },
   { value: 'Due', label: 'Due' },
 ];
-
 const vehicleTypes = [
   { value: 'Bus', label: 'Bus' },
   { value: 'Van', label: 'Van' },
@@ -46,7 +38,6 @@ const vehicleTypes = [
   { value: 'Car', label: 'Car' },
   { value: 'Truck', label: 'Truck' },
 ];
-
 const defaultVehicle = {
   vehicleNumber: '',
   vehicleType: 'Bus',
@@ -63,8 +54,7 @@ const defaultVehicle = {
   insuranceUpload: '',
   status: 'Active',
 };
-
-const defaultDriver = {
+const _defaultDriver = {
   name: '',
   employeeId: '',
   licenseNumber: '',
@@ -77,8 +67,7 @@ const defaultDriver = {
   salary: '',
   status: 'Active',
 };
-
-const defaultRoute = {
+const _defaultRoute = {
   routeName: '',
   routeCode: '',
   source: '',
@@ -88,16 +77,14 @@ const defaultRoute = {
   estimatedTime: '',
   fare: '',
 };
-
-const defaultStop = {
+const _defaultStop = {
   stopName: '',
   landmark: '',
   latitude: '',
   longitude: '',
   arrivalTime: '',
 };
-
-const defaultStudentAssign = {
+const _defaultStudentAssign = {
   studentId: '',
   routeId: '',
   vehicleId: '',
@@ -105,15 +92,13 @@ const defaultStudentAssign = {
   pickupStopId: '',
   dropStopId: '',
 };
-
-const defaultEmployeeAssign = {
+const _defaultEmployeeAssign = {
   employeeId: '',
   vehicleId: '',
   pickupPointId: '',
   dropPointId: '',
 };
-
-const defaultVehicleAttendance = {
+const _defaultVehicleAttendance = {
   vehicleId: '',
   date: '',
   outTime: '',
@@ -124,8 +109,7 @@ const defaultVehicleAttendance = {
   kmEnd: '',
   fuelUsed: '',
 };
-
-const defaultFuelEntry = {
+const _defaultFuelEntry = {
   vehicleId: '',
   date: '',
   fuelCost: '',
@@ -133,8 +117,7 @@ const defaultFuelEntry = {
   quantity: '',
   station: '',
 };
-
-const defaultMaintenance = {
+const _defaultMaintenance = {
   vehicleId: '',
   serviceType: 'Engine Service',
   serviceDate: '',
@@ -142,7 +125,6 @@ const defaultMaintenance = {
   expense: '',
   notes: '',
 };
-
 function downloadBlob(blob, filename) {
   const url = window.URL.createObjectURL(blob);
   const link = document.createElement('a');
@@ -153,10 +135,8 @@ function downloadBlob(blob, filename) {
   document.body.removeChild(link);
   window.URL.revokeObjectURL(url);
 }
-
 export default function TransportManagementPage() {
   const importInputRef = useRef(null);
-
   const { data: vehiclesData } = useResourceList('transportVehicles', { page: 1, pageSize: 200 });
   const { data: driversData } = useResourceList('transportDrivers', { page: 1, pageSize: 200 });
   const { data: conductorsData } = useResourceList('transportConductors', { page: 1, pageSize: 200 });
@@ -169,85 +149,70 @@ export default function TransportManagementPage() {
   const { data: attendanceData } = useResourceList('vehicleAttendance', { page: 1, pageSize: 200 });
   const { data: fuelEntriesData } = useResourceList('fuelEntries', { page: 1, pageSize: 200 });
   const { data: maintenanceData } = useResourceList('maintenanceRecords', { page: 1, pageSize: 200 });
-
   const vehicles = vehiclesData?.items || [];
   const drivers = driversData?.items || [];
   const conductors = conductorsData?.items || [];
   const routes = routesData?.items || [];
   const stops = stopsData?.items || [];
-  const students = studentsData?.items || [];
-  const employees = employeesData?.items || [];
+  const _students = studentsData?.items || [];
+  const _employees = employeesData?.items || [];
   const studentAssignments = studentAssignmentsData?.items || [];
   const employeeAssignments = employeeAssignmentsData?.items || [];
   const attendanceRecords = attendanceData?.items || [];
   const fuelEntries = fuelEntriesData?.items || [];
   const maintenanceRecords = maintenanceData?.items || [];
-
   const createVehicle = useCreateResource('transportVehicles');
   const updateVehicle = useUpdateResource('transportVehicles');
   const deleteVehicle = useDeleteResource('transportVehicles');
   const importVehicles = useBulkImport('transportVehicles');
   const exportVehicles = useBulkExport('transportVehicles');
-
-  const createDriver = useCreateResource('transportDrivers');
-  const updateDriver = useUpdateResource('transportDrivers');
-  const deleteDriver = useDeleteResource('transportDrivers');
-  const importDrivers = useBulkImport('transportDrivers');
-  const exportDrivers = useBulkExport('transportDrivers');
-
-  const createRoute = useCreateResource('transportRoutes');
-  const updateRoute = useUpdateResource('transportRoutes');
-  const deleteRoute = useDeleteResource('transportRoutes');
-  const importRoutes = useBulkImport('transportRoutes');
-  const exportRoutes = useBulkExport('transportRoutes');
-
-  const createStop = useCreateResource('transportStops');
-  const updateStop = useUpdateResource('transportStops');
-  const deleteStop = useDeleteResource('transportStops');
-  const importStops = useBulkImport('transportStops');
-  const exportStops = useBulkExport('transportStops');
-
-  const createStudentAssignment = useCreateResource('studentTransportAssignments');
-  const importStudentAssignments = useBulkImport('studentTransportAssignments');
-  const exportStudentAssignments = useBulkExport('studentTransportAssignments');
-
-  const createEmployeeAssignment = useCreateResource('employeeTransportAssignments');
-  const importEmployeeAssignments = useBulkImport('employeeTransportAssignments');
-  const exportEmployeeAssignments = useBulkExport('employeeTransportAssignments');
-
-  const createAttendance = useCreateResource('vehicleAttendance');
-  const importAttendance = useBulkImport('vehicleAttendance');
-  const exportAttendance = useBulkExport('vehicleAttendance');
-
-  const createFuelEntry = useCreateResource('fuelEntries');
-  const importFuelEntries = useBulkImport('fuelEntries');
-  const exportFuelEntries = useBulkExport('fuelEntries');
-
-  const createMaintenance = useCreateResource('maintenanceRecords');
-  const importMaintenance = useBulkImport('maintenanceRecords');
-  const exportMaintenance = useBulkExport('maintenanceRecords');
-
+  const _createDriver = useCreateResource('transportDrivers');
+  const _updateDriver = useUpdateResource('transportDrivers');
+  const _deleteDriver = useDeleteResource('transportDrivers');
+  const _importDrivers = useBulkImport('transportDrivers');
+  const _exportDrivers = useBulkExport('transportDrivers');
+  const _createRoute = useCreateResource('transportRoutes');
+  const _updateRoute = useUpdateResource('transportRoutes');
+  const _deleteRoute = useDeleteResource('transportRoutes');
+  const _importRoutes = useBulkImport('transportRoutes');
+  const _exportRoutes = useBulkExport('transportRoutes');
+  const _createStop = useCreateResource('transportStops');
+  const _updateStop = useUpdateResource('transportStops');
+  const _deleteStop = useDeleteResource('transportStops');
+  const _importStops = useBulkImport('transportStops');
+  const _exportStops = useBulkExport('transportStops');
+  const _createStudentAssignment = useCreateResource('studentTransportAssignments');
+  const _importStudentAssignments = useBulkImport('studentTransportAssignments');
+  const _exportStudentAssignments = useBulkExport('studentTransportAssignments');
+  const _createEmployeeAssignment = useCreateResource('employeeTransportAssignments');
+  const _importEmployeeAssignments = useBulkImport('employeeTransportAssignments');
+  const _exportEmployeeAssignments = useBulkExport('employeeTransportAssignments');
+  const _createAttendance = useCreateResource('vehicleAttendance');
+  const _importAttendance = useBulkImport('vehicleAttendance');
+  const _exportAttendance = useBulkExport('vehicleAttendance');
+  const _createFuelEntry = useCreateResource('fuelEntries');
+  const _importFuelEntries = useBulkImport('fuelEntries');
+  const _exportFuelEntries = useBulkExport('fuelEntries');
+  const _createMaintenance = useCreateResource('maintenanceRecords');
+  const _importMaintenance = useBulkImport('maintenanceRecords');
+  const _exportMaintenance = useBulkExport('maintenanceRecords');
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('All');
   const [page, setPage] = useState(1);
-  const [activeTab, setActiveTab] = useState('vehicles');
+  const [_activeTab, _setActiveTab] = useState('vehicles');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [importStatus, setImportStatus] = useState('');
-  const [isExporting, setIsExporting] = useState(false);
-  const [isPrinting, setIsPrinting] = useState(false);
-
+  const [_importStatus, setImportStatus] = useState('');
+  const [_isExporting, setIsExporting] = useState(false);
+  const [_isPrinting, _setIsPrinting] = useState(false);
   const pageSize = 6;
-  const perms = usePermissions();
-
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors, _isSubmitting },
   } = useForm({ defaultValues: defaultVehicle });
-
   const handleImport = (resourceImport, file, successLabel) => {
     if (!file) return;
     setImportStatus(`Importing ${successLabel}…`);
@@ -258,13 +223,11 @@ export default function TransportManagementPage() {
       onError: () => setImportStatus(`Import failed. Please check the CSV format and try again.`),
     });
   };
-
   const handleFileChange = (event, resourceImport, successLabel) => {
     const file = event.target.files?.[0];
     handleImport(resourceImport, file, successLabel);
     event.target.value = '';
   };
-
   const handleExport = async (resourceExport, filename) => {
     setIsExporting(true);
     try {
@@ -276,7 +239,6 @@ export default function TransportManagementPage() {
       setIsExporting(false);
     }
   };
-
   const vehicleCount = vehicles.length;
   const activeVehicleCount = vehicles.filter((vehicle) => vehicle.status === 'Active').length;
   const driverCount = drivers.length;
@@ -289,7 +251,6 @@ export default function TransportManagementPage() {
   const maintenanceDue = maintenanceRecords.filter((record) => record.dueDate && new Date(record.dueDate) <= new Date()).length;
   const insuranceExpiry = vehicles.filter((vehicle) => vehicle.insuranceExpiry && new Date(vehicle.insuranceExpiry) <= new Date()).length;
   const todayTrips = attendanceRecords.filter((record) => record.date === new Date().toISOString().slice(0, 10)).length;
-
   const filteredVehicles = useMemo(() => {
     return vehicles.filter((vehicle) => {
       const searchTerm = search.toLowerCase();
@@ -300,10 +261,8 @@ export default function TransportManagementPage() {
       return matchesSearch && matchesFilter;
     });
   }, [vehicles, search, filter]);
-
   const pageCount = Math.max(1, Math.ceil(filteredVehicles.length / pageSize));
   const displayedVehicles = filteredVehicles.slice((page - 1) * pageSize, page * pageSize);
-
   const vehicleRows = displayedVehicles.map((vehicle) => [
     vehicle.vehicleNumber,
     vehicle.vehicleType,
@@ -311,7 +270,7 @@ export default function TransportManagementPage() {
     vehicle.capacity,
     vehicle.gpsId,
     vehicle.status,
-    <div className="flex items-center gap-2">
+    <div key={`${vehicle.id}-actions`} className="flex items-center gap-2">
       <WithPermission moduleKey="transport" action="edit">
         <button onClick={() => { setSelectedRecord(vehicle); setIsEditMode(true); setIsModalOpen(true); reset({ ...vehicle }); }} className="rounded-full border border-white/10 bg-slate-800 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700"><FaEdit /></button>
       </WithPermission>
@@ -320,11 +279,9 @@ export default function TransportManagementPage() {
       </WithPermission>
     </div>,
   ]);
-
   return (
     <div className="space-y-8">
       <SectionHeader title="Transport management" subtitle="Manage transport operations including vehicles, drivers, routes, fuel, maintenance, and assignments." />
-
       <div className="grid gap-6 xl:grid-cols-[1.5fr_0.9fr]">
         <div className="grid gap-4">
           <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-4">
@@ -358,12 +315,11 @@ export default function TransportManagementPage() {
               <p className="mt-4 text-3xl font-semibold text-white">{insuranceExpiry}</p>
             </div>
             <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-              <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Today's trips</p>
+              <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Today&apos;s trips</p>
               <p className="mt-4 text-3xl font-semibold text-white">{todayTrips}</p>
             </div>
           </div>
-
-          <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
+          <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
             <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
               <div>
                 <h2 className="text-xl font-semibold text-white">Vehicle management</h2>
@@ -395,8 +351,7 @@ export default function TransportManagementPage() {
             </div>
           </div>
         </div>
-
-        <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
+        <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
           <div className="mb-5 flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-sky-400/10 text-sky-300">
               <FaBus className="h-5 w-5" />
@@ -422,7 +377,6 @@ export default function TransportManagementPage() {
           </div>
         </div>
       </div>
-
       <Modal
         title={isEditMode ? 'Edit vehicle' : 'Add vehicle'}
         isOpen={isModalOpen}
@@ -501,7 +455,6 @@ export default function TransportManagementPage() {
           </FormField>
         </form>
       </Modal>
-
       <input ref={importInputRef} type="file" accept=".csv" className="hidden" onChange={(event) => handleFileChange(event, importVehicles, 'vehicles')} />
     </div>
   );

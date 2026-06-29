@@ -14,17 +14,29 @@
 }
 
 html, body, #root {
+  width: 100%;
   min-height: 100%;
+  overflow-x: hidden;
 }
 
 body {
   background: linear-gradient(135deg, #E6F7FF 0%, #DFFFEF 35%, #E7FFF2 65%, #FFFFFF 100%);
   color: var(--body-color);
   background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  overflow-x: hidden;
 }
 
 * {
   box-sizing: border-box;
+}
+
+main, section, article, aside, form, div, nav, header {
+  min-width: 0;
 }
 
 ::selection {
@@ -36,7 +48,7 @@ button, input, textarea, select {
 }
 
 /* Button system */
-.btn { @apply inline-flex items-center justify-center gap-2 rounded-3xl px-4 py-2 text-sm font-medium transition-transform; }
+.btn { @apply inline-flex items-center justify-center gap-2 rounded-2xl px-3 py-2 text-sm font-medium transition-transform; }
 .btn:focus { outline: 2px solid rgba(16,185,129,0.12); outline-offset: 2px; }
 .btn-primary { background-color: var(--brand-500); color: white; box-shadow: 0 8px 24px rgba(16,185,129,0.12); }
 .btn-primary:hover { transform: scale(1.04); }
@@ -59,6 +71,17 @@ button, input, textarea, select {
 /* DataTable header sticky */
 .data-table { overflow: hidden; border-radius: 1rem; }
 .data-table-header { position: sticky; top: 0; z-index: 10; }
+.overflow-x-auto { overflow-x: hidden !important; }
+
+/* Soft premium card system */
+.soft-surface { @apply border border-slate-200/70 bg-white/90 shadow-sm; }
+.soft-emerald-card { background: linear-gradient(135deg, #F5FFF9 0%, #E8FFF3 100%); }
+.soft-blue-card { background: linear-gradient(135deg, #F7FBFF 0%, #EDF5FF 100%); }
+.soft-orange-card { background: linear-gradient(135deg, #FFF9ED 0%, #FFF2DC 100%); }
+.soft-purple-card { background: linear-gradient(135deg, #F8F4FF 0%, #EFE8FF 100%); }
+.soft-pink-card { background: linear-gradient(135deg, #FFF6FA 0%, #FFEFF6 100%); }
+.soft-teal-card { background: linear-gradient(135deg, #F1FFFC 0%, #E6FFF9 100%); }
+.soft-green-card { background: linear-gradient(135deg, #F3FFF8 0%, #EAFBF0 100%); }
 
 /* Accessibility helpers */
 .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
@@ -85,8 +108,9 @@ input, textarea, select {
   background-color: #ffffff !important;
   color: var(--heading-color) !important;
   border: 1px solid rgba(15,23,42,0.08) !important;
-  padding: 0.5rem 0.75rem !important;
-  border-radius: 0.5rem !important;
+  padding: 0.625rem 0.75rem !important;
+  border-radius: 0.625rem !important;
+  min-height: 2.75rem;
 }
 
 ::placeholder { color: var(--secondary-color); }

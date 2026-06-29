@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { FaClock, FaDownload, FaPlus } from 'react-icons/fa';
+import { FaDownload, FaPlus } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import { useResourceList, useCreateResource } from '../hooks/useResourceHooks';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
@@ -10,19 +10,16 @@ import Modal from '../components/ui/Modal.jsx';
 import FormField from '../components/forms/FormField.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
 // replaced useERP with resource hooks
-
 const statusOptions = [
   { value: 'All', label: 'All statuses' },
   { value: 'Scheduled', label: 'Scheduled' },
   { value: 'Completed', label: 'Completed' },
   { value: 'Cancelled', label: 'Cancelled' },
 ];
-
 export default function LectureSchedulingPage() {
   const { data: schedulesData } = useResourceList('lectureSchedules', { page: 1, pageSize: 200 });
   const lectureSchedules = schedulesData?.items || [];
   const createLectureSchedule = useCreateResource('lectureSchedules');
-
   const { data: coursesData } = useResourceList('courses', { page: 1, pageSize: 200 });
   const courses = coursesData?.items || [];
   const { data: sectionsData } = useResourceList('sections', { page: 1, pageSize: 200 });
@@ -31,7 +28,6 @@ export default function LectureSchedulingPage() {
   const teachers = teachersData?.items || [];
   const { data: subjectsData } = useResourceList('subjects', { page: 1, pageSize: 200 });
   const subjects = subjectsData?.items || [];
-
   const subjectMap = new Map((subjects || []).map((s) => [s.id, s]));
   const teacherMap = new Map((teachers || []).map((t) => [t.id, t]));
   const courseMap = new Map((courses || []).map((c) => [c.id, c]));
@@ -41,11 +37,9 @@ export default function LectureSchedulingPage() {
   const [page, setPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const pageSize = 5;
-
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: { subject: '', teacher: '', course: 'BCA', section: 'A', date: '', time: '', room: '', type: 'Theory', status: 'Scheduled' },
   });
-
   const filteredLectures = useMemo(() => {
     return lectureSchedules.filter((lecture) => {
       const searchTerm = search.toLowerCase();
@@ -58,55 +52,47 @@ export default function LectureSchedulingPage() {
       return matchesSearch && matchesFilter;
     });
   }, [lectureSchedules, search, filter, subjectMap, teacherMap, courseMap]);
-
   const pageCount = Math.max(1, Math.ceil(filteredLectures.length / pageSize));
   const displayedLectures = filteredLectures.slice((page - 1) * pageSize, page * pageSize);
-
   const onSubmit = (data) => {
     createLectureSchedule(data);
     reset({ subject: '', teacher: '', course: courses[0]?.code || '', section: sections[0]?.name || '', date: '', time: '', room: '', type: 'Theory', status: 'Scheduled' });
     setPage(1);
     setIsModalOpen(false);
   };
-
   const totalLectures = lectureSchedules.length;
   const theoryLectures = lectureSchedules.filter((l) => l.type === 'Theory').length;
   const practicalLectures = lectureSchedules.filter((l) => l.type === 'Practical').length;
-
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <SectionHeader title="Lecture scheduling" subtitle="Schedule individual lectures, assign instructors and manage classroom resources." />
-
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Total lectures</p>
-          <p className="mt-4 text-3xl font-semibold text-white">{totalLectures}</p>
+      <div className="grid gap-3 md:grid-cols-3">
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Total lectures</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{totalLectures}</p>
         </div>
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Theory lectures</p>
-          <p className="mt-4 text-3xl font-semibold text-white">{theoryLectures}</p>
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Theory lectures</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{theoryLectures}</p>
         </div>
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Practical sessions</p>
-          <p className="mt-4 text-3xl font-semibold text-white">{practicalLectures}</p>
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Practical sessions</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{practicalLectures}</p>
         </div>
       </div>
-
-      <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
-        <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+      <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+        <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-white">Lecture schedule</h2>
+            <h2 className="text-lg font-semibold text-white">Lecture schedule</h2>
             <p className="text-sm text-slate-400">Search lectures, manage schedules and track attendance across sections.</p>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <button className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700"><FaDownload /> Export</button>
-            <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"><FaPlus /> Add lecture</button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button className="inline-flex items-center gap-2 rounded-2xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 transition hover:bg-slate-700"><FaDownload /> Export</button>
+            <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 rounded-2xl bg-sky-400 px-3 py-2 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"><FaPlus /> Add lecture</button>
           </div>
         </div>
-
-        <div className="mt-6 grid gap-4 md:grid-cols-2"><SearchFilter search={search} onSearch={setSearch} filter={filter} onFilter={setFilter} options={statusOptions} /></div>
-
-        <div className="mt-6">
+        <div className="mt-4 grid gap-3 md:grid-cols-2"><SearchFilter search={search} onSearch={setSearch} filter={filter} onFilter={setFilter} options={statusOptions} /></div>
+        <div className="mt-4">
           <DataTable
             columns={['Subject', 'Teacher', 'Course', 'Section', 'Day', 'Time', 'Room', 'Type', 'Status']}
             rows={displayedLectures.map((lecture) => {
@@ -128,9 +114,8 @@ export default function LectureSchedulingPage() {
             })}
           />
         </div>
-        <div className="mt-6"><TablePagination page={page} pageCount={pageCount} onPageChange={setPage} /></div>
+        <div className="mt-4"><TablePagination page={page} pageCount={pageCount} onPageChange={setPage} /></div>
       </div>
-
       <Modal title="Schedule new lecture" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<button onClick={handleSubmit(onSubmit)} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">Schedule lecture</button>}>
         <form className="grid gap-5 lg:grid-cols-2">
           <FormField label="Subject"><select {...register('subject', { required: 'Subject is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">

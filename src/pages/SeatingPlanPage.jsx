@@ -1,6 +1,5 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useResourceList, useCreateResource } from '../hooks/useResourceHooks';
-
 function SeatingPlanPage() {
   const { data: seatingPlansData = {}, isLoading, refetch } = useResourceList('seatingPlans', { page: 1, pageSize: 1000 });
   const { data: classroomsData = {} } = useResourceList('classrooms', { page: 1, pageSize: 1000 });
@@ -11,16 +10,13 @@ function SeatingPlanPage() {
   const createSeatingPlan = useCreateResource('seatingPlans');
   const [selectedExam, setSelectedExam] = useState('');
   const [selectedRoom, setSelectedRoom] = useState('');
-
   const roomOptions = useMemo(() => classrooms.map((room) => ({ value: room.id, label: room.name || room.code || `Room ${room.id}` })), [classrooms]);
   const examOptions = useMemo(() => examinations.map((exam) => ({ value: exam.id, label: exam.name || exam.title || `Exam ${exam.id}` })), [examinations]);
-
   const filteredPlans = useMemo(() => seatingPlans.filter((plan) => {
     if (selectedExam && plan.examId !== selectedExam) return false;
     if (selectedRoom && plan.roomId !== selectedRoom) return false;
     return true;
   }), [seatingPlans, selectedExam, selectedRoom]);
-
   const addPlan = async (event) => {
     event.preventDefault();
     const form = event.target;
@@ -28,12 +24,10 @@ function SeatingPlanPage() {
     const roomId = form.roomId.value;
     const benches = Number(form.benches.value);
     const seatsPerBench = Number(form.seatsPerBench.value);
-
     if (!examId || !roomId || benches < 1 || seatsPerBench < 1) {
       alert('Please select exam, room, and valid seating dimensions.');
       return;
     }
-
     const seatAssignments = Array.from({ length: benches }, (_, benchIndex) => ({
       bench: benchIndex + 1,
       seats: Array.from({ length: seatsPerBench }, (_, seatIndex) => ({
@@ -41,12 +35,10 @@ function SeatingPlanPage() {
         studentId: null,
       })),
     }));
-
     await createSeatingPlan.mutateAsync({ examId, roomId, benches, seatsPerBench, seatAssignments });
     refetch();
     form.reset();
   };
-
   return (
     <div className="p-6 space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -55,7 +47,6 @@ function SeatingPlanPage() {
           <p className="text-sm text-slate-500">Build exam seating layouts, manage room allocation, and export printable arrangements.</p>
         </div>
       </div>
-
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <h2 className="text-lg font-semibold">Create Seating Plan</h2>
         <form onSubmit={addPlan} className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -68,7 +59,6 @@ function SeatingPlanPage() {
               ))}
             </select>
           </label>
-
           <label className="block">
             <span className="text-sm text-slate-600">Room</span>
             <select name="roomId" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none">
@@ -78,23 +68,19 @@ function SeatingPlanPage() {
               ))}
             </select>
           </label>
-
           <label className="block">
             <span className="text-sm text-slate-600">Benches</span>
             <input name="benches" type="number" min="1" defaultValue="5" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none" />
           </label>
-
           <label className="block">
             <span className="text-sm text-slate-600">Seats per Bench</span>
             <input name="seatsPerBench" type="number" min="1" defaultValue="4" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none" />
           </label>
-
           <button type="submit" className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white hover:bg-blue-700 sm:col-span-2">
             Save Seating Plan
           </button>
         </form>
       </section>
-
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <h2 className="text-lg font-semibold">Saved Seating Plans</h2>
@@ -113,7 +99,6 @@ function SeatingPlanPage() {
             </select>
           </div>
         </div>
-
         <div className="mt-4 overflow-x-auto">
           <table className="min-w-full divide-y divide-slate-200 text-sm">
             <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
@@ -156,5 +141,4 @@ function SeatingPlanPage() {
     </div>
   );
 }
-
 export default SeatingPlanPage;

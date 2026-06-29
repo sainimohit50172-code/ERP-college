@@ -97,8 +97,8 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="block md:fixed md:left-0 md:top-0 md:z-50 md:h-full md:w-80 md:border-r md:border-slate-200/10 md:bg-[#05331e] md:px-4 md:py-6 md:shadow-[0_35px_80px_rgba(7,43,22,0.18)] md:backdrop-blur-xl">
-          <div className="mb-12 flex items-center gap-3 px-2">
+      <aside className="hidden md:fixed md:left-0 md:top-0 md:z-50 md:flex md:h-full md:w-80 md:flex-col md:overflow-y-auto md:border-r md:border-slate-200/10 md:bg-[#05331e] md:px-4 md:py-6 md:shadow-[0_35px_80px_rgba(7,43,22,0.18)] md:backdrop-blur-xl">
+        <div className="mb-8 flex items-center gap-3 px-2">
           <div className="flex h-10 w-10 items-center justify-center rounded-3xl bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-400/20">
             <ShieldCheck className="h-5 w-5" />
           </div>

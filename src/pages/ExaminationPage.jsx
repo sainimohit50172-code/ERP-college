@@ -11,11 +11,8 @@ import FormField from '../components/forms/FormField.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
 import { useExaminations } from '../hooks/useExaminations';
 import { useResourceList } from '../hooks/useResourceHooks';
-import { usePermissions } from '../services/permissionHelpers.js';
 import { useERP } from '../services/ERPContext.jsx';
-
 // sample data removed — using API
-
 const statusOptions = [
   { value: 'All', label: 'All statuses' },
   { value: 'Scheduled', label: 'Scheduled' },
@@ -23,7 +20,6 @@ const statusOptions = [
   { value: 'Completed', label: 'Completed' },
   { value: 'Results Published', label: 'Results Published' },
 ];
-
 const examTypeOptions = [
   { value: 'All', label: 'All exam types' },
   { value: 'Midterm', label: 'Midterm' },
@@ -31,9 +27,7 @@ const examTypeOptions = [
   { value: 'Reassessment', label: 'Reassessment' },
   { value: 'Practical', label: 'Practical' },
 ];
-
 export default function ExaminationPage() {
-  const perms = usePermissions();
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('All');
   const [examType, setExamType] = useState('All');
@@ -46,12 +40,10 @@ export default function ExaminationPage() {
   const [isGeneratingHallTickets, setIsGeneratingHallTickets] = useState(false);
   const pageSize = 5;
   const { students = [], setNotifications } = useERP();
-  const { data, isLoading, error, createExamination, publishExaminationResults, generateHallTickets } = useExaminations({ page, pageSize, search, filter, examType: examType === 'All' ? '' : examType });
+  const { data, _isLoading, _error, createExamination, publishExaminationResults, generateHallTickets } = useExaminations({ page, pageSize, search, filter, examType: examType === 'All' ? '' : examType });
   const { data: studentAttendanceData } = useResourceList('studentAttendance', { page: 1, pageSize: 1000 });
   const attendanceRecords = studentAttendanceData?.items || [];
-
   const [studentFilter, setStudentFilter] = useState('All');
-
   const studentEligibility = useMemo(() => {
     return students.map((student) => {
       const attendance = attendanceRecords.filter((record) => record.studentId === student.id);
@@ -64,12 +56,10 @@ export default function ExaminationPage() {
       const feeOk = feeStatus === 'Paid';
       const isEligible = isActive && attendanceOk && feeOk;
       const reasons = [];
-
       if (!isActive) reasons.push('Inactive registration');
       if (!feeOk) reasons.push(`Fee ${feeStatus}`);
       if (!totalAttendance) reasons.push('No attendance record');
       else if (!attendanceOk) reasons.push(`Attendance ${attendancePercent}%`);
-
       return {
         ...student,
         attendancePercent,
@@ -80,18 +70,14 @@ export default function ExaminationPage() {
       };
     });
   }, [students, attendanceRecords]);
-
   const activeStudents = useMemo(() => studentEligibility.filter((student) => student.status === 'Active'), [studentEligibility]);
   const eligibleStudents = useMemo(() => activeStudents.filter((student) => student.isEligible), [activeStudents]);
-  const ineligibleStudents = useMemo(() => activeStudents.filter((student) => !student.isEligible), [activeStudents]);
+  const _ineligibleStudents = useMemo(() => activeStudents.filter((student) => !student.isEligible), [activeStudents]);
   const filteredHallTicketStudents = useMemo(() => activeStudents.filter((student) => studentFilter === 'All' || student.eligibilityLabel === studentFilter), [activeStudents, studentFilter]);
-
   const exams = data?.items || [];
-
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: { examName: '', subject: '', course: '', semester: '', examDate: '', totalMarks: '100', duration: '3 hrs', examCenter: '', invigilators: '2', status: 'Scheduled' },
   });
-
   const filteredExams = useMemo(() => {
     return exams.filter((exam) => {
       const searchTerm = search.toLowerCase();
@@ -100,10 +86,8 @@ export default function ExaminationPage() {
       return matchesSearch && matchesFilter;
     });
   }, [exams, search, filter]);
-
   const pageCount = Math.max(1, Math.ceil(filteredExams.length / pageSize));
   const displayedExams = filteredExams.slice((page - 1) * pageSize, page * pageSize);
-
   const onPublishExam = async (examId) => {
     try {
       setIsPublishing(true);
@@ -116,7 +100,6 @@ export default function ExaminationPage() {
       setIsPublishing(false);
     }
   };
-
   const onGenerateHallTickets = (exam) => {
     const defaultStudentIds = eligibleStudents.length ? eligibleStudents.map((student) => student.id) : activeStudents.map((student) => student.id);
     setSelectedExam(exam);
@@ -124,19 +107,15 @@ export default function ExaminationPage() {
     setStudentFilter(eligibleStudents.length ? 'Eligible' : 'All');
     setIsHallTicketOpen(true);
   };
-
   const toggleStudentSelection = (studentId) => {
     setSelectedStudentIds((prev) => (prev.includes(studentId) ? prev.filter((id) => id !== studentId) : [...prev, studentId]));
   };
-
   const selectVisibleStudents = () => {
     setSelectedStudentIds(filteredHallTicketStudents.map((student) => student.id));
   };
-
   const clearSelectedStudents = () => {
     setSelectedStudentIds([]);
   };
-
   const confirmHallTickets = async () => {
     if (!selectedExam) return;
     try {
@@ -152,7 +131,6 @@ export default function ExaminationPage() {
       setIsGeneratingHallTickets(false);
     }
   };
-
   const onSubmit = async (payload) => {
     try {
       await createExamination.mutateAsync(payload);
@@ -164,43 +142,38 @@ export default function ExaminationPage() {
       console.error('Failed to create examination', err);
     }
   };
-
   const totalExams = exams.length;
   const scheduled = exams.filter((e) => e.status === 'Scheduled').length;
   const completed = exams.filter((e) => e.status === 'Completed' || e.status === 'Results Published').length;
-
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <SectionHeader title="Examinations" subtitle="Create and manage exams, schedule exam centers, and assign invigilators." />
-
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Total exams</p>
-          <p className="mt-4 text-3xl font-semibold text-white">{totalExams}</p>
+      <div className="grid gap-3 md:grid-cols-3">
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Total exams</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{totalExams}</p>
         </div>
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Scheduled</p>
-          <p className="mt-4 text-3xl font-semibold text-white">{scheduled}</p>
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Scheduled</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{scheduled}</p>
         </div>
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Completed</p>
-          <p className="mt-4 text-3xl font-semibold text-white">{completed}</p>
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Completed</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{completed}</p>
         </div>
       </div>
-
-      <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
+      <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
           <div>
             <h2 className="text-xl font-semibold text-white">Examination management</h2>
             <p className="text-sm text-slate-400">Schedule exams, set exam centers, manage invigilators and track exam progress.</p>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <button className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700"><FaDownload /> Export</button>
-            <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"><FaPlus /> New exam</button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button className="inline-flex items-center gap-2 rounded-2xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 transition hover:bg-slate-700"><FaDownload /> Export</button>
+            <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 rounded-2xl bg-sky-400 px-3 py-2 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"><FaPlus /> New exam</button>
           </div>
         </div>
-
-        <div className="mt-6 grid gap-4 md:grid-cols-[1.6fr_1fr] xl:grid-cols-[2fr_1fr]">
+        <div className="mt-4 grid gap-3 md:grid-cols-[1.6fr_1fr] xl:grid-cols-[2fr_1fr]">
           <SearchFilter search={search} onSearch={setSearch} filter={filter} onFilter={setFilter} options={statusOptions} />
           <div className="rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 shadow-sm">
             <label className="mb-2 block text-xs uppercase tracking-[0.2em] text-slate-400">Exam type</label>
@@ -211,8 +184,7 @@ export default function ExaminationPage() {
             </select>
           </div>
         </div>
-
-        <div className="mt-6">
+        <div className="mt-4">
           <DataTable
             columns={['Exam Name', 'Type', 'Subject', 'Course', 'Date', 'Center', 'Invigil', 'Status', 'Actions']}
             rows={displayedExams.map((exam) => [
@@ -239,9 +211,8 @@ export default function ExaminationPage() {
             ])}
           />
         </div>
-        <div className="mt-6"><TablePagination page={page} pageCount={pageCount} onPageChange={setPage} /></div>
+        <div className="mt-4"><TablePagination page={page} pageCount={pageCount} onPageChange={setPage} /></div>
       </div>
-
       <Modal title="Create new examination" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<Button onClick={handleSubmit(onSubmit)} variant="primary">Create exam</Button>}>
         <form className="grid gap-5 lg:grid-cols-2">
           <FormField label="Exam name"><input type="text" {...register('examName', { required: 'Exam name is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Mid-Semester 2025 S5" />{errors.examName && <p className="mt-1 text-sm text-rose-400">{errors.examName.message}</p>}</FormField>
@@ -258,7 +229,6 @@ export default function ExaminationPage() {
           <FormField label="Status"><select {...register('status')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"><option value="Scheduled">Scheduled</option><option value="Ongoing">Ongoing</option><option value="Completed">Completed</option><option value="Results Published">Results Published</option></select></FormField>
         </form>
       </Modal>
-
       <Modal
         title="Generate hall tickets"
         isOpen={isHallTicketOpen}
@@ -278,7 +248,6 @@ export default function ExaminationPage() {
                 <p className="mt-2 text-white font-semibold">{selectedExam.examName}</p>
                 <p className="text-slate-400">{selectedExam.subject} • {selectedExam.course} • {selectedExam.examDate}</p>
               </div>
-
               <div className="grid gap-4 md:grid-cols-3">
                 <div className="rounded-3xl border border-white/10 bg-slate-950/80 p-5">
                   <p className="text-sm text-slate-400">Total active students</p>
@@ -293,7 +262,6 @@ export default function ExaminationPage() {
                   <p className="mt-2 text-white font-semibold">{selectedStudentIds.length}</p>
                 </div>
               </div>
-
               <div className="rounded-3xl border border-white/10 bg-slate-950/80 p-5">
                 <div className="flex flex-wrap items-center gap-2">
                   {['All', 'Eligible', 'Not eligible'].map((option) => (
@@ -311,7 +279,6 @@ export default function ExaminationPage() {
                   <button type="button" onClick={selectVisibleStudents} className="rounded-3xl bg-emerald-400 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-emerald-300">Select visible</button>
                   <button type="button" onClick={clearSelectedStudents} className="rounded-3xl bg-rose-400/15 px-4 py-2 text-sm font-semibold text-rose-300 transition hover:bg-rose-400/20">Clear selection</button>
                 </div>
-
                 <div className="mt-5 space-y-2 max-h-80 overflow-y-auto rounded-3xl border border-white/10 bg-slate-900/80 p-2">
                   {filteredHallTicketStudents.length ? filteredHallTicketStudents.map((student) => (
                     <label key={student.id} className="grid gap-3 rounded-3xl border border-white/10 bg-slate-950/90 p-4 shadow-sm transition hover:border-sky-400">

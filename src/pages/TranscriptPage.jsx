@@ -3,45 +3,34 @@ import { FaDownload, FaPrint, FaSearch } from 'react-icons/fa';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
 import { useTranscripts } from '../hooks/useTranscripts';
 import { useERP } from '../services/ERPContext.jsx';
-import { usePermissions } from '../services/permissionHelpers.js';
-
 export default function TranscriptPage() {
-  const perms = usePermissions();
   const [search, setSearch] = useState('');
   const [selectedTranscript, setSelectedTranscript] = useState(null);
   const [format, setFormat] = useState('pdf');
-
-  const [page, setPage] = useState(1);
+  const [page, _setPage] = useState(1);
   const pageSize = 10;
-
   const { data, isLoading, error, exportTranscript } = useTranscripts({ page, pageSize, search });
   const { setNotifications } = useERP();
-
   const transcripts = data?.items || [];
-
   useEffect(() => {
     if (!selectedTranscript && transcripts.length > 0) setSelectedTranscript(transcripts[0]);
   }, [transcripts, selectedTranscript]);
-
   const filteredTranscripts = useMemo(() => {
     const term = (search || '').toLowerCase();
     if (!term) return transcripts;
     return transcripts.filter((t) => (t.student || '').toLowerCase().includes(term) || (t.rollNo || '').toLowerCase().includes(term));
   }, [transcripts, search]);
-
   if (isLoading) return <div>Loading...</div>;
   if (error) {
     setNotifications((n) => [...(n || []), { type: 'error', message: 'Failed to load transcripts' }]);
     return <div>Error loading transcripts</div>;
   }
-
   const onDownload = async (transcript) => {
     try {
       if (format === 'print') {
         window.print();
         return;
       }
-
       const blob = await exportTranscript.mutateAsync({ id: transcript.id, format });
       const extension = format === 'excel' ? 'xlsx' : 'pdf';
       const fileType = format === 'excel' ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'application/pdf';
@@ -59,16 +48,13 @@ export default function TranscriptPage() {
       console.error('Transcript download failed', err);
     }
   };
-
   return (
     <div className="space-y-8">
       <SectionHeader title="Academic transcripts" subtitle="Generate and manage official academic transcripts for students." />
-
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Student Selection */}
-        <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft lg:col-span-1">
+        <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm lg:col-span-1">
           <h3 className="text-lg font-semibold text-white mb-4">Select student</h3>
-
           <div className="relative mb-4">
             <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
             <input
@@ -79,7 +65,6 @@ export default function TranscriptPage() {
               className="w-full rounded-3xl border border-white/10 bg-slate-950/70 pl-10 pr-4 py-3 text-slate-100 outline-none focus:border-sky-400"
             />
           </div>
-
           <div className="space-y-2 max-h-96 overflow-y-auto">
             {filteredTranscripts.map((transcript) => (
               <button
@@ -95,15 +80,13 @@ export default function TranscriptPage() {
             ))}
           </div>
         </div>
-
         {/* Transcript Display */}
-        <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-8 shadow-soft lg:col-span-2">
+        <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-5 shadow-sm lg:col-span-2">
           <div className="text-center mb-8 pb-6 border-b border-white/10">
             <div className="mb-4 text-2xl font-bold text-sky-400">University of Excellence</div>
             <h2 className="text-xl font-semibold text-white mb-1">Official Academic Transcript</h2>
             <p className="text-sm text-slate-400">Original For Student Records</p>
           </div>
-
           {selectedTranscript ? (
             <>
               <div className="mb-8 grid gap-4 md:grid-cols-2">
@@ -124,7 +107,6 @@ export default function TranscriptPage() {
                   <p className="text-lg font-semibold text-white">{selectedTranscript.duration}</p>
                 </div>
               </div>
-
               <div className="mb-8">
                 <h3 className="text-lg font-semibold text-white mb-4">Academic Record</h3>
                 {selectedTranscript.semesters?.map((semester) => (
@@ -163,7 +145,6 @@ export default function TranscriptPage() {
                   </div>
                 ))}
               </div>
-
               <div className="mb-8 p-4 rounded-2xl bg-slate-950/50 border border-white/5">
                 <div className="grid gap-4 md:grid-cols-3">
                   <div>
@@ -180,7 +161,6 @@ export default function TranscriptPage() {
                   </div>
                 </div>
               </div>
-
               <div className="flex flex-wrap items-center gap-3">
                 <select value={format} onChange={(e) => setFormat(e.target.value)} className="rounded-3xl border border-white/10 bg-slate-950/70 px-4 py-3 text-sm text-slate-100 outline-none focus:border-sky-400">
                   <option value="pdf">PDF Format</option>

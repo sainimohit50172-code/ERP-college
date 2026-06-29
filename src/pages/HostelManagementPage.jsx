@@ -85,7 +85,7 @@ export default function HostelManagementPage() {
   const hostelComplaints = hostelComplaintsData?.items || [];
   const hostelWardens = hostelWardensData?.items || [];
   const maintenanceRequests = maintenanceRequestsData?.items || [];
-  const roomInspections = roomInspectionsData?.items || [];
+  const _roomInspections = roomInspectionsData?.items || [];
   const students = studentsData?.items || [];
 
   const createHostelRoom = useCreateResource('hostelRooms');
@@ -100,7 +100,7 @@ export default function HostelManagementPage() {
   const [isRoomModalOpen, setIsRoomModalOpen] = useState(false);
   const [isAllocationModalOpen, setIsAllocationModalOpen] = useState(false);
   const [importStatus, setImportStatus] = useState('');
-  const [isExporting, setIsExporting] = useState(false);
+  const [_isExporting, setIsExporting] = useState(false);
 
   const {
     register: registerRoom,
@@ -316,7 +316,7 @@ export default function HostelManagementPage() {
         <div className="rounded-[28px] border border-emerald-500/20 bg-emerald-500/5 p-4 text-sm text-emerald-200">{importStatus}</div>
       )}
 
-      <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
+      <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
           <div>
             <h2 className="text-xl font-semibold text-white">Room registry</h2>
@@ -352,7 +352,7 @@ export default function HostelManagementPage() {
               room.capacity || '0',
               <StatusBadge key={`${room.id}-status`} status={room.status || 'Available'} />,
               `${room.occupiedBeds ?? Math.min(room.capacity || 0, 0)}/${room.capacity || 0}`,
-              <div className="flex flex-wrap gap-2">
+              <div key={`${room.id}-actions`} className="flex flex-wrap gap-2">
                 <button type="button" onClick={() => setIsAllocationModalOpen(true)} className="rounded-3xl bg-slate-800/80 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700">Allot</button>
                 <button type="button" onClick={handlePrint} className="rounded-3xl bg-slate-800/80 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700">Slip</button>
               </div>,
@@ -381,7 +381,7 @@ export default function HostelManagementPage() {
       </div>
 
       <div className="grid gap-6 xl:grid-cols-3">
-        <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
+        <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
           <div className="flex items-center justify-between gap-3">
             <div>
               <h3 className="text-lg font-semibold text-white">Quick actions</h3>
@@ -396,7 +396,7 @@ export default function HostelManagementPage() {
           </div>
         </div>
 
-        <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
+        <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
           <h3 className="text-lg font-semibold text-white">Visitor register</h3>
           <p className="mt-2 text-sm text-slate-400">Track on-campus visitors and guard check-ins.</p>
           <div className="mt-6 space-y-4">
@@ -410,7 +410,7 @@ export default function HostelManagementPage() {
           </div>
         </div>
 
-        <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
+        <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
           <h3 className="text-lg font-semibold text-white">Activity timeline</h3>
           <p className="mt-2 text-sm text-slate-400">Recent hostel events and audit entries.</p>
           <div className="mt-6 space-y-4">

@@ -1,6 +1,5 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useResourceList, useCreateResource } from '../hooks/useResourceHooks';
-
 function InvigilatorAssignmentPage() {
   const { data: assignmentsData = {}, isLoading, refetch } = useResourceList('invigilatorAssignments', { page: 1, pageSize: 1000 });
   const { data: teachersData = {} } = useResourceList('teachers', { page: 1, pageSize: 1000 });
@@ -11,21 +10,18 @@ function InvigilatorAssignmentPage() {
   const classrooms = classroomsData.items || [];
   const examinations = examinationsData.items || [];
   const createAssignment = useCreateResource('invigilatorAssignments');
-  const [selectedExam, setSelectedExam] = useState('');
-  const [selectedTeacher, setSelectedTeacher] = useState('');
-  const [selectedRoom, setSelectedRoom] = useState('');
-
+  const [selectedExam, _setSelectedExam] = useState('');
+  const [selectedTeacher, _setSelectedTeacher] = useState('');
+  const [selectedRoom, _setSelectedRoom] = useState('');
   const examOptions = useMemo(() => examinations.map((exam) => ({ value: exam.id, label: exam.name || exam.title || `Exam ${exam.id}` })), [examinations]);
   const teacherOptions = useMemo(() => teachers.map((teacher) => ({ value: teacher.id, label: teacher.name })), [teachers]);
   const roomOptions = useMemo(() => classrooms.map((room) => ({ value: room.id, label: room.name || room.code || `Room ${room.id}` })), [classrooms]);
-
   const filteredAssignments = useMemo(() => assignments.filter((assignment) => {
     if (selectedExam && assignment.examId !== selectedExam) return false;
     if (selectedTeacher && assignment.teacherId !== selectedTeacher) return false;
     if (selectedRoom && assignment.roomId !== selectedRoom) return false;
     return true;
   }), [assignments, selectedExam, selectedTeacher, selectedRoom]);
-
   const addAssignment = async (event) => {
     event.preventDefault();
     const form = event.target;
@@ -35,17 +31,14 @@ function InvigilatorAssignmentPage() {
     const session = form.session.value;
     const startTime = form.startTime.value;
     const endTime = form.endTime.value;
-
     if (!examId || !teacherId || !roomId || !session || !startTime || !endTime) {
       alert('Please complete all invigilator assignment fields.');
       return;
     }
-
     await createAssignment.mutateAsync({ examId, teacherId, roomId, session, startTime, endTime, status: 'assigned' });
     refetch();
     form.reset();
   };
-
   return (
     <div className="p-6 space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -54,7 +47,6 @@ function InvigilatorAssignmentPage() {
           <p className="text-sm text-slate-500">Schedule invigilators by exam, room, and shift while tracking conflict warnings.</p>
         </div>
       </div>
-
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <h2 className="text-lg font-semibold">Assign Invigilator</h2>
         <form onSubmit={addAssignment} className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -67,7 +59,6 @@ function InvigilatorAssignmentPage() {
               ))}
             </select>
           </label>
-
           <label className="block">
             <span className="text-sm text-slate-600">Teacher</span>
             <select name="teacherId" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none">
@@ -77,7 +68,6 @@ function InvigilatorAssignmentPage() {
               ))}
             </select>
           </label>
-
           <label className="block">
             <span className="text-sm text-slate-600">Room</span>
             <select name="roomId" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none">
@@ -87,28 +77,23 @@ function InvigilatorAssignmentPage() {
               ))}
             </select>
           </label>
-
           <label className="block">
             <span className="text-sm text-slate-600">Session</span>
             <input name="session" type="text" placeholder="Morning / Afternoon" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none" />
           </label>
-
           <label className="block">
             <span className="text-sm text-slate-600">Start Time</span>
             <input name="startTime" type="time" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none" />
           </label>
-
           <label className="block">
             <span className="text-sm text-slate-600">End Time</span>
             <input name="endTime" type="time" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none" />
           </label>
-
           <button type="submit" className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white hover:bg-blue-700 sm:col-span-2">
             Create Assignment
           </button>
         </form>
       </section>
-
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <h2 className="text-lg font-semibold">Active Invigilator Assignments</h2>
         <div className="mt-4 overflow-x-auto">
@@ -156,5 +141,4 @@ function InvigilatorAssignmentPage() {
     </div>
   );
 }
-
 export default InvigilatorAssignmentPage;

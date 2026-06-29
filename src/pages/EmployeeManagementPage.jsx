@@ -8,7 +8,6 @@ import {
   useBulkImport,
   useBulkExport,
 } from '../hooks/useResourceHooks';
-import { usePermissions } from '../services/permissionHelpers.js';
 import {
   FaCalendarCheck,
   FaChartLine,
@@ -26,14 +25,12 @@ import StatusBadge from '../components/ui/StatusBadge.jsx';
 import TablePagination from '../components/tables/TablePagination.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import FormField from '../components/forms/FormField.jsx';
-
 const statusOptions = [
   { value: 'All', label: 'All statuses' },
   { value: 'Active', label: 'Active' },
   { value: 'On Leave', label: 'On Leave' },
   { value: 'Resigned', label: 'Resigned' },
 ];
-
 const defaultEmployeeValues = {
   name: '',
   email: '',
@@ -44,14 +41,12 @@ const defaultEmployeeValues = {
   salary: '3200',
   joinDate: '',
 };
-
 const defaultAttendanceValues = {
   date: new Date().toISOString().slice(0, 10),
   employeeId: '',
   shift: 'Day',
   status: 'Present',
 };
-
 function downloadBlob(blob, filename) {
   const url = window.URL.createObjectURL(blob);
   const link = document.createElement('a');
@@ -62,25 +57,20 @@ function downloadBlob(blob, filename) {
   document.body.removeChild(link);
   window.URL.revokeObjectURL(url);
 }
-
 export default function EmployeeManagementPage() {
   const importInputRef = useRef(null);
-
   const { data: employeesData } = useResourceList('employees', { page: 1, pageSize: 200 });
   const { data: departmentsData } = useResourceList('departments', { page: 1, pageSize: 200 });
   const { data: employeeAttendanceData } = useResourceList('employeeAttendance', { page: 1, pageSize: 200 });
-
   const employees = employeesData?.items || [];
   const departments = departmentsData?.items || [];
   const employeeAttendance = employeeAttendanceData?.items || [];
-
   const createEmployee = useCreateResource('employees');
   const updateEmployee = useUpdateResource('employees');
   const deleteEmployee = useDeleteResource('employees');
   const importEmployee = useBulkImport('employees');
   const exportEmployee = useBulkExport('employees');
   const createAttendance = useCreateResource('employeeAttendance');
-
   const [searchRoster, setSearchRoster] = useState('');
   const [filterRoster, setFilterRoster] = useState('All');
   const [page, setPage] = useState(1);
@@ -89,28 +79,23 @@ export default function EmployeeManagementPage() {
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [importStatus, setImportStatus] = useState('');
-  const [isExporting, setIsExporting] = useState(false);
+  const [_isExporting, setIsExporting] = useState(false);
   const [isSubmittingAttendance, setIsSubmittingAttendance] = useState(false);
   const pageSize = 6;
   const attendancePageSize = 5;
-  const perms = usePermissions();
-
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
   } = useForm({ defaultValues: defaultEmployeeValues });
-
   const {
     register: registerAttendance,
     handleSubmit: handleSubmitAttendance,
     reset: resetAttendance,
     formState: { errors: attendanceErrors },
   } = useForm({ defaultValues: defaultAttendanceValues });
-
   const employeeMap = useMemo(() => new Map(employees.map((employee) => [employee.id, employee])), [employees]);
-
   const filteredEmployees = useMemo(() => {
     return employees.filter((employee) => {
       const searchTerm = searchRoster.toLowerCase();
@@ -121,7 +106,6 @@ export default function EmployeeManagementPage() {
       return matchesSearch && matchesFilter;
     });
   }, [employees, searchRoster, filterRoster]);
-
   const filteredAttendance = useMemo(() => {
     return employeeAttendance.filter((entry) => {
       const searchTerm = searchRoster.toLowerCase();
@@ -132,12 +116,10 @@ export default function EmployeeManagementPage() {
       return matchesSearch;
     });
   }, [employeeAttendance, employeeMap, searchRoster]);
-
   const pageCount = Math.max(1, Math.ceil(filteredEmployees.length / pageSize));
   const displayedEmployees = filteredEmployees.slice((page - 1) * pageSize, page * pageSize);
   const attendancePageCount = Math.max(1, Math.ceil(filteredAttendance.length / attendancePageSize));
   const displayedAttendance = filteredAttendance.slice((attendancePage - 1) * attendancePageSize, attendancePage * attendancePageSize);
-
   const activeEmployees = employees.filter((employee) => employee.status === 'Active').length;
   const onLeaveEmployees = employees.filter((employee) => employee.status === 'On Leave').length;
   const dayShiftCount = employees.filter((employee) => employee.shift === 'Day').length;
@@ -151,25 +133,21 @@ export default function EmployeeManagementPage() {
     }, {});
     return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A';
   }, [employees]);
-
   const attendanceSummary = useMemo(() => {
     const present = employeeAttendance.filter((entry) => entry.status === 'Present').length;
     const absent = employeeAttendance.filter((entry) => entry.status === 'Absent').length;
     const late = employeeAttendance.filter((entry) => entry.status === 'Late').length;
     return { present, absent, late };
   }, [employeeAttendance]);
-
   const resetForm = () => {
     reset(defaultEmployeeValues);
     setSelectedEmployee(null);
     setIsEditMode(false);
   };
-
   const openNewEmployeeModal = () => {
     resetForm();
     setIsModalOpen(true);
   };
-
   const openEditEmployeeModal = (employee) => {
     setSelectedEmployee(employee);
     setIsEditMode(true);
@@ -185,13 +163,11 @@ export default function EmployeeManagementPage() {
     });
     setIsModalOpen(true);
   };
-
   const onSubmit = (data) => {
     const payload = {
       ...data,
       salary: `$${Number(data.salary || 0)}`,
     };
-
     if (isEditMode && selectedEmployee) {
       updateEmployee.mutate(
         { id: selectedEmployee.id, payload },
@@ -213,14 +189,12 @@ export default function EmployeeManagementPage() {
       });
     }
   };
-
   const handleDelete = (employee) => {
     if (!window.confirm(`Remove ${employee.name} from the workforce roster?`)) {
       return;
     }
     deleteEmployee.mutate(employee.id);
   };
-
   const handleImport = (file) => {
     if (!file) return;
     setImportStatus('Importing employee roster…');
@@ -231,13 +205,11 @@ export default function EmployeeManagementPage() {
       onError: () => setImportStatus('Import failed. Please try a valid CSV file.'),
     });
   };
-
   const handleFileChange = (event) => {
     const file = event.target.files?.[0];
     handleImport(file);
     event.target.value = '';
   };
-
   const handleExport = async () => {
     setIsExporting(true);
     try {
@@ -249,7 +221,6 @@ export default function EmployeeManagementPage() {
       setIsExporting(false);
     }
   };
-
   const handleAttendanceSubmit = (data) => {
     setIsSubmittingAttendance(true);
     createAttendance.mutate(data, {
@@ -260,9 +231,8 @@ export default function EmployeeManagementPage() {
       onSettled: () => setIsSubmittingAttendance(false),
     });
   };
-
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <SectionHeader
         title="Employee management"
         subtitle="HR operations, workforce analytics, payroll and attendance monitoring."
@@ -292,39 +262,35 @@ export default function EmployeeManagementPage() {
           </div>
         }
       />
-
       <input ref={importInputRef} type="file" accept=".csv" className="hidden" onChange={handleFileChange} />
-
-      <div className="grid gap-6 xl:grid-cols-[1.4fr_0.6fr]">
-        <div className="grid gap-6">
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-              <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Total employees</p>
-              <p className="mt-4 text-3xl font-semibold text-white">{employees.length}</p>
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(280px,0.3fr)]">
+        <div className="grid gap-4">
+          <div className="grid gap-3 md:grid-cols-3">
+            <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Total employees</p>
+              <p className="mt-3 text-2xl font-semibold text-white">{employees.length}</p>
             </div>
-            <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-              <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Day shift</p>
-              <p className="mt-4 text-3xl font-semibold text-white">{dayShiftCount}</p>
+            <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Day shift</p>
+              <p className="mt-3 text-2xl font-semibold text-white">{dayShiftCount}</p>
             </div>
-            <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-              <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Payroll burn</p>
-              <p className="mt-4 text-3xl font-semibold text-white">${totalPayroll.toLocaleString()}</p>
+            <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Payroll burn</p>
+              <p className="mt-3 text-2xl font-semibold text-white">${totalPayroll.toLocaleString()}</p>
             </div>
           </div>
-
-          <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
-            <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+          <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+            <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
               <div>
                 <h2 className="text-xl font-semibold text-white">Workforce roster</h2>
                 <p className="text-sm text-slate-400">Search personnel records, filter by status, and manage role assignments.</p>
               </div>
-              <div className="flex flex-wrap items-center gap-3">
-                <div className="rounded-3xl bg-slate-950/70 px-4 py-3 text-sm text-slate-200">Top department: {topDepartment}</div>
-                <div className="rounded-3xl bg-slate-950/70 px-4 py-3 text-sm text-slate-200">On leave: {onLeaveEmployees}</div>
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="rounded-2xl bg-slate-950/70 px-3 py-2 text-sm text-slate-200">Top department: {topDepartment}</div>
+                <div className="rounded-2xl bg-slate-950/70 px-3 py-2 text-sm text-slate-200">On leave: {onLeaveEmployees}</div>
               </div>
             </div>
-
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
+            <div className="mt-4 grid gap-3 md:grid-cols-2">
               <SearchFilter
                 search={searchRoster}
                 onSearch={setSearchRoster}
@@ -333,8 +299,7 @@ export default function EmployeeManagementPage() {
                 options={statusOptions}
               />
             </div>
-
-            <div className="mt-6">
+            <div className="mt-4">
               <DataTable
                 columns={['Employee', 'Department', 'Designation', 'Shift', 'Salary', 'Status', 'Actions']}
                 rows={displayedEmployees.map((employee) => [
@@ -347,7 +312,7 @@ export default function EmployeeManagementPage() {
                   employee.shift,
                   employee.salary,
                   <StatusBadge key={`${employee.id}-status`} status={employee.status} />,
-                  <div className="flex flex-wrap gap-2">
+                  <div key={`${employee.id}-actions`} className="flex flex-wrap gap-2">
                     <WithPermission moduleKey="employees" action="edit">
                       <button
                         type="button"
@@ -370,45 +335,42 @@ export default function EmployeeManagementPage() {
                 ])}
               />
             </div>
-            <div className="mt-6">
+            <div className="mt-4">
               <TablePagination page={page} pageCount={pageCount} onPageChange={setPage} />
             </div>
           </div>
         </div>
-
-        <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
-          <div className="mb-5 flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-emerald-500/10 text-emerald-300">
-              <FaCalendarCheck className="h-5 w-5" />
+        <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <div className="mb-4 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-300">
+              <FaCalendarCheck className="h-4 w-4" />
             </div>
             <div>
-              <p className="text-sm uppercase tracking-[0.24em] text-slate-400">HR pulse</p>
-              <h3 className="text-xl font-semibold text-white">Employee health</h3>
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">HR pulse</p>
+              <h3 className="text-lg font-semibold text-white">Employee health</h3>
             </div>
           </div>
-          <div className="grid gap-4">
-            <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5">
+          <div className="grid gap-3">
+            <div className="rounded-[22px] border border-white/10 bg-slate-950/70 p-4">
               <p className="text-sm text-slate-400">Attendance compliance</p>
-              <p className="mt-3 text-3xl font-semibold text-white">{employees.length ? `${Math.round((activeEmployees / employees.length) * 100)}%` : '0%'}</p>
+              <p className="mt-2 text-2xl font-semibold text-white">{employees.length ? `${Math.round((activeEmployees / employees.length) * 100)}%` : '0%'}</p>
             </div>
-            <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5">
+            <div className="rounded-[22px] border border-white/10 bg-slate-950/70 p-4">
               <p className="text-sm text-slate-400">Contract renewals due</p>
-              <p className="mt-3 text-3xl font-semibold text-white">2</p>
+              <p className="mt-2 text-2xl font-semibold text-white">2</p>
             </div>
-            <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5">
+            <div className="rounded-[22px] border border-white/10 bg-slate-950/70 p-4">
               <p className="text-sm text-slate-400">Night shift coverage</p>
-              <p className="mt-3 text-3xl font-semibold text-white">{nightShiftCount}</p>
+              <p className="mt-2 text-2xl font-semibold text-white">{nightShiftCount}</p>
             </div>
           </div>
         </div>
       </div>
-
       {importStatus && (
         <div className="rounded-[28px] border border-emerald-500/20 bg-emerald-500/5 p-4 text-sm text-emerald-200">{importStatus}</div>
       )}
-
       <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-        <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
+        <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
           <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
             <div>
               <h2 className="text-xl font-semibold text-white">Attendance overview</h2>
@@ -419,7 +381,6 @@ export default function EmployeeManagementPage() {
               <div className="rounded-3xl bg-slate-950/70 px-4 py-3 text-sm text-slate-200">Absent: {attendanceSummary.absent}</div>
             </div>
           </div>
-
           <div className="mt-6">
             <DataTable
               columns={['Employee', 'Department', 'Shift', 'Date', 'Status']}
@@ -436,8 +397,7 @@ export default function EmployeeManagementPage() {
             <TablePagination page={attendancePage} pageCount={attendancePageCount} onPageChange={setAttendancePage} />
           </div>
         </div>
-
-        <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
+        <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
           <div className="mb-5 flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-slate-700/80 text-slate-200">
               <FaChartLine className="h-5 w-5" />
@@ -511,7 +471,6 @@ export default function EmployeeManagementPage() {
           </div>
         </div>
       </div>
-
       <Modal
         title={isEditMode ? 'Update employee profile' : 'Add new employee'}
         isOpen={isModalOpen}

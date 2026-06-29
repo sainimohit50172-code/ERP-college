@@ -10,17 +10,13 @@ import FormField from '../components/forms/FormField.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
 import { useResourceList, useCreateResource } from '../hooks/useResourceHooks';
 import { useERP } from '../services/ERPContext.jsx';
-import { usePermissions } from '../services/permissionHelpers.js';
-
 // Data is loaded via API (practical-marks)
-
 const statusOptions = [
   { value: 'All', label: 'All statuses' },
   { value: 'Completed', label: 'Completed' },
   { value: 'Pending', label: 'Pending' },
   { value: 'Under Review', label: 'Under Review' },
 ];
-
 export default function PracticalMarksPage() {
   const { currentUser, setNotifications } = useERP();
   const [search, setSearch] = useState('');
@@ -28,17 +24,12 @@ export default function PracticalMarksPage() {
   const [page, setPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const pageSize = 5;
-
-  const perms = usePermissions();
-
-  const { data, isLoading, isError, error } = useResourceList('practicalMarks', { page, pageSize, search, filter });
+  const { data, _isLoading, _isError, _error } = useResourceList('practicalMarks', { page, pageSize, search, filter });
   const createPracticalMark = useCreateResource('practicalMarks');
   const marks = data?.items || [];
-
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: { student: '', rollNo: '', subject: '', experiment1: '0', experiment2: '0', experiment3: '0', journal: '0', viva: '0', status: 'Pending' },
   });
-
   const filteredMarks = useMemo(() => {
     return (marks || []).filter((mark) => {
       const searchTerm = search.toLowerCase();
@@ -47,10 +38,8 @@ export default function PracticalMarksPage() {
       return matchesSearch && matchesFilter;
     });
   }, [marks, search, filter]);
-
   const pageCount = Math.max(1, Math.ceil(filteredMarks.length / pageSize));
   const displayedMarks = filteredMarks.slice((page - 1) * pageSize, page * pageSize);
-
   const onSubmit = (data) => {
     const total = parseInt(data.experiment1) + parseInt(data.experiment2) + parseInt(data.experiment3) + parseInt(data.journal) + parseInt(data.viva);
     const percentage = Math.round((total / 50) * 100);
@@ -67,45 +56,39 @@ export default function PracticalMarksPage() {
     setPage(1);
     setIsModalOpen(false);
   };
-
   const totalRecords = (marks || []).length;
   const completed = (marks || []).filter((m) => m.status === 'Completed').length;
   const avgPercentage = Math.round((marks || []).reduce((acc, m) => acc + parseInt(m.percentage || '0'), 0) / Math.max(1, (marks || []).length));
-
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <SectionHeader title="Practical marks" subtitle="Enter and manage practical/lab component marks for students." />
-
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Total records</p>
-          <p className="mt-4 text-3xl font-semibold text-white">{totalRecords}</p>
+      <div className="grid gap-3 md:grid-cols-3">
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Total records</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{totalRecords}</p>
         </div>
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Completed</p>
-          <p className="mt-4 text-3xl font-semibold text-white">{completed}</p>
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Completed</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{completed}</p>
         </div>
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Average percentage</p>
-          <p className="mt-4 text-3xl font-semibold text-white">{avgPercentage}%</p>
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Average percentage</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{avgPercentage}%</p>
         </div>
       </div>
-
-      <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
-        <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+      <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+        <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-white">Practical marks registry</h2>
+            <h2 className="text-lg font-semibold text-white">Practical marks registry</h2>
             <p className="text-sm text-slate-400">Manage experiments, journal, viva and other practical assessments.</p>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <button className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700"><FaDownload /> Export</button>
-            <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"><FaPlus /> Enter marks</button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button className="inline-flex items-center gap-2 rounded-2xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 transition hover:bg-slate-700"><FaDownload /> Export</button>
+            <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 rounded-2xl bg-sky-400 px-3 py-2 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"><FaPlus /> Enter marks</button>
           </div>
         </div>
-
-        <div className="mt-6 grid gap-4 md:grid-cols-2"><SearchFilter search={search} onSearch={setSearch} filter={filter} onFilter={setFilter} options={statusOptions} /></div>
-
-        <div className="mt-6">
+        <div className="mt-4 grid gap-3 md:grid-cols-2"><SearchFilter search={search} onSearch={setSearch} filter={filter} onFilter={setFilter} options={statusOptions} /></div>
+        <div className="mt-4">
           <DataTable
             columns={['Student', 'Roll No', 'Subject', 'Exp 1', 'Exp 2', 'Exp 3', 'Journal', 'Viva', 'Total', 'Percent', 'Status']}
             rows={displayedMarks.map((mark) => [
@@ -123,9 +106,8 @@ export default function PracticalMarksPage() {
             ])}
           />
         </div>
-        <div className="mt-6"><TablePagination page={page} pageCount={pageCount} onPageChange={setPage} /></div>
+        <div className="mt-4"><TablePagination page={page} pageCount={pageCount} onPageChange={setPage} /></div>
       </div>
-
       <Modal title="Enter practical marks" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<button onClick={handleSubmit(onSubmit)} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">Save marks</button>}>
         <form className="grid gap-5 lg:grid-cols-2">
           <FormField label="Student name"><input type="text" {...register('student', { required: 'Student name is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Raj Kumar" />{errors.student && <p className="mt-1 text-sm text-rose-400">{errors.student.message}</p>}</FormField>

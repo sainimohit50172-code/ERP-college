@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { FaCalendarAlt, FaDownload, FaPlus } from 'react-icons/fa';
+import { FaDownload, FaPlus } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
 import SearchFilter from '../components/forms/SearchFilter.jsx';
@@ -9,14 +9,12 @@ import Modal from '../components/ui/Modal.jsx';
 import FormField from '../components/forms/FormField.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
 import { useResourceList, useCreateResource } from '../hooks/useResourceHooks';
-
 const statusOptions = [
   { value: 'All', label: 'All statuses' },
   { value: 'Active', label: 'Active' },
   { value: 'Needs Review', label: 'Needs Review' },
   { value: 'Draft', label: 'Draft' },
 ];
-
 export default function TimetableGeneratorPage() {
   const { data: coursesData } = useResourceList('courses', { page: 1, pageSize: 200 });
   const courses = coursesData?.items || [];
@@ -28,11 +26,9 @@ export default function TimetableGeneratorPage() {
   const [page, setPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const pageSize = 5;
-
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: { course: 'BCA', semester: '5', section: 'A', conflictResolution: 'Auto' },
   });
-
   const filteredTimetables = useMemo(() => {
     return timetables.filter((timetable) => {
       const searchTerm = search.toLowerCase();
@@ -41,10 +37,8 @@ export default function TimetableGeneratorPage() {
       return matchesSearch && matchesFilter;
     });
   }, [timetables, search, filter]);
-
   const pageCount = Math.max(1, Math.ceil(filteredTimetables.length / pageSize));
   const displayedTimetables = filteredTimetables.slice((page - 1) * pageSize, page * pageSize);
-
   const onSubmit = (data) => {
     createTimetable.mutate({
       ...data,
@@ -56,15 +50,12 @@ export default function TimetableGeneratorPage() {
     setPage(1);
     setIsModalOpen(false);
   };
-
   const totalGenerated = timetables.length;
   const active = timetables.filter((t) => t.status === 'Active').length;
   const needsReview = timetables.filter((t) => t.status === 'Needs Review').length;
-
   return (
     <div className="space-y-8">
       <SectionHeader title="Timetable generator" subtitle="Automatically generate class timetables considering constraints and preferences." />
-
       <div className="grid gap-4 md:grid-cols-3">
         <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
           <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Generated</p>
@@ -79,8 +70,7 @@ export default function TimetableGeneratorPage() {
           <p className="mt-4 text-3xl font-semibold text-white">{needsReview}</p>
         </div>
       </div>
-
-      <div className="rounded-[32px] border border-white/10 bg-slate-900/80 p-6 shadow-soft">
+      <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
           <div>
             <h2 className="text-xl font-semibold text-white">Generated timetables</h2>
@@ -91,9 +81,7 @@ export default function TimetableGeneratorPage() {
             <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"><FaPlus /> Generate new</button>
           </div>
         </div>
-
         <div className="mt-6 grid gap-4 md:grid-cols-2"><SearchFilter search={search} onSearch={setSearch} filter={filter} onFilter={setFilter} options={statusOptions} /></div>
-
         <div className="mt-6">
           <DataTable
             columns={['Course', 'Semester', 'Section', 'Generated', 'Slots', 'Conflicts', 'Status']}
@@ -110,7 +98,6 @@ export default function TimetableGeneratorPage() {
         </div>
         <div className="mt-6"><TablePagination page={page} pageCount={pageCount} onPageChange={setPage} /></div>
       </div>
-
       <Modal title="Generate new timetable" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<button onClick={handleSubmit(onSubmit)} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">Generate</button>}>
         <form className="grid gap-5 lg:grid-cols-2">
           <FormField label="Course"><select {...register('course', { required: 'Course is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"><option value="">Select course</option>{courses.map((course) => (<option key={course.id} value={course.code}>{course.title}</option>))}</select>{errors.course && <p className="mt-1 text-sm text-rose-400">{errors.course.message}</p>}</FormField>

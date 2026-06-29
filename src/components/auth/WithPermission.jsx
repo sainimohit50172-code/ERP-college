@@ -1,4 +1,3 @@
-import React from 'react';
 import { usePermissions } from '../../services/permissionHelpers.js';
 
 export default function WithPermission({ moduleKey, action, children }) {

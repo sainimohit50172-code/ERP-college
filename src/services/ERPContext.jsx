@@ -1,8 +1,9 @@
-import React, { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import {
   useResourceList,
   useCreateResource,
 } from '../hooks/useResourceHooks';
+import { notifications as sampleNotifications } from './erpData.js';
 
 const ERPContext = createContext(null);
 
@@ -13,7 +14,9 @@ export function ERPProvider({ children }) {
 
   const [theme, setTheme] = useState('light');
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState(
+    sampleNotifications.map((item) => ({ ...item, read: false })),
+  );
   const [permissions, setPermissions] = useState([]);
 
   // Business data fetched via standardized resource hooks
@@ -44,6 +47,14 @@ export function ERPProvider({ children }) {
   const createLectureNote = useCreateResource('lectureNotes');
   const createLead = useCreateResource('leads');
 
+  const markNotificationAsRead = (id) => {
+    setNotifications((state) => state.map((notification) => (notification.id === id ? { ...notification, read: true } : notification)));
+  };
+
+  const markAllNotificationsAsRead = () => {
+    setNotifications((state) => state.map((notification) => ({ ...notification, read: true })));
+  };
+
   return (
     <ERPContext.Provider
       value={{
@@ -56,6 +67,8 @@ export function ERPProvider({ children }) {
         setSidebarOpen,
         notifications,
         setNotifications,
+        markNotificationAsRead,
+        markAllNotificationsAsRead,
         permissions,
         setPermissions,
 

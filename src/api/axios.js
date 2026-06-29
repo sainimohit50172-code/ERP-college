@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { toast } from '../utils/toast';
-import { logout } from '../services/authService';
 
 const api = axios.create({
   baseURL: '/api',
@@ -22,17 +21,16 @@ api.interceptors.response.use(
   (res) => res,
   (err) => {
     if (!err.response) {
-      toast.error('Network error');
       return Promise.reject(err);
     }
     const { status } = err.response;
     if (status === 401) {
       toast.error('Unauthorized. Please login.');
-      // TODO: trigger logout / token refresh
     } else if (status === 403) {
       toast.error('Forbidden. Insufficient permissions.');
     } else if (status === 404) {
-      toast.error('Resource not found.');
+      // Keep the UI resilient in local/offline mode instead of surfacing a noisy error for every missing endpoint.
+      return Promise.reject(err);
     } else if (status >= 500) {
       toast.error('Server error. Try again later.');
     }

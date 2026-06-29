@@ -26,7 +26,6 @@ import {
 } from 'lucide-react';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
 import SearchFilter from '../components/forms/SearchFilter.jsx';
-import DataTable from '../components/ui/DataTable.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
 import TablePagination from '../components/tables/TablePagination.jsx';
 import Modal from '../components/ui/Modal.jsx';
@@ -243,22 +242,22 @@ export default function SecurityPage() {
 
   const createVisitor = useCreateResource('visitors');
   const updateVisitor = useUpdateResource('visitors');
-  const deleteVisitor = useDeleteResource('visitors');
+  const _deleteVisitor = useDeleteResource('visitors');
   const exportVisitors = useBulkExport('visitors');
 
   const createGatePass = useCreateResource('gatePasses');
   const updateGatePass = useUpdateResource('gatePasses');
-  const deleteGatePass = useDeleteResource('gatePasses');
+  const _deleteGatePass = useDeleteResource('gatePasses');
   const exportGatePasses = useBulkExport('gatePasses');
 
   const createVehicle = useCreateResource('vehicles');
   const updateVehicle = useUpdateResource('vehicles');
-  const deleteVehicle = useDeleteResource('vehicles');
+  const _deleteVehicle = useDeleteResource('vehicles');
   const exportVehicles = useBulkExport('vehicles');
 
   const createIncident = useCreateResource('incidents');
   const updateIncident = useUpdateResource('incidents');
-  const deleteIncident = useDeleteResource('incidents');
+  const _deleteIncident = useDeleteResource('incidents');
   const exportIncidents = useBulkExport('incidents');
 
   const [activeTab, setActiveTab] = useState('overview');
@@ -308,7 +307,7 @@ export default function SecurityPage() {
   const { register: registerAttendance, handleSubmit: handleSubmitAttendance, reset: resetAttendance } = attendanceForm;
   const { register: registerVisitor, handleSubmit: handleSubmitVisitor, reset: resetVisitor, formState: { errors: visitorErrors } } = visitorForm;
   const { register: registerGatePass, handleSubmit: handleSubmitGatePass, reset: resetGatePass, formState: { errors: gatePassErrors } } = gatePassForm;
-  const { register: registerVehicle, handleSubmit: handleSubmitVehicle, reset: resetVehicle, formState: { errors: vehicleErrors } } = vehicleForm;
+  const { register: registerVehicle, handleSubmit: handleSubmitVehicle, reset: resetVehicle, formState: { errors: _vehicleErrors } } = vehicleForm;
   const { register: registerIncident, handleSubmit: handleSubmitIncident, reset: resetIncident, formState: { errors: incidentErrors } } = incidentForm;
 
   const activeGuards = guards.filter((guard) => guard.status === 'Active').length;
@@ -781,7 +780,7 @@ export default function SecurityPage() {
 
   return (
     <div className="space-y-8">
-      <div className="rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+      <div className="rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-center xl:justify-between">
           <div>
             <p className="text-sm uppercase tracking-[0.24em] text-emerald-600">Security Operations</p>
@@ -821,7 +820,7 @@ export default function SecurityPage() {
           <MetricCard label="Rejected Passes" value={rejectedGatePasses.toString()} icon={X} delta="-2%" />
         </div>
 
-        <section className="rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+        <section className="rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
           <h2 className="text-xl font-semibold text-slate-950">Security quick actions</h2>
           <p className="mt-2 text-sm text-slate-500">Access the most important workflows for campus access control.</p>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -878,7 +877,7 @@ export default function SecurityPage() {
 
       {activeTab === 'overview' && (
         <div className="grid gap-6 xl:grid-cols-[1.3fr_0.85fr]">
-          <section className="space-y-6 rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+          <section className="space-y-6 rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
             <div className="flex items-center justify-between gap-4">
               <div>
                 <h2 className="text-2xl font-semibold text-slate-950">Operational overview</h2>
@@ -929,7 +928,7 @@ export default function SecurityPage() {
       )}
 
       {activeTab === 'guards' && (
-        <section className="space-y-6 rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+        <section className="space-y-6 rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
           <SectionHeader
             title="Security Guard Management"
             subtitle="Manage guard profiles, shifts, and campus assignments."
@@ -993,7 +992,7 @@ export default function SecurityPage() {
       )}
 
       {activeTab === 'attendance' && (
-        <section className="space-y-6 rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+        <section className="space-y-6 rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
           <SectionHeader
             title="Guard Attendance"
             subtitle="Record shift attendance and review daily security performance."
@@ -1060,7 +1059,7 @@ export default function SecurityPage() {
       )}
 
       {activeTab === 'visitors' && (
-        <section className="space-y-6 rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+        <section className="space-y-6 rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
           <SectionHeader
             title="Visitor Management"
             subtitle="Register visitor entries, exits, and ID validation."
@@ -1119,7 +1118,7 @@ export default function SecurityPage() {
       )}
 
       {activeTab === 'gatePass' && (
-        <section className="space-y-6 rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+        <section className="space-y-6 rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
           <SectionHeader
             title="Gate Pass Management"
             subtitle="Control student, employee, and parent pass requests with approval workflows."
@@ -1184,7 +1183,7 @@ export default function SecurityPage() {
       )}
 
       {activeTab === 'vehicles' && (
-        <section className="space-y-6 rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+        <section className="space-y-6 rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
           <SectionHeader
             title="Vehicle Management"
             subtitle="Track campus vehicle entry, exit and parking assignments."
@@ -1243,7 +1242,7 @@ export default function SecurityPage() {
       )}
 
       {activeTab === 'incidents' && (
-        <section className="space-y-6 rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+        <section className="space-y-6 rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
           <SectionHeader
             title="Incident Management"
             subtitle="Log campus incidents, assign guards and drive resolution."
@@ -1302,7 +1301,7 @@ export default function SecurityPage() {
       )}
 
       {activeTab === 'reports' && (
-        <section className="space-y-6 rounded-[32px] border border-slate-200/70 bg-white/95 p-6 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
+        <section className="space-y-6 rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
           <SectionHeader
             title="Security Reports"
             subtitle="Generate export-ready reports for visitors, gate passes, attendance and incidents."
