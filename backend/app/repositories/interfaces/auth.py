@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
+from datetime import datetime
 from typing import Optional
 
-from app.models.auth import User
+from app.models.auth import AuthSession, PasswordReset, User
 from app.repositories.interfaces.base import BaseRepository
 
 
@@ -22,4 +25,55 @@ class AuthRepository(BaseRepository[User], ABC):
 
     @abstractmethod
     async def change_password(self, user_id: int, new_password: str) -> bool:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def create_refresh_session(
+        self,
+        user_id: int,
+        refresh_token_hash: str,
+        expires_at: datetime,
+        user_agent: Optional[str] = None,
+        ip_address: Optional[str] = None,
+    ) -> AuthSession:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def get_refresh_session(self, refresh_token_hash: str) -> Optional[AuthSession]:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def rotate_refresh_token(
+        self,
+        old_refresh_token_hash: str,
+        new_refresh_token_hash: str,
+        expires_at: datetime,
+        user_agent: Optional[str] = None,
+        ip_address: Optional[str] = None,
+    ) -> Optional[AuthSession]:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def revoke_refresh_token(self, refresh_token_hash: str) -> bool:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def revoke_user_refresh_sessions(self, user_id: int) -> int:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def create_password_reset(
+        self,
+        user_id: int,
+        token_hash: str,
+        expires_at: datetime,
+    ) -> PasswordReset:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def get_password_reset(self, token_hash: str) -> Optional[PasswordReset]:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def mark_password_reset_used(self, reset_id: str) -> bool:
         raise NotImplementedError

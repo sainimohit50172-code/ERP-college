@@ -1,7 +1,8 @@
 from functools import lru_cache
+from json import JSONDecodeError, loads
 from typing import List
 
-from pydantic import Field
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -32,6 +33,21 @@ class Settings(BaseSettings):
 
     cors_origins: List[str] = Field(default_factory=lambda: ["http://localhost:3000", "http://localhost:5173"], alias="CORS_ORIGINS")
     log_level: str = Field(default="INFO", alias="LOG_LEVEL")
+
+    @field_validator("cors_origins", mode="before")
+    @classmethod
+    def _parse_cors_origins(cls, value):
+        if isinstance(value, str):
+            value = value.strip()
+            if value.startswith("[") and value.endswith("]"):
+                try:
+                    parsed = loads(value)
+                    if isinstance(parsed, list):
+                        return [str(item) for item in parsed]
+                except JSONDecodeError:
+                    pass
+            return [item.strip() for item in value.split(",") if item.strip()]
+        return value
 
     model_config = SettingsConfigDict(
         env_file=".env",

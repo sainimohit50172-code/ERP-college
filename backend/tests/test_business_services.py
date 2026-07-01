@@ -1,3 +1,5 @@
+import asyncio
+
 import pytest
 
 from app.services.auth.service import AuthService, AuthServiceError
@@ -154,36 +156,35 @@ class DummyAttendanceRepository:
         return len(entity_ids)
 
 
-@pytest.mark.asyncio
-async def test_auth_service_returns_dto_for_valid_credentials():
+def test_auth_service_returns_dto_for_valid_credentials():
     user = type("User", (), {"id": 1, "email": "student@example.com", "username": "student"})()
     service = AuthService(DummyAuthRepository(user))
 
-    result = await service.authenticate_user("student@example.com", "secret")
+    result = asyncio.run(service.authenticate_user("student@example.com", "secret"))
 
     assert result.email == "student@example.com"
     assert result.username == "student"
 
 
-@pytest.mark.asyncio
-async def test_student_service_raises_for_duplicate_admission():
+def test_student_service_raises_for_duplicate_admission():
     existing = type("Student", (), {"id": 1, "admission_no": "A-100"})()
     service = StudentService(DummyStudentRepository(existing))
 
     with pytest.raises(StudentServiceError):
-        await service.enroll_student(
-            admission_number="A-100",
-            first_name="Asha",
-            last_name="Patel",
-            status="Active",
+        asyncio.run(
+            service.enroll_student(
+                admission_number="A-100",
+                first_name="Asha",
+                last_name="Patel",
+                status="Active",
+            )
         )
 
 
-@pytest.mark.asyncio
-async def test_attendance_service_returns_summary_dto():
+def test_attendance_service_returns_summary_dto():
     service = AttendanceService(DummyAttendanceRepository())
 
-    result = await service.get_attendance_summary(7)
+    result = asyncio.run(service.get_attendance_summary(7))
 
     assert result.present == 1
     assert result.absent == 0
