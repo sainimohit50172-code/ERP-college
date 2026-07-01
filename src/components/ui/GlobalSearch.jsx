@@ -275,7 +275,7 @@ export default function GlobalSearch({ className = 'w-full' }) {
                     <div key={category} className="space-y-3">
                       <p className="text-xs uppercase tracking-[0.3em] text-slate-400">{category}</p>
                       <div className="space-y-2">
-                        {categoryItems.map((item, index) => (
+                        {categoryItems.map((item, _index) => (
                           <SearchResultItem
                             key={item.id}
                             id={`global-search-item-${results.indexOf(item)}`}
@@ -290,7 +290,7 @@ export default function GlobalSearch({ className = 'w-full' }) {
                     </div>
                   ))
                 ) : (
-                  <div className="rounded-[22px] bg-slate-50 p-6 text-center text-sm text-slate-500">No Results Found for "{query}".</div>
+                  <div className="rounded-[22px] bg-slate-50 p-6 text-center text-sm text-slate-500">No Results Found for <span className="font-semibold">{`"${query}"`}</span>.</div>
                 )}
               </div>
             ) : null}

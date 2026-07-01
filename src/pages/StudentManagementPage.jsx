@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useQueryClient } from '@tanstack/react-query';
 import { useResourceList, useCreateResource, useUpdateResource, useDeleteResource } from '../hooks/useResourceHooks';
@@ -195,11 +196,14 @@ export default function StudentManagementPage() {
   const [_isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
   const [_isPromotionModalOpen, setIsPromotionModalOpen] = useState(false);
   const [_isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false);
-  const [_uploadingDocument, setUploadingDocument] = useState('');
-  const [_uploadStatus, setUploadStatus] = useState('');
+  const [uploadingDocument, setUploadingDocument] = useState('');
+  const [uploadStatus, setUploadStatus] = useState('');
+  const [studentUploads, setStudentUploads] = useState([]);
+  const [pendingDocumentType, setPendingDocumentType] = useState('');
   const [importing, setImporting] = useState(false);
   const [importStatus, setImportStatus] = useState('');
   const importInputRef = useRef(null);
+  const uploadInputRef = useRef(null);
   const pageSize = 6;
   const {
     _register,
@@ -394,8 +398,10 @@ export default function StudentManagementPage() {
       setPage(pageCount);
     }
   }, [pageCount, page]);
+  const navigate = useNavigate();
   const openStudent = (student) => {
     setSelectedStudentId(student.id);
+    navigate(`/students/${student.id}`);
   };
   const handleBulkToggle = (studentId) => {
     setBulkSelected((current) =>
@@ -469,7 +475,7 @@ export default function StudentManagementPage() {
   const _handleDocumentUpload = async (documentType, file) => {
     if (!selectedStudent || !file) return;
     setUploadingDocument(documentType);
-    setUploadStatus(`Uploading ${documentType}�`);
+    setUploadStatus(`Uploading ${documentType}…`);
     try {
       const formData = new FormData();
       formData.append('studentId', selectedStudent.id);
@@ -478,12 +484,34 @@ export default function StudentManagementPage() {
       await uploadService.upload('students', formData);
       queryClient.invalidateQueries(['students']);
       setUploadStatus(`${documentType} uploaded successfully.`);
+      const uploads = uploadService.getUploads('students');
+      setStudentUploads(uploads.filter((item) => item.studentId === selectedStudent.id));
     } catch (error) {
       setUploadStatus(`Failed to upload ${documentType}.`);
     } finally {
       setUploadingDocument('');
     }
   };
+
+  const handleDocumentUploadClick = (documentType) => {
+    if (!selectedStudent) return;
+    setPendingDocumentType(documentType);
+    uploadInputRef.current?.click();
+  };
+
+  const handleDocumentInputChange = async (event) => {
+    const file = event.target.files?.[0];
+    const documentType = pendingDocumentType;
+    setPendingDocumentType('');
+    if (!file || !documentType) {
+      if (event.target) event.target.value = '';
+      return;
+    }
+
+    await _handleDocumentUpload(documentType, file);
+    if (event.target) event.target.value = '';
+  };
+
   const handleExportCsv = () => {
     const rows = filteredStudents.map((student) => {
       const courseName = getLabel(courses, student.courseId, 'title');
@@ -667,6 +695,14 @@ export default function StudentManagementPage() {
   };
   const selectedStudentPayments = selectedStudent ? feePayments.filter((payment) => payment.studentId === selectedStudent.id) : [];
   const selectedAttendance = selectedStudent ? attendanceRecords.filter((entry) => entry.studentId === selectedStudent.id) : [];
+  useEffect(() => {
+    if (!selectedStudent?.id) {
+      setStudentUploads([]);
+      return;
+    }
+    const uploads = uploadService.getUploads('students');
+    setStudentUploads(uploads.filter((item) => item.studentId === selectedStudent.id));
+  }, [selectedStudent]);
   const selectedInternalMarks = selectedStudent ? internalMarks.filter((mark) => mark.studentId === selectedStudent.id) : [];
   const selectedPracticalMarks = selectedStudent ? practicalMarks.filter((mark) => mark.studentId === selectedStudent.id) : [];
   const selectedSubjectAssignments = selectedStudent ? subjectAssignments.filter((assignment) => assignment.studentId === selectedStudent.id) : [];
@@ -677,6 +713,14 @@ export default function StudentManagementPage() {
   const studentSemester = selectedStudent ? getLabel(semesters, selectedStudent.semesterId, 'name') : 'N/A';
   const _studentSection = selectedStudent ? getLabel(sections, selectedStudent.sectionId, 'name') : 'N/A';
   const _studentSession = selectedStudent?.academicSession || '2025-2026';
+  const uploadedDocuments = documentTypes.map((doc) => ({
+    ...doc,
+    upload: studentUploads.find((item) => item.documentType === doc.key) || null,
+  }));
+  const uploadedDocumentCount = uploadedDocuments.filter((doc) => doc.upload).length;
+  const missingDocumentCount = uploadedDocuments.length - uploadedDocumentCount;
+  const admissionStage = selectedStudent?.status === 'Pending' ? 'Pending admission' : selectedStudent?.status === 'Active' ? 'Enrolled' : selectedStudent?.status || 'Unknown';
+  const lifecycleStatus = selectedStudent ? `${admissionStage} • ${selectedStudent.feeStatus || 'Fee status unknown'}` : 'N/A';
   const totalPaid = selectedStudentPayments.reduce((sum, payment) => sum + (Number(payment.amount) || 0), 0);
   const totalFee = Number(selectedStudent?.totalFee || selectedStudent?.feeTotal || 0);
   const scholarship = Number(selectedStudent?.scholarship || 0);
@@ -934,6 +978,7 @@ export default function StudentManagementPage() {
                     <FaFileImport /> Import CSV
                     <input type="file" accept=".csv" ref={importInputRef} onChange={handleImportFile} className="hidden" disabled={importing} />
                   </label>
+                  <input type="file" accept=".pdf,.jpg,.png,.jpeg" ref={uploadInputRef} onChange={handleDocumentInputChange} className="hidden" />
                   <ExportButton onExcel={handleExportCsv} onPdf={handlePrint} onPrint={handlePrint} />
                 </div>
               </div>
@@ -1060,14 +1105,38 @@ export default function StudentManagementPage() {
               <div className="soft-surface rounded-[18px] p-4" ref={sectionRefs.documents}>
                 <div className="flex items-center justify-between gap-2">
                   <div>
-                    <p className="text-[11px] uppercase tracking-[0.24em] text-slate-500">Attendance summary</p>
-                    <h3 className="text-base font-semibold text-slate-950">Recent engagement</h3>
+                    <p className="text-[11px] uppercase tracking-[0.24em] text-slate-500">Document checklist</p>
+                    <h3 className="text-base font-semibold text-slate-950">Admission documents</h3>
                   </div>
-                  <span className="text-xs text-slate-500">{selectedAttendance.length} entries</span>
+                  <span className="text-xs text-slate-500">{uploadedDocumentCount} of {uploadedDocuments.length} uploaded</span>
                 </div>
-                <div className="mt-3 rounded-[14px] border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">
-                  {selectedAttendance.length === 0 ? 'No attendance records yet.' : `${selectedAttendance.filter((entry) => entry.status === 'Present').length} present / ${selectedAttendance.length} total`}
+                <div className="mt-3 grid gap-3">
+                  {uploadedDocuments.map((doc) => (
+                    <div key={doc.key} className="flex items-center justify-between gap-3 rounded-[14px] border border-slate-200 bg-slate-50 px-3 py-3 text-sm text-slate-600">
+                      <div>
+                        <p className="font-semibold text-slate-900">{doc.label}</p>
+                        <p className="text-xs text-slate-500">{doc.upload ? doc.upload.filename : 'Pending upload'}</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleDocumentUploadClick(doc.key)}
+                        disabled={!selectedStudent}
+                        className={`rounded-2xl px-3 py-2 text-xs font-semibold transition ${doc.upload ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-sky-500 text-white hover:bg-sky-600'} ${!selectedStudent ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      >
+                        {doc.upload ? 'Replace' : 'Upload'}
+                      </button>
+                    </div>
+                  ))}
                 </div>
+                <div className="mt-3 grid gap-2 rounded-[14px] border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">
+                  <div className="flex items-center justify-between gap-2"><span>Missing documents</span><span className="font-medium text-slate-900">{missingDocumentCount}</span></div>
+                  <div className="flex items-center justify-between gap-2"><span>Lifecycle status</span><span className="font-medium text-slate-900">{lifecycleStatus}</span></div>
+                </div>
+                {(uploadStatus || uploadingDocument) && (
+                  <div className="mt-3 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600">
+                    {uploadingDocument ? `Uploading ${uploadingDocument}…` : uploadStatus}
+                  </div>
+                )}
               </div>
               <div className="soft-surface rounded-[18px] p-4" ref={sectionRefs.timeline}>
                 <div className="flex items-center justify-between gap-2">

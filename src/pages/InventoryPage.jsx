@@ -40,6 +40,7 @@ import MetricCard from '../components/ui/MetricCard.jsx';
 import PanelCard from '../components/ui/PanelCard.jsx';
 import { Line, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, ArcElement, Tooltip, Legend, Title } from 'chart.js';
+import { buildProcurementSummary, getProcurementHealthStatus } from '../services/procurementService.js';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, ArcElement, Tooltip, Legend, Title);
 
@@ -404,16 +405,34 @@ export default function InventoryPage() {
   const { register: registerAssignment, handleSubmit: handleSubmitAssignment, reset: resetAssignment, formState: { errors: _assignmentErrors } } = assignmentForm;
   const { register: registerMaintenance, handleSubmit: handleSubmitMaintenance, reset: resetMaintenance, formState: { errors: _maintenanceErrors } } = maintenanceForm;
 
-  const totalAssets = assets.length;
-  const availableAssets = assets.filter((asset) => ['Available', 'In Stock', 'Received'].includes(asset.status)).length;
-  const assignedAssets = assets.filter((asset) => asset.status === 'Assigned').length;
-  const damagedAssets = assets.filter((asset) => asset.status === 'Damaged').length;
-  const underMaintenance = assets.filter((asset) => asset.status === 'Under Maintenance').length || maintenanceRequests.filter((request) => request.status !== 'Completed').length;
-  const lowStockItems = assets.filter((asset) => Number(asset.quantity || 1) <= 5).length;
-  const totalVendors = vendors.length;
-  const purchaseOrdersCount = purchases.length;
-  const pendingRequests = assignments.filter((item) => item.status === 'Pending').length;
-  const assetValue = assets.reduce((sum, asset) => sum + Number(asset.purchasePrice || 0), 0);
+  const procurementSummary = useMemo(() => buildProcurementSummary({
+    assets,
+    vendors,
+    purchases,
+    stockMovements,
+    assignments,
+    maintenanceRequests,
+  }), [assets, vendors, purchases, stockMovements, assignments, maintenanceRequests]);
+
+  const {
+    totalAssets,
+    availableAssets,
+    assignedAssets,
+    damagedAssets,
+    underMaintenance,
+    lowStockItems,
+    totalVendors,
+    purchaseOrdersCount,
+    pendingRequests,
+    assetValue,
+    procurementValue,
+  } = procurementSummary;
+
+  const procurementHealthStatus = useMemo(() => getProcurementHealthStatus({
+    lowStockItems,
+    pendingApprovals: purchases.filter((purchase) => purchase.status === 'Pending').length,
+    openMaintenanceRequests: maintenanceRequests.filter((request) => request.status !== 'Completed').length,
+  }), [lowStockItems, purchases, maintenanceRequests]);
 
   const _assetCategoryDistribution = useMemo(() => {
     const counts = {};
@@ -1070,6 +1089,8 @@ export default function InventoryPage() {
         <MetricCard label="Purchase Orders" value={purchaseOrdersCount.toString()} icon={ShoppingCart} delta="+11%" />
         <MetricCard label="Pending Requests" value={pendingRequests.toString()} icon={ClipboardList} delta="+7%" />
         <MetricCard label="Asset Value" value={`₹${assetValue.toLocaleString()}`} icon={Tag} delta="+12%" />
+        <MetricCard label="Procurement Value" value={`₹${procurementValue.toLocaleString()}`} icon={ShoppingCart} delta="+10%" />
+        <MetricCard label="Health" value={procurementHealthStatus} icon={ShieldCheck} delta="Stable" />
       </div>
 
       <div className="rounded-[32px] border border-slate-200/70 bg-white/95 p-4 shadow-soft">

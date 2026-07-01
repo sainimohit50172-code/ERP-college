@@ -3,7 +3,7 @@ import {
   useResourceList,
   useCreateResource,
 } from '../hooks/useResourceHooks';
-import { notifications as sampleNotifications } from './erpData.js';
+import notificationsService from './notificationsService.js';
 
 const ERPContext = createContext(null);
 
@@ -14,9 +14,7 @@ export function ERPProvider({ children }) {
 
   const [theme, setTheme] = useState('light');
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [notifications, setNotifications] = useState(
-    sampleNotifications.map((item) => ({ ...item, read: false })),
-  );
+  const [notifications, setNotifications] = useState(() => notificationsService.getNotifications());
   const [permissions, setPermissions] = useState([]);
 
   // Business data fetched via standardized resource hooks
@@ -54,6 +52,10 @@ export function ERPProvider({ children }) {
   const markAllNotificationsAsRead = () => {
     setNotifications((state) => state.map((notification) => ({ ...notification, read: true })));
   };
+
+  // subscribe to service updates so other services can push notifications
+  // and ERPContext stays in sync.
+  notificationsService.subscribe((list) => setNotifications(list));
 
   return (
     <ERPContext.Provider

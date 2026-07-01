@@ -5,25 +5,9 @@ import { useForm } from 'react-hook-form';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from '../services/AuthContext.jsx';
+import { ROLES } from '../services/rbac.js';
 
-const roles = [
-  'Super Admin',
-  'Admin',
-  'Principal',
-  'HOD',
-  'Teacher',
-  'Student',
-  'Parent',
-  'Employee',
-  'HR',
-  'Accountant',
-  'Telecaller',
-  'Counsellor',
-  'Security Guard',
-  'Library',
-  'Transport',
-  'Hostel',
-];
+const roles = ROLES;
 
 export default function LoginPage() {
   const [selectedRole, setSelectedRole] = useState('Super Admin');
@@ -57,8 +41,8 @@ export default function LoginPage() {
           <p className="mt-3 max-w-xl text-slate-400">Login to your portal and access dashboards, attendance, admissions, classes, leads, and all student lifecycle workflows.</p>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2">
-          {roles.slice(0, 8).map((role) => (
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {roles.map((role) => (
             <button
               key={role}
               type="button"

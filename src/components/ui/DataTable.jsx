@@ -69,7 +69,7 @@ export default function DataTable({ columns, rows, compact = false, loading = fa
     const normalizedQuery = query.trim().toLowerCase();
     if (!normalizedQuery) return rows;
 
-    return rows.filter((row, rowIndex) =>
+    return rows.filter((row, _rowIndex) =>
       columnsDefinition.some((column, columnIndex) => {
         const value = getCellText(getCellValue(row, column, columnIndex));
         return value.toLowerCase().includes(normalizedQuery);

@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 import { useResourceList } from '../hooks/useResourceHooks';
+import { listMarkEntries } from '../services/markEntryService.js';
+import { listResults } from '../services/resultService.js';
 function ExaminationReportsPage() {
   const { data: reportsData = {}, isLoading } = useResourceList('examinationReports', { page: 1, pageSize: 1000 });
   const { data: examinationsData = {} } = useResourceList('examinations', { page: 1, pageSize: 1000 });
@@ -7,6 +9,8 @@ function ExaminationReportsPage() {
   const reports = reportsData.items || [];
   const examinations = examinationsData.items || [];
   const students = studentsData.items || [];
+  const markEntries = listMarkEntries().items;
+  const results = listResults().items;
   const groupedReports = useMemo(() => {
     return reports.reduce((acc, report) => {
       const exam = examinations.find((e) => e.id === report.examId) || { name: report.examId };
@@ -24,10 +28,18 @@ function ExaminationReportsPage() {
           <p className="text-sm text-slate-500">Review exam report entries, export summaries, and see report status across exam cycles.</p>
         </div>
       </div>
-      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <p className="text-sm text-slate-500">Total Report Entries</p>
           <p className="mt-3 text-3xl font-semibold text-slate-900">{reports.length}</p>
+        </div>
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <p className="text-sm text-slate-500">Mark Entries</p>
+          <p className="mt-3 text-3xl font-semibold text-slate-900">{markEntries.length}</p>
+        </div>
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <p className="text-sm text-slate-500">Result Records</p>
+          <p className="mt-3 text-3xl font-semibold text-slate-900">{results.length}</p>
         </div>
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <p className="text-sm text-slate-500">Exams Covered</p>

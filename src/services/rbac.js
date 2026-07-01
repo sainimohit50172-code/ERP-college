@@ -1,24 +1,6 @@
-export const ROLES = [
-  'Super Admin',
-  'Admin',
-  'Principal',
-  'Director',
-  'Dean',
-  'HOD',
-  'Teacher',
-  'Student',
-  'Accountant',
-  'Librarian',
-  'Hostel Warden',
-  'Transport Manager',
-  'Security Guard',
-  'HR',
-  'Telecaller',
-  'Admission Counselor',
-  'Receptionist',
-];
+const STORAGE_KEY = 'erp_role_permissions';
 
-export const ACTIONS = ['view', 'create', 'edit', 'delete', 'import', 'export', 'print', 'approve'];
+export const ACTIONS = ['view', 'create', 'edit', 'delete', 'approve', 'export', 'print', 'import'];
 
 export const MODULES = [
   { key: 'dashboard', label: 'Dashboard' },
@@ -26,33 +8,80 @@ export const MODULES = [
   { key: 'students', label: 'Students' },
   { key: 'teachers', label: 'Teachers' },
   { key: 'employees', label: 'Employees' },
-  { key: 'fees', label: 'Fees' },
+  { key: 'leaveManagement', label: 'Leave Management' },
+  { key: 'payroll', label: 'Payroll Management' },
+  { key: 'finance', label: 'Finance & Accounting' },
+  { key: 'courses', label: 'Courses' },
+  { key: 'departments', label: 'Departments' },
+  { key: 'designations', label: 'Designations' },
+  { key: 'organizations', label: 'Organizations' },
+  { key: 'hrDocuments', label: 'HR Documents' },
+  { key: 'semesters', label: 'Semesters' },
+  { key: 'sections', label: 'Sections' },
+  { key: 'subjects', label: 'Subjects' },
+  { key: 'classrooms', label: 'Classrooms' },
+  { key: 'subjectAssignments', label: 'Subject Assignments' },
+  { key: 'teacherAssignments', label: 'Teacher Assignments' },
+  { key: 'teacherSchedule', label: 'Teacher Schedule' },
+  { key: 'calendar', label: 'Academic Calendar' },
+  { key: 'timetable', label: 'Timetable' },
+  { key: 'lectureNotes', label: 'Lecture Notes' },
+  { key: 'syllabus', label: 'Syllabus' },
+  { key: 'assignments', label: 'Assignments' },
+  { key: 'attendance', label: 'Attendance' },
   { key: 'library', label: 'Library' },
   { key: 'hostel', label: 'Hostel' },
   { key: 'transport', label: 'Transport' },
   { key: 'security', label: 'Security' },
-  { key: 'inventory', label: 'Inventory' },
+  { key: 'inventory', label: 'Inventory & Procurement' },
   { key: 'lms', label: 'LMS' },
-  { key: 'settings', label: 'Settings' },
   { key: 'leads', label: 'Leads' },
+  { key: 'fees', label: 'Fees' },
+  { key: 'feePayments', label: 'Fee Payments' },
   { key: 'questionBank', label: 'Question Bank' },
   { key: 'internalMarks', label: 'Internal Marks' },
   { key: 'practicalMarks', label: 'Practical Marks' },
   { key: 'examination', label: 'Examination' },
+  { key: 'examAttendance', label: 'Exam Attendance' },
+  { key: 'seatingPlan', label: 'Seating Plan' },
   { key: 'gradeCards', label: 'Grade Cards' },
   { key: 'transcripts', label: 'Transcripts' },
   { key: 'promotions', label: 'Student Promotion' },
-  { key: 'teacherAssignments', label: 'Teacher Assignment' },
-  { key: 'lectureAttendance', label: 'Lecture Attendance' },
-  { key: 'lectureNotes', label: 'Lecture Notes' },
-  { key: 'syllabus', label: 'Syllabus' },
-  { key: 'calendar', label: 'Academic Calendar' },
-  { key: 'timetable', label: 'Timetable' },
-  { key: 'attendance', label: 'Attendance' },
   { key: 'reports', label: 'Reports' },
+  { key: 'resultProcessing', label: 'Result Processing' },
   { key: 'auditLog', label: 'Audit Log' },
   { key: 'permissionMatrix', label: 'Permission Matrix' },
+  { key: 'settings', label: 'Settings' },
 ];
+
+export const ROLES = [
+  'Super Admin',
+  'Admin',
+  'Principal',
+  'HOD',
+  'Faculty',
+  'Accountant',
+  'Librarian',
+  'Transport Manager',
+  'Hostel Warden',
+  'HR Manager',
+  'Student',
+  'Parent',
+  'Security Guard',
+  'Director',
+  'Dean',
+  'Telecaller',
+  'Admission Counselor',
+  'Receptionist',
+];
+
+const ROLE_ALIASES = {
+  Teacher: 'Faculty',
+  HR: 'HR Manager',
+  Library: 'Librarian',
+  Hostel: 'Hostel Warden',
+  Transport: 'Transport Manager',
+};
 
 const fillActions = (actions) => MODULES.reduce((acc, module) => {
   if (actions === 'all') {
@@ -60,11 +89,6 @@ const fillActions = (actions) => MODULES.reduce((acc, module) => {
   } else {
     acc[module.key] = actions[module.key] || [];
   }
-  return acc;
-}, {});
-
-const _defaultAll = MODULES.reduce((acc, module) => {
-  acc[module.key] = [...ACTIONS];
   return acc;
 }, {});
 
@@ -79,61 +103,62 @@ const roleActions = {
   'Principal': {
     dashboard: ['view'],
     admissions: ['view', 'approve'],
-    students: ['view', 'edit'],
+    students: ['view', 'edit', 'approve'],
     teachers: ['view', 'approve'],
     employees: ['view'],
-    fees: ['view', 'approve'],
+    courses: ['view'],
+    departments: ['view'],
+    semesters: ['view'],
+    sections: ['view'],
+    subjects: ['view'],
+    classrooms: ['view'],
+    subjectAssignments: ['view'],
+    teacherAssignments: ['view'],
+    teacherSchedule: ['view'],
+    calendar: ['view'],
+    timetable: ['view'],
+    lectureNotes: ['view'],
+    syllabus: ['view'],
+    assignments: ['view'],
+    attendance: ['view'],
     library: ['view'],
     hostel: ['view'],
     transport: ['view'],
     security: ['view'],
-    inventory: ['view'],
+    inventory: ['view', 'create', 'edit', 'delete', 'export'],
     lms: ['view'],
-    settings: ['view'],
     leads: ['view'],
+    fees: ['view', 'approve'],
+    feePayments: ['view', 'approve'],
     questionBank: ['view'],
     internalMarks: ['view'],
     practicalMarks: ['view'],
     examination: ['view', 'approve'],
+    examAttendance: ['view'],
+    seatingPlan: ['view'],
     gradeCards: ['view'],
     transcripts: ['view'],
     promotions: ['view'],
-    teacherAssignments: ['view'],
-    lectureAttendance: ['view'],
-    lectureNotes: ['view'],
-    syllabus: ['view'],
-    calendar: ['view'],
-    timetable: ['view'],
-    attendance: ['view'],
     reports: ['view', 'export', 'print'],
+    resultProcessing: ['view'],
     auditLog: ['view'],
     permissionMatrix: ['view'],
-  },
-  'Director': {
-    ...defaultReadOnly,
-    admissions: ['view', 'approve'],
-    fees: ['view', 'approve'],
-    reports: ['view', 'export', 'print'],
-    auditLog: ['view'],
-  },
-  'Dean': {
-    ...defaultReadOnly,
-    students: ['view', 'approve'],
-    teachers: ['view', 'approve'],
-    reports: ['view', 'export'],
-    auditLog: ['view'],
+    settings: ['view'],
   },
   'HOD': {
     dashboard: ['view'],
     students: ['view', 'edit'],
     teachers: ['view'],
+    departments: ['view'],
+    subjects: ['view'],
+    classrooms: ['view'],
     syllabus: ['view', 'edit'],
     lectureNotes: ['view', 'edit'],
     examination: ['view', 'approve'],
     reports: ['view', 'export'],
     auditLog: ['view'],
   },
-  'Teacher': {
+  'Faculty': {
     dashboard: ['view'],
     students: ['view'],
     attendance: ['view', 'edit'],
@@ -142,18 +167,14 @@ const roleActions = {
     syllabus: ['view'],
     reports: ['view', 'print'],
     auditLog: ['view'],
-  },
-  'Student': {
-    dashboard: ['view'],
-    attendance: ['view'],
-    lectureNotes: ['view'],
-    lms: ['view'],
-    questionBank: ['view'],
-    reports: ['view'],
+    teacherAssignments: ['view'],
+    teacherSchedule: ['view'],
+    classes: ['view'],
   },
   'Accountant': {
     dashboard: ['view'],
     fees: ['view', 'create', 'edit', 'export', 'print'],
+    feePayments: ['view', 'create', 'edit', 'export', 'print'],
     reports: ['view', 'export', 'print'],
     auditLog: ['view'],
     settings: ['view'],
@@ -185,13 +206,55 @@ const roleActions = {
     reports: ['view'],
     auditLog: ['view'],
   },
-  'HR': {
+  'HR Manager': {
     dashboard: ['view'],
     employees: ['view', 'create', 'edit', 'delete', 'export'],
+    leaveManagement: ['view', 'create', 'edit', 'delete', 'approve', 'export', 'print'],
+    payroll: ['view', 'create', 'edit', 'delete', 'approve', 'export', 'print'],
+    finance: ['view', 'create', 'edit', 'delete', 'approve', 'export', 'print'],
+    designations: ['view', 'create', 'edit', 'delete', 'export'],
+    organizations: ['view', 'create', 'edit', 'delete', 'export'],
+    hrDocuments: ['view', 'create', 'edit', 'delete', 'export'],
     admissions: ['view'],
     reports: ['view', 'export'],
     auditLog: ['view'],
     settings: ['view'],
+  },
+  'Student': {
+    dashboard: ['view'],
+    attendance: ['view'],
+    lectureNotes: ['view'],
+    lms: ['view'],
+    questionBank: ['view'],
+    gradeCards: ['view'],
+    transcripts: ['view'],
+    reports: ['view'],
+    assignments: ['view'],
+  },
+  'Parent': {
+    dashboard: ['view'],
+    attendance: ['view'],
+    lectureNotes: ['view'],
+    lms: ['view'],
+    questionBank: ['view'],
+    gradeCards: ['view'],
+    transcripts: ['view'],
+    reports: ['view'],
+    assignments: ['view'],
+  },
+  'Director': {
+    ...defaultReadOnly,
+    admissions: ['view', 'approve'],
+    fees: ['view', 'approve'],
+    reports: ['view', 'export', 'print'],
+    auditLog: ['view'],
+  },
+  'Dean': {
+    ...defaultReadOnly,
+    students: ['view', 'approve'],
+    teachers: ['view', 'approve'],
+    reports: ['view', 'export'],
+    auditLog: ['view'],
   },
   'Telecaller': {
     dashboard: ['view'],
@@ -216,11 +279,71 @@ const roleActions = {
   },
 };
 
-export function getPermissionsForRole(role) {
-  if (!roleActions[role]) {
+function normalizeRole(role) {
+  if (!role) return 'Super Admin';
+  return ROLE_ALIASES[role] || role;
+}
+
+function loadSavedPermissions() {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (!stored) return {};
+  try {
+    return JSON.parse(stored);
+  } catch {
+    return {};
+  }
+}
+
+function savePermissions(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+export function getRoles() {
+  return [...ROLES];
+}
+
+export function getActions() {
+  return [...ACTIONS];
+}
+
+export function getModules() {
+  return [...MODULES];
+}
+
+export function getRolePermissions(role) {
+  const normalizedRole = normalizeRole(role);
+  const savedPermissions = loadSavedPermissions();
+  const customActions = savedPermissions[normalizedRole];
+  if (customActions) {
+    return fillActions(customActions);
+  }
+  const defaultActions = roleActions[normalizedRole];
+  if (!defaultActions) {
     return fillActions(defaultReadOnly);
   }
-  return fillActions(roleActions[role]);
+  return fillActions(defaultActions);
+}
+
+export function updateRolePermissions(role, actionsByModule) {
+  const normalizedRole = normalizeRole(role);
+  const savedPermissions = loadSavedPermissions();
+  savedPermissions[normalizedRole] = actionsByModule;
+  savePermissions(savedPermissions);
+  return fillActions(actionsByModule);
+}
+
+export function resetRolePermissions(role) {
+  const normalizedRole = normalizeRole(role);
+  const savedPermissions = loadSavedPermissions();
+  if (savedPermissions[normalizedRole]) {
+    delete savedPermissions[normalizedRole];
+    savePermissions(savedPermissions);
+  }
+  return getRolePermissions(normalizedRole);
+}
+
+export function getPermissionsForRole(role) {
+  return getRolePermissions(role);
 }
 
 export function hasPermission(permissions, moduleKey, action = 'view') {

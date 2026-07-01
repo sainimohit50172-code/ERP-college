@@ -1,6 +1,6 @@
 # AI Agent Skills — Full Catalog
 
-> Auto-generated. Total: **1693 skills** across **109 categories**.
+> Auto-generated. Total: **1700 skills** across **111 categories**.
 > When asked "what skill should I use?", browse this file and suggest the most relevant skill IDs.
 > Install a skill: `Ctrl+Shift+/` → search for the skill ID → press Enter.
 
@@ -23,6 +23,10 @@
 - **max**: Cleans up and improves existing code without changing behavior. _(risk: safe)_
 - **quinn**: Proves the system works by writing and executing comprehensive test suites. _(risk: safe)_
 - **rex**: Translates user intent into a precise, unambiguous specification and requirements. _(risk: safe)_
+
+## ai
+
+- **weaviate-cookbooks**: Build Weaviate AI apps from official cookbook blueprints for RAG, agentic RAG, data exploration, multimodal PDF search, async clients, and frontends. _(risk: safe)_
 
 ## ai-agents
 
@@ -851,6 +855,11 @@ market, solution, financials, and strategy
 
 - **base**: Database management, forms, reports, and data operations with LibreOffice Base. _(risk: safe)_
 
+## databases
+
+- **drizzle-migration-conflict**: Diagnose, repair, and prevent Drizzle Kit migration conflicts involving generated SQL, snapshots, journals, merge queues, and team workflows. _(risk: critical)_
+- **weaviate**: Search, query, inspect, create, and import data into Weaviate vector database collections using official scripts and references. _(risk: critical)_
+
 ## design
 
 - **core-components**: Core component library and design system patterns. Use when building UI, using design tokens, or working with the component library. _(risk: unknown)_
@@ -1192,6 +1201,7 @@ makepad Markdown, makepad Html, TextFlow, rich... _(risk: unknown)_
 - **design-taste-frontend**: Use when building high-agency frontend interfaces with strict design taste, calibrated color, responsive layout, and motion rules. _(risk: safe)_
 - **emil-design-eng**: Use when designing or reviewing polished product UI with Emil Kowalski-inspired animation, interaction, and component craft guidance. _(risk: safe)_
 - **frontend-api-integration-patterns**: Production-ready patterns for integrating frontend applications with backend APIs, including race condition handling, request cancellation, retry strategies, error normalization, and UI state management. _(risk: safe)_
+- **frontend-lighthouse**: Add a portable Lighthouse CI gate for production frontend builds with Core Web Vitals budgets, category floors, median runs, and CI artifacts. _(risk: safe)_
 - **full-output-enforcement**: Use when a task requires exhaustive unabridged output, complete files, or strict prevention of placeholders and skipped code. _(risk: safe)_
 - **gpt-taste**: Use when generating elite GSAP-heavy frontend pages with strict AIDA structure, wide hero typography, and gapless bento grids. _(risk: safe)_
 - **high-end-visual-design**: Use when designing expensive agency-grade interfaces with premium fonts, spatial rhythm, soft depth, and fluid microinteractions. _(risk: safe)_
@@ -1599,6 +1609,7 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 - **production-scheduling**: Codified expertise for production scheduling, job sequencing, line balancing, changeover optimisation, and bottleneck resolution in discrete and batch manufacturing. _(risk: safe)_
 - **quality-nonconformance**: Codified expertise for quality control, non-conformance investigation, root cause analysis, corrective action, and supplier quality management in regulated manufacturing. _(risk: safe)_
 - **returns-reverse-logistics**: Codified expertise for returns authorisation, receipt and inspection, disposition decisions, refund processing, fraud detection, and warranty claims management. _(risk: safe)_
+- **pre-release-review**: Run a read-only pre-release review for deploy readiness, migrations, config, secrets, rollout order, rollback risk, and launch blockers. _(risk: safe)_
 
 ## orchestration
 
@@ -1936,6 +1947,7 @@ calculations
 - **workflow-patterns**: Use this skill when implementing tasks according to Conductor's TDD workflow, handling phase checkpoints, managing git commits for tasks, or understanding the verification protocol. _(risk: unknown)_
 - **writing-plans**: Use when you have a spec or requirements for a multi-step task, before touching code _(risk: unknown)_
 - **android-ui-journey-testing**: XML-specified Android UI journey testing, interactive step execution, assertion verification, and JSON outcome reporting. _(risk: critical)_
+- **browser-testing-with-devtools**: Test browser apps with Chrome DevTools MCP by inspecting live DOM, console logs, network traffic, screenshots, accessibility, and performance traces. _(risk: critical)_
 - **lambdatest-agent-skills**: Production-grade test automation skills for 46 frameworks across E2E, unit, mobile, BDD, visual, and cloud testing in 15+ languages. _(risk: safe)_
 - **mock-hunter**: Audit a live web page in five phases (catalog, click, trace, classify, report) to identify mock data, hardcoded values, LLM-generated metrics, and broken endpoints. Outputs a markdown report with REAL/MOCK/LLM/HARDCODED/BROKEN/UNKNOWN verdicts per visible value. _(risk: critical)_
 - **tdd-workflows**: Use when working with tdd workflows tdd cycle (Alias for tdd-workflows-tdd-cycle) _(risk: unknown)_
@@ -2026,6 +2038,7 @@ calculations
 - **price-psychology-strategist**: One sentence - what this skill does and when to invoke it _(risk: safe)_
 - **project-skill-audit**: Audit a project and recommend the highest-value skills to add or update. _(risk: safe)_
 - **protect-mcp-governance**: Agent governance skill for MCP tool calls — Cedar policy authoring, shadow-to-enforce rollout, and Ed25519 receipt verification. _(risk: safe)_
+- **re-create**: Completely delete and rewrite a file or module from scratch when structural rot makes patching impossible. _(risk: critical)_
 - **sales-enablement**: Create sales collateral such as decks, one-pagers, objection docs, demo scripts, playbooks, and proposal templates. Use when a sales team needs assets that help reps move deals forward and close. _(risk: unknown)_
 - **scarcity-urgency-psychologist**: One sentence - what this skill does and when to invoke it _(risk: safe)_
 - **screenstudio-alt**: Open-source headless Screen Studio alternative: auto speed-up of idle, auto-zoom on click clusters, keystroke overlay chips, smoothed synthetic cursor, and 9:16 vertical export that follows the action — post-production for screen recordings from the CLI. _(risk: critical)_

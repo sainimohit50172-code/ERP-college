@@ -10,6 +10,7 @@ import FormField from '../components/forms/FormField.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
 import { useResults } from '../hooks/useResults';
 import { useERP } from '../services/ERPContext.jsx';
+import { createResult as createResultRecord, listResults, publishResult as publishResultRecord } from '../services/resultService.js';
 // Results are provided by API
 const statusOptions = [
   { value: 'All', label: 'All statuses' },
@@ -26,6 +27,7 @@ export default function ResultProcessingPage() {
   const pageSize = 5;
   const { data, _isLoading, _isError, _error, createResult, publishResult } = useResults({ page, pageSize, search, filter });
   const results = data?.items || [];
+  const serviceResults = listResults().items;
   const isPublishing = publishResult.isLoading;
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: { student: '', rollNo: '', subject: '', internal: '0', practical: '0', external: '0', status: 'Pending' },
@@ -53,6 +55,19 @@ export default function ResultProcessingPage() {
     const percentage = ((total / 200) * 100).toFixed(1);
     const grade = getGrade(percentage);
     const payload = { ...data, total: total.toString(), maxMarks: '200', percentage: `${percentage}%`, grade, createdBy: currentUser?.id };
+    const servicePayload = {
+      studentName: data.student,
+      studentId: data.rollNo,
+      semester: data.semester || '5',
+      course: data.course || 'BCA',
+      total,
+      percentage: Number(percentage),
+      cgpa: Number(percentage) / 10,
+      sgpa: Number(percentage) / 10,
+      grade,
+      status: data.status || 'Pending',
+    };
+    createResultRecord(servicePayload);
     createResult.mutate(payload, {
       onSuccess: () => setNotifications((prev) => [{ id: `NOTIF-${Date.now()}`, title: 'Result processed', date: new Date().toISOString().split('T')[0], details: 'Result processed successfully' }, ...prev]),
       onError: () => setNotifications((prev) => [{ id: `NOTIF-${Date.now()}`, title: 'Process failed', date: new Date().toISOString().split('T')[0], details: 'Could not process result', type: 'error' }, ...prev]),
@@ -63,15 +78,16 @@ export default function ResultProcessingPage() {
   };
   const onPublishResult = async (resultId) => {
     try {
+      publishResultRecord(resultId);
       await publishResult.mutateAsync(resultId);
       setNotifications((prev) => [{ id: `NOTIF-${Date.now()}`, title: 'Result published', date: new Date().toISOString().split('T')[0], details: 'Result published successfully' }, ...prev]);
     } catch (err) {
       setNotifications((prev) => [{ id: `NOTIF-${Date.now()}`, title: 'Publish failed', date: new Date().toISOString().split('T')[0], details: 'Could not publish result', type: 'error' }, ...prev]);
     }
   };
-  const totalRecords = (results || []).length;
-  const published = (results || []).filter((r) => r.status === 'Published').length;
-  const avgPercentage = ((results || []).reduce((acc, r) => acc + parseFloat(r.percentage || '0'), 0) / Math.max(1, (results || []).length)).toFixed(1);
+  const totalRecords = (serviceResults || []).length;
+  const published = (serviceResults || []).filter((r) => r.published || r.status === 'Published').length;
+  const avgPercentage = ((serviceResults || []).reduce((acc, r) => acc + parseFloat(r.percentage || '0'), 0) / Math.max(1, (serviceResults || []).length)).toFixed(1);
   return (
     <div className="space-y-6">
       <SectionHeader title="Result processing" subtitle="Compile final results from internal, practical and external exam marks." />

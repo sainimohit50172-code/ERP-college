@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import {
   useResourceList,
@@ -59,6 +60,7 @@ function downloadBlob(blob, filename) {
 }
 export default function EmployeeManagementPage() {
   const importInputRef = useRef(null);
+  const navigate = useNavigate();
   const { data: employeesData } = useResourceList('employees', { page: 1, pageSize: 200 });
   const { data: departmentsData } = useResourceList('departments', { page: 1, pageSize: 200 });
   const { data: employeeAttendanceData } = useResourceList('employeeAttendance', { page: 1, pageSize: 200 });
@@ -313,6 +315,15 @@ export default function EmployeeManagementPage() {
                   employee.salary,
                   <StatusBadge key={`${employee.id}-status`} status={employee.status} />,
                   <div key={`${employee.id}-actions`} className="flex flex-wrap gap-2">
+                    <WithPermission moduleKey="employees" action="view">
+                      <button
+                        type="button"
+                        onClick={() => navigate(`/employees/${employee.id}`)}
+                        className="rounded-full border border-white/10 bg-slate-800/80 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700"
+                      >
+                        View Profile
+                      </button>
+                    </WithPermission>
                     <WithPermission moduleKey="employees" action="edit">
                       <button
                         type="button"

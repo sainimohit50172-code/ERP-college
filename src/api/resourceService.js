@@ -1,5 +1,6 @@
-import api from './axios';
-import { getEndpoint } from './endpoints';
+import api from './axios.js';
+import { getEndpoint } from './endpoints.js';
+import { getRepository } from '../services/repositoryProvider.js';
 
 const createMemoryStorage = () => {
   const store = new Map();
@@ -65,10 +66,12 @@ const paginateItems = (items, params = {}) => {
 
 export const createResourceService = (resource) => {
   const endpoint = getEndpoint(resource);
+  const repo = getRepository(resource);
 
   return {
     list: async (params = {}) => {
       try {
+        if (repo && typeof repo.list === 'function') return repo.list(params);
         const res = await api.get(`/${endpoint}`, { params });
         return res.data;
       } catch {
@@ -78,6 +81,7 @@ export const createResourceService = (resource) => {
     },
     get: async (id) => {
       try {
+        if (repo && typeof repo.get === 'function') return repo.get(id);
         const res = await api.get(`/${endpoint}/${id}`);
         return res.data;
       } catch {
@@ -87,6 +91,7 @@ export const createResourceService = (resource) => {
     },
     create: async (payload) => {
       try {
+        if (repo && typeof repo.create === 'function') return repo.create(payload);
         const res = await api.post(`/${endpoint}`, payload);
         return res.data;
       } catch {
@@ -99,6 +104,7 @@ export const createResourceService = (resource) => {
     },
     update: async (id, payload) => {
       try {
+        if (repo && typeof repo.update === 'function') return repo.update(id, payload);
         const res = await api.put(`/${endpoint}/${id}`, payload);
         return res.data;
       } catch {
@@ -118,6 +124,7 @@ export const createResourceService = (resource) => {
     },
     remove: async (id) => {
       try {
+        if (repo && typeof repo.remove === 'function') return repo.remove(id);
         const res = await api.delete(`/${endpoint}/${id}`);
         return res.data;
       } catch {
@@ -129,6 +136,7 @@ export const createResourceService = (resource) => {
     },
     search: async (q) => {
       try {
+        if (repo && typeof repo.search === 'function') return repo.search(q);
         const res = await api.get(`/${endpoint}/search`, { params: { q } });
         return res.data;
       } catch {

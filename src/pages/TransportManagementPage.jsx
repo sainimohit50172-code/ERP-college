@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   useBulkExport,
   useBulkImport,
@@ -15,7 +16,9 @@ import {
   FaFileImport,
   FaPlus,
   FaTrash,
+  FaLink,
 } from 'react-icons/fa';
+import { assignVehicle, unassignVehicle } from '../services/driverService.js';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
 import SearchFilter from '../components/forms/SearchFilter.jsx';
 import DataTable from '../components/ui/DataTable.jsx';
@@ -196,23 +199,52 @@ export default function TransportManagementPage() {
   const _createMaintenance = useCreateResource('maintenanceRecords');
   const _importMaintenance = useBulkImport('maintenanceRecords');
   const _exportMaintenance = useBulkExport('maintenanceRecords');
-  const [search, setSearch] = useState('');
-  const [filter, setFilter] = useState('All');
-  const [page, setPage] = useState(1);
-  const [_activeTab, _setActiveTab] = useState('vehicles');
+  const [vehicleSearch, setVehicleSearch] = useState('');
+  const [vehicleFilter, setVehicleFilter] = useState('All');
+  const [driverSearch, setDriverSearch] = useState('');
+  const [driverFilter, setDriverFilter] = useState('All');
+  const [vehiclePage, setVehiclePage] = useState(1);
+  const [driverPage, setDriverPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isDriverModalOpen, setIsDriverModalOpen] = useState(false);
+  const [selectedDriver, setSelectedDriver] = useState(null);
+  const [isDriverEditMode, setIsDriverEditMode] = useState(false);
+  const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
+  const [assignmentTarget, setAssignmentTarget] = useState(null);
+  const [assignmentVehicleId, setAssignmentVehicleId] = useState('');
   const [_importStatus, setImportStatus] = useState('');
   const [_isExporting, setIsExporting] = useState(false);
   const [_isPrinting, _setIsPrinting] = useState(false);
   const pageSize = 6;
+  const queryClient = useQueryClient();
+  const assignDriverMutation = useMutation({
+    mutationFn: ({ driverId, vehicleId }) => assignVehicle(driverId, vehicleId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['transportDrivers']);
+      queryClient.invalidateQueries(['transportVehicles']);
+    },
+  });
+  const unassignDriverMutation = useMutation({
+    mutationFn: ({ driverId }) => unassignVehicle(driverId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['transportDrivers']);
+      queryClient.invalidateQueries(['transportVehicles']);
+    },
+  });
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, _isSubmitting },
   } = useForm({ defaultValues: defaultVehicle });
+  const {
+    register: registerDriver,
+    handleSubmit: handleSubmitDriver,
+    reset: resetDriver,
+    formState: { errors: driverErrors },
+  } = useForm({ defaultValues: _defaultDriver });
   const handleImport = (resourceImport, file, successLabel) => {
     if (!file) return;
     setImportStatus(`Importing ${successLabel}…`);
@@ -251,18 +283,37 @@ export default function TransportManagementPage() {
   const maintenanceDue = maintenanceRecords.filter((record) => record.dueDate && new Date(record.dueDate) <= new Date()).length;
   const insuranceExpiry = vehicles.filter((vehicle) => vehicle.insuranceExpiry && new Date(vehicle.insuranceExpiry) <= new Date()).length;
   const todayTrips = attendanceRecords.filter((record) => record.date === new Date().toISOString().slice(0, 10)).length;
+  const driverFilterOptions = [
+    { value: 'All', label: 'All statuses' },
+    { value: 'Active', label: 'Active' },
+    { value: 'Inactive', label: 'Inactive' },
+    { value: 'Assigned', label: 'Assigned' },
+    { value: 'Archived', label: 'Archived' },
+  ];
   const filteredVehicles = useMemo(() => {
     return vehicles.filter((vehicle) => {
-      const searchTerm = search.toLowerCase();
+      const searchTerm = vehicleSearch.toLowerCase();
       const matchesSearch = [vehicle.vehicleNumber, vehicle.busName, vehicle.vehicleType, vehicle.gpsId, vehicle.status]
         .filter(Boolean)
         .some((field) => field.toString().toLowerCase().includes(searchTerm));
-      const matchesFilter = filter === 'All' || vehicle.status === filter;
+      const matchesFilter = vehicleFilter === 'All' || vehicle.status === vehicleFilter;
       return matchesSearch && matchesFilter;
     });
-  }, [vehicles, search, filter]);
-  const pageCount = Math.max(1, Math.ceil(filteredVehicles.length / pageSize));
-  const displayedVehicles = filteredVehicles.slice((page - 1) * pageSize, page * pageSize);
+  }, [vehicles, vehicleSearch, vehicleFilter]);
+  const filteredDrivers = useMemo(() => {
+    return drivers.filter((driver) => {
+      const searchTerm = driverSearch.toLowerCase();
+      const matchesSearch = [driver.name, driver.employeeId, driver.licenseNumber, driver.mobile, driver.status]
+        .filter(Boolean)
+        .some((field) => field.toString().toLowerCase().includes(searchTerm));
+      const matchesFilter = driverFilter === 'All' || (driverFilter === 'Assigned' ? !!driver.assignedVehicle : driver.status === driverFilter);
+      return matchesSearch && matchesFilter;
+    });
+  }, [drivers, driverSearch, driverFilter]);
+  const vehiclePageCount = Math.max(1, Math.ceil(filteredVehicles.length / pageSize));
+  const driverPageCount = Math.max(1, Math.ceil(filteredDrivers.length / pageSize));
+  const displayedVehicles = filteredVehicles.slice((vehiclePage - 1) * pageSize, vehiclePage * pageSize);
+  const displayedDrivers = filteredDrivers.slice((driverPage - 1) * pageSize, driverPage * pageSize);
   const vehicleRows = displayedVehicles.map((vehicle) => [
     vehicle.vehicleNumber,
     vehicle.vehicleType,
@@ -279,6 +330,60 @@ export default function TransportManagementPage() {
       </WithPermission>
     </div>,
   ]);
+  const driverRows = displayedDrivers.map((driver) => {
+    const assignedVehicle = vehicles.find((vehicle) => String(vehicle.id) === String(driver.assignedVehicle));
+    return [
+      driver.name,
+      driver.employeeId,
+      driver.licenseNumber,
+      driver.mobile,
+      driver.status,
+      assignedVehicle ? `${assignedVehicle.vehicleNumber || assignedVehicle.registration || assignedVehicle.id}` : 'Unassigned',
+      <div key={`${driver.id}-actions`} className="flex flex-wrap items-center gap-2">
+        <WithPermission moduleKey="transport" action="edit">
+          <button
+            onClick={() => {
+              setSelectedDriver(driver);
+              setIsDriverEditMode(true);
+              resetDriver({
+                ...driver,
+                salary: driver.salary ? String(driver.salary).replace(/[^0-9.]/g, '') : '',
+              });
+              setIsDriverModalOpen(true);
+            }}
+            className="rounded-full border border-white/10 bg-slate-800 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700"
+          >
+            <FaEdit />
+          </button>
+        </WithPermission>
+        <WithPermission moduleKey="transport" action="delete">
+          <button onClick={() => _deleteDriver.mutate(driver.id)} className="rounded-full border border-white/10 bg-rose-500/10 px-3 py-2 text-xs text-rose-300 transition hover:bg-rose-500/20">
+            <FaTrash />
+          </button>
+        </WithPermission>
+        <button
+          type="button"
+          onClick={() => {
+            setAssignmentTarget(driver);
+            setAssignmentVehicleId(driver.assignedVehicle || (vehicles[0]?.id || ''));
+            setIsAssignmentModalOpen(true);
+          }}
+          className="rounded-full border border-white/10 bg-slate-800 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700"
+        >
+          <FaLink />
+        </button>
+        {driver.assignedVehicle && (
+          <button
+            type="button"
+            onClick={() => unassignDriverMutation.mutate({ driverId: driver.id })}
+            className="rounded-full border border-white/10 bg-sky-400/10 px-3 py-2 text-xs text-sky-300 transition hover:bg-sky-400/20"
+          >
+            Unassign
+          </button>
+        )}
+      </div>,
+    ];
+  });
   return (
     <div className="space-y-8">
       <SectionHeader title="Transport management" subtitle="Manage transport operations including vehicles, drivers, routes, fuel, maintenance, and assignments." />
@@ -338,7 +443,7 @@ export default function TransportManagementPage() {
               </div>
             </div>
             <div className="mt-6 grid gap-4 md:grid-cols-2">
-              <SearchFilter search={search} onSearch={setSearch} filter={filter} onFilter={setFilter} options={transportStatusOptions} />
+              <SearchFilter search={vehicleSearch} onSearch={setVehicleSearch} filter={vehicleFilter} onFilter={setVehicleFilter} options={transportStatusOptions} />
             </div>
             <div className="mt-6">
               <DataTable
@@ -347,7 +452,44 @@ export default function TransportManagementPage() {
               />
             </div>
             <div className="mt-6">
-              <TablePagination page={page} pageCount={pageCount} onPageChange={setPage} />
+              <TablePagination page={vehiclePage} pageCount={vehiclePageCount} onPageChange={setVehiclePage} />
+            </div>
+          </div>
+
+          <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+            <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+              <div>
+                <h2 className="text-xl font-semibold text-white">Driver management</h2>
+                <p className="text-sm text-slate-400">Create, assign, and monitor transport drivers and fleet assignments.</p>
+              </div>
+              <div className="flex flex-wrap items-center gap-3">
+                <button onClick={() => handleExport(_exportDrivers, 'transport-drivers-export.xlsx')} className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700">
+                  <FaDownload /> Export
+                </button>
+                <button onClick={() => importInputRef.current?.click()} className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">
+                  <FaFileImport /> Import
+                </button>
+                <button onClick={() => {
+                  setIsDriverEditMode(false);
+                  setSelectedDriver(null);
+                  resetDriver(_defaultDriver);
+                  setIsDriverModalOpen(true);
+                }} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400">
+                  <FaPlus /> Add driver
+                </button>
+              </div>
+            </div>
+            <div className="mt-6 grid gap-4 md:grid-cols-2">
+              <SearchFilter search={driverSearch} onSearch={setDriverSearch} filter={driverFilter} onFilter={setDriverFilter} options={driverFilterOptions} />
+            </div>
+            <div className="mt-6">
+              <DataTable
+                columns={['Name', 'Employee ID', 'License #', 'Mobile', 'Status', 'Assigned Vehicle', 'Actions']}
+                rows={driverRows}
+              />
+            </div>
+            <div className="mt-6">
+              <TablePagination page={driverPage} pageCount={driverPageCount} onPageChange={setDriverPage} />
             </div>
           </div>
         </div>
@@ -454,6 +596,103 @@ export default function TransportManagementPage() {
             </select>
           </FormField>
         </form>
+      </Modal>
+      <Modal
+        title={isDriverEditMode ? 'Edit driver' : 'Add driver'}
+        isOpen={isDriverModalOpen}
+        onClose={() => setIsDriverModalOpen(false)}
+        footer={
+          <button onClick={handleSubmitDriver((data) => {
+            const payload = {
+              ...data,
+              salary: Number(data.salary) || 0,
+            };
+            if (isDriverEditMode && selectedDriver) {
+              _updateDriver.mutate({ id: selectedDriver.id, payload });
+            } else {
+              _createDriver.mutate(payload);
+            }
+            setIsDriverModalOpen(false);
+            setSelectedDriver(null);
+            setIsDriverEditMode(false);
+            resetDriver(_defaultDriver);
+          })} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">
+            Save driver
+          </button>
+        }
+      >
+        <form className="grid gap-5 lg:grid-cols-2">
+          <FormField label="Name">
+            <input type="text" {...registerDriver('name', { required: 'Name is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Driver name" />
+            {driverErrors.name && <p className="mt-1 text-sm text-rose-400">{driverErrors.name.message}</p>}
+          </FormField>
+          <FormField label="Employee ID">
+            <input type="text" {...registerDriver('employeeId', { required: 'Employee ID is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="EMP-001" />
+            {driverErrors.employeeId && <p className="mt-1 text-sm text-rose-400">{driverErrors.employeeId.message}</p>}
+          </FormField>
+          <FormField label="License number">
+            <input type="text" {...registerDriver('licenseNumber', { required: 'License number is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="LIC-12345" />
+            {driverErrors.licenseNumber && <p className="mt-1 text-sm text-rose-400">{driverErrors.licenseNumber.message}</p>}
+          </FormField>
+          <FormField label="Mobile">
+            <input type="text" {...registerDriver('mobile')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="(555) 123-4567" />
+          </FormField>
+          <FormField label="Status">
+            <select {...registerDriver('status')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+              {transportStatusOptions.filter((option) => option.value !== 'All').map((option) => (
+                <option key={option.value} value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </FormField>
+          <FormField label="License expiry">
+            <input type="date" {...registerDriver('licenseExpiry')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+          </FormField>
+          <FormField label="Address">
+            <input type="text" {...registerDriver('address')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="123 Main St" />
+          </FormField>
+          <FormField label="Emergency contact">
+            <input type="text" {...registerDriver('emergencyContact')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="(555) 987-6543" />
+          </FormField>
+          <FormField label="Blood group">
+            <input type="text" {...registerDriver('bloodGroup')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="O+" />
+          </FormField>
+          <FormField label="Joining date">
+            <input type="date" {...registerDriver('joiningDate')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+          </FormField>
+          <FormField label="Salary">
+            <input type="number" {...registerDriver('salary', { valueAsNumber: true })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="25000" />
+          </FormField>
+        </form>
+      </Modal>
+      <Modal
+        title={assignmentTarget ? `Assign vehicle to ${assignmentTarget.name}` : 'Assign vehicle'}
+        isOpen={isAssignmentModalOpen}
+        onClose={() => setIsAssignmentModalOpen(false)}
+        footer={
+          <button onClick={() => {
+            if (assignmentTarget) {
+              assignDriverMutation.mutate({ driverId: assignmentTarget.id, vehicleId: assignmentVehicleId });
+            }
+            setIsAssignmentModalOpen(false);
+          }} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">
+            Save assignment
+          </button>
+        }
+      >
+        <div className="space-y-5">
+          <div>
+            <p className="text-sm text-slate-400">Driver</p>
+            <p className="mt-1 text-lg font-semibold text-white">{assignmentTarget?.name || 'Select driver'}</p>
+          </div>
+          <FormField label="Vehicle">
+            <select value={assignmentVehicleId} onChange={(event) => setAssignmentVehicleId(event.target.value)} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+              {vehicles.map((vehicle) => (
+                <option key={vehicle.id} value={vehicle.id}>{vehicle.vehicleNumber || vehicle.busName || vehicle.id}</option>
+              ))}
+            </select>
+          </FormField>
+          <p className="text-sm text-slate-500">Select a vehicle to assign. Existing assignments will be updated automatically.</p>
+        </div>
       </Modal>
       <input ref={importInputRef} type="file" accept=".csv" className="hidden" onChange={(event) => handleFileChange(event, importVehicles, 'vehicles')} />
     </div>

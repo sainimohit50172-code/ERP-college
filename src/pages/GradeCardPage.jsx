@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { FaDownload, FaSearch } from 'react-icons/fa';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
 import { useGradeCards } from '../hooks/useGradeCards';
+import { listResults } from '../services/resultService.js';
 export default function GradeCardPage() {
   const [search, setSearch] = useState('');
   const [selectedCard, setSelectedCard] = useState(null);
@@ -10,6 +11,7 @@ export default function GradeCardPage() {
   const pageSize = 5;
   const { data, isLoading, error, recalculateGradeCard } = useGradeCards({ page, pageSize, search, filter: 'All' });
   const gradeCards = data?.items || [];
+  const resultRecords = listResults().items;
   useEffect(() => {
     if (!selectedCard && gradeCards.length > 0) {
       setSelectedCard(gradeCards[0]);
@@ -39,6 +41,20 @@ export default function GradeCardPage() {
   return (
     <div className="space-y-8">
       <SectionHeader title="Grade cards" subtitle="View student grade cards with subject-wise breakdown and GPA/CGPA." />
+      <div className="grid gap-3 md:grid-cols-3">
+        <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Result records</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{resultRecords.length}</p>
+        </div>
+        <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Published</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{resultRecords.filter((item) => item.published).length}</p>
+        </div>
+        <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Average score</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{resultRecords.length ? Math.round(resultRecords.reduce((sum, item) => sum + Number(item.percentage || 0), 0) / resultRecords.length) : 0}%</p>
+        </div>
+      </div>
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm lg:col-span-1">
           <h3 className="text-lg font-semibold text-white mb-4">Select student</h3>

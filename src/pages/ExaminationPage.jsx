@@ -9,6 +9,7 @@ import Modal from '../components/ui/Modal.jsx';
 import Button from '../components/ui/Button.jsx';
 import FormField from '../components/forms/FormField.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
+import ExaminationModule from '../components/examination/ExaminationModule.jsx';
 import { useExaminations } from '../hooks/useExaminations';
 import { useResourceList } from '../hooks/useResourceHooks';
 import { useERP } from '../services/ERPContext.jsx';
@@ -148,6 +149,7 @@ export default function ExaminationPage() {
   return (
     <div className="space-y-6">
       <SectionHeader title="Examinations" subtitle="Create and manage exams, schedule exam centers, and assign invigilators." />
+      <ExaminationModule />
       <div className="grid gap-3 md:grid-cols-3">
         <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
           <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Total exams</p>

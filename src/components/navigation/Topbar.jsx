@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import NotificationDropdown from './NotificationDropdown.jsx';
 import GlobalSearch from '../ui/GlobalSearch.jsx';
 import { useERP } from '../../services/ERPContext.jsx';
+import { useAuth } from '../../services/AuthContext.jsx';
 
 const formatBreadcrumb = (segment) =>
   segment
@@ -20,7 +21,9 @@ export default function Topbar({ onToggleSidebar }) {
     [pathSegments]
   );
 
+  const { auth } = useAuth();
   const unreadCount = notifications.filter((notification) => !notification.read).length;
+  const roleLabel = auth?.role || 'Guest';
 
   return (
     <header className="sticky top-0 z-20 border-b border-slate-200/80 bg-white/95 px-3 py-3 shadow-sm backdrop-blur-xl sm:px-4 md:px-6 lg:px-8 xl:px-10">
@@ -76,7 +79,7 @@ export default function Topbar({ onToggleSidebar }) {
             </button>
             <button className="inline-flex h-10 items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 text-sm text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 sm:h-11">
               <UserCircle2 className="h-4 w-4 text-emerald-600 sm:h-5 sm:w-5" />
-              <span className="hidden sm:inline">Super Admin</span>
+              <span className="hidden sm:inline">{auth?.user?.name ?? roleLabel}</span>
             </button>
             <NotificationDropdown open={isNotificationsOpen} onClose={() => setNotificationsOpen(false)} />
           </div>

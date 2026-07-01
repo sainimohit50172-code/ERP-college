@@ -1,0 +1,21 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "College ERP API (stub)",
+    "version": "0.1.0",
+    "description": "OpenAPI spec stubs for frontend-backend contract. Implement server-side schemas to match these contracts."
+  },
+  "paths": {
+    "/vendors": {
+      "get": {
+        "summary": "List vendors",
+        "parameters": [
+          { "name": "page", "in": "query", "schema": { "type": "integer" } },
+          { "name": "pageSize", "in": "query", "schema": { "type": "integer" } },
+          { "name": "q", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { BookOpen, Briefcase, Building, CheckCircle2, Clipboard, Database, DollarSign, Home, Search, ShieldCheck, School, Truck, UserPlus, Users } from 'lucide-react';
+import { BookOpen, Briefcase, Building, CheckCircle2, Clipboard, Database, DollarSign, Home, Search, School, Truck, UserPlus, Users } from 'lucide-react';
 
 const categoryIcons = {
   Students: Users,

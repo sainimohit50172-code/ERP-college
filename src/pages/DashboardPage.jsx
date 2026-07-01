@@ -12,6 +12,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 import { useResourceList } from '../hooks/useResourceHooks';
 import MetricCard from '../components/ui/MetricCard.jsx';
 import PanelCard from '../components/ui/PanelCard.jsx';
+import { useMemo as useMemoReact } from 'react';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend, Filler);
 
@@ -28,6 +29,14 @@ export default function DashboardPage() {
   const feePayments = paymentsData?.items || [];
   const { data: attendanceData } = useResourceList('studentAttendance', { page: 1, pageSize: 200 });
   const studentAttendance = attendanceData?.items || [];
+  const { data: leaveRequestsData } = useResourceList('leaveRequests', { page: 1, pageSize: 200 });
+  const leaveRequests = leaveRequestsData?.items || [];
+  const { data: holidaysData } = useResourceList('holidays', { page: 1, pageSize: 200 });
+  const holidays = holidaysData?.items || [];
+  const { data: payrollRunsData } = useResourceList('payrollRuns', { page: 1, pageSize: 200 });
+  const payrollRuns = payrollRunsData?.items || [];
+  const { data: financeEntriesData } = useResourceList('journalEntries', { page: 1, pageSize: 200 });
+  const financeEntries = financeEntriesData?.items || [];
 
   const attendancePercent = useMemo(() => {
     if (!studentAttendance.length) return 0;
@@ -66,6 +75,24 @@ export default function DashboardPage() {
     { title: 'Fee collection', value: `$${collectionAmount.toLocaleString()}`, accent: 'bg-slate-50 text-slate-900' },
     { title: 'Online payments', value: `${feePayments.filter((payment) => payment.method === 'Online').length}`, accent: 'bg-cyan-50 text-cyan-700' },
   ];
+
+  const leaveSummary = useMemoReact(() => ({
+    pendingApprovals: leaveRequests.filter((request) => ['Submitted', 'Manager Review', 'HR Review'].includes(request.status)).length,
+    upcomingHolidays: holidays.slice(0, 3).length,
+    lowBalanceAlerts: leaveRequests.filter((request) => Number(request.days || 0) >= 3).length,
+  }), [leaveRequests, holidays]);
+
+  const payrollSummary = useMemoReact(() => ({
+    due: payrollRuns.filter((item) => item.status === 'Draft').length,
+    pendingApprovals: payrollRuns.filter((item) => ['Review', 'HR Approval', 'Finance Approval'].includes(item.status)).length,
+    salaryExpense: payrollRuns.reduce((sum, item) => sum + Number(item.netSalary || 0), 0),
+  }), [payrollRuns]);
+
+  const financeSummary = useMemoReact(() => ({
+    pendingEntries: financeEntries.filter((entry) => entry.status !== 'Posted').length,
+    totalDebit: financeEntries.reduce((sum, entry) => sum + Number(entry.debit || 0), 0),
+    totalCredit: financeEntries.reduce((sum, entry) => sum + Number(entry.credit || 0), 0),
+  }), [financeEntries]);
 
   return (
     <div className="space-y-4">
@@ -121,7 +148,16 @@ export default function DashboardPage() {
 
       <div className="grid gap-4 xl:grid-cols-[1.4fr_0.95fr]">
         <PanelCard title="Today's classes" items={['Advanced Data Structures', 'English Communication', 'Digital Marketing Lab', 'Financial Accounting']} />
-        <PanelCard title="Recent activity" items={['Payment received for batch C101', 'Leads converted to admissions', 'Hostel gate pass generated', 'Teacher leave approved']} />
+        <div className="rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
+          <h2 className="text-lg font-semibold text-slate-950">HR operations</h2>
+          <div className="mt-4 space-y-3 text-sm text-slate-600">
+            <div className="rounded-2xl bg-slate-50 p-3">Leave pending approvals: {leaveSummary.pendingApprovals}</div>
+            <div className="rounded-2xl bg-slate-50 p-3">Payroll due: {payrollSummary.due}</div>
+            <div className="rounded-2xl bg-slate-50 p-3">Payroll pending approvals: {payrollSummary.pendingApprovals}</div>
+            <div className="rounded-2xl bg-slate-50 p-3">Finance pending entries: {financeSummary.pendingEntries}</div>
+            <div className="rounded-2xl bg-slate-50 p-3">Finance debit/credit: ₹{financeSummary.totalDebit.toLocaleString()} / ₹{financeSummary.totalCredit.toLocaleString()}</div>
+          </div>
+        </div>
       </div>
     </div>
   );

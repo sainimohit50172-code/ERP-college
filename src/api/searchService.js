@@ -61,11 +61,35 @@ const sources = [
   },
   {
     category: 'Employees',
-    route: '/employees',
+    route: (item) => `/employees/${item.id}`,
     items: employees,
     fields: ['name', 'email', 'department', 'designation', 'status'],
     getTitle: (item) => item.name,
     getDescription: (item) => `${item.designation || ''} • ${item.department || ''}`,
+  },
+  {
+    category: 'Leave Management',
+    route: '/leave-management',
+    items: [],
+    fields: ['name', 'email', 'department', 'designation', 'status'],
+    getTitle: (item) => item.name,
+    getDescription: (item) => `${item.designation || ''} • ${item.department || ''}`,
+  },
+  {
+    category: 'Payroll Management',
+    route: '/payroll-management',
+    items: [],
+    fields: ['name', 'employeeName', 'period', 'status'],
+    getTitle: (item) => item.name || item.employeeName || 'Payroll',
+    getDescription: (item) => `${item.period || ''} • ${item.status || ''}`,
+  },
+  {
+    category: 'Finance & Accounting',
+    route: '/finance-accounting',
+    items: [],
+    fields: ['name', 'accountCode', 'voucherType', 'status', 'period'],
+    getTitle: (item) => item.name || item.voucherType || 'Finance Entry',
+    getDescription: (item) => `${item.accountCode || ''} • ${item.status || ''}`,
   },
   {
     category: 'Departments',
@@ -163,7 +187,7 @@ const matchRecord = (item, fields, term) =>
 const createSearchResult = (category, route, item, getTitle, getDescription) => ({
   id: `${category}-${item.id}`,
   category,
-  route,
+  route: typeof route === 'function' ? route(item) : route,
   title: getTitle(item),
   description: getDescription(item),
 });

@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 import { useResourceList } from '../hooks/useResourceHooks';
+import { getMarkEntrySummary } from '../services/markEntryService.js';
+import { getResultSummary } from '../services/resultService.js';
 function ExaminationDashboardPage() {
   const { data: examinationsData = {} } = useResourceList('examinations', { page: 1, pageSize: 1000 });
   const { data: attendanceData = {} } = useResourceList('examinationAttendance', { page: 1, pageSize: 1000 });
@@ -8,6 +10,8 @@ function ExaminationDashboardPage() {
   const { data: reportsData = {} } = useResourceList('examinationReports', { page: 1, pageSize: 1000 });
   const examinations = examinationsData.items || [];
   const attendanceList = attendanceData.items || [];
+  const markSummary = getMarkEntrySummary();
+  const resultSummary = getResultSummary();
   const seatingPlans = seatingPlansData.items || [];
   const assignments = assignmentsData.items || [];
   const reports = reportsData.items || [];
@@ -36,6 +40,16 @@ function ExaminationDashboardPage() {
           <p className="text-sm text-slate-500">Exams Scheduled</p>
           <p className="mt-3 text-3xl font-semibold text-slate-900">{examCount}</p>
         </div>
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <p className="text-sm text-slate-500">Mark Entries</p>
+          <p className="mt-3 text-3xl font-semibold text-slate-900">{markSummary.totalEntries}</p>
+        </div>
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <p className="text-sm text-slate-500">Published Results</p>
+          <p className="mt-3 text-3xl font-semibold text-slate-900">{resultSummary.publishedResults}</p>
+        </div>
+      </section>
+      <section className="grid gap-4 sm:grid-cols-3">
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <p className="text-sm text-slate-500">Attendance Records</p>
           <p className="mt-3 text-3xl font-semibold text-slate-900">{attendanceList.length}</p>

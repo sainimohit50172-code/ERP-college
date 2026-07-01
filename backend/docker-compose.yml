@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  api:
+    build: .
+    container_name: college-erp-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - mysql
+      - redis
+
+  mysql:
+    image: mysql:8.0
+    container_name: college-erp-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: college_erp
+    ports:
+      - "3306:3306"
+
+  redis:
+    image: redis:7-alpine
+    container_name: college-erp-redis
+    ports:
+      - "6379:6379"

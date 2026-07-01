@@ -25,7 +25,7 @@ export default function DataTableAdvanced({
   columns,
   rows,
   loading = false,
-  searchKey = 'name',
+  searchKey: _searchKey = 'name',
   placeholder = 'Search records...',
   initialPageSize = 10,
   hideHeader = false,

@@ -26,6 +26,9 @@ import LectureNotesPage from '../pages/LectureNotesPage.jsx';
 import SyllabusUploadPage from '../pages/SyllabusUploadPage.jsx';
 import AssignmentsPage from '../pages/AssignmentsPage.jsx';
 import QuestionBankPage from '../pages/QuestionBankPage.jsx';
+import DesignationManagementPage from '../pages/DesignationManagementPage.jsx';
+import OrganizationManagementPage from '../pages/OrganizationManagementPage.jsx';
+import HRDocumentsPage from '../pages/HRDocumentsPage.jsx';
 import InternalMarksPage from '../pages/InternalMarksPage.jsx';
 import PracticalMarksPage from '../pages/PracticalMarksPage.jsx';
 import ExaminationPage from '../pages/ExaminationPage.jsx';
@@ -44,6 +47,9 @@ export const routes = [
   { path: '/students', element: StudentManagementPage },
   { path: '/teachers', element: TeacherManagementPage },
   { path: '/employees', element: EmployeeManagementPage },
+  { path: '/designations', element: DesignationManagementPage },
+  { path: '/organizations', element: OrganizationManagementPage },
+  { path: '/hr-documents', element: HRDocumentsPage },
   { path: '/fees', element: FeeManagementPage },
   { path: '/sections', element: SectionManagementPage },
   { path: '/subjects', element: SubjectAssignmentPage },

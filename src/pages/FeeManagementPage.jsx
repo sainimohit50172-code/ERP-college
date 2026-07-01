@@ -1,8 +1,8 @@
 import { useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   useResourceList,
-  useCreateResource,
   useBulkImport,
   useBulkExport,
 } from '../hooks/useResourceHooks';
@@ -10,7 +10,6 @@ import {
   FaDownload,
   FaFileImport,
   FaPlus,
-  _FaSearch,
 } from 'react-icons/fa';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
 import SearchFilter from '../components/forms/SearchFilter.jsx';
@@ -19,7 +18,9 @@ import TablePagination from '../components/tables/TablePagination.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import FormField from '../components/forms/FormField.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
-import { usePermissions } from '../services/permissionHelpers.js';
+import { createPayment, cancelPayment } from '../services/paymentService.js';
+import { downloadReceiptPdf } from '../services/receiptService.js';
+import { calculateStudentLedger } from '../services/feeService.js';
 
 const statusOptions = [
   { value: 'All', label: 'All statuses' },
@@ -32,8 +33,14 @@ const defaultPaymentValues = {
   studentId: '',
   amount: '',
   date: new Date().toISOString().slice(0, 10),
-  method: 'Online',
+  method: 'Cash',
   status: 'Paid',
+  installmentNumber: '',
+  scholarshipAmount: 0,
+  discountAmount: 0,
+  waiverAmount: 0,
+  fine: 0,
+  notes: '',
 };
 
 function downloadBlob(blob, filename) {
@@ -47,27 +54,38 @@ function downloadBlob(blob, filename) {
   window.URL.revokeObjectURL(url);
 }
 
+function formatCurrency(value) {
+  const amount = Number(value || 0);
+  return `$${amount.toLocaleString()}`;
+}
+
+function normalizeSearchValue(value) {
+  return String(value || '').toLowerCase();
+}
+
 export default function FeeManagementPage() {
   const importInputRef = useRef(null);
+  const queryClient = useQueryClient();
 
-  const { data: feePaymentsData } = useResourceList('feePayments', { page: 1, pageSize: 200 });
+  const { data: paymentsData } = useResourceList('payments', { page: 1, pageSize: 200 });
   const { data: studentsData } = useResourceList('students', { page: 1, pageSize: 200 });
-  const feePayments = feePaymentsData?.items || [];
-  const students = studentsData?.items || [];
+  const { data: receiptsData } = useResourceList('receipts', { page: 1, pageSize: 200 });
+  const { data: scholarshipsData } = useResourceList('scholarships', { page: 1, pageSize: 200 });
 
-  const createFeePayment = useCreateResource('feePayments');
-  const importFeePayments = useBulkImport('feePayments');
-  const exportFeePayments = useBulkExport('feePayments');
+  const payments = paymentsData?.items || [];
+  const students = studentsData?.items || [];
+  const receipts = receiptsData?.items || [];
+  const scholarships = scholarshipsData?.items || [];
 
   const [search, setSearch] = useState('');
-  const [filter, setFilter] = useState('All');
+  const [statusFilter, setStatusFilter] = useState('All');
+  const [courseFilter, setCourseFilter] = useState('All');
+  const [departmentFilter, setDepartmentFilter] = useState('All');
   const [page, setPage] = useState(1);
+  const [selectedStudentId, setSelectedStudentId] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [importStatus, setImportStatus] = useState('');
-  const [_isExporting, setIsExporting] = useState(false);
   const pageSize = 6;
-
-  const perms = usePermissions();
 
   const {
     register,
@@ -76,41 +94,128 @@ export default function FeeManagementPage() {
     formState: { errors, isSubmitting },
   } = useForm({ defaultValues: defaultPaymentValues });
 
+  const selectedStudent = students.find((student) => student.id === selectedStudentId) || null;
+
   const studentMap = useMemo(() => new Map(students.map((student) => [student.id, student])), [students]);
 
   const filteredPayments = useMemo(() => {
-    return feePayments.filter((payment) => {
-      const searchTerm = search.toLowerCase();
-      const studentName = studentMap.get(payment.studentId)?.name || '';
-      const matchesSearch = [studentName, payment.method, payment.date, payment.status]
+    const normalizedQuery = normalizeSearchValue(search);
+
+    return payments.filter((payment) => {
+      const student = studentMap.get(payment.studentId) || {};
+      const studentName = normalizeSearchValue(student.name);
+      const admissionNo = normalizeSearchValue(student.enrollmentNo);
+      const receiptNumber = normalizeSearchValue(payment.receiptNumber);
+      const status = normalizeSearchValue(payment.status);
+      const method = normalizeSearchValue(payment.method);
+      const courseId = student.courseId || '';
+      const departmentId = student.departmentId || '';
+
+      const matchesSearch = [studentName, admissionNo, receiptNumber, method, status, payment.paymentId, payment.id]
         .filter(Boolean)
-        .some((field) => field.toLowerCase().includes(searchTerm));
-      const matchesFilter = filter === 'All' || payment.status === filter;
-      return matchesSearch && matchesFilter;
+        .some((field) => normalizeSearchValue(field).includes(normalizedQuery));
+
+      const matchesStatus = statusFilter === 'All' || normalizeSearchValue(statusFilter) === status;
+      const matchesCourse = courseFilter === 'All' || courseFilter === courseId;
+      const matchesDepartment = departmentFilter === 'All' || departmentFilter === departmentId;
+
+      return matchesSearch && matchesStatus && matchesCourse && matchesDepartment;
     });
-  }, [feePayments, filter, search, studentMap]);
+  }, [payments, search, statusFilter, courseFilter, departmentFilter, studentMap]);
 
   const pageCount = Math.max(1, Math.ceil(filteredPayments.length / pageSize));
   const displayedPayments = filteredPayments.slice((page - 1) * pageSize, page * pageSize);
 
-  const totalCollection = useMemo(
-    () => feePayments.reduce((sum, payment) => sum + (Number(payment.amount) || 0), 0),
-    [feePayments],
+  const paymentSummary = useMemo(() => {
+    const today = new Date().toISOString().slice(0, 10);
+    const monthly = new Date().getMonth();
+    const year = new Date().getFullYear();
+
+    return payments.reduce(
+      (summary, payment) => {
+        const paidValue = Number(payment.amount || 0);
+        const scholarshipValue = Number(payment.scholarshipAmount || 0);
+        const fineValue = Number(payment.fine || 0);
+        const dateValue = payment.paidAt || payment.date || payment.createdAt || '';
+        const paidAt = new Date(dateValue);
+        const paidDateKey = paidAt.toISOString().slice(0, 10);
+
+        if (payment.status === 'Paid') {
+          summary.totalCollection += paidValue;
+          summary.paidTransactions += 1;
+          summary.scholarshipTotal += scholarshipValue;
+          summary.fineCollected += fineValue;
+          if (paidDateKey === today) summary.todaysCollection += paidValue;
+          if (paidAt.getMonth() === monthly && paidAt.getFullYear() === year) summary.monthlyCollection += paidValue;
+        }
+
+        if (payment.status === 'Pending') {
+          summary.pendingAmount += paidValue;
+        }
+
+        if (payment.status === 'Pending' && payment.dueDate) {
+          const dueDate = new Date(payment.dueDate);
+          if (dueDate < new Date()) {
+            summary.overdueStudents.add(payment.studentId);
+          }
+        }
+
+        return summary;
+      },
+      {
+        totalCollection: 0,
+        paidTransactions: 0,
+        monthlyCollection: 0,
+        todaysCollection: 0,
+        pendingAmount: 0,
+        scholarshipTotal: 0,
+        fineCollected: 0,
+        overdueStudents: new Set(),
+      },
+    );
+  }, [payments]);
+
+  const studentPayments = useMemo(
+    () => (selectedStudent ? payments.filter((payment) => payment.studentId === selectedStudent.id) : []),
+    [payments, selectedStudent],
   );
-  const _pendingCount = useMemo(() => feePayments.filter((payment) => payment.status === 'Pending').length, [feePayments]);
-  const paidCount = useMemo(() => feePayments.filter((payment) => payment.status === 'Paid').length, [feePayments]);
-  const overdueAmount = useMemo(
-    () => feePayments.reduce((sum, payment) => (payment.status === 'Pending' ? sum + (Number(payment.amount) || 0) : sum), 0),
-    [feePayments],
+  const studentScholarships = useMemo(
+    () => (selectedStudent ? scholarships.filter((scholarship) => scholarship.studentId === selectedStudent.id) : []),
+    [scholarships, selectedStudent],
   );
+
+  const studentLedger = useMemo(() => {
+    if (!selectedStudent) return null;
+    return calculateStudentLedger(selectedStudent, studentPayments, studentScholarships);
+  }, [selectedStudent, studentPayments, studentScholarships]);
+
+  const createPaymentMutation = useMutation(createPayment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['payments']);
+      queryClient.invalidateQueries(['receipts']);
+      queryClient.invalidateQueries(['students']);
+      setImportStatus('Payment recorded successfully.');
+    },
+  });
+
+  const cancelPaymentMutation = useMutation(cancelPayment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['payments']);
+      setImportStatus('Payment cancelled and audit logged.');
+    },
+  });
+
+
+  const importPayments = useBulkImport('payments');
+  const exportPayments = useBulkExport('payments');
 
   const handleImport = (file) => {
     if (!file) return;
-    setImportStatus('Importing fee payments…');
+    setImportStatus('Importing payments…');
     const formData = new FormData();
     formData.append('file', file);
-    importFeePayments.mutate(formData, {
-      onSuccess: () => setImportStatus('Fee payments imported successfully.'),
+    importPayments.mutate(formData, {
+      onSuccess: () => setImportStatus('Payments imported successfully.'),
       onError: () => setImportStatus('Import failed. Please check the CSV format and try again.'),
     });
   };
@@ -121,28 +226,26 @@ export default function FeeManagementPage() {
     event.target.value = '';
   };
 
-  const _HeaderActions = (
-    <div className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200">
-      {perms.canExport('feePayments') && <button onClick={() => exportFeePayments.mutateAsync().catch(() => {})}><FaDownload /> Export</button>}
-      {perms.canImport('feePayments') && <button onClick={() => importInputRef.current?.click()} className="ml-2"><FaFileImport /> Import</button>}
-      {perms.canCreate('feePayments') && <button onClick={() => setIsModalOpen(true)} className="ml-2 bg-sky-400 px-3 py-2 rounded-3xl text-slate-950"> <FaPlus /> New payment</button>}
-    </div>
-  );
-
   const handleExport = async () => {
-    setIsExporting(true);
     try {
-      const blob = await exportFeePayments.mutateAsync();
-      downloadBlob(blob, 'fee-payments-export.xlsx');
+      const blob = await exportPayments.mutateAsync();
+      downloadBlob(blob, 'payments-export.xlsx');
     } catch (error) {
       console.error(error);
-    } finally {
-      setIsExporting(false);
     }
   };
 
-  const onSubmit = (data) => {
-    createFeePayment.mutate(data, {
+  const handleSubmitPayment = (data) => {
+    const student = students.find((item) => item.id === data.studentId);
+    const paymentPayload = {
+      ...data,
+      studentName: student?.name || '',
+      departmentId: student?.departmentId || '',
+      courseId: student?.courseId || '',
+      receiptNumber: data.receiptNumber || undefined,
+      paymentId: data.paymentId || undefined,
+    };
+    createPaymentMutation.mutate(paymentPayload, {
       onSuccess: () => {
         reset(defaultPaymentValues);
         setPage(1);
@@ -150,6 +253,28 @@ export default function FeeManagementPage() {
       },
     });
   };
+
+  const handleCancelPayment = (id) => {
+    cancelPaymentMutation.mutate(id);
+  };
+
+  const handleDownloadReceipt = async (receipt) => {
+    try {
+      const blob = await downloadReceiptPdf(receipt);
+      downloadBlob(blob, `${receipt.receiptNumber}.pdf`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const courseOptions = useMemo(
+    () => ['All', ...Array.from(new Set(students.map((student) => student.courseId).filter(Boolean)))],
+    [students],
+  );
+  const departmentOptions = useMemo(
+    () => ['All', ...Array.from(new Set(students.map((student) => student.departmentId).filter(Boolean)))],
+    [students],
+  );
 
   return (
     <div className="space-y-6">
@@ -187,16 +312,31 @@ export default function FeeManagementPage() {
 
       <div className="grid gap-3 md:grid-cols-3">
         <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
-          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Total collection</p>
-          <p className="mt-3 text-2xl font-semibold text-white">${totalCollection.toLocaleString()}</p>
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Today&apos;s collection</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{formatCurrency(paymentSummary.todaysCollection)}</p>
         </div>
         <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
-          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Paid transactions</p>
-          <p className="mt-3 text-2xl font-semibold text-white">{paidCount}</p>
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Monthly collection</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{formatCurrency(paymentSummary.monthlyCollection)}</p>
         </div>
         <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
-          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Pending balance</p>
-          <p className="mt-3 text-2xl font-semibold text-white">${overdueAmount.toLocaleString()}</p>
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Pending amount</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{formatCurrency(paymentSummary.pendingAmount)}</p>
+        </div>
+      </div>
+
+      <div className="grid gap-3 md:grid-cols-3">
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Overdue students</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{paymentSummary.overdueStudents.size}</p>
+        </div>
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Scholarship total</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{formatCurrency(paymentSummary.scholarshipTotal)}</p>
+        </div>
+        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Fine collected</p>
+          <p className="mt-3 text-2xl font-semibold text-white">{formatCurrency(paymentSummary.fineCollected)}</p>
         </div>
       </div>
 
@@ -210,29 +350,203 @@ export default function FeeManagementPage() {
             <h2 className="text-xl font-semibold text-white">Fee ledger</h2>
             <p className="text-sm text-slate-400">Review receipts, reconcile pending dues, and keep fee records audit-ready.</p>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            <SearchFilter search={search} onSearch={setSearch} filter={filter} onFilter={setFilter} options={statusOptions} />
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <SearchFilter search={search} onSearch={setSearch} filter={statusFilter} onFilter={setStatusFilter} options={statusOptions} />
+            <div className="rounded-[16px] border border-slate-200/70 bg-white/95 p-3 shadow-sm">
+              <label className="mb-1.5 block text-[11px] uppercase tracking-[0.24em] text-slate-500">Course</label>
+              <select
+                value={courseFilter}
+                onChange={(e) => setCourseFilter(e.target.value)}
+                className="h-10 w-full rounded-2xl border border-slate-200/70 bg-slate-50 px-3 text-sm text-slate-900 outline-none"
+              >
+                {courseOptions.map((course) => (
+                  <option key={course} value={course}>{course}</option>
+                ))}
+              </select>
+            </div>
+            <div className="rounded-[16px] border border-slate-200/70 bg-white/95 p-3 shadow-sm">
+              <label className="mb-1.5 block text-[11px] uppercase tracking-[0.24em] text-slate-500">Department</label>
+              <select
+                value={departmentFilter}
+                onChange={(e) => setDepartmentFilter(e.target.value)}
+                className="h-10 w-full rounded-2xl border border-slate-200/70 bg-slate-50 px-3 text-sm text-slate-900 outline-none"
+              >
+                {departmentOptions.map((department) => (
+                  <option key={department} value={department}>{department}</option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 
-        <div className="mt-4">
+        <div className="mt-4 grid gap-3 md:grid-cols-3">
+          <div className="rounded-[20px] border border-slate-700/60 bg-slate-950/90 p-4">
+            <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Total collection</p>
+            <p className="mt-3 text-2xl font-semibold text-white">{formatCurrency(paymentSummary.totalCollection)}</p>
+            <p className="text-sm text-slate-400">{paymentSummary.paidTransactions} paid receipts</p>
+          </div>
+          <div className="rounded-[20px] border border-slate-700/60 bg-slate-950/90 p-4">
+            <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Total pending</p>
+            <p className="mt-3 text-2xl font-semibold text-white">{formatCurrency(paymentSummary.pendingAmount)}</p>
+            <p className="text-sm text-slate-400">Pending payments awaiting collection</p>
+          </div>
+          <div className="rounded-[20px] border border-slate-700/60 bg-slate-950/90 p-4">
+            <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Overdue</p>
+            <p className="mt-3 text-2xl font-semibold text-white">{paymentSummary.overdueStudents.size}</p>
+            <p className="text-sm text-slate-400">Students with overdue fee installments</p>
+          </div>
+        </div>
+
+        <div className="mt-4 overflow-x-auto rounded-[20px] border border-slate-700/60 bg-slate-900/80">
           <DataTable
             compact
-            columns={['Student', 'Amount', 'Date', 'Method', 'Status']}
-            rows={displayedPayments.map((payment) => [
-              <div key={payment.id} className="space-y-1">
-                <p className="font-semibold text-white">{studentMap.get(payment.studentId)?.name || payment.studentId}</p>
-                <p className="text-sm text-slate-400">{studentMap.get(payment.studentId)?.enrollmentNo || 'Enrollment pending'}</p>
-              </div>,
-              `$${Number(payment.amount).toLocaleString()}`,
-              payment.date,
-              payment.method,
-              <StatusBadge key={`${payment.id}-status`} status={payment.status} />,
-            ])}
+            columns={['Student', 'Admission No', 'Receipt', 'Amount', 'Date', 'Status', 'Actions']}
+            rows={displayedPayments.map((payment) => {
+              const student = studentMap.get(payment.studentId) || {};
+              return [
+                <div key={payment.id} className="space-y-1">
+                  <p className="font-semibold text-white">{student.name || 'Unknown'}</p>
+                  <p className="text-sm text-slate-400">{student.courseId || student.departmentId || 'N/A'}</p>
+                </div>,
+                student.enrollmentNo || 'N/A',
+                payment.receiptNumber || payment.paymentId || 'N/A',
+                formatCurrency(payment.amount),
+                payment.paidAt?.slice(0, 10) || payment.date || 'N/A',
+                <StatusBadge key={`${payment.id}-status`} status={payment.status || 'Pending'} />,
+                <div key={`${payment.id}-actions`} className="flex flex-wrap gap-2">
+                  <button
+                    key={`${payment.id}-receipt`}
+                    type="button"
+                    onClick={() => payment.receiptNumber && handleDownloadReceipt(receipts.find((receipt) => receipt.receiptNumber === payment.receiptNumber) || { receiptNumber: payment.receiptNumber, studentName: student.name, amount: payment.amount, paymentMethod: payment.method, date: payment.paidAt?.slice(0, 10) || payment.date })}
+                    className="rounded-full bg-slate-700 px-3 py-2 text-xs font-medium text-slate-100 hover:bg-slate-600"
+                  >
+                    Receipt
+                  </button>
+                  {payment.status !== 'Cancelled' && (
+                    <button
+                      key={`${payment.id}-cancel`}
+                      type="button"
+                      onClick={() => handleCancelPayment(payment.id)}
+                      className="rounded-full bg-rose-600 px-3 py-2 text-xs font-medium text-white hover:bg-rose-500"
+                    >
+                      Cancel
+                    </button>
+                  )}
+                </div>,
+              ];
+            })}
           />
         </div>
-        <div className="mt-4">
+        <div className="mt-4 flex items-center justify-between">
           <TablePagination page={page} pageCount={pageCount} onPageChange={setPage} />
+        </div>
+      </div>
+
+      <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 className="text-xl font-semibold text-white">Student fee ledger</h2>
+            <p className="text-sm text-slate-400">Select a student to review their fee balance, scholarship, and installment history.</p>
+          </div>
+          <div className="rounded-[16px] border border-slate-200/70 bg-white/95 p-3 shadow-sm">
+            <label className="mb-1.5 block text-[11px] uppercase tracking-[0.24em] text-slate-500">Student</label>
+            <select
+              value={selectedStudentId}
+              onChange={(e) => setSelectedStudentId(e.target.value)}
+              className="h-12 w-full rounded-2xl border border-slate-200/70 bg-slate-50 px-3 text-sm text-slate-900 outline-none"
+            >
+              <option value="">Choose a student</option>
+              {students.map((student) => (
+                <option key={student.id} value={student.id}>{student.name} · {student.enrollmentNo}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {selectedStudent ? (
+          <div className="mt-5 grid gap-3 md:grid-cols-3">
+            <div className="rounded-[20px] border border-slate-700/60 bg-slate-950/90 p-4">
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Total fee</p>
+              <p className="mt-3 text-2xl font-semibold text-white">{formatCurrency(studentLedger?.totalFee)}</p>
+            </div>
+            <div className="rounded-[20px] border border-slate-700/60 bg-slate-950/90 p-4">
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Paid</p>
+              <p className="mt-3 text-2xl font-semibold text-white">{formatCurrency(studentLedger?.paidAmount)}</p>
+            </div>
+            <div className="rounded-[20px] border border-slate-700/60 bg-slate-950/90 p-4">
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Outstanding balance</p>
+              <p className="mt-3 text-2xl font-semibold text-white">{formatCurrency(studentLedger?.balance)}</p>
+            </div>
+          </div>
+        ) : (
+          <div className="mt-5 rounded-[20px] border border-slate-700/60 bg-slate-950/90 p-4 text-sm text-slate-300">
+            Select a student to see their ledger details and installment history.
+          </div>
+        )}
+
+        {selectedStudent && (
+          <div className="mt-4 grid gap-3 md:grid-cols-3">
+            <div className="rounded-[20px] border border-slate-700/60 bg-slate-950/90 p-4">
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Scholarship</p>
+              <p className="mt-3 text-2xl font-semibold text-white">{formatCurrency(studentLedger?.scholarshipAmount)}</p>
+            </div>
+            <div className="rounded-[20px] border border-slate-700/60 bg-slate-950/90 p-4">
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Discount / waiver</p>
+              <p className="mt-3 text-2xl font-semibold text-white">{formatCurrency(studentLedger?.waiver)}</p>
+            </div>
+            <div className="rounded-[20px] border border-slate-700/60 bg-slate-950/90 p-4">
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Fine</p>
+              <p className="mt-3 text-2xl font-semibold text-white">{formatCurrency(studentLedger?.fine)}</p>
+            </div>
+          </div>
+        )}
+
+        {selectedStudent && (
+          <div className="mt-4 overflow-x-auto rounded-[20px] border border-slate-700/60 bg-slate-900/80">
+            <DataTable
+              compact
+              columns={['Receipt', 'Amount', 'Installment', 'Status', 'Date']}
+              rows={studentPayments.map((payment) => [
+                payment.receiptNumber || payment.paymentId,
+                formatCurrency(payment.amount),
+                payment.installmentNumber || 'N/A',
+                <StatusBadge key={`${payment.id}-status`} status={payment.status || 'Pending'} />,
+                payment.paidAt?.slice(0, 10) || payment.date || 'N/A',
+              ])}
+            />
+          </div>
+        )}
+      </div>
+
+      <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 className="text-xl font-semibold text-white">Reports</h2>
+            <p className="text-sm text-slate-400">Generate daily, monthly, outstanding, scholarship and fine reports for fee operations.</p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <button type="button" className="rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 hover:bg-slate-700">Daily report</button>
+            <button type="button" className="rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 hover:bg-slate-700">Monthly report</button>
+            <button type="button" className="rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 hover:bg-slate-700">Outstanding report</button>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 md:grid-cols-3">
+          <div className="rounded-[20px] border border-slate-700/60 bg-slate-950/90 p-4">
+            <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Payment history</p>
+            <p className="mt-3 text-2xl font-semibold text-white">{payments.length}</p>
+            <p className="text-sm text-slate-400">Total recorded payment actions</p>
+          </div>
+          <div className="rounded-[20px] border border-slate-700/60 bg-slate-950/90 p-4">
+            <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Receipts</p>
+            <p className="mt-3 text-2xl font-semibold text-white">{receipts.length}</p>
+            <p className="text-sm text-slate-400">Generated payment receipts</p>
+          </div>
+          <div className="rounded-[20px] border border-slate-700/60 bg-slate-950/90 p-4">
+            <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Scholarships</p>
+            <p className="mt-3 text-2xl font-semibold text-white">{scholarships.length}</p>
+            <p className="text-sm text-slate-400">Scholarship adjustments available</p>
+          </div>
         </div>
       </div>
 
@@ -243,8 +557,8 @@ export default function FeeManagementPage() {
         footer={
           <button
             type="button"
-            onClick={handleSubmit(onSubmit)}
-            disabled={isSubmitting}
+            onClick={handleSubmit(handleSubmitPayment)}
+            disabled={isSubmitting || createPaymentMutation.isLoading}
             className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-60"
           >
             Save payment
@@ -273,7 +587,47 @@ export default function FeeManagementPage() {
             />
             {errors.amount && <p className="mt-1 text-sm text-rose-400">{errors.amount.message}</p>}
           </FormField>
-          <FormField label="Date">
+          <FormField label="Scholarship adjustment">
+            <input
+              type="number"
+              {...register('scholarshipAmount')}
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              placeholder="0"
+            />
+          </FormField>
+          <FormField label="Discount / waiver">
+            <input
+              type="number"
+              {...register('waiverAmount')}
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              placeholder="0"
+            />
+          </FormField>
+          <FormField label="Fine / late fee">
+            <input
+              type="number"
+              {...register('fine')}
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              placeholder="0"
+            />
+          </FormField>
+          <FormField label="Discount amount">
+            <input
+              type="number"
+              {...register('discountAmount')}
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              placeholder="0"
+            />
+          </FormField>
+          <FormField label="Installment number">
+            <input
+              type="text"
+              {...register('installmentNumber')}
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              placeholder="1/3"
+            />
+          </FormField>
+          <FormField label="Payment date">
             <input
               type="date"
               {...register('date', { required: 'Date is required' })}
@@ -286,9 +640,12 @@ export default function FeeManagementPage() {
               {...register('method', { required: 'Method is required' })}
               className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
             >
-              <option value="Online">Online</option>
               <option value="Cash">Cash</option>
+              <option value="UPI">UPI</option>
+              <option value="Card">Card</option>
+              <option value="Net Banking">Net Banking</option>
               <option value="Cheque">Cheque</option>
+              <option value="Bank Transfer">Bank Transfer</option>
             </select>
           </FormField>
           <FormField label="Status">
@@ -298,7 +655,16 @@ export default function FeeManagementPage() {
             >
               <option value="Paid">Paid</option>
               <option value="Pending">Pending</option>
+              <option value="Cancelled">Cancelled</option>
             </select>
+          </FormField>
+          <FormField label="Notes">
+            <textarea
+              {...register('notes')}
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              rows={4}
+              placeholder="Payment notes or reference"
+            />
           </FormField>
         </form>
       </Modal>

@@ -1,7 +1,7 @@
-import { usePermissions } from '../../services/permissionHelpers.js';
+import { usePermission } from '../../services/permissionHelpers.js';
 
 export default function WithPermission({ moduleKey, action, children }) {
-  const perms = usePermissions();
+  const perms = usePermission();
   if (!moduleKey || !action) return null;
   const fnName = `can${action.charAt(0).toUpperCase()}${action.slice(1)}`;
   if (typeof perms[fnName] === 'function') {

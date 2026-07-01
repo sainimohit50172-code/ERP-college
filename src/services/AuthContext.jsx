@@ -2,22 +2,32 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getAuthState, saveAuthState, clearAuthState, loginApi, refreshTokenApi } from './authService.js';
 import { getPermissionsForRole } from './rbac.js';
+import { recordAuditEvent } from './auditService.js';
 
 const AuthContext = createContext(null);
 
 const SESSION_TIMEOUT_MS = 1000 * 60 * 25; // 25 minutes
 const INACTIVITY_TIMEOUT_MS = 1000 * 60 * 15; // 15 minutes
 
+const defaultAuth = {
+  isAuthenticated: false,
+  user: null,
+  role: null,
+  permissions: {},
+  token: null,
+  refreshToken: null,
+};
+
 export function AuthProvider({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [auth, setAuth] = useState(() => getAuthState() || {
-    isAuthenticated: false,
-    user: null,
-    role: null,
-    permissions: {},
-    token: null,
-    refreshToken: null,
+  const [auth, setAuth] = useState(() => {
+    const stored = getAuthState();
+    if (!stored) return defaultAuth;
+    if (stored.role && (!stored.permissions || Object.keys(stored.permissions).length === 0)) {
+      stored.permissions = getPermissionsForRole(stored.role);
+    }
+    return { ...defaultAuth, ...stored };
   });
   const [sessionExpiry, setSessionExpiry] = useState(Date.now() + SESSION_TIMEOUT_MS);
   const [inactivityExpiry, setInactivityExpiry] = useState(Date.now() + INACTIVITY_TIMEOUT_MS);
@@ -53,10 +63,22 @@ export function AuthProvider({ children }) {
       saveAuthState(nextAuth);
       localStorage.setItem('access_token', token);
       localStorage.setItem('refresh_token', refreshToken);
+      recordAuditEvent({
+        action: 'Login',
+        moduleKey: 'dashboard',
+        description: `User ${user.name} logged in as ${user.role}`,
+        user: { id: user.id, name: user.name, role: user.role },
+      });
       navigate('/', { replace: true });
       return nextAuth;
     },
     logout: () => {
+      recordAuditEvent({
+        action: 'Logout',
+        moduleKey: 'dashboard',
+        description: `${auth.user?.name || 'Unknown user'} logged out`,
+        user: auth.user ? { id: auth.user.id, name: auth.user.name, role: auth.role } : null,
+      });
       clearAuthState();
       setAuth({ isAuthenticated: false, user: null, role: null, permissions: {}, token: null, refreshToken: null });
       window.location.href = '/auth/login';
