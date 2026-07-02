@@ -3,8 +3,8 @@ from __future__ import annotations
 from datetime import date, datetime
 from typing import Optional
 
-from sqlalchemy import BigInteger, Date, DateTime, Enum, ForeignKey, JSON, String, Text
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import BigInteger, Date, DateTime, Enum, ForeignKey, JSON, String, Text, cast
+from sqlalchemy.orm import Mapped, mapped_column, relationship, foreign
 
 from app.db.database import Base
 
@@ -30,7 +30,12 @@ class Student(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    admission: Mapped[Optional["Admission"]] = relationship(back_populates="student", uselist=False, lazy="selectin")
+    admission: Mapped[Optional["Admission"]] = relationship(
+        back_populates="student",
+        uselist=False,
+        primaryjoin="foreign(cast(Student.admission_no, String)) == Admission.id",
+        lazy="selectin",
+    )
     academic_class: Mapped[Optional["AcademicClass"]] = relationship(back_populates="students", lazy="selectin")
     section: Mapped[Optional["Section"]] = relationship(back_populates="students", lazy="selectin")
     guardians: Mapped[list["Guardian"]] = relationship(back_populates="student", cascade="all, delete-orphan", lazy="selectin")
@@ -38,6 +43,8 @@ class Student(Base):
     exam_results: Mapped[list["ExamResult"]] = relationship(back_populates="student", lazy="selectin")
     hostel_allocations: Mapped[list["HostelAllocation"]] = relationship(back_populates="student", lazy="selectin")
     student_assignments: Mapped[list["StudentAssignment"]] = relationship(back_populates="student", lazy="selectin")
+    fee_collections: Mapped[list["FeeCollection"]] = relationship(back_populates="student", lazy="selectin")
+    payments: Mapped[list["Payment"]] = relationship(back_populates="student", lazy="selectin")
     created_by_user: Mapped[Optional["User"]] = relationship(back_populates="students_created", foreign_keys=[created_by], lazy="selectin")
     updated_by_user: Mapped[Optional["User"]] = relationship(back_populates="students_updated", foreign_keys=[updated_by], lazy="selectin")
 

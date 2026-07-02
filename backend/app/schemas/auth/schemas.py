@@ -9,8 +9,24 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 class LoginRequest(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
-    email: EmailStr
-    password: str = Field(min_length=8)
+    email: str
+    password: str
+
+    @field_validator("email")
+    @classmethod
+    def validate_email(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("email must not be empty")
+        return value
+
+    @field_validator("password")
+    @classmethod
+    def validate_password(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("password must not be empty")
+        return value
 
 
 class LoginResponse(BaseModel):
@@ -35,6 +51,19 @@ class RefreshTokenResponse(BaseModel):
     refresh_token: str
     token_type: str = "bearer"
     expires_in: int = Field(default=3600, ge=1)
+
+
+class LogoutRequest(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    refresh_token: Optional[str] = None
+
+
+class ResetPasswordRequest(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    token: str = Field(min_length=1)
+    new_password: str = Field(min_length=8)
 
 
 class TokenPayload(BaseModel):

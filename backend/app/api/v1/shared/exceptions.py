@@ -29,7 +29,10 @@ def register_exception_handlers(app):
     @app.exception_handler(Exception)
     async def generic_exception_handler(request: Request, exc: Exception):
         if isinstance(exc, HTTPException):
-            raise exc
+            return JSONResponse(
+                status_code=exc.status_code,
+                content={"success": False, "message": exc.detail if isinstance(exc.detail, str) else str(exc.detail), "data": None},
+            )
         if exc.__class__.__name__.endswith(SERVICE_ERROR_SUFFIX):
             return JSONResponse(
                 status_code=status.HTTP_400_BAD_REQUEST,

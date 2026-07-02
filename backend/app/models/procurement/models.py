@@ -34,6 +34,14 @@ class PurchaseRequest(Base):
     status: Mapped[str] = mapped_column(Enum("Pending", "Approved", "Rejected", name="purchase_request_status"), nullable=False, default="Pending")
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
 
+    # Relationship back to Department (matches Department.purchase_requests)
+    requested_for_department: Mapped[Optional["Department"]] = relationship(
+        "Department",
+        back_populates="purchase_requests",
+        foreign_keys=[department_id],
+        lazy="selectin",
+    )
+
 
 class PurchaseOrder(Base):
     __tablename__ = "purchase_orders"

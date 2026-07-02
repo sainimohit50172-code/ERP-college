@@ -30,7 +30,12 @@ class Employee(Base):
     user: Mapped[Optional["User"]] = relationship(back_populates="employees", foreign_keys=[user_id], lazy="selectin")
     designation: Mapped[Optional["Designation"]] = relationship(back_populates="employees", lazy="selectin")
     department: Mapped[Optional["Department"]] = relationship(back_populates="employees", lazy="selectin")
-    leave_requests: Mapped[list["LeaveRequest"]] = relationship(back_populates="employee", cascade="all, delete-orphan", lazy="selectin")
+    leave_requests: Mapped[list["LeaveRequest"]] = relationship(
+        back_populates="employee",
+        cascade="all, delete-orphan",
+        foreign_keys="LeaveRequest.employee_id",
+        lazy="selectin",
+    )
     payroll_entries: Mapped[list["PayrollEntry"]] = relationship(back_populates="employee", lazy="selectin")
     drivers: Mapped[list["Driver"]] = relationship(back_populates="employee", lazy="selectin")
 

@@ -1,3 +1,6 @@
+import pytest
+from pydantic import ValidationError
+
 from app.schemas import (
     APIResponse,
     BulkOperationRequest,
@@ -34,3 +37,17 @@ def test_schema_package_imports_and_instantiation():
     assert SearchRequest(query="student").query == "student"
     assert RefreshTokenRequest(refresh_token="abc").refresh_token == "abc"
     assert PasswordResetRequest(email="user@example.com").email == "user@example.com"
+
+
+def test_login_request_accepts_non_empty_passwords_without_format_validation():
+    login_request = LoginRequest(email="admin@collegeerp.local", password="x")
+    assert login_request.email == "admin@collegeerp.local"
+    assert login_request.password == "x"
+
+
+def test_login_request_rejects_empty_password_or_email():
+    with pytest.raises(ValidationError):
+        LoginRequest(email="admin@collegeerp.local", password="")
+
+    with pytest.raises(ValidationError):
+        LoginRequest(email="   ", password="Admin@123")

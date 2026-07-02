@@ -3,8 +3,8 @@ from __future__ import annotations
 from datetime import date, datetime
 from typing import Optional
 
-from sqlalchemy import BigInteger, DateTime, Enum, ForeignKey, String, Text
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import BigInteger, DateTime, Enum, ForeignKey, String, Text, cast
+from sqlalchemy.orm import Mapped, mapped_column, relationship, foreign
 
 from app.db.database import Base
 
@@ -26,4 +26,10 @@ class Admission(Base):
 
     created_by_user: Mapped[Optional["User"]] = relationship(back_populates="admissions_created", foreign_keys=[created_by], lazy="selectin")
     updated_by_user: Mapped[Optional["User"]] = relationship(back_populates="admissions_updated", foreign_keys=[updated_by], lazy="selectin")
-    student: Mapped[Optional["Student"]] = relationship(back_populates="admission", lazy="selectin")
+    student: Mapped[Optional["Student"]] = relationship(
+        "Student",
+        back_populates="admission",
+        primaryjoin="Admission.id == foreign(cast(Student.admission_no, String))",
+        uselist=False,
+        lazy="selectin",
+    )
