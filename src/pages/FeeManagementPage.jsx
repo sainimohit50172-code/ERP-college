@@ -189,7 +189,8 @@ export default function FeeManagementPage() {
     return calculateStudentLedger(selectedStudent, studentPayments, studentScholarships);
   }, [selectedStudent, studentPayments, studentScholarships]);
 
-  const createPaymentMutation = useMutation(createPayment, {
+  const createPaymentMutation = useMutation({
+    mutationFn: createPayment,
     onSuccess: () => {
       queryClient.invalidateQueries(['payments']);
       queryClient.invalidateQueries(['receipts']);
@@ -198,7 +199,8 @@ export default function FeeManagementPage() {
     },
   });
 
-  const cancelPaymentMutation = useMutation(cancelPayment, {
+  const cancelPaymentMutation = useMutation({
+    mutationFn: cancelPayment,
     onSuccess: () => {
       queryClient.invalidateQueries(['payments']);
       setImportStatus('Payment cancelled and audit logged.');

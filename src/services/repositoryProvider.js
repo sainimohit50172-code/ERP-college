@@ -6,7 +6,7 @@
 import mockRepos from './repositories/mock/index.js';
 import fastapiRepos from './repositories/fastapi/index.js';
 
-const DEFAULT_BACKEND = (globalThis && globalThis.process && globalThis.process.env && globalThis.process.env.REACT_APP_REPO_BACKEND) || 'mock';
+const DEFAULT_BACKEND = (globalThis && globalThis.process && globalThis.process.env && globalThis.process.env.REACT_APP_REPO_BACKEND) || 'fastapi';
 
 export function getBackend() {
   try {

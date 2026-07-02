@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 import { useResourceList, useCreateResource, useUpdateResource, useDeleteResource } from '../hooks/useResourceHooks';
 import uploadService from '../api/uploadService';
 import {
@@ -452,25 +453,33 @@ export default function StudentManagementPage() {
       mentor: formValues.mentor,
       address: formValues.address,
     };
+    const submitSuccess = () => {
+      closeModal();
+      setPage(1);
+      toast.success(selectedStudent ? 'Student updated successfully' : 'Student created successfully');
+    };
     if (selectedStudent) {
       updateStudent.mutate({ id: selectedStudent.id, payload }, {
-        onSuccess: () => {
-          closeModal();
-          setPage(1);
+        onSuccess: submitSuccess,
+        onError: (error) => {
+          toast.error(error?.message || 'Unable to update student');
         },
       });
       return;
     }
     createStudent.mutate(payload, {
-      onSuccess: () => {
-        closeModal();
-        setPage(1);
+      onSuccess: submitSuccess,
+      onError: (error) => {
+        toast.error(error?.message || 'Unable to create student');
       },
     });
   };
   const handleDelete = (student) => {
     if (!window.confirm(`Delete student profile for ${student.name}?`)) return;
-    deleteStudent.mutate(student.id);
+    deleteStudent.mutate(student.id, {
+      onSuccess: () => toast.success('Student deleted successfully'),
+      onError: (error) => toast.error(error?.message || 'Unable to delete student'),
+    });
   };
   const _handleDocumentUpload = async (documentType, file) => {
     if (!selectedStudent || !file) return;

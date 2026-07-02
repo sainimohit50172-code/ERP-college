@@ -178,8 +178,8 @@ export default function GlobalSearch({ className = 'w-full' }) {
   return (
     <div className={`${className} relative`} ref={panelRef}>
       <label className="sr-only" htmlFor="global-search-input">Search ERP</label>
-      <div className="relative w-full rounded-2xl border border-slate-200/80 bg-slate-50 px-3 py-2 shadow-sm focus-within:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-100">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+      <div className="relative w-full rounded-3xl border border-slate-200/80 bg-white px-3 py-2 shadow-sm transition duration-150 ease-out focus-within:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-100">
+        <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
         <input
           ref={inputRef}
           id="global-search-input"
@@ -193,7 +193,7 @@ export default function GlobalSearch({ className = 'w-full' }) {
           aria-expanded={open}
           aria-activedescendant={activeItem ? `global-search-item-${activeIndex}` : undefined}
           placeholder="Search college ERP..."
-          className="w-full border-none bg-transparent pl-10 text-sm text-slate-900 outline-none placeholder:text-slate-400"
+          className="w-full border-none bg-transparent pl-11 pr-10 py-2 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:ring-0"
         />
         {query ? (
           <button
@@ -204,7 +204,7 @@ export default function GlobalSearch({ className = 'w-full' }) {
               setActiveIndex(-1);
               inputRef.current?.focus();
             }}
-            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-slate-500 transition hover:bg-slate-200/80 hover:text-slate-900"
+            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1.5 text-slate-500 transition hover:bg-slate-200 hover:text-slate-900"
             aria-label="Clear search"
           >
             <XCircle className="h-4 w-4" />

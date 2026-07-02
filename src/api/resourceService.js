@@ -2,67 +2,59 @@ import api from './axios.js';
 import { getEndpoint } from './endpoints.js';
 import { getRepository } from '../services/repositoryProvider.js';
 
-const createMemoryStorage = () => {
-  const store = new Map();
-  return {
-    getItem: (key) => (store.has(key) ? store.get(key) : null),
-    setItem: (key, value) => store.set(key, String(value)),
-    removeItem: (key) => store.delete(key),
-    clear: () => store.clear(),
-  };
-};
-
-const getStorage = () => {
-  if (typeof window !== 'undefined' && window.localStorage) {
-    return window.localStorage;
-  }
-  if (typeof globalThis !== 'undefined' && globalThis.localStorage) {
-    return globalThis.localStorage;
-  }
-  return createMemoryStorage();
-};
-
-const getStorageKey = (endpoint) => `erp:${endpoint}`;
-
-const readStoredItems = (endpoint) => {
-  const storage = getStorage();
-  const raw = storage.getItem(getStorageKey(endpoint));
-  if (!raw) return [];
-  try {
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-};
-
-const writeStoredItems = (endpoint, items) => {
-  const storage = getStorage();
-  storage.setItem(getStorageKey(endpoint), JSON.stringify(items));
-};
-
-const normalizePayload = (payload, fallbackId) => {
-  if (!payload || typeof payload !== 'object') {
-    return { id: fallbackId };
-  }
-  return { ...payload, id: payload.id || fallbackId };
-};
-
-const paginateItems = (items, params = {}) => {
-  const page = Number(params.page || 1);
-  const pageSize = Number(params.pageSize || items.length || 10);
-  const start = (page - 1) * pageSize;
-  const end = start + pageSize;
+export const normalizeApiListResponse = (response, params = {}) => {
+  const payload = response?.data ?? response;
+  const items = Array.isArray(payload?.items) ? payload.items : [];
+  const page = Number(payload?.page || params.page || 1);
+  const pageSize = Number(payload?.page_size || payload?.pageSize || params.pageSize || items.length || 10);
 
   return {
-    items: items.slice(start, end),
-    total: items.length,
+    items: items.map(mapStudentRecord),
+    total: Number(payload?.total || items.length || 0),
     page,
     pageSize,
-    hasNextPage: end < items.length,
+    pages: Number(payload?.pages || Math.ceil((payload?.total || items.length || 0) / pageSize) || 1),
+    hasNextPage: page < Math.ceil((payload?.total || items.length || 0) / pageSize),
     hasPreviousPage: page > 1,
   };
 };
+
+export const mapStudentPayload = (payload = {}) => {
+  const fullName = String(payload.name || '').trim();
+  const [firstName = '', ...rest] = fullName.split(' ');
+  const lastName = rest.join(' ');
+
+  return {
+    admission_number: payload.admissionNo || payload.admission_number || '',
+    first_name: firstName || payload.first_name || '',
+    last_name: lastName || payload.last_name || '',
+    email: payload.email || null,
+    phone: payload.phone || null,
+    date_of_birth: payload.date_of_birth || payload.admissionDate || null,
+    gender: payload.gender || null,
+    status: payload.status || 'Active',
+  };
+};
+
+export const mapStudentRecord = (record = {}) => ({
+  ...record,
+  id: record.id,
+  name: [record.first_name, record.last_name].filter(Boolean).join(' ').trim() || record.name || '',
+  email: record.contact?.email || record.email || '',
+  phone: record.contact?.phone || record.phone || '',
+  admissionNo: record.admission_number || record.admissionNo || record.admission_no || '',
+  firstName: record.first_name || '',
+  lastName: record.last_name || '',
+  status: record.status || 'Active',
+  courseId: record.courseId || '',
+  departmentId: record.departmentId || '',
+  semesterId: record.semesterId || '',
+  sectionId: record.sectionId || '',
+  rollNo: record.rollNo || '',
+  enrollmentNo: record.enrollmentNo || '',
+  address: record.address || '',
+  totalFee: record.totalFee || 0,
+});
 
 export const createResourceService = (resource) => {
   const endpoint = getEndpoint(resource);
@@ -70,80 +62,65 @@ export const createResourceService = (resource) => {
 
   return {
     list: async (params = {}) => {
-      try {
-        if (repo && typeof repo.list === 'function') return repo.list(params);
-        const res = await api.get(`/${endpoint}`, { params });
-        return res.data;
-      } catch {
-        const items = readStoredItems(endpoint);
-        return paginateItems(items, params);
+      if (repo && typeof repo.list === 'function') {
+        const result = await repo.list(params);
+        if (resource === 'students') {
+          return normalizeApiListResponse(result, params);
+        }
+        return result;
       }
+
+      const res = await api.get(`/${endpoint}`, { params });
+      if (resource === 'students') {
+        return normalizeApiListResponse(res.data, params);
+      }
+      return res.data;
     },
     get: async (id) => {
-      try {
-        if (repo && typeof repo.get === 'function') return repo.get(id);
-        const res = await api.get(`/${endpoint}/${id}`);
-        return res.data;
-      } catch {
-        const items = readStoredItems(endpoint);
-        return items.find((item) => String(item.id) === String(id)) || null;
+      if (repo && typeof repo.get === 'function') {
+        const result = await repo.get(id);
+        return resource === 'students' ? mapStudentRecord(result?.data ?? result) : result;
       }
+
+      const res = await api.get(`/${endpoint}/${id}`);
+      return resource === 'students' ? mapStudentRecord(res.data?.data ?? res.data) : res.data;
     },
     create: async (payload) => {
-      try {
-        if (repo && typeof repo.create === 'function') return repo.create(payload);
-        const res = await api.post(`/${endpoint}`, payload);
-        return res.data;
-      } catch {
-        const items = readStoredItems(endpoint);
-        const normalized = normalizePayload(payload, `${Date.now()}-${Math.random().toString(16).slice(2)}`);
-        const nextItems = [...items, normalized];
-        writeStoredItems(endpoint, nextItems);
-        return normalized;
+      const body = resource === 'students' ? mapStudentPayload(payload) : payload;
+      if (repo && typeof repo.create === 'function') {
+        const result = await repo.create(body);
+        return resource === 'students' ? mapStudentRecord(result?.data ?? result) : result;
       }
+
+      const res = await api.post(`/${endpoint}`, body);
+      return resource === 'students' ? mapStudentRecord(res.data?.data ?? res.data) : res.data;
     },
     update: async (id, payload) => {
-      try {
-        if (repo && typeof repo.update === 'function') return repo.update(id, payload);
-        const res = await api.put(`/${endpoint}/${id}`, payload);
-        return res.data;
-      } catch {
-        const items = readStoredItems(endpoint);
-        const index = items.findIndex((item) => String(item.id) === String(id));
-        const updated = normalizePayload(payload, id);
-        updated.id = id;
-        const nextItems = [...items];
-        if (index >= 0) {
-          nextItems[index] = { ...nextItems[index], ...updated };
-        } else {
-          nextItems.push(updated);
-        }
-        writeStoredItems(endpoint, nextItems);
-        return updated;
+      const body = resource === 'students' ? mapStudentPayload(payload) : payload;
+      if (repo && typeof repo.update === 'function') {
+        const result = await repo.update(id, body);
+        return resource === 'students' ? mapStudentRecord(result?.data ?? result) : result;
       }
+
+      const res = await api.put(`/${endpoint}/${id}`, body);
+      return resource === 'students' ? mapStudentRecord(res.data?.data ?? res.data) : res.data;
     },
     remove: async (id) => {
-      try {
-        if (repo && typeof repo.remove === 'function') return repo.remove(id);
-        const res = await api.delete(`/${endpoint}/${id}`);
-        return res.data;
-      } catch {
-        const items = readStoredItems(endpoint);
-        const nextItems = items.filter((item) => String(item.id) !== String(id));
-        writeStoredItems(endpoint, nextItems);
-        return { success: true, id };
+      if (repo && typeof repo.remove === 'function') {
+        return repo.remove(id);
       }
+
+      const res = await api.delete(`/${endpoint}/${id}`);
+      return res.data;
     },
     search: async (q) => {
-      try {
-        if (repo && typeof repo.search === 'function') return repo.search(q);
-        const res = await api.get(`/${endpoint}/search`, { params: { q } });
-        return res.data;
-      } catch {
-        const items = readStoredItems(endpoint);
-        const term = String(q || '').toLowerCase();
-        return items.filter((item) => JSON.stringify(item).toLowerCase().includes(term));
+      if (repo && typeof repo.search === 'function') {
+        const result = await repo.search(q);
+        return resource === 'students' ? normalizeApiListResponse(result, { page: 1, pageSize: 20 }) : result;
       }
+
+      const res = await api.get(`/${endpoint}/search`, { params: { q } });
+      return resource === 'students' ? normalizeApiListResponse(res.data, { page: 1, pageSize: 20 }) : res.data;
     },
   };
 };

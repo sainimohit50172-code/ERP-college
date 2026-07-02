@@ -11,7 +11,7 @@ export default function SearchBar({ value, onChange, placeholder = 'Search...' }
           value={value}
           onChange={(event) => onChange(event.target.value)}
           placeholder={placeholder}
-          className="w-full rounded-3xl border border-slate-200/70 bg-slate-50 px-11 py-3 text-slate-900 outline-none placeholder:text-slate-400 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+          className="w-full rounded-3xl border border-slate-200/70 bg-slate-50 px-11 py-3 text-slate-900 outline-none placeholder:text-slate-400 transition duration-150 ease-out focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
           aria-label="Search"
         />
       </div>

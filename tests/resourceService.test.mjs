@@ -1,52 +1,48 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import createResourceService from '../src/api/resourceService.js';
-import api from '../src/api/axios.js';
+import { normalizeApiListResponse, mapStudentPayload, mapStudentRecord } from '../src/api/resourceService.js';
 
-class MemoryStorage {
-  constructor() {
-    this.store = new Map();
-  }
-  getItem(key) {
-    return this.store.has(key) ? this.store.get(key) : null;
-  }
-  setItem(key, value) {
-    this.store.set(key, String(value));
-  }
-  removeItem(key) {
-    this.store.delete(key);
-  }
-  clear() {
-    this.store.clear();
-  }
-}
+test('normalizes paginated student responses into the UI shape', () => {
+  const normalized = normalizeApiListResponse(
+    {
+      success: true,
+      data: {
+        items: [{ id: 1, admission_number: 'ADM-001', first_name: 'Jane', last_name: 'Doe', status: 'Active', contact: { email: 'jane@example.com' } }],
+        total: 1,
+        page: 1,
+        page_size: 10,
+        pages: 1,
+      },
+    },
+    { page: 1, pageSize: 10 },
+  );
 
-test('resource service falls back to local storage for CRUD operations', async () => {
-  globalThis.localStorage = new MemoryStorage();
-  api.get = async () => { throw new Error('offline'); };
-  api.post = async () => { throw new Error('offline'); };
-  api.put = async () => { throw new Error('offline'); };
-  api.delete = async () => { throw new Error('offline'); };
+  assert.equal(normalized.total, 1);
+  assert.equal(normalized.items[0].name, 'Jane Doe');
+  assert.equal(normalized.items[0].admissionNo, 'ADM-001');
+  assert.equal(normalized.items[0].email, 'jane@example.com');
+});
 
-  const service = createResourceService('students');
+test('maps frontend student payloads to the backend student schema', () => {
+  const payload = mapStudentPayload({ name: 'Jane Doe', email: 'jane@example.com', admissionNo: 'ADM-001', status: 'Active' });
 
-  const initial = await service.list({ page: 1, pageSize: 10 });
-  assert.deepEqual(initial.items, []);
+  assert.deepEqual(payload, {
+    admission_number: 'ADM-001',
+    first_name: 'Jane',
+    last_name: 'Doe',
+    email: 'jane@example.com',
+    phone: null,
+    date_of_birth: null,
+    gender: null,
+    status: 'Active',
+  });
+});
 
-  const created = await service.create({ name: 'Ada Lovelace' });
-  assert.equal(created.name, 'Ada Lovelace');
-  assert.ok(created.id);
+test('maps backend student records back to the UI shape', () => {
+  const record = mapStudentRecord({ id: 2, admission_number: 'ADM-002', first_name: 'John', last_name: 'Smith', contact: { email: 'john@example.com', phone: '999' }, status: 'Pending' });
 
-  const listed = await service.list();
-  assert.equal(listed.items.length, 1);
-
-  const updated = await service.update(created.id, { name: 'Grace Hopper' });
-  assert.equal(updated.name, 'Grace Hopper');
-  assert.equal(updated.id, created.id);
-
-  const removed = await service.remove(created.id);
-  assert.equal(removed.success, true);
-
-  const afterDelete = await service.list();
-  assert.deepEqual(afterDelete.items, []);
+  assert.equal(record.name, 'John Smith');
+  assert.equal(record.admissionNo, 'ADM-002');
+  assert.equal(record.email, 'john@example.com');
+  assert.equal(record.phone, '999');
 });
