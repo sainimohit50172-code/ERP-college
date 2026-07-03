@@ -19,6 +19,10 @@ uvicorn app.main:app --reload
 
 ## Docker
 
+When running inside Docker Compose, the backend uses service hostnames for MySQL and Redis.
+
 ```bash
 docker compose up --build
 ```
+
+If you run the backend locally instead of in Docker, keep the local `.env` values pointed at `127.0.0.1` and your host MySQL/Redis instances.

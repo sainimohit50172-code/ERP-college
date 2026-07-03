@@ -38,6 +38,7 @@ class Employee(Base):
     )
     payroll_entries: Mapped[list["PayrollEntry"]] = relationship(back_populates="employee", lazy="selectin")
     drivers: Mapped[list["Driver"]] = relationship(back_populates="employee", lazy="selectin")
+    teachers: Mapped[list["Teacher"]] = relationship(back_populates="employee", lazy="selectin")
 
 
 class LeaveType(Base):

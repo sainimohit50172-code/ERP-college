@@ -18,6 +18,8 @@ from app.api.v1.notifications.router import router as notifications_router
 from app.api.v1.procurement.router import router as procurement_router
 from app.api.v1.students.router import router as students_router
 from app.api.v1.transport.router import router as transport_router
+from app.api.v1.academic.router import router as academic_router
+from app.api.v1.teachers.router import router as teachers_router
 from app.api.v1.shared.exceptions import register_exception_handlers
 
 from app.core.config import get_settings
@@ -43,21 +45,29 @@ app.add_middleware(
 
 register_exception_handlers(app)
 
-app.include_router(auth_router, prefix=settings.api_v1_str)
-app.include_router(admissions_router, prefix=settings.api_v1_str)
-app.include_router(attendance_router, prefix=settings.api_v1_str)
-app.include_router(audit_router, prefix=settings.api_v1_str)
-app.include_router(employees_router, prefix=settings.api_v1_str)
-app.include_router(examinations_router, prefix=settings.api_v1_str)
-app.include_router(fees_router, prefix=settings.api_v1_str)
-app.include_router(finance_router, prefix=settings.api_v1_str)
-app.include_router(hostel_router, prefix=settings.api_v1_str)
-app.include_router(inventory_router, prefix=settings.api_v1_str)
-app.include_router(library_router, prefix=settings.api_v1_str)
-app.include_router(notifications_router, prefix=settings.api_v1_str)
-app.include_router(procurement_router, prefix=settings.api_v1_str)
-app.include_router(students_router, prefix=settings.api_v1_str)
-app.include_router(transport_router, prefix=settings.api_v1_str)
+routers = [
+    auth_router,
+    admissions_router,
+    attendance_router,
+    audit_router,
+    employees_router,
+    examinations_router,
+    fees_router,
+    finance_router,
+    hostel_router,
+    inventory_router,
+    library_router,
+    notifications_router,
+    procurement_router,
+    students_router,
+    transport_router,
+    academic_router,
+    teachers_router,
+]
+
+for router in routers:
+    app.include_router(router, prefix=settings.api_v1_str)
+    app.include_router(router, prefix="/api")
 
 
 @app.get("/health")
@@ -73,10 +83,6 @@ async def health_check_v1():
 @app.on_event("startup")
 async def startup_event():
     logger.info("Starting %s", settings.app_name)
-    try:
-        Base.metadata.create_all(bind=engine)
-    except SQLAlchemyError as exc:
-        logger.warning("Database initialization skipped: %s", exc)
 
 
 @app.on_event("shutdown")

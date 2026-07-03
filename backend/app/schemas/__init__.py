@@ -34,6 +34,7 @@ from app.schemas.examinations.schemas import ExamCreate, ExamDetail, ExamListIte
 from app.schemas.library.schemas import BookCopyCreate, BookCopyDetail, BookCopyListItem, BookCopyResponse, BookCopyUpdate, BookIssueCreate, BookIssueDetail, BookIssueListItem, BookIssueResponse, BookIssueUpdate, FineCreate, FineDetail, FineListItem, FineResponse, FineUpdate, LibraryItemCreate, LibraryItemDetail, LibraryItemListItem, LibraryItemResponse, LibraryItemUpdate, ReservationCreate, ReservationDetail, ReservationListItem, ReservationResponse, ReservationUpdate
 from app.schemas.hostel.schemas import BedCreate, BedDetail, BedListItem, BedResponse, BedUpdate, ComplaintCreate, ComplaintDetail, ComplaintListItem, ComplaintResponse, ComplaintUpdate, HostelCreate, HostelDetail, HostelListItem, HostelResponse, HostelUpdate, HostelAllocationCreate, HostelAllocationDetail, HostelAllocationListItem, HostelAllocationResponse, HostelAllocationUpdate, RoomCreate, RoomDetail, RoomListItem, RoomResponse, RoomUpdate, VisitorCreate, VisitorDetail, VisitorListItem, VisitorResponse, VisitorUpdate
 from app.schemas.transport.schemas import RouteCreate, RouteDetail, RouteListItem, RouteResponse, RouteUpdate, TransportAssignmentCreate, TransportAssignmentDetail, TransportAssignmentListItem, TransportAssignmentResponse, TransportAssignmentUpdate, VehicleCreate, VehicleDetail, VehicleListItem, VehicleResponse, VehicleUpdate
+from app.schemas.teachers.schemas import TeacherCreate, TeacherDetail, TeacherListItem, TeacherResponse, TeacherUpdate
 from app.schemas.finance.schemas import AccountCreate, AccountDetail, AccountListItem, AccountResponse, AccountUpdate, FeeStructureCreate, FeeStructureDetail, FeeStructureListItem, FeeStructureResponse, FeeStructureUpdate, PaymentCreate, PaymentDetail, PaymentListItem, PaymentResponse, PaymentUpdate, TransactionCreate, TransactionDetail, TransactionListItem, TransactionResponse, TransactionUpdate
 from app.schemas.procurement.schemas import GoodsReceiptCreate, GoodsReceiptDetail, GoodsReceiptListItem, GoodsReceiptResponse, GoodsReceiptUpdate, PurchaseOrderCreate, PurchaseOrderDetail, PurchaseOrderListItem, PurchaseOrderResponse, PurchaseOrderUpdate, PurchaseOrderLineCreate, PurchaseOrderLineDetail, PurchaseOrderLineListItem, PurchaseOrderLineResponse, PurchaseOrderLineUpdate, PurchaseRequestCreate, PurchaseRequestDetail, PurchaseRequestListItem, PurchaseRequestResponse, PurchaseRequestUpdate, SupplierCreate, SupplierDetail, SupplierListItem, SupplierResponse, SupplierUpdate
 from app.schemas.inventory.schemas import AssetRegisterCreate, AssetRegisterDetail, AssetRegisterListItem, AssetRegisterResponse, AssetRegisterUpdate, InventoryItemCreate, InventoryItemDetail, InventoryItemListItem, InventoryItemResponse, InventoryItemUpdate, StockCreate, StockDetail, StockListItem, StockResponse, StockUpdate, StockMovementCreate, StockMovementDetail, StockMovementListItem, StockMovementResponse, StockMovementUpdate, WarehouseCreate, WarehouseDetail, WarehouseListItem, WarehouseResponse, WarehouseUpdate
@@ -101,6 +102,11 @@ __all__ = [
     "EmployeeResponse",
     "EmployeeUpdate",
     "ErrorResponse",
+    "TeacherCreate",
+    "TeacherDetail",
+    "TeacherListItem",
+    "TeacherResponse",
+    "TeacherUpdate",
     "ExamCreate",
     "ExamDetail",
     "ExamListItem",

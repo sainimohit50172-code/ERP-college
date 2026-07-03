@@ -14,6 +14,7 @@ from app.repositories.interfaces.procurement import ProcurementRepository
 from app.repositories.interfaces.inventory import InventoryRepository
 from app.repositories.interfaces.notifications import NotificationRepository
 from app.repositories.interfaces.audit import AuditRepository
+from app.repositories.interfaces.teachers import TeacherRepository
 
 __all__ = [
     "BaseRepository",
@@ -28,9 +29,18 @@ __all__ = [
     "LibraryRepository",
     "HostelRepository",
     "TransportRepository",
+    "DepartmentRepository",
+    "DesignationRepository",
+    "AcademicYearRepository",
+    "SemesterRepository",
+    "CourseRepository",
+    "SubjectRepository",
+    "AcademicClassRepository",
+    "SectionRepository",
     "FinanceRepository",
     "ProcurementRepository",
     "InventoryRepository",
     "NotificationRepository",
     "AuditRepository",
+    "TeacherRepository",
 ]

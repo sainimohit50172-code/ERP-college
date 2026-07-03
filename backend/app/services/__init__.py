@@ -13,6 +13,7 @@ from app.services.notifications.service import NotificationService, Notification
 from app.services.procurement.service import ProcurementService, ProcurementServiceError
 from app.services.students.service import StudentService, StudentServiceError
 from app.services.transport.service import TransportService, TransportServiceError
+from app.services.teachers.service import TeacherService, TeacherServiceError
 
 __all__ = [
     "AdmissionService",
@@ -45,4 +46,6 @@ __all__ = [
     "StudentServiceError",
     "TransportService",
     "TransportServiceError",
+    "TeacherService",
+    "TeacherServiceError",
 ]

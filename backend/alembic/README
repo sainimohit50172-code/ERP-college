@@ -1,0 +1,7 @@
+Alembic migration environment for the College ERP backend.
+
+This folder contains the Alembic runtime environment and generated migration scripts.
+
+Commands:
+  alembic revision --autogenerate -m "initial"
+  alembic upgrade head

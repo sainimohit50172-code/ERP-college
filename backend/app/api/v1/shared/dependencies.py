@@ -16,6 +16,17 @@ from app.repositories.mysql.notifications import MySQLNotificationRepository
 from app.repositories.mysql.procurement import MySQLProcurementRepository
 from app.repositories.mysql.students import MySQLStudentRepository
 from app.repositories.mysql.transport import MySQLTransportRepository
+from app.repositories.mysql.teachers import MySQLTeacherRepository
+from app.repositories.mysql.academic import (
+    MySQLDepartmentRepository,
+    MySQLDesignationRepository,
+    MySQLAcademicYearRepository,
+    MySQLSemesterRepository,
+    MySQLCourseRepository,
+    MySQLSubjectRepository,
+    MySQLAcademicClassRepository,
+    MySQLSectionRepository,
+)
 from app.services.admissions.service import AdmissionService
 from app.services.attendance.service import AttendanceService
 from app.services.audit.service import AuditService
@@ -31,6 +42,8 @@ from app.services.notifications.service import NotificationService
 from app.services.procurement.service import ProcurementService
 from app.services.students.service import StudentService
 from app.services.transport.service import TransportService
+from app.services.academic.service import AcademicService
+from app.services.teachers.service import TeacherService
 
 
 def get_admission_repository(db=Depends(get_db)):
@@ -89,6 +102,38 @@ def get_audit_repository(db=Depends(get_db)):
     return MySQLAuditRepository(db)
 
 
+def get_department_repository(db=Depends(get_db)):
+    return MySQLDepartmentRepository(db)
+
+
+def get_designation_repository(db=Depends(get_db)):
+    return MySQLDesignationRepository(db)
+
+
+def get_academic_year_repository(db=Depends(get_db)):
+    return MySQLAcademicYearRepository(db)
+
+
+def get_semester_repository(db=Depends(get_db)):
+    return MySQLSemesterRepository(db)
+
+
+def get_course_repository(db=Depends(get_db)):
+    return MySQLCourseRepository(db)
+
+
+def get_subject_repository(db=Depends(get_db)):
+    return MySQLSubjectRepository(db)
+
+
+def get_academic_class_repository(db=Depends(get_db)):
+    return MySQLAcademicClassRepository(db)
+
+
+def get_section_repository(db=Depends(get_db)):
+    return MySQLSectionRepository(db)
+
+
 def get_auth_repository(db=Depends(get_db)):
     return MySQLAuthRepository(db)
 
@@ -129,6 +174,14 @@ def get_transport_service(repo=Depends(get_transport_repository)):
     return TransportService(repo)
 
 
+def get_teacher_repository(db=Depends(get_db)):
+    return MySQLTeacherRepository(db)
+
+
+def get_teacher_service(repo=Depends(get_teacher_repository)):
+    return TeacherService(repo)
+
+
 def get_notification_service(repo=Depends(get_notification_repository)):
     return NotificationService(repo)
 
@@ -147,6 +200,28 @@ def get_finance_service(repo=Depends(get_finance_repository)):
 
 def get_audit_service(repo=Depends(get_audit_repository)):
     return AuditService(repo)
+
+
+def get_academic_service(
+    dept_repo=Depends(get_department_repository),
+    designation_repo=Depends(get_designation_repository),
+    year_repo=Depends(get_academic_year_repository),
+    semester_repo=Depends(get_semester_repository),
+    course_repo=Depends(get_course_repository),
+    subject_repo=Depends(get_subject_repository),
+    class_repo=Depends(get_academic_class_repository),
+    section_repo=Depends(get_section_repository),
+):
+    return AcademicService(
+        dept_repo,
+        designation_repo,
+        year_repo,
+        semester_repo,
+        course_repo,
+        subject_repo,
+        class_repo,
+        section_repo,
+    )
 
 
 def get_auth_service(repo=Depends(get_auth_repository)):

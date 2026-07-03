@@ -265,3 +265,8 @@ async def delete_student(student_id: int, repository=Depends(get_student_reposit
     if not deleted:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Student not found")
     return None
+
+
+# expose dependency functions for tests and external overrides
+router.get_student_repository = get_student_repository
+router.get_student_service = get_student_service

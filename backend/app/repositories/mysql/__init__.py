@@ -14,6 +14,7 @@ from app.repositories.mysql.procurement import MySQLProcurementRepository
 from app.repositories.mysql.inventory import MySQLInventoryRepository
 from app.repositories.mysql.notifications import MySQLNotificationRepository
 from app.repositories.mysql.audit import MySQLAuditRepository
+from app.repositories.mysql.teachers import MySQLTeacherRepository
 
 __all__ = [
     "MySQLRepository",
@@ -32,4 +33,13 @@ __all__ = [
     "MySQLInventoryRepository",
     "MySQLNotificationRepository",
     "MySQLAuditRepository",
+    "MySQLTeacherRepository",
+    "MySQLDepartmentRepository",
+    "MySQLDesignationRepository",
+    "MySQLAcademicYearRepository",
+    "MySQLSemesterRepository",
+    "MySQLCourseRepository",
+    "MySQLSubjectRepository",
+    "MySQLAcademicClassRepository",
+    "MySQLSectionRepository",
 ]
