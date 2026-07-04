@@ -44,6 +44,9 @@ def _student_to_list_item(student: Student) -> StudentListItem:
 
 def _build_student_from_payload(payload: StudentCreate | StudentUpdate, existing: Student | None = None) -> Student:
     student = existing or Student()
+    provided = None
+    if isinstance(payload, StudentUpdate):
+        provided = payload.model_dump(exclude_unset=True)
     if isinstance(payload, StudentCreate):
         student.admission_no = payload.admission_number
         student.first_name = payload.first_name
@@ -74,14 +77,18 @@ def _build_student_from_payload(payload: StudentCreate | StudentUpdate, existing
         student.contact = contact or None
     elif isinstance(payload, StudentUpdate):
         contact = dict(existing.contact or {}) if existing is not None else {}
-        if payload.email is not None:
-            contact["email"] = str(payload.email)
-        elif existing is not None and payload.email is None and "email" in contact:
-            contact.pop("email", None)
-        if payload.phone is not None:
-            contact["phone"] = payload.phone
-        elif existing is not None and payload.phone is None and "phone" in contact:
-            contact.pop("phone", None)
+        provided = provided or {}
+        # Only modify contact fields if they were provided in the payload
+        if "email" in provided:
+            if payload.email is None:
+                contact.pop("email", None)
+            else:
+                contact["email"] = str(payload.email)
+        if "phone" in provided:
+            if payload.phone is None:
+                contact.pop("phone", None)
+            else:
+                contact["phone"] = payload.phone
         student.contact = contact or None
 
     return student

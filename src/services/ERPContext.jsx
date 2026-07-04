@@ -5,7 +5,46 @@ import {
 } from '../hooks/useResourceHooks';
 import notificationsService from './notificationsService.js';
 
-const ERPContext = createContext(null);
+const defaultERPContext = {
+  currentUser: null,
+  login: () => {},
+  theme: 'light',
+  setTheme: () => {},
+  sidebarOpen: false,
+  setSidebarOpen: () => {},
+  notifications: [],
+  setNotifications: () => {},
+  markNotificationAsRead: () => {},
+  markAllNotificationsAsRead: () => {},
+  permissions: [],
+  setPermissions: () => {},
+  students: [],
+  teachers: [],
+  employees: [],
+  departments: [],
+  courses: [],
+  semesters: [],
+  sections: [],
+  subjects: [],
+  timetables: [],
+  syllabi: [],
+  lectureNotes: [],
+  leads: [],
+  createStudent: () => {},
+  createTeacher: () => {},
+  createEmployee: () => {},
+  createDepartment: () => {},
+  createCourse: () => {},
+  createSemester: () => {},
+  createSection: () => {},
+  createSubject: () => {},
+  createTimetable: () => {},
+  createSyllabus: () => {},
+  createLectureNote: () => {},
+  createLead: () => {},
+};
+
+const ERPContext = createContext(defaultERPContext);
 
 export function ERPProvider({ children }) {
   // UI-only state
@@ -109,9 +148,5 @@ export function ERPProvider({ children }) {
 }
 
 export function useERP() {
-  const context = useContext(ERPContext);
-  if (!context) {
-    throw new Error('useERP must be used within ERPProvider');
-  }
-  return context;
+  return useContext(ERPContext);
 }

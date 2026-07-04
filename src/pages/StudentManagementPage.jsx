@@ -248,10 +248,37 @@ export default function StudentManagementPage() {
       });
     }
   }, [courses, semesters, sections, departments, reset, isModalOpen]);
-  const getLabel = (list, id, property = 'name') => list.find((item) => item.id === id)?.[property] || id || 'N/A';
+  const getLabel = (list = [], id, property = 'name') => {
+    const items = Array.isArray(list) ? list : [];
+    return items.find((item) => item?.id === id)?.[property] || id || 'N/A';
+  };
   const formatCurrency = (value) => {
     const amount = typeof value === 'number' ? value : Number(value || 0);
     return Number.isNaN(amount) ? '$0.00' : `$${amount.toFixed(2)}`;
+  };
+  const sortValue = (student) => {
+    const courseName = getLabel(courses, student.courseId, 'title');
+    const semesterName = getLabel(semesters, student.semesterId, 'name');
+    const sectionName = getLabel(sections, student.sectionId, 'name');
+    const departmentName = getLabel(departments, student.departmentId, 'name');
+    switch (sortBy) {
+      case 'course':
+        return courseName;
+      case 'semester':
+        return semesterName;
+      case 'section':
+        return sectionName;
+      case 'department':
+        return departmentName;
+      case 'rollNo':
+        return student.rollNo || '';
+      case 'admissionNo':
+        return student.admissionNo || '';
+      case 'balance':
+        return Number(student.balance || 0);
+      default:
+        return student[sortBy] || '';
+    }
   };
   const allDepartments = [{ value: 'All', label: 'All departments' }, ...departments.map((department) => ({ value: department.name, label: department.name }))];
   const filteredStudents = useMemo(() => {
@@ -369,30 +396,6 @@ export default function StudentManagementPage() {
       departmentId: departments[0]?.id || '',
       admissionDate: new Date().toISOString().slice(0, 10),
     });
-  };
-  const sortValue = (student) => {
-    const courseName = getLabel(courses, student.courseId, 'title');
-    const semesterName = getLabel(semesters, student.semesterId, 'name');
-    const sectionName = getLabel(sections, student.sectionId, 'name');
-    const departmentName = getLabel(departments, student.departmentId, 'name');
-    switch (sortBy) {
-      case 'course':
-        return courseName;
-      case 'semester':
-        return semesterName;
-      case 'section':
-        return sectionName;
-      case 'department':
-        return departmentName;
-      case 'rollNo':
-        return student.rollNo || '';
-      case 'admissionNo':
-        return student.admissionNo || '';
-      case 'balance':
-        return Number(student.balance || 0);
-      default:
-        return student[sortBy] || '';
-    }
   };
   useEffect(() => {
     if (page > pageCount) {

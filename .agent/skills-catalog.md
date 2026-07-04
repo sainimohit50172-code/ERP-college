@@ -1,6 +1,6 @@
 # AI Agent Skills — Full Catalog
 
-> Auto-generated. Total: **1894 skills** across **113 categories**.
+> Auto-generated. Total: **1896 skills** across **113 categories**.
 > When asked "what skill should I use?", browse this file and suggest the most relevant skill IDs.
 > Install a skill: `Ctrl+Shift+/` → search for the skill ID → press Enter.
 
@@ -1060,6 +1060,7 @@ api docs, reference,... _(risk: unknown)_
 - **agenttrace-session-audit**: Audit local AI coding-agent sessions with agenttrace for cost, tool failures, latency, anomalies, health, diffs, and CI gates. _(risk: safe)_
 - **ax-extract-workflow**: Reconstruct workflow behind a past coding-agent artifact using local ax sessions/commits/skills/tool traces. Use when asked how X was built. _(risk: safe)_
 - **brooks-lint**: AI code reviewer grounded in classic software engineering books for catching design smells, coupling issues, and architectural risks. _(risk: safe)_
+- **code-polish**: Rewrites unprofessional code comments into clear ones and performs non-semantic cleanup. Use to professionalize code without altering logic or behavior. _(risk: critical)_
 - **code-review-and-quality**: Conducts multi-axis code review. Use before merging any change. Use when reviewing code written by yourself, another agent, or a human. Use when you need to assess code quality across multiple dimensions before it enters the main branch. _(risk: unknown)_
 - **code-showcase-core-components**: Core component library and design system patterns. Use when building UI, using design tokens, or working with the component library. _(risk: unknown)_
 - **code-showcase-react-ui-patterns**: Modern React UI patterns for loading states, error handling, and data fetching. Use when building UI components, handling async data, or managing UI states. _(risk: unknown)_
@@ -1749,6 +1750,7 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 - **handoff**: Compact the current conversation into a handoff document for another agent to pick up. _(risk: safe)_
 - **mdpr-skill**: Review MDPR Markdown presentation workflows with semantic hints, visual checks, and deterministic renderer boundaries. _(risk: safe)_
 - **rich-elicitation**: Asks clarifying questions in multiple rounds before starting ambiguous tasks. Fires when 2+ task dimensions each have 3+ viable answers.
+- **workorai**: WorkorAI talent-marketplace skill: candidates search jobs and manage applications; employers run the job lifecycle and get ranked candidate matches with white-box fit explanations. _(risk: critical)_
 
 ## programming-languages
 

@@ -38,6 +38,24 @@ test('maps frontend student payloads to the backend student schema', () => {
   });
 });
 
+test('normalizes wrapped list responses for non-student resources', () => {
+  const normalized = normalizeApiListResponse({
+    success: true,
+    data: {
+      items: [{ id: 7, name: 'Finance', status: 'Active' }],
+      total: 1,
+      page: 1,
+      page_size: 10,
+      pages: 1,
+    },
+  }, { page: 1, pageSize: 10 });
+
+  assert.equal(normalized.total, 1);
+  assert.equal(normalized.items[0].name, 'Finance');
+  assert.equal(normalized.page, 1);
+  assert.equal(normalized.pages, 1);
+});
+
 test('maps backend student records back to the UI shape', () => {
   const record = mapStudentRecord({ id: 2, admission_number: 'ADM-002', first_name: 'John', last_name: 'Smith', contact: { email: 'john@example.com', phone: '999' }, status: 'Pending' });
 

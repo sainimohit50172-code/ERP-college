@@ -34,10 +34,14 @@ function getCellText(value) {
   if (typeof value === 'object') {
     if ('props' in value && value.props) {
       const child = value.props.children;
-      if (typeof child === 'string' || typeof child === 'number') return String(child);
+      if (typeof child === 'string' || typeof child === 'number' || typeof child === 'boolean') return String(child);
       if (Array.isArray(child)) return child.map((item) => getCellText(item)).join(' ');
     }
-    return JSON.stringify(value);
+    try {
+      return JSON.stringify(value);
+    } catch {
+      return String(value);
+    }
   }
   return String(value);
 }

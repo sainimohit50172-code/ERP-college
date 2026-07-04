@@ -5,7 +5,7 @@ from decimal import Decimal
 from typing import Optional
 
 from sqlalchemy import BigInteger, Date, DateTime, DECIMAL, Enum, ForeignKey, JSON, String, Text
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship, synonym
 
 from app.db.database import Base
 
@@ -15,6 +15,7 @@ class Employee(Base):
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
     employee_no: Mapped[Optional[str]] = mapped_column(String(64), unique=True, nullable=True)
+    employee_code = synonym("employee_no")
     user_id: Mapped[Optional[int]] = mapped_column(BigInteger, ForeignKey("users.id"), nullable=True)
     first_name: Mapped[str] = mapped_column(String(128), nullable=False)
     last_name: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
@@ -28,6 +29,32 @@ class Employee(Base):
     updated_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user: Mapped[Optional["User"]] = relationship(back_populates="employees", foreign_keys=[user_id], lazy="selectin")
+
+    @property
+    def email(self) -> Optional[str]:
+        return (self.contact or {}).get("email")
+
+    @email.setter
+    def email(self, value: Optional[str]) -> None:
+        contact = dict(self.contact or {})
+        if value is None:
+            contact.pop("email", None)
+        else:
+            contact["email"] = str(value)
+        self.contact = contact or None
+
+    @property
+    def phone(self) -> Optional[str]:
+        return (self.contact or {}).get("phone")
+
+    @phone.setter
+    def phone(self, value: Optional[str]) -> None:
+        contact = dict(self.contact or {})
+        if value is None:
+            contact.pop("phone", None)
+        else:
+            contact["phone"] = value
+        self.contact = contact or None
     designation: Mapped[Optional["Designation"]] = relationship(back_populates="employees", lazy="selectin")
     department: Mapped[Optional["Department"]] = relationship(back_populates="employees", lazy="selectin")
     leave_requests: Mapped[list["LeaveRequest"]] = relationship(

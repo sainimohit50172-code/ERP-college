@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, datetime
 from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
@@ -31,7 +31,7 @@ class EmployeeUpdate(EmployeeBase):
 
 class EmployeeDetail(EmployeeBase):
     id: int
-    created_at: Optional[date] = None
+    created_at: Optional[datetime] = None
 
 
 class EmployeeListItem(EmployeeBase):

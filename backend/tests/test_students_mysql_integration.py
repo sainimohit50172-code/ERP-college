@@ -28,12 +28,14 @@ def run_integration_tests():
     base = "/api/v1/students"
 
     # CREATE
+    import datetime
+    suffix = datetime.datetime.utcnow().strftime("%Y%m%d%H%M%S")
     payload = {
-        "admission_number": "INT-S-001",
+        "admission_number": f"INT-S-{suffix}",
         "first_name": "Integration",
         "last_name": "Tester",
-        "email": "int.student@example.com",
-        "phone": "1234567890",
+        "email": f"int.student+{suffix}@example.com",
+        "phone": f"1234{suffix[-6:]}",
         "status": "Active",
     }
     resp = client.post(base + "/", json=payload)
@@ -63,17 +65,26 @@ def run_integration_tests():
         resp = client.put(f"{base}/{student_id}", json={"first_name": "IntegrationUpdated"})
         print('PUT status', resp.status_code, resp.text)
         assert resp.status_code == 200
-        sess.refresh(row)
-        print('DB name after update:', row.first_name)
-        assert row.first_name == 'IntegrationUpdated'
+        # verify update with a fresh session to observe committed changes
+        sess2 = SessionLocal()
+        try:
+            row2 = query_student_by_id(sess2, student_id)
+            print('DB name after update (fresh session):', getattr(row2, 'first_name', None))
+            assert row2.first_name == 'IntegrationUpdated'
+        finally:
+            sess2.close()
 
         # DELETE
         resp = client.delete(f"{base}/{student_id}")
         print('DELETE status', resp.status_code)
         assert resp.status_code == 204
-        row_after = query_student_by_id(sess, student_id)
-        print('DB row after delete:', row_after)
-        assert row_after is None
+        sess3 = SessionLocal()
+        try:
+            row_after = query_student_by_id(sess3, student_id)
+            print('DB row after delete (fresh session):', row_after)
+            assert row_after is None
+        finally:
+            sess3.close()
 
     finally:
         sess.close()

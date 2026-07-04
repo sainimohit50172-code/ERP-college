@@ -26,10 +26,10 @@ export default function DepartmentManagementPage() {
   const pageSize = 5;
   const { register, handleSubmit, reset, formState: { errors, _isSubmitting } } = useForm({ defaultValues: { code: '', name: '', head: '', facultyCount: '0', activePrograms: '0', status: 'Active' } });
   const filteredDepartments = useMemo(() => {
+    const searchTerm = search.toLowerCase();
     return departments.filter((department) => {
-      const searchTerm = search.toLowerCase();
-      const matchesSearch = [department.code, department.name, department.head].some((field) => field.toLowerCase().includes(searchTerm));
-      const matchesFilter = filter === 'All' || department.status === filter;
+      const matchesSearch = [department.code, department.name, department.head].some((field) => String(field ?? '').toLowerCase().includes(searchTerm));
+      const matchesFilter = filter === 'All' || String(department.status ?? '') === filter;
       return matchesSearch && matchesFilter;
     });
   }, [departments, search, filter]);
@@ -57,11 +57,11 @@ export default function DepartmentManagementPage() {
             </div>
             <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
               <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Faculty coverage</p>
-              <p className="mt-3 text-2xl font-semibold text-white">{departments.reduce((sum, dept) => sum + dept.facultyCount, 0)}</p>
+              <p className="mt-3 text-2xl font-semibold text-white">{departments.reduce((sum, dept) => sum + Number(dept.facultyCount || 0), 0)}</p>
             </div>
             <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
               <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Program count</p>
-              <p className="mt-3 text-2xl font-semibold text-white">{departments.reduce((sum, dept) => sum + dept.activePrograms, 0)}</p>
+              <p className="mt-3 text-2xl font-semibold text-white">{departments.reduce((sum, dept) => sum + Number(dept.activePrograms || 0), 0)}</p>
             </div>
           </div>
           <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">

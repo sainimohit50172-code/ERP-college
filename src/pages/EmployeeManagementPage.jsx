@@ -165,11 +165,24 @@ export default function EmployeeManagementPage() {
     });
     setIsModalOpen(true);
   };
-  const onSubmit = (data) => {
-    const payload = {
-      ...data,
-      salary: `$${Number(data.salary || 0)}`,
+  const formatEmployeePayload = (data, existingEmployee) => {
+    const fullName = String(data.name || '').trim();
+    const [first_name, ...rest] = fullName.split(' ');
+    const last_name = rest.join(' ') || null;
+    const inferredEmployeeCode = data.email ? data.email.split('@')[0].toLowerCase().replace(/[^a-z0-9]+/g, '-') : fullName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+    return {
+      employee_code: existingEmployee?.employee_code || inferredEmployeeCode || `emp-${Date.now()}`,
+      first_name: first_name || fullName,
+      last_name: last_name,
+      email: data.email || null,
+      designation: data.designation,
+      department: data.department,
+      status: data.status,
     };
+  };
+  const onSubmit = (data) => {
+    const payload = formatEmployeePayload(data, selectedEmployee);
     if (isEditMode && selectedEmployee) {
       updateEmployee.mutate(
         { id: selectedEmployee.id, payload },

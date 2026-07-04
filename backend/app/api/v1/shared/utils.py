@@ -1,11 +1,22 @@
 from typing import Any
 
+from sqlalchemy.exc import NoInspectionAvailable
+from sqlalchemy.orm import class_mapper
+
 from app.schemas.shared.base import FilterRequest
+
+
+def _is_relationship_attribute(entity: Any, key: str) -> bool:
+    try:
+        mapper = class_mapper(entity if isinstance(entity, type) else entity.__class__)
+        return key in mapper.relationships
+    except (AttributeError, NoInspectionAvailable):
+        return False
 
 
 def apply_patch(entity: Any, patch_data: dict[str, Any]) -> Any:
     for key, value in patch_data.items():
-        if hasattr(entity, key):
+        if hasattr(entity, key) and not _is_relationship_attribute(entity, key):
             setattr(entity, key, value)
     return entity
 

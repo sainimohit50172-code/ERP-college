@@ -1,12 +1,20 @@
 from __future__ import annotations
 
 from datetime import date, datetime
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 from sqlalchemy import BigInteger, Date, DateTime, ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.database import Base
+
+if TYPE_CHECKING:
+    from app.models.auth.models import User
+    from app.models.employees.models import Employee
+    from app.models.procurement.models import PurchaseRequest
+    from app.models.finance.models import Budget
+    from app.models.examinations.models import ExamResult
+    from app.models.students.models import Student
 
 
 class Department(Base):

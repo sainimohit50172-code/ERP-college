@@ -1,7 +1,10 @@
+import inspect
 from typing import Any, Callable, Generic, List, Optional, Type, TypeVar
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
+from sqlalchemy import select
+from sqlalchemy.orm import class_mapper
 
 from app.schemas.shared.base import (
     APIResponse,
@@ -14,7 +17,7 @@ from app.schemas.shared.base import (
 )
 from app.repositories.interfaces.base import BaseRepository, RepositoryError
 
-from app.api.v1.shared.utils import apply_patch, filter_items
+from app.api.v1.shared.utils import _is_relationship_attribute, apply_patch, filter_items
 
 TModel = TypeVar("TModel")
 TCreate = TypeVar("TCreate", bound=BaseModel)
@@ -42,6 +45,34 @@ def build_crud_router(
     if not entity_label:
         entity_label = tags[0]
 
+    def _orm_to_dict(obj):
+        try:
+            cols = [c.key for c in class_mapper(obj.__class__).columns]
+            return {k: getattr(obj, k) for k in cols}
+        except Exception:
+            return {k: v for k, v in vars(obj).items() if not k.startswith("_")}
+
+    def _orm_to_dict_for_schema(obj, schema_type: type[BaseModel]):
+        data = _orm_to_dict(obj)
+        # Fill missing schema fields from object attributes (synonyms/properties)
+        try:
+            schema_fields = getattr(schema_type, 'model_fields', {})
+            for field in schema_fields:
+                if field not in data:
+                    # try attribute on object
+                    if hasattr(obj, field):
+                        try:
+                            data[field] = getattr(obj, field)
+                            continue
+                        except Exception:
+                            pass
+                    # common synonyms: map title -> name
+                    if field == 'name' and 'title' in data:
+                        data['name'] = data['title']
+        except Exception:
+            pass
+        return data
+
     @router.get(
         "/",
         response_model=APIResponse[PaginationResponse[list_schema]],
@@ -54,7 +85,7 @@ def build_crud_router(
     ):
         items, total = await repository.paginate(pagination.page, pagination.page_size)
         response = PaginationResponse[list_schema](
-            items=[list_schema.model_validate(item) for item in items],
+            items=[list_schema.model_validate(_orm_to_dict_for_schema(item, list_schema)) for item in items],
             total=total,
             page=pagination.page,
             page_size=pagination.page_size,
@@ -75,32 +106,118 @@ def build_crud_router(
         service: Any = Depends(service_dependency),
     ):
         payload_data = payload.model_dump()
-        if hasattr(service, "enroll_student"):
-            await service.enroll_student(**payload_data)
-        elif hasattr(service, "create_application"):
-            await service.create_application(**payload_data)
-        elif hasattr(service, "join_employee"):
-            await service.join_employee(**payload_data)
-        elif hasattr(service, "create_invoice"):
-            await service.create_invoice(**payload_data)
-        elif hasattr(service, "post_entry"):
-            await service.post_entry(**payload_data)
-        elif hasattr(service, "allocate_room"):
-            await service.allocate_room(**payload_data)
-        elif hasattr(service, "validate_stock"):
-            await service.validate_stock(**payload_data)
-        elif hasattr(service, "issue_book"):
-            await service.issue_book(**payload_data)
-        elif hasattr(service, "dispatch"):
-            await service.dispatch(**payload_data)
-        elif hasattr(service, "create_request"):
-            await service.create_request(**payload_data)
-        elif hasattr(service, "allocate_vehicle"):
-            await service.allocate_vehicle(**payload_data)
 
-        entity = model_class(**payload_data)
+        # Helper: resolve a relationship display value to a foreign-key id
+        def _resolve_relationship(key: str, value: Any, repo_session) -> Optional[int]:
+            try:
+                prop = class_mapper(model_class).get_property(key)
+            except Exception:
+                return None
+            # related mapped class
+            related_class = prop.mapper.class_
+            # find local fk column name
+            local_cols = list(prop.local_columns)
+            if not local_cols:
+                return None
+            fk_name = local_cols[0].key
+
+            # if value already looks like an id, return it
+            if value is None:
+                return None
+            if isinstance(value, int):
+                return int(value)
+            if isinstance(value, str) and value.isdigit():
+                return int(value)
+
+            if repo_session is None:
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Cannot resolve relation '{key}' without DB session")
+
+            # try common lookup fields
+            for candidate in ("code", "title", "name", "teacher_code", "employee_code", "roll_number", "admission_no"):
+                if hasattr(related_class, candidate):
+                    stmt = select(related_class).where(getattr(related_class, candidate) == value)
+                    result = repo_session.execute(stmt).scalar_one_or_none()
+                    if result is not None:
+                        return int(getattr(result, "id"))
+
+            # Attempt to create a new related lookup record when not found (helps free-text lookups from UI)
+            try:
+                for candidate in ("title", "name", "code"):
+                    if hasattr(related_class, candidate):
+                        # create minimal instance using the candidate attribute
+                        new_obj = related_class(**{candidate: value})
+                        repo_session.add(new_obj)
+                        repo_session.flush()
+                        return int(getattr(new_obj, "id"))
+            except Exception:
+                # creation failed — fall through to error
+                pass
+
+            # not resolved
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Related {related_class.__name__} not found for {key}: {value}")
+
+        async def _call_service_method(method_name: str) -> None:
+            method = getattr(service, method_name)
+            method_signature = inspect.signature(method)
+            if any(param.kind == inspect.Parameter.VAR_KEYWORD for param in method_signature.parameters.values()):
+                await method(**payload_data)
+                return
+            filtered_payload = {
+                key: value
+                for key, value in payload_data.items()
+                if key in method_signature.parameters
+            }
+            await method(**filtered_payload)
+
+        if hasattr(service, "enroll_student"):
+            await _call_service_method("enroll_student")
+        elif hasattr(service, "create_application"):
+            await _call_service_method("create_application")
+        elif hasattr(service, "join_employee"):
+            await _call_service_method("join_employee")
+        elif hasattr(service, "create_invoice"):
+            await _call_service_method("create_invoice")
+        elif hasattr(service, "post_entry"):
+            await _call_service_method("post_entry")
+        elif hasattr(service, "allocate_room"):
+            await _call_service_method("allocate_room")
+        elif hasattr(service, "validate_stock"):
+            await _call_service_method("validate_stock")
+        elif hasattr(service, "issue_book"):
+            await _call_service_method("issue_book")
+        elif hasattr(service, "dispatch"):
+            await _call_service_method("dispatch")
+        elif hasattr(service, "create_request"):
+            await _call_service_method("create_request")
+        elif hasattr(service, "allocate_vehicle"):
+            await _call_service_method("allocate_vehicle")
+
+        # Build payload mapping: convert relationship display values to fk columns
+        filtered_payload = {}
+        repo_session = getattr(repository, "session", None)
+        for key, value in payload_data.items():
+            if _is_relationship_attribute(model_class, key):
+                fk_id = _resolve_relationship(key, value, repo_session)
+                if fk_id is not None:
+                    # map to fk column name
+                    try:
+                        prop = class_mapper(model_class).get_property(key)
+                        local_cols = list(prop.local_columns)
+                        if local_cols:
+                            fk_name = local_cols[0].key
+                            filtered_payload[fk_name] = fk_id
+                    except Exception:
+                        # fallback: skip relationship attribute
+                        continue
+                continue
+            filtered_payload[key] = value
+        # Map common schema->model synonyms (e.g., schema uses `name` while model uses `title`)
+        if 'name' in filtered_payload and not hasattr(model_class, 'name') and hasattr(model_class, 'title'):
+            filtered_payload['title'] = filtered_payload.pop('name')
+
+        entity = model_class(**filtered_payload)
         created = await repository.create(entity)
-        return APIResponse(data=detail_schema.model_validate(created), message="Created")
+        return APIResponse(data=detail_schema.model_validate(_orm_to_dict_for_schema(created, detail_schema)), message="Created")
 
     create_entity.__annotations__["payload"] = create_schema
 
@@ -117,7 +234,7 @@ def build_crud_router(
         entity = await repository.get_by_id(entity_id)
         if entity is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Resource not found")
-        return APIResponse(data=detail_schema.model_validate(entity))
+        return APIResponse(data=detail_schema.model_validate(_orm_to_dict_for_schema(entity, detail_schema)))
 
     @router.put(
         "/{entity_id}",
@@ -133,11 +250,31 @@ def build_crud_router(
         existing = await repository.get_by_id(entity_id)
         if existing is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Resource not found")
-        update_data = payload.model_dump()
-        apply_patch(existing, update_data)
+        update_data = payload.model_dump(exclude_unset=True)
+        # resolve relationships in update_data
+        repo_session = getattr(repository, "session", None)
+        resolved = {}
+        for key, value in update_data.items():
+            if _is_relationship_attribute(model_class, key):
+                fk_id = _resolve_relationship(key, value, repo_session)
+                if fk_id is not None:
+                    try:
+                        prop = class_mapper(model_class).get_property(key)
+                        local_cols = list(prop.local_columns)
+                        if local_cols:
+                            fk_name = local_cols[0].key
+                            resolved[fk_name] = fk_id
+                    except Exception:
+                        continue
+                continue
+            resolved[key] = value
+        # map common schema->model synonyms for updates as well
+        if 'name' in resolved and not hasattr(model_class, 'name') and hasattr(model_class, 'title'):
+            resolved['title'] = resolved.pop('name')
+        apply_patch(existing, resolved)
         await repository._commit()
         await repository._refresh(existing)
-        return APIResponse(data=detail_schema.model_validate(existing), message="Updated")
+        return APIResponse(data=detail_schema.model_validate(_orm_to_dict_for_schema(existing, detail_schema)), message="Updated")
 
     replace_entity.__annotations__["payload"] = update_schema
 
@@ -156,10 +293,29 @@ def build_crud_router(
         if existing is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Resource not found")
         update_data = payload.model_dump(exclude_unset=True)
-        apply_patch(existing, update_data)
+        repo_session = getattr(repository, "session", None)
+        resolved = {}
+        for key, value in update_data.items():
+            if _is_relationship_attribute(model_class, key):
+                fk_id = _resolve_relationship(key, value, repo_session)
+                if fk_id is not None:
+                    try:
+                        prop = class_mapper(model_class).get_property(key)
+                        local_cols = list(prop.local_columns)
+                        if local_cols:
+                            fk_name = local_cols[0].key
+                            resolved[fk_name] = fk_id
+                    except Exception:
+                        continue
+                continue
+            resolved[key] = value
+        # map common schema->model synonyms for patch updates as well
+        if 'name' in resolved and not hasattr(model_class, 'name') and hasattr(model_class, 'title'):
+            resolved['title'] = resolved.pop('name')
+        apply_patch(existing, resolved)
         await repository._commit()
         await repository._refresh(existing)
-        return APIResponse(data=detail_schema.model_validate(existing), message="Updated")
+        return APIResponse(data=detail_schema.model_validate(_orm_to_dict_for_schema(existing, detail_schema)), message="Updated")
 
     patch_entity.__annotations__["payload"] = update_schema
 
@@ -190,7 +346,7 @@ def build_crud_router(
     ):
         results = await repository.search(payload.query)
         response = SearchResponse[list_schema](
-            items=[list_schema.model_validate(item) for item in results],
+            items=[list_schema.model_validate(_orm_to_dict_for_schema(item, list_schema)) for item in results],
             total=len(results),
         )
         return APIResponse(data=response)
@@ -211,7 +367,7 @@ def build_crud_router(
         start = (pagination.page - 1) * pagination.page_size
         end = start + pagination.page_size
         response = PaginationResponse[list_schema](
-            items=[list_schema.model_validate(item) for item in filtered[start:end]],
+            items=[list_schema.model_validate(_orm_to_dict_for_schema(item, list_schema)) for item in filtered[start:end]],
             total=len(filtered),
             page=pagination.page,
             page_size=pagination.page_size,
@@ -229,9 +385,28 @@ def build_crud_router(
         payload: Any,
         repository: BaseRepository[Any] = Depends(repository_dependency),
     ):
-        entities = [model_class(**item.model_dump()) for item in payload]
+        entities = []
+        repo_session = getattr(repository, "session", None)
+        for item in payload:
+            item_data = item.model_dump()
+            filtered = {}
+            for key, value in item_data.items():
+                if _is_relationship_attribute(model_class, key):
+                    fk_id = _resolve_relationship(key, value, repo_session)
+                    if fk_id is not None:
+                        try:
+                            prop = class_mapper(model_class).get_property(key)
+                            local_cols = list(prop.local_columns)
+                            if local_cols:
+                                fk_name = local_cols[0].key
+                                filtered[fk_name] = fk_id
+                        except Exception:
+                            continue
+                    continue
+                filtered[key] = value
+            entities.append(model_class(**filtered))
         created = await repository.bulk_create(entities)
-        return APIResponse(data=[list_schema.model_validate(item) for item in created], message="Bulk created")
+        return APIResponse(data=[list_schema.model_validate(_orm_to_dict_for_schema(item, list_schema)) for item in created], message="Bulk created")
 
     bulk_create_entities.__annotations__["payload"] = list[create_schema]
 
@@ -257,7 +432,7 @@ def build_crud_router(
         await repository._commit()
         for entity in updated_entities:
             await repository._refresh(entity)
-        return APIResponse(data=[list_schema.model_validate(item) for item in updated_entities], message="Bulk updated")
+        return APIResponse(data=[list_schema.model_validate(_orm_to_dict_for_schema(item, list_schema)) for item in updated_entities], message="Bulk updated")
 
     bulk_update_entities.__annotations__["payload"] = list[bulk_update_schema]
 
