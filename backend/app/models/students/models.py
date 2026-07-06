@@ -7,6 +7,7 @@ from sqlalchemy import BigInteger, Date, DateTime, Enum, ForeignKey, JSON, Strin
 from sqlalchemy.orm import Mapped, mapped_column, relationship, foreign
 
 from app.db.database import Base
+from app.db.types import CaseInsensitiveEnum
 
 
 class Student(Base):
@@ -21,7 +22,7 @@ class Student(Base):
     class_id: Mapped[Optional[int]] = mapped_column(BigInteger, ForeignKey("academic_classes.id"), nullable=True)
     section_id: Mapped[Optional[int]] = mapped_column(BigInteger, ForeignKey("sections.id"), nullable=True)
     enrollment_date: Mapped[Optional[date]] = mapped_column(Date, nullable=True)
-    status: Mapped[str] = mapped_column(Enum("Active", "Alumni", "Withdrawn", name="student_status"), nullable=False, default="Active")
+    status: Mapped[str] = mapped_column(CaseInsensitiveEnum("Active", "Alumni", "Withdrawn", name="student_status"), nullable=False, default="Active")
     contact: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
     meta: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
     deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)

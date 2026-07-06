@@ -26,3 +26,28 @@ class TransportService:
             raise TransportServiceError("Student and vehicle identifiers must be positive")
 
         return TransportAllocationDTO(allocation_id=None, student_id=student_id, vehicle_id=vehicle_id)
+
+
+class DriverService:
+    def __init__(self, repo):
+        self._repo = repo
+
+
+class RouteService:
+    def __init__(self, repo):
+        self._repo = repo
+
+
+class RouteStopService:
+    def __init__(self, repo):
+        self._repo = repo
+
+
+class TransportAssignmentService:
+    def __init__(self, repo):
+        self._repo = repo
+
+
+class VehicleAssignmentService:
+    def __init__(self, repo):
+        self._repo = repo

@@ -43,7 +43,13 @@ class RoomBase(BaseModel):
     hostel_id: int
     room_number: str = Field(min_length=1, max_length=50)
     capacity: int = Field(default=0, ge=0)
-    status: str = Field(default="available", max_length=20)
+    # Additional classroom metadata supported by the UI
+    building: Optional[str] = None
+    floor: Optional[str] = None
+    has_projector: bool = Field(default=False)
+    has_lab: bool = Field(default=False)
+    has_ac: bool = Field(default=False)
+    status: str = Field(default="Active", max_length=20)
 
 
 class RoomCreate(RoomBase):
@@ -54,6 +60,11 @@ class RoomUpdate(RoomBase):
     hostel_id: Optional[int] = None
     room_number: Optional[str] = Field(default=None, min_length=1, max_length=50)
     capacity: Optional[int] = Field(default=None, ge=0)
+    building: Optional[str] = None
+    floor: Optional[str] = None
+    has_projector: Optional[bool] = None
+    has_lab: Optional[bool] = None
+    has_ac: Optional[bool] = None
 
 
 class RoomDetail(RoomBase):

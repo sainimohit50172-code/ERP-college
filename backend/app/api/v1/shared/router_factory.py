@@ -3,7 +3,7 @@ from typing import Any, Callable, Generic, List, Optional, Type, TypeVar
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import class_mapper
 
 from app.schemas.shared.base import (
@@ -52,6 +52,41 @@ def build_crud_router(
         except Exception:
             return {k: v for k, v in vars(obj).items() if not k.startswith("_")}
 
+    def _serialize_related_value(value: Any) -> Any:
+        if value is None:
+            return None
+        if isinstance(value, (str, int, float, bool, dict, list, tuple)):
+            return value
+        # Prefer common display attributes from related models.
+        for attr in ('name', 'title', 'code', 'employee_code', 'designation', 'department', 'id'):
+            if hasattr(value, attr):
+                try:
+                    candidate = getattr(value, attr)
+                except Exception:
+                    continue
+                if candidate is not None:
+                    return candidate
+        try:
+            return str(value)
+        except Exception:
+            return None
+
+    def _normalize_enum_value(key: str, value: Any) -> Any:
+        if not isinstance(value, str):
+            return value
+        try:
+            column = class_mapper(model_class).columns[key]
+        except Exception:
+            return value
+        col_type = getattr(column, 'type', None)
+        allowed_values = getattr(col_type, 'enums', None)
+        if not allowed_values:
+            return value
+        for allowed in allowed_values:
+            if isinstance(allowed, str) and allowed.lower() == value.lower():
+                return allowed
+        return value
+
     def _orm_to_dict_for_schema(obj, schema_type: type[BaseModel]):
         data = _orm_to_dict(obj)
         # Fill missing schema fields from object attributes (synonyms/properties)
@@ -62,13 +97,18 @@ def build_crud_router(
                     # try attribute on object
                     if hasattr(obj, field):
                         try:
-                            data[field] = getattr(obj, field)
+                            value = getattr(obj, field)
+                            data[field] = _serialize_related_value(value)
                             continue
                         except Exception:
                             pass
                     # common synonyms: map title -> name
                     if field == 'name' and 'title' in data:
                         data['name'] = data['title']
+            # Convert relationship objects to serializable forms.
+            for key, value in list(data.items()):
+                if not isinstance(value, (str, int, float, bool, dict, list, tuple)):
+                    data[key] = _serialize_related_value(value)
         except Exception:
             pass
         return data
@@ -135,7 +175,11 @@ def build_crud_router(
             # try common lookup fields
             for candidate in ("code", "title", "name", "teacher_code", "employee_code", "roll_number", "admission_no"):
                 if hasattr(related_class, candidate):
-                    stmt = select(related_class).where(getattr(related_class, candidate) == value)
+                    field = getattr(related_class, candidate)
+                    if isinstance(value, str):
+                        stmt = select(related_class).where(func.lower(field) == value.lower())
+                    else:
+                        stmt = select(related_class).where(field == value)
                     result = repo_session.execute(stmt).scalar_one_or_none()
                     if result is not None:
                         return int(getattr(result, "id"))
@@ -210,7 +254,7 @@ def build_crud_router(
                         # fallback: skip relationship attribute
                         continue
                 continue
-            filtered_payload[key] = value
+            filtered_payload[key] = _normalize_enum_value(key, value)
         # Map common schema->model synonyms (e.g., schema uses `name` while model uses `title`)
         if 'name' in filtered_payload and not hasattr(model_class, 'name') and hasattr(model_class, 'title'):
             filtered_payload['title'] = filtered_payload.pop('name')
@@ -267,7 +311,7 @@ def build_crud_router(
                     except Exception:
                         continue
                 continue
-            resolved[key] = value
+            resolved[key] = _normalize_enum_value(key, value)
         # map common schema->model synonyms for updates as well
         if 'name' in resolved and not hasattr(model_class, 'name') and hasattr(model_class, 'title'):
             resolved['title'] = resolved.pop('name')
@@ -308,7 +352,7 @@ def build_crud_router(
                     except Exception:
                         continue
                 continue
-            resolved[key] = value
+            resolved[key] = _normalize_enum_value(key, value)
         # map common schema->model synonyms for patch updates as well
         if 'name' in resolved and not hasattr(model_class, 'name') and hasattr(model_class, 'title'):
             resolved['title'] = resolved.pop('name')
@@ -403,7 +447,7 @@ def build_crud_router(
                         except Exception:
                             continue
                     continue
-                filtered[key] = value
+                filtered[key] = _normalize_enum_value(key, value)
             entities.append(model_class(**filtered))
         created = await repository.bulk_create(entities)
         return APIResponse(data=[list_schema.model_validate(_orm_to_dict_for_schema(item, list_schema)) for item in created], message="Bulk created")
@@ -427,7 +471,8 @@ def build_crud_router(
                 continue
             update_data = item.model_dump(exclude_unset=True)
             update_data.pop("id", None)
-            apply_patch(existing, update_data)
+            normalized_update = {key: _normalize_enum_value(key, value) for key, value in update_data.items()}
+            apply_patch(existing, normalized_update)
             updated_entities.append(existing)
         await repository._commit()
         for entity in updated_entities:

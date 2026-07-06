@@ -43,6 +43,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    logger.info("%s %s", request.method, request.url.path)
+    try:
+        response = await call_next(request)
+    except Exception as exc:
+        logger.exception("Request failed: %s %s -> %s", request.method, request.url.path, exc)
+        raise
+    logger.info("Completed %s %s with %s", request.method, request.url.path, response.status_code)
+    return response
+
 register_exception_handlers(app)
 
 routers = [

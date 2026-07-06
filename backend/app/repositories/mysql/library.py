@@ -3,7 +3,7 @@ from __future__ import annotations
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.models.library import BookIssue, LibraryItem
+from app.models.library import BookIssue, LibraryItem, BookCopy, Reservation, Fine
 from app.repositories.interfaces.base import RepositoryError
 from app.repositories.interfaces.library import LibraryRepository
 from app.repositories.mysql.base import MySQLRepository
@@ -39,3 +39,28 @@ class MySQLLibraryRepository(MySQLRepository[LibraryItem], LibraryRepository):
 
     async def calculate_fine(self, issue_id: int) -> float:
         return 0.0
+
+
+class MySQLLibraryEntityRepository(MySQLRepository[LibraryItem]):
+    def __init__(self, session):
+        super().__init__(session, LibraryItem)
+
+
+class MySQLBookCopyRepository(MySQLRepository[BookCopy]):
+    def __init__(self, session):
+        super().__init__(session, BookCopy)
+
+
+class MySQLBookIssueRepository(MySQLRepository[BookIssue]):
+    def __init__(self, session):
+        super().__init__(session, BookIssue)
+
+
+class MySQLReservationRepository(MySQLRepository[Reservation]):
+    def __init__(self, session):
+        super().__init__(session, Reservation)
+
+
+class MySQLFineRepository(MySQLRepository[Fine]):
+    def __init__(self, session):
+        super().__init__(session, Fine)

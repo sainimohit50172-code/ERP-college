@@ -8,6 +8,7 @@ from sqlalchemy import BigInteger, Date, DateTime, DECIMAL, Enum, ForeignKey, JS
 from sqlalchemy.orm import Mapped, mapped_column, relationship, synonym
 
 from app.db.database import Base
+from app.db.types import CaseInsensitiveEnum
 
 
 class Employee(Base):
@@ -22,7 +23,7 @@ class Employee(Base):
     designation_id: Mapped[Optional[int]] = mapped_column(BigInteger, ForeignKey("designations.id"), nullable=True)
     department_id: Mapped[Optional[int]] = mapped_column(BigInteger, ForeignKey("departments.id"), nullable=True)
     date_of_joining: Mapped[Optional[date]] = mapped_column(Date, nullable=True)
-    status: Mapped[str] = mapped_column(Enum("Active", "Resigned", "Retired", name="employee_status"), nullable=False, default="Active")
+    status: Mapped[str] = mapped_column(CaseInsensitiveEnum("Active", "Resigned", "Retired", name="employee_status"), nullable=False, default="Active")
     contact: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
     deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
@@ -89,7 +90,7 @@ class LeaveRequest(Base):
     end_date: Mapped[date] = mapped_column(Date, nullable=False)
     days: Mapped[Decimal] = mapped_column(DECIMAL(5, 2), nullable=False)
     reason: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    status: Mapped[str] = mapped_column(Enum("Pending", "Approved", "Rejected", "Cancelled", name="leave_status"), nullable=False, default="Pending")
+    status: Mapped[str] = mapped_column(CaseInsensitiveEnum("Pending", "Approved", "Rejected", "Cancelled", name="leave_status"), nullable=False, default="Pending")
     approver_id: Mapped[Optional[int]] = mapped_column(BigInteger, ForeignKey("employees.id"), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -106,7 +107,7 @@ class PayrollRun(Base):
     period_start: Mapped[date] = mapped_column(Date, nullable=False)
     period_end: Mapped[date] = mapped_column(Date, nullable=False)
     generated_by: Mapped[Optional[int]] = mapped_column(BigInteger, ForeignKey("users.id"), nullable=True)
-    status: Mapped[str] = mapped_column(Enum("Draft", "Processed", "Disbursed", name="payroll_run_status"), nullable=False, default="Draft")
+    status: Mapped[str] = mapped_column(CaseInsensitiveEnum("Draft", "Processed", "Disbursed", name="payroll_run_status"), nullable=False, default="Draft")
     total_amount: Mapped[Decimal] = mapped_column(DECIMAL(18, 2), nullable=False, default=0)
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
 

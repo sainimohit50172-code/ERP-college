@@ -74,12 +74,114 @@ def get_library_repository(db=Depends(get_db)):
     return MySQLLibraryRepository(db)
 
 
+def get_library_entity_repository(db=Depends(get_db)):
+    from app.repositories.mysql.library import MySQLLibraryEntityRepository
+
+    return MySQLLibraryEntityRepository(db)
+
+
+def get_book_copy_repository(db=Depends(get_db)):
+    from app.repositories.mysql.library import MySQLBookCopyRepository
+
+    return MySQLBookCopyRepository(db)
+
+
+def get_book_issue_repository(db=Depends(get_db)):
+    from app.repositories.mysql.library import MySQLBookIssueRepository
+
+    return MySQLBookIssueRepository(db)
+
+
+def get_reservation_repository(db=Depends(get_db)):
+    from app.repositories.mysql.library import MySQLReservationRepository
+
+    return MySQLReservationRepository(db)
+
+
+def get_fine_repository(db=Depends(get_db)):
+    from app.repositories.mysql.library import MySQLFineRepository
+
+    return MySQLFineRepository(db)
+
+
 def get_hostel_repository(db=Depends(get_db)):
     return MySQLHostelRepository(db)
 
 
+def get_hostel_entity_repository(db=Depends(get_db)):
+    from app.repositories.mysql.hostel import MySQLHostelEntityRepository
+
+    return MySQLHostelEntityRepository(db)
+
+
+def get_room_repository(db=Depends(get_db)):
+    from app.repositories.mysql.hostel import MySQLRoomRepository
+
+    return MySQLRoomRepository(db)
+
+
+def get_bed_repository(db=Depends(get_db)):
+    from app.repositories.mysql.hostel import MySQLBedRepository
+
+    return MySQLBedRepository(db)
+
+
+def get_hostel_allocation_repository(db=Depends(get_db)):
+    from app.repositories.mysql.hostel import MySQLHostelAllocationRepository
+
+    return MySQLHostelAllocationRepository(db)
+
+
+def get_complaint_repository(db=Depends(get_db)):
+    from app.repositories.mysql.hostel import MySQLComplaintRepository
+
+    return MySQLComplaintRepository(db)
+
+
+def get_visitor_repository(db=Depends(get_db)):
+    from app.repositories.mysql.hostel import MySQLVisitorRepository
+
+    return MySQLVisitorRepository(db)
+
+
 def get_transport_repository(db=Depends(get_db)):
     return MySQLTransportRepository(db)
+
+
+def get_transport_entity_repository(db=Depends(get_db)):
+    from app.repositories.mysql.transport import MySQLTransportEntityRepository
+
+    return MySQLTransportEntityRepository(db)
+
+
+def get_driver_repository(db=Depends(get_db)):
+    from app.repositories.mysql.transport import MySQLDriverRepository
+
+    return MySQLDriverRepository(db)
+
+
+def get_route_repository(db=Depends(get_db)):
+    from app.repositories.mysql.transport import MySQLRouteRepository
+
+    return MySQLRouteRepository(db)
+
+
+def get_route_stop_repository(db=Depends(get_db)):
+    from app.repositories.mysql.transport import MySQLRouteStopRepository
+
+    return MySQLRouteStopRepository(db)
+
+
+def get_transport_assignment_repository(db=Depends(get_db)):
+    from app.repositories.mysql.transport import MySQLTransportAssignmentRepository
+
+    return MySQLTransportAssignmentRepository(db)
+
+
+def get_vehicle_assignment_repository(db=Depends(get_db)):
+    from app.repositories.mysql.transport import MySQLVehicleAssignmentRepository
+
+    return MySQLVehicleAssignmentRepository(db)
 
 
 def get_notification_repository(db=Depends(get_db)):
@@ -166,12 +268,114 @@ def get_library_service(repo=Depends(get_library_repository)):
     return LibraryService(repo)
 
 
+def get_library_entity_service(repo=Depends(get_library_entity_repository)):
+    from app.services.library.service import LibraryService
+
+    return LibraryService(repo)
+
+
+def get_book_copy_service(repo=Depends(get_book_copy_repository)):
+    from app.services.library.service import BookCopyService
+
+    return BookCopyService(repo)
+
+
+def get_book_issue_service(repo=Depends(get_book_issue_repository)):
+    from app.services.library.service import BookIssueService
+
+    return BookIssueService(repo)
+
+
+def get_reservation_service(repo=Depends(get_reservation_repository)):
+    from app.services.library.service import ReservationService
+
+    return ReservationService(repo)
+
+
+def get_fine_service(repo=Depends(get_fine_repository)):
+    from app.services.library.service import FineService
+
+    return FineService(repo)
+
+
 def get_hostel_service(repo=Depends(get_hostel_repository)):
     return HostelService(repo)
 
 
+def get_hostel_entity_service(repo=Depends(get_hostel_entity_repository)):
+    from app.services.hostel.service import RoomService
+
+    return RoomService(repo)
+
+
+def get_room_service(repo=Depends(get_room_repository)):
+    from app.services.hostel.service import RoomService
+
+    return RoomService(repo)
+
+
+def get_bed_service(repo=Depends(get_bed_repository)):
+    from app.services.hostel.service import BedService
+
+    return BedService(repo)
+
+
+def get_hostel_allocation_service(repo=Depends(get_hostel_allocation_repository)):
+    from app.services.hostel.service import HostelAllocationService
+
+    return HostelAllocationService(repo)
+
+
+def get_complaint_service(repo=Depends(get_complaint_repository)):
+    from app.services.hostel.service import ComplaintService
+
+    return ComplaintService(repo)
+
+
+def get_visitor_service(repo=Depends(get_visitor_repository)):
+    from app.services.hostel.service import VisitorService
+
+    return VisitorService(repo)
+
+
 def get_transport_service(repo=Depends(get_transport_repository)):
     return TransportService(repo)
+
+
+def get_transport_entity_service(repo=Depends(get_transport_entity_repository)):
+    from app.services.transport.service import TransportService
+
+    return TransportService(repo)
+
+
+def get_driver_service(repo=Depends(get_driver_repository)):
+    from app.services.transport.service import DriverService
+
+    return DriverService(repo)
+
+
+def get_route_service(repo=Depends(get_route_repository)):
+    from app.services.transport.service import RouteService
+
+    return RouteService(repo)
+
+
+def get_route_stop_service(repo=Depends(get_route_stop_repository)):
+    from app.services.transport.service import RouteStopService
+
+    return RouteStopService(repo)
+
+
+def get_transport_assignment_service(repo=Depends(get_transport_assignment_repository)):
+    from app.services.transport.service import TransportAssignmentService
+
+    return TransportAssignmentService(repo)
+
+
+def get_vehicle_assignment_service(repo=Depends(get_vehicle_assignment_repository)):
+    from app.services.transport.service import VehicleAssignmentService
+
+    return VehicleAssignmentService(repo)
 
 
 def get_teacher_repository(db=Depends(get_db)):

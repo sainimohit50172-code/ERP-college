@@ -1,5 +1,6 @@
 from functools import lru_cache
 from json import JSONDecodeError, loads
+from pathlib import Path
 from typing import List
 
 from pydantic import Field, field_validator
@@ -23,6 +24,9 @@ class Settings(BaseSettings):
     mysql_db: str = Field(default="college_erp", alias="MYSQL_DB")
     mysql_pool_size: int = Field(default=10, alias="MYSQL_POOL_SIZE")
     mysql_max_overflow: int = Field(default=20, alias="MYSQL_MAX_OVERFLOW")
+
+    use_sqlite: bool = Field(default=False, alias="USE_SQLITE")
+    sqlite_url: str = Field(default="sqlite:///./college_erp.db", alias="SQLITE_URL")
 
     redis_host: str = Field(default="localhost", alias="REDIS_HOST")
     redis_port: int = Field(default=6379, alias="REDIS_PORT")
@@ -50,13 +54,15 @@ class Settings(BaseSettings):
         return value
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=str(Path(__file__).resolve().parent.parent.parent / ".env"),
         env_file_encoding="utf-8",
         extra="ignore",
     )
 
     @property
     def database_url(self) -> str:
+        if self.use_sqlite:
+            return self.sqlite_url
         return f"mysql+pymysql://{self.mysql_user}:{self.mysql_password}@{self.mysql_host}:{self.mysql_port}/{self.mysql_db}"
 
     @property

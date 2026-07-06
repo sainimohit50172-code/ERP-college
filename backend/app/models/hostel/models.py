@@ -28,6 +28,13 @@ class Room(Base):
     hostel_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("hostels.id"), nullable=False)
     room_no: Mapped[str] = mapped_column(String(64), nullable=False)
     capacity: Mapped[Optional[int]] = mapped_column(default=1, nullable=True)
+    # classroom metadata fields added to persist UI fields
+    building: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
+    floor: Mapped[Optional[str]] = mapped_column(String(32), nullable=True)
+    has_projector: Mapped[bool] = mapped_column(default=False, nullable=False)
+    has_lab: Mapped[bool] = mapped_column(default=False, nullable=False)
+    has_ac: Mapped[bool] = mapped_column(default=False, nullable=False)
+    status: Mapped[str] = mapped_column(Enum("Active", "Maintenance", "Inactive", name="room_status"), nullable=False, default="Active")
     gender: Mapped[Optional[str]] = mapped_column(Enum("M", "F", "Coed", name="room_gender"), nullable=True, default="Coed")
 
     hostel: Mapped[Hostel] = relationship(back_populates="rooms", lazy="selectin")

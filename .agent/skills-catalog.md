@@ -1,6 +1,6 @@
 # AI Agent Skills — Full Catalog
 
-> Auto-generated. Total: **1896 skills** across **113 categories**.
+> Auto-generated. Total: **1901 skills** across **113 categories**.
 > When asked "what skill should I use?", browse this file and suggest the most relevant skill IDs.
 > Install a skill: `Ctrl+Shift+/` → search for the skill ID → press Enter.
 
@@ -1091,6 +1091,7 @@ api docs, reference,... _(risk: unknown)_
 - **tmux**: Expert tmux session, window, and pane management for terminal multiplexing, persistent remote workflows, and shell scripting automation. _(risk: safe)_
 - **triage**: Move issues and external PRs through a state machine of triage roles — categorise, verify, grill if needed, and write agent-ready briefs. _(risk: safe)_
 - **unship**: Compare AI agent-made UI variants locally in a real app, then keep one and clean up unused temporary code. _(risk: critical)_
+- **wp-site-health-auditor**: Turns a WordPress Site Health report into a risk-tiered, backup-first fix plan with exact WP-CLI/PHP snippets. Use for site health, recommended improvements, or critical issue reports. _(risk: critical)_
 
 ## development-and-testing
 
@@ -1586,6 +1587,7 @@ strategy and planning.
 - **skill-issue**: Find out why a coding-agent skill won't fire — grade each SKILL.md A–F on activation, simulate which skill a prompt triggers, and flag collisions where one silently shadows another. _(risk: safe)_
 - **skill-optimizer**: Diagnose and optimize Agent Skills (SKILL.md) with real session data and research-backed static analysis. Works with Claude Code, Codex, and any Agent Skills-compatible agent. _(risk: safe)_
 - **skill-suggester**: Scan prompt history for recurring patterns and unmet needs, then propose new skills or command templates _(risk: safe)_
+- **wgm**: Turns a rough request into working software via a governed build loop: align first, plan, then iterate one task at a time with deterministic backpressure and holdout-scenario judging. _(risk: safe)_
 
 ## meta-skills
 
@@ -1742,6 +1744,7 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 
 - **interview-coach**: Full job search coaching system — JD decoding, resume, storybank, mock interviews, transcript analysis, comp negotiation. 23 commands, persistent state. _(risk: safe)_
 - **ask-matt**: Ask which skill or flow fits your situation. A router over the user-invoked skills in this repo. _(risk: safe)_
+- **context-kit**: Evaluate, adapt, and safely install Context Kit personal context artifacts for Claude Code or adjacent agent workflows. _(risk: critical)_
 - **daily-gift**: Relationship-aware daily gift engine with five-stage creative pipeline — editorial judgment, synthesis, concept generation, visual strategy, and rendering in H5, image, or video _(risk: unknown)_
 - **faf-wizard**: Done-for-you .faf generator. One-click AI context for any project - new, legacy, or famous. Auto-detects stack, scores readiness, works everywhere. _(risk: safe)_
 - **grill-me**: A relentless interview to sharpen a plan or design. _(risk: safe)_
@@ -1750,6 +1753,8 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 - **handoff**: Compact the current conversation into a handoff document for another agent to pick up. _(risk: safe)_
 - **mdpr-skill**: Review MDPR Markdown presentation workflows with semantic hints, visual checks, and deterministic renderer boundaries. _(risk: safe)_
 - **rich-elicitation**: Asks clarifying questions in multiple rounds before starting ambiguous tasks. Fires when 2+ task dimensions each have 3+ viable answers.
+- **time-ledger**: Natural-language time tracking: parse what the user says they did into Activity/Minutes/Date rows in their own Notion database — asking instead of guessing when unsure. _(risk: critical)_
+- **trading-ledger**: A trading journal that captures the decision, not just the fill: thesis, plan, and emotion at the moment of entry, written to the user's own Notion database; reviews grade decisions, not P&L. _(risk: critical)_
 - **workorai**: WorkorAI talent-marketplace skill: candidates search jobs and manage applications; employers run the job lifecycle and get ranked candidate matches with white-box fit explanations. _(risk: critical)_
 
 ## programming-languages

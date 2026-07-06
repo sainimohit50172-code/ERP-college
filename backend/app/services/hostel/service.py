@@ -26,3 +26,28 @@ class HostelService:
             raise HostelServiceError("Student and room identifiers must be positive")
 
         return HostelAllocationDTO(allocation_id=None, student_id=student_id, room_id=room_id)
+
+
+class RoomService:
+    def __init__(self, room_repository) -> None:
+        self._room_repository = room_repository
+
+
+class BedService:
+    def __init__(self, bed_repository) -> None:
+        self._bed_repository = bed_repository
+
+
+class HostelAllocationService:
+    def __init__(self, allocation_repository) -> None:
+        self._allocation_repository = allocation_repository
+
+
+class ComplaintService:
+    def __init__(self, complaint_repository) -> None:
+        self._complaint_repository = complaint_repository
+
+
+class VisitorService:
+    def __init__(self, visitor_repository) -> None:
+        self._visitor_repository = visitor_repository

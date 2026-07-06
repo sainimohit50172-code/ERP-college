@@ -17,6 +17,10 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
+> If MySQL is not available locally, the backend can fall back to a SQLite database in development mode. Set `USE_SQLITE=true` in `backend/.env` to enable this behavior.
+>
+> Ensure the frontend dev server is using `http://localhost:5174`; CORS is configured for that origin.
+
 ## Docker
 
 When running inside Docker Compose, the backend uses service hostnames for MySQL and Redis.

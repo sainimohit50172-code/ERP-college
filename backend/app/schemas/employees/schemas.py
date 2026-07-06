@@ -16,7 +16,7 @@ class EmployeeBase(BaseModel):
     phone: Optional[str] = Field(default=None, max_length=20)
     designation: Optional[str] = Field(default=None, max_length=100)
     department: Optional[str] = Field(default=None, max_length=100)
-    status: str = Field(default="active", max_length=20)
+    status: str = Field(default="Active", max_length=20)
 
 
 class EmployeeCreate(EmployeeBase):

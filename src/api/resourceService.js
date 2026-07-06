@@ -21,7 +21,11 @@ const unwrapApiResponse = (payload) => {
 export const normalizeApiListResponse = (response, params = {}, resource = 'students') => {
   const payload = unwrapApiResponse(response?.data ?? response);
   const rawItems = Array.isArray(payload?.items) ? payload.items : Array.isArray(payload) ? payload : [];
-  const items = rawItems.map((item) => (resource === 'students' ? mapStudentRecord(item) : item));
+  const items = rawItems.map((item) => {
+    if (resource === 'students') return mapStudentRecord(item);
+    if (resource === 'classrooms') return mapClassroomRecord(item);
+    return item;
+  });
   const page = Number(payload?.page || params.page || 1);
   const pageSize = Number(payload?.page_size || payload?.pageSize || params.pageSize || rawItems.length || 10);
   const total = Number(payload?.total || rawItems.length || 0);
@@ -75,6 +79,34 @@ export const mapStudentRecord = (record = {}) => ({
   totalFee: record.totalFee || 0,
 });
 
+export const mapClassroomPayload = (payload = {}) => ({
+  hostel_id: payload.hostelId || payload.hostel_id || 1,
+  room_number: payload.roomNumber || payload.room_number || '',
+  capacity: Number(payload.capacity || payload.roomCapacity || 0),
+  building: payload.building || payload.block || null,
+  floor: payload.floor || null,
+  has_projector: payload.hasProjector ?? payload.has_projector ?? false,
+  has_lab: payload.hasLab ?? payload.has_lab ?? false,
+  has_ac: payload.hasAC ?? payload.has_ac ?? false,
+  status: payload.status || 'Active',
+});
+
+export const mapClassroomRecord = (record = {}) => ({
+  ...record,
+  id: record.id,
+  roomNumber: record.room_number || record.roomNumber || '',
+  name: record.room_number || record.roomNumber || record.name || '',
+  code: record.room_number || record.roomNumber || record.code || '',
+  hostelId: record.hostel_id || record.hostelId || null,
+  capacity: record.capacity ?? 0,
+  status: record.status || 'Active',
+  building: record.building || record.block || record.block_name || '',
+  floor: record.floor || record.level || '',
+  hasProjector: record.has_projector ?? record.hasProjector ?? false,
+  hasLab: record.has_lab ?? record.hasLab ?? false,
+  hasAC: record.has_ac ?? record.hasAC ?? false,
+});
+
 export const createResourceService = (resource) => {
   const endpoint = getEndpoint(resource);
   const repo = getRepository(resource);
@@ -93,36 +125,48 @@ export const createResourceService = (resource) => {
       if (repo && typeof repo.get === 'function') {
         const result = await repo.get(id);
         const payload = unwrapApiResponse(result);
-        return resource === 'students' ? mapStudentRecord(payload) : payload;
+        if (resource === 'students') return mapStudentRecord(payload);
+        if (resource === 'classrooms') return mapClassroomRecord(payload);
+        return payload;
       }
 
       const res = await api.get(`/${endpoint}/${id}`);
       const payload = unwrapApiResponse(res.data);
-      return resource === 'students' ? mapStudentRecord(payload) : payload;
+      if (resource === 'students') return mapStudentRecord(payload);
+      if (resource === 'classrooms') return mapClassroomRecord(payload);
+      return payload;
     },
     create: async (payload) => {
-      const body = resource === 'students' ? mapStudentPayload(payload) : payload;
+      const body = resource === 'students' ? mapStudentPayload(payload) : resource === 'classrooms' ? mapClassroomPayload(payload) : payload;
       if (repo && typeof repo.create === 'function') {
         const result = await repo.create(body);
         const payloadResult = unwrapApiResponse(result);
-        return resource === 'students' ? mapStudentRecord(payloadResult) : payloadResult;
+        if (resource === 'students') return mapStudentRecord(payloadResult);
+        if (resource === 'classrooms') return mapClassroomRecord(payloadResult);
+        return payloadResult;
       }
 
       const res = await api.post(`/${endpoint}/`, body);
       const payloadResult = unwrapApiResponse(res.data);
-      return resource === 'students' ? mapStudentRecord(payloadResult) : payloadResult;
+      if (resource === 'students') return mapStudentRecord(payloadResult);
+      if (resource === 'classrooms') return mapClassroomRecord(payloadResult);
+      return payloadResult;
     },
     update: async (id, payload) => {
-      const body = resource === 'students' ? mapStudentPayload(payload) : payload;
+      const body = resource === 'students' ? mapStudentPayload(payload) : resource === 'classrooms' ? mapClassroomPayload(payload) : payload;
       if (repo && typeof repo.update === 'function') {
         const result = await repo.update(id, body);
         const payloadResult = unwrapApiResponse(result);
-        return resource === 'students' ? mapStudentRecord(payloadResult) : payloadResult;
+        if (resource === 'students') return mapStudentRecord(payloadResult);
+        if (resource === 'classrooms') return mapClassroomRecord(payloadResult);
+        return payloadResult;
       }
 
       const res = await api.put(`/${endpoint}/${id}`, body);
       const payloadResult = unwrapApiResponse(res.data);
-      return resource === 'students' ? mapStudentRecord(payloadResult) : payloadResult;
+      if (resource === 'students') return mapStudentRecord(payloadResult);
+      if (resource === 'classrooms') return mapClassroomRecord(payloadResult);
+      return payloadResult;
     },
     remove: async (id) => {
       if (repo && typeof repo.remove === 'function') {

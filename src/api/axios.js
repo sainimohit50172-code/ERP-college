@@ -1,13 +1,31 @@
 import axios from 'axios';
 import { toast } from '../utils/toast.js';
+import { getApiBaseUrl } from './apiConfig.js';
 
-const API_BASE = (globalThis && globalThis.process && globalThis.process.env && globalThis.process.env.REACT_APP_API_URL) || '/api';
+const API_BASE = getApiBaseUrl();
 const DEFAULT_TIMEOUT = 30000;
 
 const api = axios.create({
   baseURL: API_BASE,
   headers: { 'Content-Type': 'application/json' },
   timeout: DEFAULT_TIMEOUT,
+});
+
+api.interceptors.request.use((config) => {
+  const resolvedUrl = `${config.baseURL || ''}${config.url || ''}`;
+  console.info('[api-request]', config.method?.toUpperCase?.() || 'REQUEST', resolvedUrl, config.data);
+  return config;
+}, (error) => {
+  console.error('[api-request-error]', error);
+  return Promise.reject(error);
+});
+
+api.interceptors.response.use((response) => {
+  console.info('[api-response]', response.status, response.config?.url, response.data);
+  return response;
+}, (error) => {
+  console.error('[api-response-error]', error?.response?.status, error?.config?.url, error?.response?.data || error?.message);
+  return Promise.reject(error);
 });
 
 // Simple queue to handle refresh token requests and retry pending calls

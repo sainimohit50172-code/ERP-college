@@ -32,3 +32,23 @@ class LibraryService:
             raise LibraryServiceError("Issue identifier must be positive")
 
         return 0.0
+
+
+class BookCopyService:
+    def __init__(self, repo):
+        self._repo = repo
+
+
+class BookIssueService:
+    def __init__(self, repo):
+        self._repo = repo
+
+
+class ReservationService:
+    def __init__(self, repo):
+        self._repo = repo
+
+
+class FineService:
+    def __init__(self, repo):
+        self._repo = repo

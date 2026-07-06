@@ -27,7 +27,7 @@ class MySQLRepository(BaseRepository[T], Generic[T]):
 
     async def get_all(self) -> List[T]:
         try:
-            stmt = select(self.model_type).options(noload("*"))
+            stmt = select(self.model_type)
             result = await self._execute(stmt)
             return list(result.scalars().all())
         except SQLAlchemyError as exc:
@@ -35,7 +35,7 @@ class MySQLRepository(BaseRepository[T], Generic[T]):
 
     async def search(self, query: str) -> List[T]:
         try:
-            stmt = select(self.model_type).where(self.model_type.__table__.c.id.like(f"%{query}%")).options(noload("*"))
+            stmt = select(self.model_type).where(self.model_type.__table__.c.id.like(f"%{query}%"))
             result = await self._execute(stmt)
             return list(result.scalars().all())
         except SQLAlchemyError as exc:
@@ -45,7 +45,7 @@ class MySQLRepository(BaseRepository[T], Generic[T]):
         try:
             total_result = await self._execute(select(func.count(self.model_type.id)))
             total = int(total_result.scalar_one() or 0)
-            stmt = select(self.model_type).options(noload("*")).offset((page - 1) * page_size).limit(page_size)
+            stmt = select(self.model_type).offset((page - 1) * page_size).limit(page_size)
             items_result = await self._execute(stmt)
             return list(items_result.scalars().all()), total
         except SQLAlchemyError as exc:

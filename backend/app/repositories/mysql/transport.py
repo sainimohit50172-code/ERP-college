@@ -3,7 +3,7 @@ from __future__ import annotations
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.models.transport import TransportAssignment, Vehicle
+from app.models.transport import TransportAssignment, Vehicle, Driver, Route, RouteStop, VehicleAssignment
 from app.repositories.interfaces.base import RepositoryError
 from app.repositories.interfaces.transport import TransportRepository
 from app.repositories.mysql.base import MySQLRepository
@@ -41,3 +41,33 @@ class MySQLTransportRepository(MySQLRepository[Vehicle], TransportRepository):
         if vehicle is None:
             raise RepositoryError("Vehicle not found")
         return vehicle
+
+
+class MySQLTransportEntityRepository(MySQLRepository[Vehicle]):
+    def __init__(self, session):
+        super().__init__(session, Vehicle)
+
+
+class MySQLDriverRepository(MySQLRepository[Driver]):
+    def __init__(self, session):
+        super().__init__(session, Driver)
+
+
+class MySQLRouteRepository(MySQLRepository[Route]):
+    def __init__(self, session):
+        super().__init__(session, Route)
+
+
+class MySQLRouteStopRepository(MySQLRepository[RouteStop]):
+    def __init__(self, session):
+        super().__init__(session, RouteStop)
+
+
+class MySQLTransportAssignmentRepository(MySQLRepository[TransportAssignment]):
+    def __init__(self, session):
+        super().__init__(session, TransportAssignment)
+
+
+class MySQLVehicleAssignmentRepository(MySQLRepository[VehicleAssignment]):
+    def __init__(self, session):
+        super().__init__(session, VehicleAssignment)
