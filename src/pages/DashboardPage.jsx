@@ -7,7 +7,6 @@ import {
   UserPlus,
   CalendarCheck,
   Star,
-  DownloadCloud,
   IndianRupee,
   Users,
   FileWarning,
