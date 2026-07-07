@@ -1,6 +1,6 @@
 # AI Agent Skills — Full Catalog
 
-> Auto-generated. Total: **1901 skills** across **113 categories**.
+> Auto-generated. Total: **1929 skills** across **114 categories**.
 > When asked "what skill should I use?", browse this file and suggest the most relevant skill IDs.
 > Install a skill: `Ctrl+Shift+/` → search for the skill ID → press Enter.
 
@@ -9,10 +9,19 @@
 - **codex-fable5**: Apply Fable-inspired discipline to Codex work: inspect first, track goals and findings, ground conclusions in evidence, verify before completion, and adapt Claude/Fable prompt guidance without identity or provider claims. _(risk: critical)_
 - **dispatch**: Delegate tasks to OpenAI Codex CLI and Google Antigravity CLI from Claude Code with topic-aware sessions _(risk: critical)_
 - **zipai-optimizer**: Ultra-dense token optimizer skill for prompt caching, log pruning, AST-based inspection, and minified JSON payloads. _(risk: safe)_
+- **fable-safe-prompt**: Rewrite allowed prompts to reduce false-positive safety triggers without bypassing policy or changing intent. _(risk: safe)_
+
+## agent-evaluation
+
+- **run-deep-swe**: Run reproducible DeepSWE coding-agent benchmark evaluations through OpenRouter and mini-swe-agent. _(risk: critical)_
 
 ## agent-orchestration
 
 - **multi-agent-task-orchestrator**: Route tasks to specialized AI agents with anti-duplication, quality gates, and 30-minute heartbeat monitoring _(risk: safe)_
+- **agent-self-scheduling**: Schedule AI agent runs with cron, loops, or external clocks while avoiding unsafe tight autonomous timers. _(risk: critical)_
+- **codex-subagent**: Launch Codex CLI as an isolated subagent for bounded coding, review, or verification tasks. _(risk: critical)_
+- **delegating-to-agents**: Delegate bounded work to other AI agents while preserving context, ownership, and progress checks. _(risk: critical)_
+- **goal-loop**: Draft and explain persistent goal-loop prompts for long-running agent work with clear stop conditions. _(risk: safe)_
 
 ## agent-squad
 
@@ -452,6 +461,7 @@ applications.
 ## browser-automation
 
 - **skyvern-browser-automation**: AI-powered browser automation — navigate sites, fill forms, extract structured data, log in with stored credentials, and build reusable workflows. _(risk: safe)_
+- **browser-harness**: Drive an existing browser through CDP for authenticated, visual, or interactive web automation. _(risk: critical)_
 
 ## business
 
@@ -1092,6 +1102,11 @@ api docs, reference,... _(risk: unknown)_
 - **triage**: Move issues and external PRs through a state machine of triage roles — categorise, verify, grill if needed, and write agent-ready briefs. _(risk: safe)_
 - **unship**: Compare AI agent-made UI variants locally in a real app, then keep one and clean up unused temporary code. _(risk: critical)_
 - **wp-site-health-auditor**: Turns a WordPress Site Health report into a risk-tiered, backup-first fix plan with exact WP-CLI/PHP snippets. Use for site health, recommended improvements, or critical issue reports. _(risk: critical)_
+- **cmux**: Control cmux workspaces, panes, surfaces, and agent sessions safely from macOS terminal workflows. _(risk: critical)_
+- **distribute-skill-to-all-agents**: Distribute a skill across configured agent skill folders while respecting local symlink layouts. _(risk: critical)_
+- **effective-agent-skills**: Author and review high-quality agent skills with triggers, progressive disclosure, and safety notes. _(risk: safe)_
+- **folder-specific-claude-and-agents-md**: Create folder-scoped CLAUDE.md and AGENTS.md guidance for future agents working in that area. _(risk: critical)_
+- **push-skill-to-github**: Commit and push skill changes to the configured skills repository after review and validation. _(risk: critical)_
 
 ## development-and-testing
 
@@ -1510,6 +1525,8 @@ pageflip, 组件设计, 组件模式 _(risk: unknown)_
 - **socialclaw**: Agent-first social media publishing skill — schedule and publish posts across 13 platforms (X, LinkedIn, Instagram, Facebook Pages, TikTok, Discord, Telegram, YouTube, Reddit, WordPress, Pinterest) via a single workspace API key. _(risk: critical)_
 - **wechat-official-account-strategist**: Grow WeChat Official Accounts (微信公众号) with high-conversion content strategy, title formulas, article architecture, and Mini-Program integration. _(risk: safe)_
 - **xiaohongshu-content-strategist**: Create viral Xiaohongshu (小红书) content with platform-native strategy, save-rate optimization, trending formats, and search SEO for China's #1 lifestyle platform. _(risk: safe)_
+- **linkedin-post-writer**: Draft LinkedIn posts from 16 tested hook formulas mapped to engagement goals (comments, reposts, likes, saves), with 2026 algorithm formatting rules and an AI-tell scrub pass before publishing.
+- **taisly-social-media-posting**: Use Taisly Agent Kit to prepare and publish approved short-form video posts across TikTok, Instagram Reels, YouTube Shorts, X, and Facebook. _(risk: critical)_
 
 ## marketing-growth
 
@@ -1677,6 +1694,9 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 - **quality-nonconformance**: Codified expertise for quality control, non-conformance investigation, root cause analysis, corrective action, and supplier quality management in regulated manufacturing. _(risk: safe)_
 - **returns-reverse-logistics**: Codified expertise for returns authorisation, receipt and inspection, disposition decisions, refund processing, fraud detection, and warranty claims management. _(risk: safe)_
 - **pre-release-review**: Run a read-only pre-release review for deploy readiness, migrations, config, secrets, rollout order, rollback risk, and launch blockers. _(risk: safe)_
+- **anti-sleep**: Keep a Mac awake with caffeinate during long builds, downloads, or supervised automation runs. _(risk: critical)_
+- **pi-custom-model**: Register custom Pi Agent model slugs so saved OpenRouter variants resolve correctly. _(risk: critical)_
+- **vps-server-management**: Manage authorized VPS hosts and server-side agents through cautious SSH and operations workflows. _(risk: critical)_
 
 ## orchestration
 
@@ -1756,6 +1776,11 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 - **time-ledger**: Natural-language time tracking: parse what the user says they did into Activity/Minutes/Date rows in their own Notion database — asking instead of guessing when unsure. _(risk: critical)_
 - **trading-ledger**: A trading journal that captures the decision, not just the fill: thesis, plan, and emotion at the moment of entry, written to the user's own Notion database; reviews grade decisions, not P&L. _(risk: critical)_
 - **workorai**: WorkorAI talent-marketplace skill: candidates search jobs and manage applications; employers run the job lifecycle and get ranked candidate matches with white-box fit explanations. _(risk: critical)_
+- **brain-to-docs**: Interview the user to turn project vision and decisions into README and ADR documentation. _(risk: critical)_
+- **interview-style-doc-building**: Build structured strategy documents by asking one question at a time and patching the file. _(risk: critical)_
+- **markdown-rendering**: Open Markdown reliably in cmux panes and recover from blank rendered surfaces. _(risk: safe)_
+- **read-all-adrs**: Read every ADR in a project before summarizing architectural context or decisions. _(risk: safe)_
+- **setup-help**: Walk a user through setup or installation one step at a time with the remaining steps visible. _(risk: safe)_
 
 ## programming-languages
 
@@ -1818,6 +1843,10 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 - **news-sentiment-engine**: Multi-source RSS news aggregation with Claude-powered sentiment analysis and structured briefing output _(risk: critical)_
 - **papers-skill**: Skill for academic research workflows: search Semantic Scholar (200M+ papers), inspect citations, download arXiv PDFs, and extract PDF text. Bundles a self-contained Python CLI. _(risk: safe)_
 - **survey-generator**: Generate source-backed AI/ML survey paper artifacts with curated bibliographies and Fireworks/Kimi HTML rendering. _(risk: safe)_
+- **deepapi**: Use DeepAPI for supported scraping, research, and email workflows with explicit credentials and approval. _(risk: critical)_
+- **pi-web-search**: Give Pi Agents a safe web-search and fetch workflow using the installed pi-web-access package. _(risk: safe)_
+- **research-prompt**: Turn vague research needs into one precise deep-research prompt with context and output criteria. _(risk: safe)_
+- **youtube-transcript**: Fetch YouTube transcripts through DeepAPI or local fallback tooling and save clean text output. _(risk: safe)_
 
 ## rust
 
@@ -1942,6 +1971,7 @@ analysis across multiple languages and frameworks
 - **production-audit**: Audit a shipped repo for production-readiness gaps across RLS, webhooks, secrets, grants, Stripe idempotency, mobile UX, and deployment health. _(risk: critical)_
 - **security-and-hardening**: Hardens code against vulnerabilities. Use when handling user input, authentication, data storage, or external integrations. Use when building any feature that accepts untrusted data, manages user sessions, or interacts with third-party services. _(risk: unknown)_
 - **skill-audit**: Pre-install security scanner for AI agent skills. 7.5% of 14,706 skills are malicious. Audit before you trust. _(risk: safe)_
+- **cyber-audit**: Run read-only exposure checks for security advisories and write a structured local audit report. _(risk: safe)_
 
 ## seo
 
@@ -2363,3 +2393,4 @@ before implementation to verify project context.
 - **scientific-writing**: Core skill for the deep research and writing tool. Write scientific manuscripts in full paragraphs (never bullet points). Use two-stage process with (1) section outlines with key points using research-lookup then (2) convert to flowing prose. IMRAD... _(risk: unknown)_
 - **bulletmind**: Convert input into clean, structured, hierarchical bullet points for summarization, note-taking, and structured thinking. _(risk: safe)_
 - **unslop**: Post-process AI-generated text through the unslop CLI to strip AI writing patterns before publishing _(risk: safe)_
+- **short**: Rewrite the previous response more briefly while preserving the substance. _(risk: safe)_

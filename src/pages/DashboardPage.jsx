@@ -110,15 +110,15 @@ export default function DashboardPage() {
         </div>
 
         {/* Favorites + Reports */}
-        <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: 12, alignItems: 'stretch', marginTop: 16 }}>
-          <div style={{ background: '#fff', borderRadius: 14, padding: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+        <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: 12, alignItems: 'stretch', height: 'calc(100vh - 280px)', marginTop: 16 }}>
+          <div style={{ background: '#fff', borderRadius: 14, padding: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', display: 'flex', flexDirection: 'column', height: '100%' }}>
             <div>
               <div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Favorites</div>
               <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 4 }}>Quick access to common tasks</div>
             </div>
-            <div className="mt-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 10 }}>
+            <div className="mt-3" style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gridTemplateRows: 'repeat(2,1fr)', gap: 10, alignContent: 'stretch' }}>
               {quickActions.map((a) => (
-                <div key={a.id} onClick={() => navigate(a.to)} style={{ padding: '14px 8px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 10, cursor: 'pointer', transition: 'all 0.2s ease', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                <div key={a.id} onClick={() => navigate(a.to)} style={{ padding: '14px 8px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 10, cursor: 'pointer', transition: 'all 0.2s ease', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
                   <Star style={{ width: 22, height: 22, color: a.color }} />
                   <div style={{ marginTop: 8, fontSize: 11, fontWeight: 600, color: a.color }}>{a.label}</div>
                 </div>
@@ -126,14 +126,14 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div style={{ background: '#fff', borderRadius: 14, padding: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+          <div style={{ background: '#fff', borderRadius: 14, padding: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', display: 'flex', flexDirection: 'column', height: '100%' }}>
             <div>
               <div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Reports</div>
               <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 4 }}>Team and finance dashboards</div>
             </div>
-            <div className="mt-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10 }}>
+            <div className="mt-3" style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gridTemplateRows: 'repeat(2,1fr)', gap: 10, alignContent: 'stretch' }}>
               {reportCards.map((card) => (
-                <div key={card.id} onClick={() => navigate('/reports')} style={{ padding: '14px 8px', background: '#0f172a', borderRadius: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 86, color: '#fff', cursor: 'pointer', transition: 'all 0.2s ease' }}>
+                <div key={card.id} onClick={() => navigate('/reports')} style={{ padding: '14px 8px', background: '#0f172a', borderRadius: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 'unset', height: '100%', color: '#fff', cursor: 'pointer', transition: 'all 0.2s ease' }}>
                   <card.icon style={{ width: 28, height: 28, color: '#fff' }} />
                   <div style={{ marginTop: 8, fontSize: 11, fontWeight: 700, textAlign: 'center' }}>{card.label}</div>
                 </div>
