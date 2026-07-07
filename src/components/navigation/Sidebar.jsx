@@ -24,6 +24,7 @@ import {
   Share2,
   HelpCircle,
   Star,
+  ChevronRight,
 } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
@@ -56,7 +57,9 @@ const MENU_ITEMS = [
 export default function Sidebar({ isOpen = false, onClose = () => {} }) {
   const location = useLocation();
   const [showEmployeePortal, setShowEmployeePortal] = useState(false);
+  const [showAdmissionDropdown, setShowAdmissionDropdown] = useState(false);
   const employeePortalRef = useRef(null);
+  const admissionRef = useRef(null);
   const [dropdownTop, setDropdownTop] = useState(0);
 
   const EMPLOYEE_PORTAL_ITEMS = [
@@ -78,16 +81,46 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
       const topPosition = Math.max(rect.top, 56);
       setDropdownTop(topPosition);
     }
+    setShowAdmissionDropdown(false);
     setShowEmployeePortal((prev) => !prev);
+  };
+
+  const ADMISSION_ITEMS = {
+    left: [
+      { id: 'applications', label: 'Application Data', to: '/admissions/applications' },
+      { id: 'leads', label: 'Admission Leads', to: '/admissions/leads' },
+      { id: 'follow-ups', label: 'Follow Ups', to: '/admissions/follow-ups' },
+      { id: 'follow-up-remarks', label: 'Follow Up Remark Report', to: '/admissions/follow-up-remarks' },
+      { id: 'transactions', label: 'Admission Transactions', to: '/admissions/transactions' },
+    ],
+    right: [
+      { id: 'daily-collection', label: 'Daily Collection Report', to: '/admissions/reports/daily-collection' },
+      { id: 'summary', label: 'Admission Summary Report', to: '/admissions/reports/summary' },
+      { id: 'subject-combination', label: 'Subject Combination Report', to: '/admissions/reports/subject-combination' },
+      { id: 'follow-up-remark', label: 'Follow Up Remark Report', to: '/admissions/reports/follow-up-remark' },
+    ],
+  };
+
+  const handleAdmissionClick = () => {
+    if (admissionRef.current) {
+      const rect = admissionRef.current.getBoundingClientRect();
+      const topPosition = Math.max(rect.top, 56);
+      setDropdownTop(topPosition);
+    }
+    setShowEmployeePortal(false);
+    setShowAdmissionDropdown((prev) => !prev);
   };
 
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (
         !e.target.closest('.employee-portal-dropdown') &&
-        !e.target.closest('.employee-portal-trigger')
+        !e.target.closest('.employee-portal-trigger') &&
+        !e.target.closest('.admission-dropdown') &&
+        !e.target.closest('.admission-trigger')
       ) {
         setShowEmployeePortal(false);
+        setShowAdmissionDropdown(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -123,6 +156,27 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
           <div style={{ marginLeft: 12, fontSize: 13, color: isActive ? '#ffffff' : '#86efac' }}>{item.label}</div>
           <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
             <span style={{ color: isActive ? '#ffffff' : '#86efac' }}>▾</span>
+          </div>
+          {isActive ? <div style={{ marginLeft: 8, borderLeft: '3px solid #4ade80', height: 36, marginRight: 8 }} /> : null}
+        </div>
+      );
+    }
+
+    if (item.id === 'admission') {
+      return (
+        <div
+          key={item.id}
+          ref={admissionRef}
+          className="admission-trigger flex items-center px-3"
+          onClick={handleAdmissionClick}
+          style={{ height: 44, color: isActive ? '#ffffff' : '#86efac', cursor: 'pointer' }}
+        >
+          <div style={{ width: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {Icon ? <Icon style={{ width: 18, height: 18, color: isActive ? '#ffffff' : '#86efac' }} /> : null}
+          </div>
+          <div style={{ marginLeft: 12, fontSize: 13, color: isActive ? '#ffffff' : '#86efac' }}>{item.label}</div>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', transition: 'transform 0.2s ease' }}>
+            <ChevronRight style={{ width: 16, height: 16, color: isActive ? '#ffffff' : '#86efac', transform: showAdmissionDropdown ? 'rotate(90deg)' : 'rotate(0deg)' }} />
           </div>
           {isActive ? <div style={{ marginLeft: 8, borderLeft: '3px solid #4ade80', height: 36, marginRight: 8 }} /> : null}
         </div>
@@ -195,7 +249,7 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
                 key={portalItem.id}
                 to={portalItem.to}
                 onClick={() => setShowEmployeePortal(false)}
-                className="flex items-center rounded p-2 hover:bg-slate-50"
+                className="group flex items-center rounded p-2 hover:bg-slate-50"
                 style={{
                   color: '#0f172a',
                   textDecoration: 'none',
@@ -206,9 +260,89 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
                 }}
               >
                 <span>{portalItem.label}</span>
-                <Star style={{ width: 14, height: 14, color: '#94a3b8' }} />
+                <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#94a3b8' }} />
               </Link>
             ))}
+          </div>,
+          document.body
+        )}
+
+        {showAdmissionDropdown && ReactDOM.createPortal(
+          <div
+            className="admission-dropdown"
+            style={{
+              position: 'fixed',
+              left: 200,
+              top: Math.max(dropdownTop, 56) + 'px',
+              width: 520,
+              zIndex: 200,
+              background: 'white',
+              borderRadius: '10px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+              border: '1px solid #e2e8f0',
+              padding: 12,
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: 0,
+              maxHeight: '80vh',
+              overflowY: 'auto',
+            }}
+          >
+            <div style={{ borderRight: '1px solid #f1f5f9' }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '6px 12px 8px' }}>
+                STUDENT REGISTRATION
+              </div>
+              {ADMISSION_ITEMS.left.map((portalItem) => {
+                const activeItem = portalItem.id === 'follow-ups';
+                return (
+                  <Link
+                    key={portalItem.id}
+                    to={portalItem.to}
+                    onClick={() => setShowAdmissionDropdown(false)}
+                    className="group flex items-center rounded-[8px] px-3 py-2 hover:bg-slate-50"
+                    style={{
+                      background: activeItem ? '#f0fdf4' : 'transparent',
+                      color: activeItem ? '#059669' : '#334155',
+                      borderLeft: activeItem ? '3px solid #059669' : '3px solid transparent',
+                      fontWeight: activeItem ? 600 : 500,
+                      textDecoration: 'none',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      margin: '4px 12px 4px 12px',
+                    }}
+                  >
+                    <span>{portalItem.label}</span>
+                    <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                  </Link>
+                );
+              })}
+            </div>
+            <div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '6px 12px 8px' }}>
+                ADMISSION REPORTS
+              </div>
+              {ADMISSION_ITEMS.right.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowAdmissionDropdown(false)}
+                  className="group flex items-center rounded-[8px] px-3 py-2 hover:bg-slate-50"
+                  style={{
+                    color: '#334155',
+                    fontWeight: 500,
+                    textDecoration: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
           </div>,
           document.body
         )}
