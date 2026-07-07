@@ -73,7 +73,7 @@ export default function Topbar({ onToggleSidebar }) {
   }, [isSearchOpen, isExportOpen, isQuickActionsOpen, isProfileMenuOpen]);
 
   return (
-    <header className="fixed top-0 z-40 h-[52px] border-b border-slate-200 bg-white px-3" style={{ marginLeft: 200, width: 'calc(100% - 200px)' }}>
+    <header className="fixed top-0 left-[200px] z-40 border-b border-slate-200 bg-white px-3" style={{ width: 'calc(100% - 200px)', height: 56 }}>
       <div className="flex h-full items-center justify-between gap-2 whitespace-nowrap">
         <div className="flex items-center gap-3">
           {/* desktop sidebar collapse control removed (sidebar is fixed) */}
@@ -110,7 +110,7 @@ export default function Topbar({ onToggleSidebar }) {
           })}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 pr-4" style={{ flexShrink: 0 }}>
           <div className="relative" ref={searchRef}>
             <button
               type="button"
@@ -244,6 +244,7 @@ export default function Topbar({ onToggleSidebar }) {
                 setQuickActionsOpen(false);
               }}
               className="inline-flex min-w-[210px] items-center gap-3 rounded-full border border-slate-200 bg-white px-3 py-2 text-left"
+              style={{ whiteSpace: 'nowrap', marginRight: 8, flexShrink: 0 }}
             >
               <div className="min-w-0">
                 <p className="text-[13px] font-semibold text-slate-900">Hello, {displayName}</p>
