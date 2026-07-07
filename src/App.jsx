@@ -59,6 +59,7 @@ import TeacherCourseAssignmentPage from './pages/TeacherCourseAssignmentPage.jsx
 import TeacherWorkloadManagementPage from './pages/TeacherWorkloadManagementPage.jsx';
 import LectureAttendancePage from './pages/LectureAttendancePage.jsx';
 import LibraryManagementPage from './pages/LibraryManagementPage.jsx';
+import PlaceholderPage from './pages/PlaceholderPage.jsx';
 import HostelManagementPage from './pages/HostelManagementPage.jsx';
 import TransportManagementPage from './pages/TransportManagementPage.jsx';
 import SecurityPage from './pages/SecurityPage.jsx';
@@ -167,6 +168,33 @@ function App() {
               <Route path="teachers/:teacherId" element={<ProtectedRoute moduleKey="teachers"><TeacherProfilePage /></ProtectedRoute>} />
               <Route path="employees" element={<ProtectedRoute moduleKey="employees"><EmployeeManagementPage /></ProtectedRoute>} />
               <Route path="employees/:employeeId" element={<ProtectedRoute moduleKey="employees"><EmployeeProfilePage /></ProtectedRoute>} />
+              <Route path="employees/manage" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Manage Employee" /></ProtectedRoute>} />
+              <Route path="employees/entitled-leaves" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Employee Entitled Leaves" /></ProtectedRoute>} />
+              <Route path="employees/attendance-calendar" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Attendance Calendar" /></ProtectedRoute>} />
+              <Route path="employees/assign-salary-template" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Assign Salary Template" /></ProtectedRoute>} />
+              <Route path="employees/manage-salary-templates" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Manage Salary Templates" /></ProtectedRoute>} />
+              <Route path="employees/reports/employee" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Employee Report" /></ProtectedRoute>} />
+              <Route path="employees/reports/leave-type" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Leave Type Report" /></ProtectedRoute>} />
+              <Route path="employees/reports/attendance-time" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Attendance Time Report" /></ProtectedRoute>} />
+              <Route path="employees/reports/attendance" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Attendance Report" /></ProtectedRoute>} />
+              <Route path="employees/reports/daily-attendance-department" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Daily Attendance Report Department Wise" /></ProtectedRoute>} />
+              <Route path="employees/reports/absentees-late-arrival" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Absentees & Late Arrival Report" /></ProtectedRoute>} />
+              <Route path="employees/reports/leave-approval" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Leave Approval Report" /></ProtectedRoute>} />
+              <Route path="employees/reports/attendance-logs" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Attendance Logs" /></ProtectedRoute>} />
+              <Route path="employees/reports/working-hour" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Working Hour Report" /></ProtectedRoute>} />
+              <Route path="employees/attendance/day-wise" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Mark Attendance Day Wise" /></ProtectedRoute>} />
+              <Route path="employees/attendance/month-wise" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Mark Attendance Month Wise" /></ProtectedRoute>} />
+              <Route path="employees/attendance/biometric" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Biometric Attendance" /></ProtectedRoute>} />
+              <Route path="employees/attendance/regularization" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Attendance Regularization" /></ProtectedRoute>} />
+              <Route path="employees/reports/compute-attendance" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Compute Attendance" /></ProtectedRoute>} />
+              <Route path="employees/reports/salary-summary-month-wise" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Salary Summary Month Wise" /></ProtectedRoute>} />
+              <Route path="employees/reports/salary-slip" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Salary Slip" /></ProtectedRoute>} />
+              <Route path="employees/reports/salary" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Employee Salary Report" /></ProtectedRoute>} />
+              <Route path="employees/reports/salary-register" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Employee Salary Register" /></ProtectedRoute>} />
+              <Route path="employees/reports/salary-multiple-months" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Employee Salary Report - Multiple Months" /></ProtectedRoute>} />
+              <Route path="employees/reports/arrear-salary" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Arrear Salary Report" /></ProtectedRoute>} />
+              <Route path="employees/reports/earning-deduction-register" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Earning & Deduction Register" /></ProtectedRoute>} />
+              <Route path="employees/reports/pf-challan" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="PF Challan Report" /></ProtectedRoute>} />
               <Route path="leave-management" element={<ProtectedRoute moduleKey="leaveManagement"><LeaveManagementPage /></ProtectedRoute>} />
               <Route path="payroll-management" element={<ProtectedRoute moduleKey="payroll"><PayrollManagementPage /></ProtectedRoute>} />
               <Route path="finance-accounting" element={<ProtectedRoute moduleKey="finance"><FinanceAccountingPage /></ProtectedRoute>} />
@@ -206,6 +234,24 @@ function App() {
               <Route path="library/fines" element={<ProtectedRoute moduleKey="library"><LibraryFinesPage /></ProtectedRoute>} />
               <Route path="library/damages" element={<ProtectedRoute moduleKey="library"><LibraryDamagesPage /></ProtectedRoute>} />
               <Route path="library/lost" element={<ProtectedRoute moduleKey="library"><LibraryLostPage /></ProtectedRoute>} />
+              <Route path="library/issue-book" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Issue Book" /></ProtectedRoute>} />
+              <Route path="library/issue-book-college-wise" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Issue Book College Wise" /></ProtectedRoute>} />
+              <Route path="library/issued-books" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Issued Books" /></ProtectedRoute>} />
+              <Route path="library/stock-verify" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Stock Verify" /></ProtectedRoute>} />
+              <Route path="library/visitor" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Library Visitor" /></ProtectedRoute>} />
+              <Route path="library/digital" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Digital Library" /></ProtectedRoute>} />
+              <Route path="library/serial-subscription" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Serial Subscription" /></ProtectedRoute>} />
+              <Route path="library/serial-collection" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Serial Collection" /></ProtectedRoute>} />
+              <Route path="library/serial-collection-report" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Serial Collection Report" /></ProtectedRoute>} />
+              <Route path="library/reports/library-reports" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Library Reports" /></ProtectedRoute>} />
+              <Route path="library/reports/issued-books" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Library Issued Books Report" /></ProtectedRoute>} />
+              <Route path="library/reports/collection" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Library Collection Report" /></ProtectedRoute>} />
+              <Route path="library/reports/quick" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Quick Report" /></ProtectedRoute>} />
+              <Route path="library/reports/date-wise-issue-return" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Date Wise Issue/Return Report" /></ProtectedRoute>} />
+              <Route path="library/reports/member-type-issued-count" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Member Type Wise Issued Count" /></ProtectedRoute>} />
+              <Route path="library/reports/title-subtitle-summary" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Title & Subtitle Category Summary Report" /></ProtectedRoute>} />
+              <Route path="library/reports/webopac" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="WebOPAC Report" /></ProtectedRoute>} />
+              <Route path="library/webopac" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="WebOPAC" /></ProtectedRoute>} />
               <Route path="hostel" element={<ProtectedRoute moduleKey="hostel"><HostelManagementPage /></ProtectedRoute>} />
               <Route path="hostel/rooms" element={<ProtectedRoute moduleKey="hostel"><HostelRoomsPage /></ProtectedRoute>} />
               <Route path="hostel/allocations" element={<ProtectedRoute moduleKey="hostel"><HostelAllocationsPage /></ProtectedRoute>} />
@@ -214,6 +260,18 @@ function App() {
               <Route path="hostel/fees" element={<ProtectedRoute moduleKey="hostel"><HostelFeesPage /></ProtectedRoute>} />
               <Route path="hostel/wardens" element={<ProtectedRoute moduleKey="hostel"><HostelWardensPage /></ProtectedRoute>} />
               <Route path="hostel/maintenance" element={<ProtectedRoute moduleKey="hostel"><HostelMaintenancePage /></ProtectedRoute>} />
+              <Route path="hostel/report" element={<ProtectedRoute moduleKey="hostel"><PlaceholderPage title="Hostel Report" /></ProtectedRoute>} />
+              <Route path="hostel/occupancy-report" element={<ProtectedRoute moduleKey="hostel"><PlaceholderPage title="Occupancy Report" /></ProtectedRoute>} />
+              <Route path="hostel/attendance" element={<ProtectedRoute moduleKey="hostel"><PlaceholderPage title="Hostel Attendance" /></ProtectedRoute>} />
+              <Route path="hostel/qr-generator" element={<ProtectedRoute moduleKey="hostel"><PlaceholderPage title="Hostel QR Generator" /></ProtectedRoute>} />
+              <Route path="hostel/live-attendance" element={<ProtectedRoute moduleKey="hostel"><PlaceholderPage title="Live Hostel Attendance" /></ProtectedRoute>} />
+              <Route path="hostel/attendance-report" element={<ProtectedRoute moduleKey="hostel"><PlaceholderPage title="Hostel Attendance Report" /></ProtectedRoute>} />
+              <Route path="hostel/unmarked-report" element={<ProtectedRoute moduleKey="hostel"><PlaceholderPage title="Hostel UnMarked Report" /></ProtectedRoute>} />
+              <Route path="hostel/gate-pass" element={<ProtectedRoute moduleKey="hostel"><PlaceholderPage title="Hostel Gate Pass" /></ProtectedRoute>} />
+              <Route path="hostel/mess-attendance" element={<ProtectedRoute moduleKey="hostel"><PlaceholderPage title="Mess Attendance" /></ProtectedRoute>} />
+              <Route path="hostel/mess-summary-report" element={<ProtectedRoute moduleKey="hostel"><PlaceholderPage title="Mess Summary Report" /></ProtectedRoute>} />
+              <Route path="hostel/mess-detailed-report" element={<ProtectedRoute moduleKey="hostel"><PlaceholderPage title="Mess Detailed Report" /></ProtectedRoute>} />
+              <Route path="hostel/meal-feedback-report" element={<ProtectedRoute moduleKey="hostel"><PlaceholderPage title="Meal Feedback Report" /></ProtectedRoute>} />
               <Route path="transport" element={<ProtectedRoute moduleKey="transport"><TransportManagementPage /></ProtectedRoute>} />
               <Route path="transport/vehicles" element={<ProtectedRoute moduleKey="transport"><TransportVehiclesPage /></ProtectedRoute>} />
               <Route path="transport/drivers" element={<ProtectedRoute moduleKey="transport"><TransportDriversPage /></ProtectedRoute>} />
@@ -227,11 +285,50 @@ function App() {
               <Route path="examination" element={<ProtectedRoute moduleKey="examination"><ExaminationPage /></ProtectedRoute>} />
               <Route path="examination-attendance" element={<ProtectedRoute moduleKey="examination"><ExaminationAttendancePage /></ProtectedRoute>} />
               <Route path="seating-plan" element={<ProtectedRoute moduleKey="examination"><SeatingPlanPage /></ProtectedRoute>} />
+              <Route path="coe" element={<ProtectedRoute><PlaceholderPage title="COE" /></ProtectedRoute>} />
+              <Route path="coe/exam-master" element={<ProtectedRoute><PlaceholderPage title="Exam Master" /></ProtectedRoute>} />
+              <Route path="coe/datesheet" element={<ProtectedRoute><PlaceholderPage title="Datesheet" /></ProtectedRoute>} />
+              <Route path="coe/configuration" element={<ProtectedRoute><PlaceholderPage title="Exam Configuration" /></ProtectedRoute>} />
+              <Route path="coe/registration" element={<ProtectedRoute><PlaceholderPage title="Exam Registration" /></ProtectedRoute>} />
+              <Route path="coe/approve-registration" element={<ProtectedRoute><PlaceholderPage title="Approve Exam Registration" /></ProtectedRoute>} />
+              <Route path="coe/pending-registration" element={<ProtectedRoute><PlaceholderPage title="Pending Registration Report" /></ProtectedRoute>} />
+              <Route path="coe/transactions" element={<ProtectedRoute><PlaceholderPage title="Transactions List" /></ProtectedRoute>} />
+              <Route path="coe/admit-card" element={<ProtectedRoute><PlaceholderPage title="Issue Admit Card" /></ProtectedRoute>} />
+              <Route path="coe/daily-dashboard" element={<ProtectedRoute><PlaceholderPage title="Daily Exam Dashboard" /></ProtectedRoute>} />
+              <Route path="coe/exam-attendance" element={<ProtectedRoute><PlaceholderPage title="Exam Attendance" /></ProtectedRoute>} />
+              <Route path="coe/attendance-report" element={<ProtectedRoute><PlaceholderPage title="Exam Attendance Report" /></ProtectedRoute>} />
+              <Route path="coe/attendance-sheet" element={<ProtectedRoute><PlaceholderPage title="Attendance Sheet" /></ProtectedRoute>} />
+              <Route path="coe/question-mapping" element={<ProtectedRoute><PlaceholderPage title="Question CO Mapping" /></ProtectedRoute>} />
+              <Route path="coe/admin-marks" element={<ProtectedRoute><PlaceholderPage title="Admin Marks Entry" /></ProtectedRoute>} />
+              <Route path="coe/theory-marks" element={<ProtectedRoute><PlaceholderPage title="Theory Marks Entry" /></ProtectedRoute>} />
+              <Route path="coe/practical-marks" element={<ProtectedRoute><PlaceholderPage title="Practical Marks Entry" /></ProtectedRoute>} />
+              <Route path="coe/internal-marks" element={<ProtectedRoute><PlaceholderPage title="Internal Marks Entry" /></ProtectedRoute>} />
+              <Route path="coe/pending-marks" element={<ProtectedRoute><PlaceholderPage title="Pending Marks Entry Report" /></ProtectedRoute>} />
+              <Route path="coe/reports/subject-wise" element={<ProtectedRoute><PlaceholderPage title="Subject Wise Marks Report" /></ProtectedRoute>} />
+              <Route path="coe/reports/type-wise" element={<ProtectedRoute><PlaceholderPage title="Type Wise Marks Report" /></ProtectedRoute>} />
+              <Route path="coe/reports/analysis" element={<ProtectedRoute><PlaceholderPage title="Result Analysis Report" /></ProtectedRoute>} />
+              <Route path="coe/result-declare" element={<ProtectedRoute><PlaceholderPage title="Result Declare" /></ProtectedRoute>} />
+              <Route path="coe/result-sheet" element={<ProtectedRoute><PlaceholderPage title="Result Sheet" /></ProtectedRoute>} />
+              <Route path="coe/digi-locker" element={<ProtectedRoute><PlaceholderPage title="Digi Locker Report" /></ProtectedRoute>} />
+              <Route path="coe/student-dmc" element={<ProtectedRoute><PlaceholderPage title="Student DMC" /></ProtectedRoute>} />
+              <Route path="feedback" element={<ProtectedRoute><PlaceholderPage title="Feedback From Student" /></ProtectedRoute>} />
+              <Route path="feedback/form" element={<ProtectedRoute><PlaceholderPage title="Student Feedback Form" /></ProtectedRoute>} />
+              <Route path="feedback/submissions" element={<ProtectedRoute><PlaceholderPage title="Feedback Submissions" /></ProtectedRoute>} />
+              <Route path="feedback/dashboard" element={<ProtectedRoute><PlaceholderPage title="Feedback Dashboard" /></ProtectedRoute>} />
+              <Route path="feedback/response-management" element={<ProtectedRoute><PlaceholderPage title="Response Management" /></ProtectedRoute>} />
+              <Route path="feedback/reports/summary" element={<ProtectedRoute><PlaceholderPage title="Feedback Summary Report" /></ProtectedRoute>} />
+              <Route path="feedback/reports/analysis" element={<ProtectedRoute><PlaceholderPage title="Feedback Analysis Report" /></ProtectedRoute>} />
+              <Route path="feedback/reports/trends" element={<ProtectedRoute><PlaceholderPage title="Feedback Trend Report" /></ProtectedRoute>} />
+              <Route path="feedback/reports/student" element={<ProtectedRoute><PlaceholderPage title="Student Feedback Report" /></ProtectedRoute>} />
               <Route path="invigilator-assignment" element={<ProtectedRoute moduleKey="teacherAssignments"><InvigilatorAssignmentPage /></ProtectedRoute>} />
               <Route path="security" element={<ProtectedRoute moduleKey="security"><SecurityPage /></ProtectedRoute>} />
               <Route path="security/visitors" element={<ProtectedRoute moduleKey="security"><SecurityVisitorsPage /></ProtectedRoute>} />
               <Route path="security/gate-pass" element={<ProtectedRoute moduleKey="security"><GatePassPage /></ProtectedRoute>} />
               <Route path="security/incidents" element={<ProtectedRoute moduleKey="security"><IncidentsPage /></ProtectedRoute>} />
+              <Route path="front-desk/visitor" element={<ProtectedRoute moduleKey="security"><PlaceholderPage title="Visitor" /></ProtectedRoute>} />
+              <Route path="front-desk/gate-pass" element={<ProtectedRoute moduleKey="security"><PlaceholderPage title="Gate Pass" /></ProtectedRoute>} />
+              <Route path="front-desk/hostel-gate-pass-qr" element={<ProtectedRoute moduleKey="security"><PlaceholderPage title="Hostel Gate Pass QR" /></ProtectedRoute>} />
+              <Route path="front-desk/gate-pass-qr" element={<ProtectedRoute moduleKey="security"><PlaceholderPage title="Gate Pass QR" /></ProtectedRoute>} />
               <Route path="inventory" element={<ProtectedRoute moduleKey="inventory"><InventoryPage /></ProtectedRoute>} />
               <Route path="inventory/assets" element={<ProtectedRoute moduleKey="inventory"><AssetsPage /></ProtectedRoute>} />
               <Route path="inventory/categories" element={<ProtectedRoute moduleKey="inventory"><AssetCategoriesPage /></ProtectedRoute>} />
@@ -269,6 +366,23 @@ function App() {
               <Route path="lms/certificates" element={<ProtectedRoute moduleKey="lms"><LMSCertificatesPage /></ProtectedRoute>} />
               <Route path="analytics" element={<ProtectedRoute moduleKey="reports"><AnalyticsPage /></ProtectedRoute>} />
               <Route path="notifications" element={<ProtectedRoute moduleKey="notifications"><NotificationsPage /></ProtectedRoute>} />
+              <Route path="notifications/assignment" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Assignment" /></ProtectedRoute>} />
+              <Route path="notifications/notes" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Notes" /></ProtectedRoute>} />
+              <Route path="notifications/notes-new" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Notes New" /></ProtectedRoute>} />
+              <Route path="notifications/circular" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Circular" /></ProtectedRoute>} />
+              <Route path="notifications/notice" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Notice" /></ProtectedRoute>} />
+              <Route path="notifications/syllabus" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Syllabus" /></ProtectedRoute>} />
+              <Route path="notifications/date-sheet" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Date Sheet" /></ProtectedRoute>} />
+              <Route path="notifications/e-learning" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="E-Learning" /></ProtectedRoute>} />
+              <Route path="notifications/time-table" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Time Table" /></ProtectedRoute>} />
+              <Route path="communication" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Communication" /></ProtectedRoute>} />
+              <Route path="communication/send-text-sms" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Send Text SMS" /></ProtectedRoute>} />
+              <Route path="communication/send-whatsapp-message" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Send Whatsapp Message" /></ProtectedRoute>} />
+              <Route path="communication/report" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Report" /></ProtectedRoute>} />
+              <Route path="communication/employee-announcement" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Employee Announcement" /></ProtectedRoute>} />
+              <Route path="lesson" element={<ProtectedRoute><PlaceholderPage title="Lesson" /></ProtectedRoute>} />
+              <Route path="lesson/management" element={<ProtectedRoute moduleKey="lms"><PlaceholderPage title="Lesson Management" /></ProtectedRoute>} />
+              <Route path="lesson/subject-wise-report" element={<ProtectedRoute moduleKey="lms"><PlaceholderPage title="Subject Wise Report" /></ProtectedRoute>} />
               <Route path="settings" element={<ProtectedRoute moduleKey="settings"><SettingsPage /></ProtectedRoute>} />
               <Route path="change-password" element={<ChangePasswordPage />} />
               <Route path="permissions" element={<ProtectedRoute moduleKey="permissionMatrix"><PermissionMatrixPage /></ProtectedRoute>} />

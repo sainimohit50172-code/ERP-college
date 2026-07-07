@@ -64,6 +64,14 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
   const [showAttendanceDropdown, setShowAttendanceDropdown] = useState(false);
   const [showExaminationDropdown, setShowExaminationDropdown] = useState(false);
   const [showCOEDropdown, setShowCOEDropdown] = useState(false);
+  const [showFeedbackDropdown, setShowFeedbackDropdown] = useState(false);
+  const [showUniversityDropdown, setShowUniversityDropdown] = useState(false);
+  const [showLessonDropdown, setShowLessonDropdown] = useState(false);
+  const [showHRMDropdown, setShowHRMDropdown] = useState(false);
+  const [showLibraryDropdown, setShowLibraryDropdown] = useState(false);
+  const [showFrontDeskDropdown, setShowFrontDeskDropdown] = useState(false);
+  const [showCommunicationDropdown, setShowCommunicationDropdown] = useState(false);
+  const [showTransportDropdown, setShowTransportDropdown] = useState(false);
   const employeePortalRef = useRef(null);
   const admissionRef = useRef(null);
   const studentRef = useRef(null);
@@ -71,6 +79,15 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
   const attendanceRef = useRef(null);
   const examinationRef = useRef(null);
   const coeRef = useRef(null);
+  const feedbackRef = useRef(null);
+  const universityRef = useRef(null);
+  const lessonRef = useRef(null);
+  const hrmRef = useRef(null);
+  const libraryRef = useRef(null);
+  const frontDeskRef = useRef(null);
+  const communicationRef = useRef(null);
+  const transportRef = useRef(null);
+  const hostelRef = useRef(null);
   const [dropdownTop, setDropdownTop] = useState(0);
 
   const EMPLOYEE_PORTAL_ITEMS = [
@@ -251,6 +268,163 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
     },
   };
 
+  const HRM_ITEMS = {
+    left: {
+      hrm: [
+        { id: 'employee', label: 'Employee', to: '/employees', favorite: true },
+        { id: 'manage-employee', label: 'Manage Employee', to: '/employees/manage' },
+        { id: 'employee-entitled-leaves', label: 'Employee Entitled Leaves', to: '/employees/entitled-leaves' },
+        { id: 'attendance-calendar', label: 'Attendance Calendar', to: '/employees/attendance-calendar' },
+        { id: 'assign-salary-template', label: 'Assign Salary Template', to: '/employees/assign-salary-template' },
+        { id: 'manage-salary-templates', label: 'Manage Salary Templates', to: '/employees/manage-salary-templates' },
+      ],
+      employeeReports: [
+        { id: 'employee-report', label: 'Employee Report', to: '/employees/reports/employee', favorite: true },
+        { id: 'leave-type-report', label: 'Leave Type Report', to: '/employees/reports/leave-type' },
+        { id: 'attendance-time-report', label: 'Attendance Time Report', to: '/employees/reports/attendance-time' },
+        { id: 'attendance-report', label: 'Attendance Report', to: '/employees/reports/attendance' },
+        { id: 'daily-attendance-report-department-wise', label: 'Daily Attendance Report Department Wise', to: '/employees/reports/daily-attendance-department' },
+        { id: 'absentees-late-arrival-report', label: 'Absentees & Late Arrival Report', to: '/employees/reports/absentees-late-arrival' },
+        { id: 'leave-approval-report', label: 'Leave Approval Report', to: '/employees/reports/leave-approval' },
+        { id: 'attendance-logs', label: 'Attendance Logs', to: '/employees/reports/attendance-logs' },
+        { id: 'working-hour-report', label: 'Working Hour Report', to: '/employees/reports/working-hour' },
+      ],
+    },
+    right: {
+      employeeAttendance: [
+        { id: 'mark-attendance-day-wise', label: 'Mark Attendance Day Wise', to: '/employees/attendance/day-wise' },
+        { id: 'mark-attendance-month-wise', label: 'Mark Attendance Month Wise', to: '/employees/attendance/month-wise' },
+        { id: 'biometric-attendance', label: 'Biometric Attendance', to: '/employees/attendance/biometric' },
+        { id: 'attendance-regularization', label: 'Attendance Regularization', to: '/employees/attendance/regularization' },
+      ],
+      processSalaryReport: [
+        { id: 'compute-attendance', label: 'Compute Attendance', to: '/employees/reports/compute-attendance' },
+        { id: 'salary-summary-month-wise', label: 'Salary Summary Month Wise', to: '/employees/reports/salary-summary-month-wise' },
+      ],
+      salaryReports: [
+        { id: 'salary-slip', label: 'Salary Slip', to: '/employees/reports/salary-slip' },
+        { id: 'employee-salary-report', label: 'Employee Salary Report', to: '/employees/reports/salary' },
+        { id: 'employee-salary-register', label: 'Employee Salary Register', to: '/employees/reports/salary-register' },
+        { id: 'employee-salary-report-multiple-months', label: 'Employee Salary Report - Multiple Months', to: '/employees/reports/salary-multiple-months' },
+        { id: 'assign-salary-template-report', label: 'Assign Salary Template', to: '/employees/assign-salary-template' },
+        { id: 'arrear-salary-report', label: 'Arrear Salary Report', to: '/employees/reports/arrear-salary' },
+        { id: 'earning-deduction-register', label: 'Earning & Deduction Register', to: '/employees/reports/earning-deduction-register' },
+        { id: 'pf-challan-report', label: 'PF Challan Report', to: '/employees/reports/pf-challan' },
+      ],
+    },
+  };
+
+  const LIBRARY_ITEMS = {
+    left: {
+      library: [
+        { id: 'books', label: 'Books', to: '/library/books', favorite: true },
+        { id: 'issue-book', label: 'Issue Book', to: '/library/issue-book' },
+        { id: 'issue-book-college-wise', label: 'Issue Book College Wise', to: '/library/issue-book-college-wise' },
+        { id: 'issued-books', label: 'Issued Books', to: '/library/issued-books' },
+        { id: 'stock-verify', label: 'Stock Verify', to: '/library/stock-verify' },
+        { id: 'library-visitor', label: 'Library Visitor', to: '/library/visitor' },
+        { id: 'digital-library', label: 'Digital Library', to: '/library/digital' },
+      ],
+      serialManagement: [
+        { id: 'serial-subscription', label: 'Serial Subscription', to: '/library/serial-subscription' },
+        { id: 'serial-collection', label: 'Serial Collection', to: '/library/serial-collection' },
+        { id: 'serial-collection-report', label: 'Serial Collection Report', to: '/library/serial-collection-report' },
+      ],
+    },
+    right: {
+      libraryReports: [
+        { id: 'library-reports', label: 'Library Reports', to: '/library/reports/library-reports' },
+        { id: 'library-issued-books-report', label: 'Library Issued Books Report', to: '/library/reports/issued-books' },
+        { id: 'library-collection-report', label: 'Library Collection Report', to: '/library/reports/collection' },
+        { id: 'quick-report', label: 'Quick Report', to: '/library/reports/quick' },
+        { id: 'date-wise-issue-return', label: 'Date Wise Issue/Return Report', to: '/library/reports/date-wise-issue-return' },
+        { id: 'member-type-issued-count', label: 'Member Type Wise Issued Count', to: '/library/reports/member-type-issued-count' },
+        { id: 'title-subtitle-summary', label: 'Title & Subtitle Category Summary Report', to: '/library/reports/title-subtitle-summary' },
+        { id: 'webopac-report', label: 'WebOPAC Report', to: '/library/reports/webopac' },
+      ],
+      webopac: [
+        { id: 'webopac', label: 'WebOPAC', to: '/library/webopac' },
+      ],
+    },
+  };
+
+  const FRONT_DESK_ITEMS = [
+    { id: 'visitor', label: 'Visitor', to: '/front-desk/visitor' },
+    { id: 'gate-pass', label: 'Gate Pass', to: '/front-desk/gate-pass' },
+    { id: 'hostel-gate-pass-qr', label: 'Hostel Gate Pass QR', to: '/front-desk/hostel-gate-pass-qr' },
+    { id: 'gate-pass-qr', label: 'Gate Pass QR', to: '/front-desk/gate-pass-qr' },
+  ];
+
+  const COMMUNICATION_ITEMS = [
+    { id: 'send-text-sms', label: 'Send Text SMS', to: '/communication/send-text-sms' },
+    { id: 'send-whatsapp-message', label: 'Send Whatsapp Message', to: '/communication/send-whatsapp-message' },
+    { id: 'report', label: 'Report', to: '/communication/report' },
+    { id: 'employee-announcement', label: 'Employee Announcement', to: '/communication/employee-announcement' },
+  ];
+
+  const TRANSPORT_ITEMS = [
+    { id: 'vehicles', label: 'Vehicles', to: '/transport/vehicles' },
+    { id: 'drivers', label: 'Drivers', to: '/transport/drivers' },
+    { id: 'conductors', label: 'Conductors', to: '/transport/conductors' },
+    { id: 'routes', label: 'Routes', to: '/transport/routes' },
+    { id: 'stops', label: 'Stops', to: '/transport/stops' },
+    { id: 'student-assignments', label: 'Student Assignments', to: '/transport/student-assignments' },
+    { id: 'employee-assignments', label: 'Employee Assignments', to: '/transport/employee-assignments' },
+    { id: 'fuel', label: 'Fuel', to: '/transport/fuel' },
+    { id: 'maintenance', label: 'Maintenance', to: '/transport/maintenance' },
+  ];
+
+  const HOSTEL_ITEMS = {
+    left: [
+      { id: 'hostel-report', label: 'Hostel Report', to: '/hostel/report' },
+      { id: 'occupancy-report', label: 'Occupancy Report', to: '/hostel/occupancy-report' },
+      { id: 'hostel-attendance', label: 'Hostel Attendance', to: '/hostel/attendance' },
+      { id: 'hostel-qr-generator', label: 'Hostel QR Generator', to: '/hostel/qr-generator' },
+      { id: 'live-hostel-attendance', label: 'Live Hostel Attendance', to: '/hostel/live-attendance' },
+      { id: 'hostel-attendance-report', label: 'Hostel Attendance Report', to: '/hostel/attendance-report' },
+      { id: 'hostel-unmarked-report', label: 'Hostel UnMarked Report', to: '/hostel/unmarked-report' },
+      { id: 'hostel-gate-pass', label: 'Hostel Gate Pass', to: '/hostel/gate-pass' },
+    ],
+    right: [
+      { id: 'mess-attendance', label: 'Mess Attendance', to: '/hostel/mess-attendance' },
+      { id: 'summary-report', label: 'Summary Report', to: '/hostel/mess-summary-report' },
+      { id: 'detailed-report', label: 'Detailed Report', to: '/hostel/mess-detailed-report' },
+      { id: 'meal-feedback-report', label: 'Meal Feedback Report', to: '/hostel/meal-feedback-report' },
+    ],
+  };
+
+  const FEEDBACK_ITEMS = {
+    left: [
+      { id: 'student-feedback-form', label: 'Student Feedback Form', to: '/feedback/form' },
+      { id: 'feedback-submissions', label: 'Feedback Submissions', to: '/feedback/submissions' },
+      { id: 'feedback-dashboard', label: 'Feedback Dashboard', to: '/feedback/dashboard' },
+      { id: 'response-management', label: 'Response Management', to: '/feedback/response-management' },
+    ],
+    right: [
+      { id: 'feedback-summary-report', label: 'Feedback Summary Report', to: '/feedback/reports/summary' },
+      { id: 'feedback-analysis-report', label: 'Feedback Analysis Report', to: '/feedback/reports/analysis' },
+      { id: 'feedback-trend-report', label: 'Feedback Trend Report', to: '/feedback/reports/trends' },
+      { id: 'student-feedback-report', label: 'Student Feedback Report', to: '/feedback/reports/student' },
+    ],
+  };
+
+  const UNIVERSITY_COMMUNICATION_ITEMS = [
+    { id: 'assignment', label: 'Assignment', to: '/notifications/assignment' },
+    { id: 'notes', label: 'Notes', to: '/notifications/notes' },
+    { id: 'notes-new', label: 'Notes New', to: '/notifications/notes-new' },
+    { id: 'circular', label: 'Circular', to: '/notifications/circular' },
+    { id: 'notice', label: 'Notice', to: '/notifications/notice', favorite: true },
+    { id: 'syllabus', label: 'Syllabus', to: '/notifications/syllabus' },
+    { id: 'date-sheet', label: 'Date Sheet', to: '/notifications/date-sheet' },
+    { id: 'e-learning', label: 'E-Learning', to: '/notifications/e-learning' },
+    { id: 'time-table', label: 'Time Table', to: '/notifications/time-table' },
+  ];
+
+  const LESSON_ITEMS = [
+    { id: 'lesson-management', label: 'Lesson Management', to: '/lesson/management' },
+    { id: 'subject-wise-report', label: 'Subject Wise Report', to: '/lesson/subject-wise-report' },
+  ];
+
   const STUDENT_ITEMS = {
     left: [
       { id: 'student-list', label: 'Student List', to: '/students' },
@@ -356,7 +530,197 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
     setShowFeeDropdown(false);
     setShowAttendanceDropdown(false);
     setShowExaminationDropdown(false);
+    setShowFeedbackDropdown(false);
+    setShowUniversityDropdown(false);
+    setShowLessonDropdown(false);
+    setShowHRMDropdown(false);
     setShowCOEDropdown((prev) => !prev);
+  };
+
+  const handleHRMClick = () => {
+    if (hrmRef.current) {
+      const rect = hrmRef.current.getBoundingClientRect();
+      const topPosition = Math.max(rect.top, 56);
+      setDropdownTop(topPosition);
+    }
+    setShowEmployeePortal(false);
+    setShowAdmissionDropdown(false);
+    setShowStudentDropdown(false);
+    setShowFeeDropdown(false);
+    setShowAttendanceDropdown(false);
+    setShowExaminationDropdown(false);
+    setShowCOEDropdown(false);
+    setShowFeedbackDropdown(false);
+    setShowUniversityDropdown(false);
+    setShowLessonDropdown(false);
+    setShowHRMDropdown((prev) => !prev);
+  };
+
+  const handleLibraryClick = () => {
+    if (libraryRef.current) {
+      const rect = libraryRef.current.getBoundingClientRect();
+      const topPosition = Math.max(rect.top, 56);
+      setDropdownTop(topPosition);
+    }
+    setShowEmployeePortal(false);
+    setShowAdmissionDropdown(false);
+    setShowStudentDropdown(false);
+    setShowFeeDropdown(false);
+    setShowAttendanceDropdown(false);
+    setShowExaminationDropdown(false);
+    setShowCOEDropdown(false);
+    setShowFeedbackDropdown(false);
+    setShowUniversityDropdown(false);
+    setShowLessonDropdown(false);
+    setShowHRMDropdown(false);
+    setShowLibraryDropdown((prev) => !prev);
+  };
+
+  const handleFeedbackClick = () => {
+    if (feedbackRef.current) {
+      const rect = feedbackRef.current.getBoundingClientRect();
+      const topPosition = Math.max(rect.top, 56);
+      setDropdownTop(topPosition);
+    }
+    setShowEmployeePortal(false);
+    setShowAdmissionDropdown(false);
+    setShowStudentDropdown(false);
+    setShowFeeDropdown(false);
+    setShowAttendanceDropdown(false);
+    setShowExaminationDropdown(false);
+    setShowCOEDropdown(false);
+    setShowUniversityDropdown(false);
+    setShowFeedbackDropdown((prev) => !prev);
+  };
+
+  const handleUniversityClick = () => {
+    if (universityRef.current) {
+      const rect = universityRef.current.getBoundingClientRect();
+      const topPosition = Math.max(rect.top, 56);
+      setDropdownTop(topPosition);
+    }
+    setShowEmployeePortal(false);
+    setShowAdmissionDropdown(false);
+    setShowStudentDropdown(false);
+    setShowFeeDropdown(false);
+    setShowAttendanceDropdown(false);
+    setShowExaminationDropdown(false);
+    setShowCOEDropdown(false);
+    setShowFeedbackDropdown(false);
+    setShowUniversityDropdown((prev) => !prev);
+  };
+
+  const handleLessonClick = () => {
+    if (lessonRef.current) {
+      const rect = lessonRef.current.getBoundingClientRect();
+      const topPosition = Math.max(rect.top, 56);
+      setDropdownTop(topPosition);
+    }
+    setShowEmployeePortal(false);
+    setShowAdmissionDropdown(false);
+    setShowStudentDropdown(false);
+    setShowFeeDropdown(false);
+    setShowAttendanceDropdown(false);
+    setShowExaminationDropdown(false);
+    setShowCOEDropdown(false);
+    setShowFeedbackDropdown(false);
+    setShowUniversityDropdown(false);
+    setShowLessonDropdown((prev) => !prev);
+  };
+
+  const handleFrontDeskClick = () => {
+    if (frontDeskRef.current) {
+      const rect = frontDeskRef.current.getBoundingClientRect();
+      const topPosition = Math.max(rect.top, 56);
+      setDropdownTop(topPosition);
+    }
+    setShowEmployeePortal(false);
+    setShowAdmissionDropdown(false);
+    setShowStudentDropdown(false);
+    setShowFeeDropdown(false);
+    setShowAttendanceDropdown(false);
+    setShowExaminationDropdown(false);
+    setShowCOEDropdown(false);
+    setShowFeedbackDropdown(false);
+    setShowUniversityDropdown(false);
+    setShowLessonDropdown(false);
+    setShowHRMDropdown(false);
+    setShowLibraryDropdown(false);
+    setShowCommunicationDropdown(false);
+    setShowTransportDropdown(false);
+    setShowHostelDropdown(false);
+    setShowFrontDeskDropdown((prev) => !prev);
+  };
+
+  const handleCommunicationClick = () => {
+    if (communicationRef.current) {
+      const rect = communicationRef.current.getBoundingClientRect();
+      const topPosition = Math.max(rect.top, 56);
+      setDropdownTop(topPosition);
+    }
+    setShowEmployeePortal(false);
+    setShowAdmissionDropdown(false);
+    setShowStudentDropdown(false);
+    setShowFeeDropdown(false);
+    setShowAttendanceDropdown(false);
+    setShowExaminationDropdown(false);
+    setShowCOEDropdown(false);
+    setShowFeedbackDropdown(false);
+    setShowUniversityDropdown(false);
+    setShowLessonDropdown(false);
+    setShowHRMDropdown(false);
+    setShowLibraryDropdown(false);
+    setShowFrontDeskDropdown(false);
+    setShowHostelDropdown(false);
+    setShowCommunicationDropdown((prev) => !prev);
+  };
+
+  const handleTransportClick = () => {
+    if (transportRef.current) {
+      const rect = transportRef.current.getBoundingClientRect();
+      const topPosition = Math.max(rect.top, 56);
+      setDropdownTop(topPosition);
+    }
+    setShowEmployeePortal(false);
+    setShowAdmissionDropdown(false);
+    setShowStudentDropdown(false);
+    setShowFeeDropdown(false);
+    setShowAttendanceDropdown(false);
+    setShowExaminationDropdown(false);
+    setShowCOEDropdown(false);
+    setShowFeedbackDropdown(false);
+    setShowUniversityDropdown(false);
+    setShowLessonDropdown(false);
+    setShowHRMDropdown(false);
+    setShowLibraryDropdown(false);
+    setShowFrontDeskDropdown(false);
+    setShowCommunicationDropdown(false);
+    setShowHostelDropdown(false);
+    setShowTransportDropdown((prev) => !prev);
+  };
+
+  const handleHostelClick = () => {
+    if (hostelRef.current) {
+      const rect = hostelRef.current.getBoundingClientRect();
+      const topPosition = Math.max(rect.top, 56);
+      setDropdownTop(topPosition);
+    }
+    setShowEmployeePortal(false);
+    setShowAdmissionDropdown(false);
+    setShowStudentDropdown(false);
+    setShowFeeDropdown(false);
+    setShowAttendanceDropdown(false);
+    setShowExaminationDropdown(false);
+    setShowCOEDropdown(false);
+    setShowFeedbackDropdown(false);
+    setShowUniversityDropdown(false);
+    setShowLessonDropdown(false);
+    setShowHRMDropdown(false);
+    setShowLibraryDropdown(false);
+    setShowFrontDeskDropdown(false);
+    setShowCommunicationDropdown(false);
+    setShowTransportDropdown(false);
+    setShowHostelDropdown((prev) => !prev);
   };
 
   useEffect(() => {
@@ -375,7 +739,25 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
         !e.target.closest('.examination-dropdown') &&
         !e.target.closest('.examination-trigger') &&
         !e.target.closest('.coe-dropdown') &&
-        !e.target.closest('.coe-trigger')
+        !e.target.closest('.coe-trigger') &&
+        !e.target.closest('.feedback-dropdown') &&
+        !e.target.closest('.feedback-trigger') &&
+        !e.target.closest('.university-communication-dropdown') &&
+        !e.target.closest('.university-communication-trigger') &&
+        !e.target.closest('.lesson-dropdown') &&
+        !e.target.closest('.lesson-trigger') &&
+        !e.target.closest('.hrm-dropdown') &&
+        !e.target.closest('.hrm-trigger') &&
+        !e.target.closest('.library-dropdown') &&
+        !e.target.closest('.library-trigger') &&
+        !e.target.closest('.front-desk-dropdown') &&
+        !e.target.closest('.front-desk-trigger') &&
+        !e.target.closest('.communication-dropdown') &&
+        !e.target.closest('.communication-trigger') &&
+        !e.target.closest('.hostel-dropdown') &&
+        !e.target.closest('.hostel-trigger') &&
+        !e.target.closest('.transport-dropdown') &&
+        !e.target.closest('.transport-trigger')
       ) {
         setShowEmployeePortal(false);
         setShowAdmissionDropdown(false);
@@ -384,6 +766,15 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
         setShowAttendanceDropdown(false);
         setShowExaminationDropdown(false);
         setShowCOEDropdown(false);
+        setShowFeedbackDropdown(false);
+        setShowUniversityDropdown(false);
+        setShowLessonDropdown(false);
+        setShowHRMDropdown(false);
+        setShowLibraryDropdown(false);
+        setShowFrontDeskDropdown(false);
+        setShowCommunicationDropdown(false);
+        setShowHostelDropdown(false);
+        setShowTransportDropdown(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -584,6 +975,236 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
       );
     }
 
+    if (item.id === 'coe') {
+      return (
+        <div
+          key={item.id}
+          ref={coeRef}
+          className="coe-trigger flex items-center px-3"
+          onClick={handleCOEClick}
+          onMouseEnter={handleNavItemMouseEnter}
+          onMouseLeave={handleNavItemMouseLeave}
+          data-active={isActive ? 'true' : 'false'}
+          style={navItemStyle}
+        >
+          <div style={{ width: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {Icon ? <Icon style={{ width: 18, height: 18, color: isActive ? '#ffffff' : '#86efac' }} /> : null}
+          </div>
+          <div style={{ marginLeft: 12, fontSize: 13, color: isActive ? '#ffffff' : '#86efac' }}>{item.label}</div>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', transition: 'transform 0.2s ease' }}>
+            <ChevronDown style={{ width: 16, height: 16, color: isActive ? '#ffffff' : '#86efac', transform: showCOEDropdown ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </div>
+        </div>
+      );
+    }
+
+    if (item.id === 'hrm') {
+      return (
+        <div
+          key={item.id}
+          ref={hrmRef}
+          className="hrm-trigger flex items-center px-3"
+          onClick={handleHRMClick}
+          onMouseEnter={handleNavItemMouseEnter}
+          onMouseLeave={handleNavItemMouseLeave}
+          data-active={isActive ? 'true' : 'false'}
+          style={navItemStyle}
+        >
+          <div style={{ width: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {Icon ? <Icon style={{ width: 18, height: 18, color: isActive ? '#ffffff' : '#86efac' }} /> : null}
+          </div>
+          <div style={{ marginLeft: 12, fontSize: 13, color: isActive ? '#ffffff' : '#86efac' }}>{item.label}</div>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', transition: 'transform 0.2s ease' }}>
+            <ChevronDown style={{ width: 16, height: 16, color: isActive ? '#ffffff' : '#86efac', transform: showHRMDropdown ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </div>
+        </div>
+      );
+    }
+
+    if (item.id === 'library') {
+      return (
+        <div
+          key={item.id}
+          ref={libraryRef}
+          className="library-trigger flex items-center px-3"
+          onClick={handleLibraryClick}
+          onMouseEnter={handleNavItemMouseEnter}
+          onMouseLeave={handleNavItemMouseLeave}
+          data-active={isActive ? 'true' : 'false'}
+          style={navItemStyle}
+        >
+          <div style={{ width: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {Icon ? <Icon style={{ width: 18, height: 18, color: isActive ? '#ffffff' : '#86efac' }} /> : null}
+          </div>
+          <div style={{ marginLeft: 12, fontSize: 13, color: isActive ? '#ffffff' : '#86efac' }}>{item.label}</div>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', transition: 'transform 0.2s ease' }}>
+            <ChevronDown style={{ width: 16, height: 16, color: isActive ? '#ffffff' : '#86efac', transform: showLibraryDropdown ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </div>
+        </div>
+      );
+    }
+
+    if (item.id === 'front-desk') {
+      return (
+        <div
+          key={item.id}
+          ref={frontDeskRef}
+          className="front-desk-trigger flex items-center px-3"
+          onClick={handleFrontDeskClick}
+          onMouseEnter={handleNavItemMouseEnter}
+          onMouseLeave={handleNavItemMouseLeave}
+          data-active={isActive ? 'true' : 'false'}
+          style={navItemStyle}
+        >
+          <div style={{ width: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {Icon ? <Icon style={{ width: 18, height: 18, color: isActive ? '#ffffff' : '#86efac' }} /> : null}
+          </div>
+          <div style={{ marginLeft: 12, fontSize: 13, color: isActive ? '#ffffff' : '#86efac' }}>{item.label}</div>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', transition: 'transform 0.2s ease' }}>
+            <ChevronDown style={{ width: 16, height: 16, color: isActive ? '#ffffff' : '#86efac', transform: showFrontDeskDropdown ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </div>
+        </div>
+      );
+    }
+
+    if (item.id === 'communication') {
+      return (
+        <div
+          key={item.id}
+          ref={communicationRef}
+          className="communication-trigger flex items-center px-3"
+          onClick={handleCommunicationClick}
+          onMouseEnter={handleNavItemMouseEnter}
+          onMouseLeave={handleNavItemMouseLeave}
+          data-active={isActive ? 'true' : 'false'}
+          style={navItemStyle}
+        >
+          <div style={{ width: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {Icon ? <Icon style={{ width: 18, height: 18, color: isActive ? '#ffffff' : '#86efac' }} /> : null}
+          </div>
+          <div style={{ marginLeft: 12, fontSize: 13, color: isActive ? '#ffffff' : '#86efac' }}>{item.label}</div>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', transition: 'transform 0.2s ease' }}>
+            <ChevronDown style={{ width: 16, height: 16, color: isActive ? '#ffffff' : '#86efac', transform: showCommunicationDropdown ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </div>
+        </div>
+      );
+    }
+
+    if (item.id === 'hostel') {
+      return (
+        <div
+          key={item.id}
+          ref={hostelRef}
+          className="hostel-trigger flex items-center px-3"
+          onClick={handleHostelClick}
+          onMouseEnter={handleNavItemMouseEnter}
+          onMouseLeave={handleNavItemMouseLeave}
+          data-active={isActive ? 'true' : 'false'}
+          style={navItemStyle}
+        >
+          <div style={{ width: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {Icon ? <Icon style={{ width: 18, height: 18, color: isActive ? '#ffffff' : '#86efac' }} /> : null}
+          </div>
+          <div style={{ marginLeft: 12, fontSize: 13, color: isActive ? '#ffffff' : '#86efac' }}>{item.label}</div>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', transition: 'transform 0.2s ease' }}>
+            <ChevronDown style={{ width: 16, height: 16, color: isActive ? '#ffffff' : '#86efac', transform: showHostelDropdown ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </div>
+        </div>
+      );
+    }
+
+    if (item.id === 'transport') {
+      return (
+        <div
+          key={item.id}
+          ref={transportRef}
+          className="transport-trigger flex items-center px-3"
+          onClick={handleTransportClick}
+          onMouseEnter={handleNavItemMouseEnter}
+          onMouseLeave={handleNavItemMouseLeave}
+          data-active={isActive ? 'true' : 'false'}
+          style={navItemStyle}
+        >
+          <div style={{ width: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {Icon ? <Icon style={{ width: 18, height: 18, color: isActive ? '#ffffff' : '#86efac' }} /> : null}
+          </div>
+          <div style={{ marginLeft: 12, fontSize: 13, color: isActive ? '#ffffff' : '#86efac' }}>{item.label}</div>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', transition: 'transform 0.2s ease' }}>
+            <ChevronDown style={{ width: 16, height: 16, color: isActive ? '#ffffff' : '#86efac', transform: showTransportDropdown ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </div>
+        </div>
+      );
+    }
+
+    if (item.id === 'feedback') {
+      return (
+        <div
+          key={item.id}
+          ref={feedbackRef}
+          className="feedback-trigger flex items-center px-3"
+          onClick={handleFeedbackClick}
+          onMouseEnter={handleNavItemMouseEnter}
+          onMouseLeave={handleNavItemMouseLeave}
+          data-active={isActive ? 'true' : 'false'}
+          style={navItemStyle}
+        >
+          <div style={{ width: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {Icon ? <Icon style={{ width: 18, height: 18, color: isActive ? '#ffffff' : '#86efac' }} /> : null}
+          </div>
+          <div style={{ marginLeft: 12, fontSize: 13, color: isActive ? '#ffffff' : '#86efac' }}>{item.label}</div>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', transition: 'transform 0.2s ease' }}>
+            <ChevronDown style={{ width: 16, height: 16, color: isActive ? '#ffffff' : '#86efac', transform: showFeedbackDropdown ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </div>
+        </div>
+      );
+    }
+
+    if (item.id === 'university-communication') {
+      return (
+        <div
+          key={item.id}
+          ref={universityRef}
+          className="university-communication-trigger flex items-center px-3"
+          onClick={handleUniversityClick}
+          onMouseEnter={handleNavItemMouseEnter}
+          onMouseLeave={handleNavItemMouseLeave}
+          data-active={isActive ? 'true' : 'false'}
+          style={navItemStyle}
+        >
+          <div style={{ width: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {Icon ? <Icon style={{ width: 18, height: 18, color: isActive ? '#ffffff' : '#86efac' }} /> : null}
+          </div>
+          <div style={{ marginLeft: 12, fontSize: 13, color: isActive ? '#ffffff' : '#86efac' }}>{item.label}</div>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', transition: 'transform 0.2s ease' }}>
+            <ChevronDown style={{ width: 16, height: 16, color: isActive ? '#ffffff' : '#86efac', transform: showUniversityDropdown ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </div>
+        </div>
+      );
+    }
+
+    if (item.id === 'lesson') {
+      return (
+        <div
+          key={item.id}
+          ref={lessonRef}
+          className="lesson-trigger flex items-center px-3"
+          onClick={handleLessonClick}
+          onMouseEnter={handleNavItemMouseEnter}
+          onMouseLeave={handleNavItemMouseLeave}
+          data-active={isActive ? 'true' : 'false'}
+          style={navItemStyle}
+        >
+          <div style={{ width: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {Icon ? <Icon style={{ width: 18, height: 18, color: isActive ? '#ffffff' : '#86efac' }} /> : null}
+          </div>
+          <div style={{ marginLeft: 12, fontSize: 13, color: isActive ? '#ffffff' : '#86efac' }}>{item.label}</div>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', transition: 'transform 0.2s ease' }}>
+            <ChevronDown style={{ width: 16, height: 16, color: isActive ? '#ffffff' : '#86efac', transform: showLessonDropdown ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </div>
+        </div>
+      );
+    }
+
     return (
       <Link
         key={item.id}
@@ -677,15 +1298,18 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
           </div>,
           document.body
         )}
-
-        {showAdmissionDropdown && ReactDOM.createPortal(
+        {showLibraryDropdown && ReactDOM.createPortal(
           <div
-            className="admission-dropdown"
+            className="library-dropdown"
             style={{
               position: 'fixed',
               left: 200,
               top: Math.max(dropdownTop, 56) + 'px',
               width: 520,
+              height: 'calc(100vh - 70px)',
+              overflowY: 'auto',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
               zIndex: 200,
               background: 'white',
               borderRadius: '10px',
@@ -695,10 +1319,447 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
               gap: 0,
-              maxHeight: '80vh',
-              overflowY: 'auto',
             }}
           >
+            <style>{`.library-dropdown::-webkit-scrollbar { width: 0; }
+.library-dropdown::-webkit-scrollbar-thumb { background: transparent; }`}</style>
+            <div style={{ borderRight: '1px solid #f1f5f9' }}>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                LIBRARY
+              </div>
+              {LIBRARY_ITEMS.left.library.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowLibraryDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: portalItem.favorite ? '#f59e0b' : '#cbd5e1' }} />
+                </Link>
+              ))}
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                SERIAL MANAGEMENT
+              </div>
+              {LIBRARY_ITEMS.left.serialManagement.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowLibraryDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+            <div style={{ borderLeft: '1px solid #f1f5f9' }}>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                LIBRARY REPORTS
+              </div>
+              {LIBRARY_ITEMS.right.libraryReports.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowLibraryDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                WEBOPAC
+              </div>
+              {LIBRARY_ITEMS.right.webopac.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowLibraryDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+          </div>,
+          document.body
+        )}
+        {showFrontDeskDropdown && ReactDOM.createPortal(
+          <div
+            className="front-desk-dropdown"
+            style={{
+              position: 'fixed',
+              left: 200,
+              top: Math.max(dropdownTop, 56) + 'px',
+              width: 420,
+              height: 'calc(100vh - 70px)',
+              overflowY: 'auto',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              zIndex: 200,
+              background: 'white',
+              borderRadius: '10px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+              border: '1px solid #e2e8f0',
+              padding: 12,
+              display: 'grid',
+              gridTemplateColumns: '1fr',
+              gap: 0,
+            }}
+          >
+            <style>{`.front-desk-dropdown::-webkit-scrollbar { width: 0; }
+.front-desk-dropdown::-webkit-scrollbar-thumb { background: transparent; }`}</style>
+            <div>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                FRONT DESK
+              </div>
+              {FRONT_DESK_ITEMS.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowFrontDeskDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+          </div>,
+          document.body
+        )}
+
+        {showCommunicationDropdown && ReactDOM.createPortal(
+          <div
+            className="communication-dropdown"
+            style={{
+              position: 'fixed',
+              left: 200,
+              top: Math.max(dropdownTop, 56) + 'px',
+              width: 420,
+              height: 'calc(100vh - 70px)',
+              overflowY: 'auto',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              zIndex: 200,
+              background: 'white',
+              borderRadius: '10px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+              border: '1px solid #e2e8f0',
+              padding: 12,
+              display: 'grid',
+              gridTemplateColumns: '1fr',
+              gap: 0,
+            }}
+          >
+            <style>{`.communication-dropdown::-webkit-scrollbar { width: 0; }
+.communication-dropdown::-webkit-scrollbar-thumb { background: transparent; }`}</style>
+            <div>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                COMMUNICATION
+              </div>
+              {COMMUNICATION_ITEMS.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowCommunicationDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+          </div>,
+          document.body
+        )}
+
+        {showHostelDropdown && ReactDOM.createPortal(
+          <div
+            className="hostel-dropdown"
+            style={{
+              position: 'fixed',
+              left: 200,
+              top: Math.max(dropdownTop, 56) + 'px',
+              width: 520,
+              height: 'calc(100vh - 70px)',
+              overflowY: 'auto',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              zIndex: 200,
+              background: 'white',
+              borderRadius: '10px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+              border: '1px solid #e2e8f0',
+              padding: 12,
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: 0,
+            }}
+          >
+            <style>{`.hostel-dropdown::-webkit-scrollbar { width: 0; }
+.hostel-dropdown::-webkit-scrollbar-thumb { background: transparent; }`}</style>
+            <div style={{ borderRight: '1px solid #f1f5f9' }}>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                HOSTEL
+              </div>
+              {HOSTEL_ITEMS.left.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowHostelDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+            <div>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                MESS MANAGEMENT
+              </div>
+              {HOSTEL_ITEMS.right.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowHostelDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+          </div>,
+          document.body
+        )}
+
+        {showTransportDropdown && ReactDOM.createPortal(
+          <div
+            className="transport-dropdown"
+            style={{
+              position: 'fixed',
+              left: 200,
+              top: Math.max(dropdownTop, 56) + 'px',
+              width: 420,
+              height: 'calc(100vh - 70px)',
+              overflowY: 'auto',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              zIndex: 200,
+              background: 'white',
+              borderRadius: '10px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+              border: '1px solid #e2e8f0',
+              padding: 12,
+              display: 'grid',
+              gridTemplateColumns: '1fr',
+              gap: 0,
+            }}
+          >
+            <style>{`.transport-dropdown::-webkit-scrollbar { width: 0; }
+.transport-dropdown::-webkit-scrollbar-thumb { background: transparent; }`}</style>
+            <div>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                TRANSPORT
+              </div>
+              {TRANSPORT_ITEMS.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowTransportDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+          </div>,
+          document.body
+        )}
+
+        {showAdmissionDropdown && ReactDOM.createPortal(
+          <div
+            className="admission-dropdown"
+            style={{
+              position: 'fixed',
+              left: 200,
+              top: Math.max(dropdownTop, 56) + 'px',
+              width: 520,
+              height: 'calc(100vh - 70px)',
+              overflowY: 'auto',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              zIndex: 200,
+              background: 'white',
+              borderRadius: '10px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+              border: '1px solid #e2e8f0',
+              padding: 12,
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: 0,
+            }}
+          >
+            <style>{`.admission-dropdown::-webkit-scrollbar { width: 0; }
+.admission-dropdown::-webkit-scrollbar-thumb { background: transparent; }`}</style>
             <div style={{ borderRight: '1px solid #f1f5f9' }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '6px 12px 8px' }}>
                 STUDENT REGISTRATION
@@ -776,6 +1837,10 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
               left: 200,
               top: Math.max(dropdownTop, 56) + 'px',
               width: 560,
+              height: 'calc(100vh - 70px)',
+              overflowY: 'auto',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
               zIndex: 200,
               background: 'white',
               borderRadius: '10px',
@@ -785,10 +1850,10 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
               gap: 0,
-              maxHeight: '80vh',
-              overflowY: 'auto',
             }}
           >
+            <style>{`.student-dropdown::-webkit-scrollbar { width: 0; }
+.student-dropdown::-webkit-scrollbar-thumb { background: transparent; }`}</style>
             <div style={{ borderRight: '1px solid #f1f5f9' }}>
               <div style={{ marginTop: 12, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '6px 12px 4px' }}>
                 STUDENT
@@ -928,8 +1993,10 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
               left: 200,
               top: Math.max(dropdownTop, 56) + 'px',
               width: 580,
-              maxHeight: 'calc(100vh - 70px)',
+              height: 'calc(100vh - 70px)',
               overflowY: 'auto',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
               zIndex: 200,
               background: 'white',
               borderRadius: '10px',
@@ -941,8 +2008,8 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
               gap: 0,
             }}
           >
-            <style>{`.fee-dropdown::-webkit-scrollbar { width: 4px; }
-.fee-dropdown::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }`}</style>
+            <style>{`.fee-dropdown::-webkit-scrollbar { width: 0; }
+.fee-dropdown::-webkit-scrollbar-thumb { background: transparent; }`}</style>
             <div style={{ borderRight: '1px solid #f1f5f9' }}>
               <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
                 COLLECT FEE
@@ -1175,8 +2242,10 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
               left: 200,
               top: Math.max(dropdownTop, 56) + 'px',
               width: 560,
-              maxHeight: 'calc(100vh - 70px)',
+              height: 'calc(100vh - 70px)',
               overflowY: 'auto',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
               zIndex: 200,
               background: 'white',
               borderRadius: '10px',
@@ -1188,6 +2257,8 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
               gap: 0,
             }}
           >
+            <style>{`.attendance-dropdown::-webkit-scrollbar { width: 0; }
+.attendance-dropdown::-webkit-scrollbar-thumb { background: transparent; }`}</style>
             <div style={{ borderRight: '1px solid #f1f5f9' }}>
               <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
                 MARK ATTENDANCE
@@ -1327,8 +2398,10 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
               left: 200,
               top: Math.max(dropdownTop, 56) + 'px',
               width: 520,
-              maxHeight: 'calc(100vh - 70px)',
+              height: 'calc(100vh - 70px)',
               overflowY: 'auto',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
               zIndex: 200,
               background: 'white',
               borderRadius: '10px',
@@ -1340,6 +2413,8 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
               gap: 0,
             }}
           >
+            <style>{`.examination-dropdown::-webkit-scrollbar { width: 0; }
+.examination-dropdown::-webkit-scrollbar-thumb { background: transparent; }`}</style>
             <div style={{ borderRight: '1px solid #f1f5f9' }}>
               <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
                 MARKS ENTRY
@@ -1417,8 +2492,10 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
               left: 200,
               top: Math.max(dropdownTop, 56) + 'px',
               width: 520,
-              maxHeight: 'calc(100vh - 70px)',
+              height: 'calc(100vh - 70px)',
               overflowY: 'auto',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
               zIndex: 200,
               background: 'white',
               borderRadius: '10px',
@@ -1430,6 +2507,8 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
               gap: 0,
             }}
           >
+            <style>{`.coe-dropdown::-webkit-scrollbar { width: 0; }
+.coe-dropdown::-webkit-scrollbar-thumb { background: transparent; }`}</style>
             <div style={{ borderRight: '1px solid #f1f5f9' }}>
               <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
                 EXAM MASTER
@@ -1565,6 +2644,409 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
                   key={portalItem.id}
                   to={portalItem.to}
                   onClick={() => setShowCOEDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+          </div>,
+          document.body
+        )}
+        {showFeedbackDropdown && ReactDOM.createPortal(
+          <div
+            className="feedback-dropdown"
+            style={{
+              position: 'fixed',
+              left: 200,
+              top: Math.max(dropdownTop, 56) + 'px',
+              width: 520,
+              height: 'calc(100vh - 70px)',
+              overflowY: 'auto',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              zIndex: 200,
+              background: 'white',
+              borderRadius: '10px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+              border: '1px solid #e2e8f0',
+              padding: 12,
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: 0,
+            }}
+          >
+            <style>{`.feedback-dropdown::-webkit-scrollbar { width: 0; }
+.feedback-dropdown::-webkit-scrollbar-thumb { background: transparent; }`}</style>
+            <div style={{ borderRight: '1px solid #f1f5f9' }}>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                FEEDBACK FROM STUDENT
+              </div>
+              {FEEDBACK_ITEMS.left.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowFeedbackDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+            <div>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                FEEDBACK FROM STUDENT REPORTS
+              </div>
+              {FEEDBACK_ITEMS.right.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowFeedbackDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+          </div>,
+          document.body
+        )}
+        {showUniversityDropdown && ReactDOM.createPortal(
+          <div
+            className="university-communication-dropdown"
+            style={{
+              position: 'fixed',
+              left: 200,
+              top: Math.max(dropdownTop, 56) + 'px',
+              width: 420,
+              height: 'calc(100vh - 70px)',
+              overflowY: 'auto',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              zIndex: 200,
+              background: 'white',
+              borderRadius: '10px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+              border: '1px solid #e2e8f0',
+              padding: 12,
+              display: 'grid',
+              gridTemplateColumns: '1fr',
+              gap: 0,
+            }}
+          >
+            <style>{`.university-communication-dropdown::-webkit-scrollbar { width: 0; }
+.university-communication-dropdown::-webkit-scrollbar-thumb { background: transparent; }`}</style>
+            <div>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                UNIVERSITY COMMUNICATION
+              </div>
+              {UNIVERSITY_COMMUNICATION_ITEMS.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowUniversityDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: portalItem.favorite ? '#f59e0b' : '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+          </div>,
+          document.body
+        )}
+        {showLessonDropdown && ReactDOM.createPortal(
+          <div
+            className="lesson-dropdown"
+            style={{
+              position: 'fixed',
+              left: 200,
+              top: Math.max(dropdownTop, 56) + 'px',
+              width: 420,
+              height: 'calc(100vh - 70px)',
+              overflowY: 'auto',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              zIndex: 200,
+              background: 'white',
+              borderRadius: '10px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+              border: '1px solid #e2e8f0',
+              padding: 12,
+              display: 'grid',
+              gridTemplateColumns: '1fr',
+              gap: 0,
+            }}
+          >
+            <style>{`.lesson-dropdown::-webkit-scrollbar { width: 0; }
+.lesson-dropdown::-webkit-scrollbar-thumb { background: transparent; }`}</style>
+            <div>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                LESSON
+              </div>
+              {LESSON_ITEMS.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowLessonDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+          </div>,
+          document.body
+        )}
+        {showHRMDropdown && ReactDOM.createPortal(
+          <div
+            className="hrm-dropdown"
+            style={{
+              position: 'fixed',
+              left: 200,
+              top: Math.max(dropdownTop, 56) + 'px',
+              width: 520,
+              height: 'calc(100vh - 70px)',
+              overflowY: 'auto',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              zIndex: 200,
+              background: 'white',
+              borderRadius: '10px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+              border: '1px solid #e2e8f0',
+              padding: 12,
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: 0,
+            }}
+          >
+            <style>{`.hrm-dropdown::-webkit-scrollbar { width: 0; }
+.hrm-dropdown::-webkit-scrollbar-thumb { background: transparent; }`}</style>
+            <div style={{ borderRight: '1px solid #f1f5f9' }}>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                HRM
+              </div>
+              {HRM_ITEMS.left.hrm.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowHRMDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: portalItem.favorite ? '#f59e0b' : '#cbd5e1' }} />
+                </Link>
+              ))}
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                EMPLOYEE REPORTS
+              </div>
+              {HRM_ITEMS.left.employeeReports.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowHRMDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: portalItem.favorite ? '#f59e0b' : '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+            <div style={{ borderLeft: '1px solid #f1f5f9' }}>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                EMPLOYEE ATTENDANCE
+              </div>
+              {HRM_ITEMS.right.employeeAttendance.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowHRMDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                PROCESS SALARY REPORT
+              </div>
+              {HRM_ITEMS.right.processSalaryReport.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowHRMDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                SALARY REPORTS
+              </div>
+              {HRM_ITEMS.right.salaryReports.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowHRMDropdown(false)}
                   onMouseEnter={handleDropdownItemMouseEnter}
                   onMouseLeave={handleDropdownItemMouseLeave}
                   className="group flex items-center rounded-[8px]"
