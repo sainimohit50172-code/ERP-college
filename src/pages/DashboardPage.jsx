@@ -1,147 +1,216 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
-  DollarSign,
   GraduationCap,
-  Briefcase,
-  Users,
   BookOpen,
-  Gauge,
+  Briefcase,
+  UserPlus,
+  CalendarCheck,
+  Star,
+  FileBarChart,
+  DownloadCloud,
+  // CalendarX, Users, Building2 (kept for future use)
+  IndianRupee,
 } from 'lucide-react';
-import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend, Filler } from 'chart.js';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Area } from 'recharts';
 import { useResourceList } from '../hooks/useResourceHooks';
-import MetricCard from '../components/ui/MetricCard.jsx';
-import PanelCard from '../components/ui/PanelCard.jsx';
-import { buildDashboardSummary } from '../utils/dashboardStats.js';
-
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend, Filler);
 
 export default function DashboardPage() {
-  const { data: studentsData } = useResourceList('students', { page: 1, pageSize: 200 });
-  const students = studentsData?.items || [];
-  const { data: teachersData } = useResourceList('teachers', { page: 1, pageSize: 200 });
-  const teachers = teachersData?.items || [];
-  const { data: employeesData } = useResourceList('employees', { page: 1, pageSize: 200 });
-  const employees = employeesData?.items || [];
-  const { data: leadsData } = useResourceList('leads', { page: 1, pageSize: 200 });
-  const leads = leadsData?.items || [];
-  const { data: paymentsData } = useResourceList('feePayments', { page: 1, pageSize: 200 });
-  const feePayments = paymentsData?.items || [];
-  const { data: attendanceData } = useResourceList('studentAttendance', { page: 1, pageSize: 200 });
-  const studentAttendance = attendanceData?.items || [];
-  const { data: leaveRequestsData } = useResourceList('leaveRequests', { page: 1, pageSize: 200 });
-  const leaveRequests = leaveRequestsData?.items || [];
-  const { data: holidaysData } = useResourceList('holidays', { page: 1, pageSize: 200 });
-  const holidays = holidaysData?.items || [];
-  const { data: payrollRunsData } = useResourceList('payrollRuns', { page: 1, pageSize: 200 });
-  const payrollRuns = payrollRunsData?.items || [];
-  const { data: financeEntriesData } = useResourceList('journalEntries', { page: 1, pageSize: 200 });
-  const financeEntries = financeEntriesData?.items || [];
+  const navigate = useNavigate();
 
-  const summary = useMemo(() => buildDashboardSummary({
-    students,
-    teachers,
-    employees,
-    leads,
-    feePayments,
-    attendance: studentAttendance,
-    leaveRequests,
-    holidays,
-    payrollRuns,
-    financeEntries,
-  }), [students, teachers, employees, leads, feePayments, studentAttendance, leaveRequests, holidays, payrollRuns, financeEntries]);
+  // Live clock
+  const [now, setNow] = useState(new Date());
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
 
-  const kpis = summary.kpis.map((item) => ({ ...item, icon: {
-    Users,
-    BookOpen,
-    Briefcase,
-    GraduationCap,
-    DollarSign,
-    Gauge,
-  }[item.icon] || Users }));
+  // Data hooks
+  const { data: studentsData } = useResourceList('students', { page: 1, pageSize: 1 });
+  const studentsCount = studentsData?.meta?.total || studentsData?.items?.length || 0;
+  const { data: teachersData } = useResourceList('teachers', { page: 1, pageSize: 1 });
+  const teachersCount = teachersData?.meta?.total || teachersData?.items?.length || 0;
+  const { data: employeesData } = useResourceList('employees', { page: 1, pageSize: 1 });
+  const employeesCount = employeesData?.meta?.total || employeesData?.items?.length || 0;
+  const { data: leadsData } = useResourceList('leads', { page: 1, pageSize: 1 });
+  const leadsCount = leadsData?.meta?.total || leadsData?.items?.length || 0;
+  const { data: paymentsData } = useResourceList('feePayments', { page: 1, pageSize: 100 });
+  const payments = paymentsData?.items || [];
+  const feeCollected = useMemo(() => payments.reduce((s, p) => s + (p.amount || 0), 0), [payments]);
+  const { data: attendanceData } = useResourceList('studentAttendance', { page: 1, pageSize: 100 });
+  const attendance = attendanceData?.items || [];
+  const avgAttendance = attendance.length ? `${(attendance.reduce((s, a) => s + (a.percentage || 0), 0) / attendance.length).toFixed(1)}%` : '0.0%';
 
-  const lineData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [
-      {
-        label: 'Enrollment',
-        data: [students.length - 3, students.length - 1, students.length + 2, students.length + 4, students.length + 6, students.length],
-        borderColor: '#16a34a',
-        backgroundColor: 'rgba(16, 163, 74, 0.18)',
-        tension: 0.35,
-        fill: true,
-        pointRadius: 0,
-      },
-    ],
-  };
+  // KPI cards
+  const kpis = [
+    { id: 'k-students', label: 'Total Students', value: studentsCount, icon: GraduationCap, bg: 'linear-gradient(135deg,#1e40af,#3b82f6)' },
+    { id: 'k-teachers', label: 'Total Teachers', value: teachersCount, icon: BookOpen, bg: 'linear-gradient(135deg,#065f46,#10b981)' },
+    { id: 'k-employees', label: 'Total Employees', value: employeesCount, icon: Briefcase, bg: 'linear-gradient(135deg,#7c3aed,#a78bfa)' },
+    { id: 'k-admissions', label: 'Admissions', value: leadsCount, icon: UserPlus, bg: 'linear-gradient(135deg,#b45309,#f59e0b)' },
+    { id: 'k-fee', label: 'Fee Collected', value: `₹${feeCollected.toLocaleString()}`, icon: IndianRupee, bg: 'linear-gradient(135deg,#0e7490,#06b6d4)' },
+    { id: 'k-attendance', label: 'Avg Attendance', value: avgAttendance, icon: CalendarCheck, bg: 'linear-gradient(135deg,#be123c,#f43f5e)' },
+  ];
 
-  const kpiHighlights = summary.kpiHighlights;
-  const leaveSummary = summary.leave;
-  const payrollSummary = summary.payroll;
-  const financeSummary = summary.finance;
+  const monthsData = [
+    { month: 'Jan', value: Math.max(0, studentsCount - 3) },
+    { month: 'Feb', value: Math.max(0, studentsCount - 1) },
+    { month: 'Mar', value: studentsCount + 2 },
+    { month: 'Apr', value: studentsCount + 4 },
+    { month: 'May', value: studentsCount + 6 },
+    { month: 'Jun', value: studentsCount },
+  ];
+
+  const quickActions = [
+    { id: 'qa-students', label: 'Student List', to: '/students', color: '#3b82f6' },
+    { id: 'qa-collect', label: 'Collect Fee', to: '/fees/collection', color: '#10b981' },
+    { id: 'qa-summary', label: 'Fee Summary', to: '/finance', color: '#ec4899' },
+    { id: 'qa-notice', label: 'Notice', to: '/notifications', color: '#f59e0b' },
+    { id: 'qa-attendance', label: 'Student Attendance', to: '/attendance/students', color: '#10b981' },
+    { id: 'qa-college', label: 'College Summary', to: '/reports', color: '#3b82f6' },
+    { id: 'qa-employee', label: 'Employee', to: '/employees', color: '#10b981' },
+    { id: 'qa-books', label: 'Books', to: '/library', color: '#ec4899' },
+  ];
 
   return (
-    <div className="space-y-4">
-      <div className="rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg,#f0fdf4 0%,#f8fafc 40%,#f0f9ff 100%)', padding: 0 }}>
+      <div style={{ padding: '20px 24px', maxWidth: '100%' }}>
+        {/* Top greeting bar */}
+        <div className="flex items-center justify-between rounded bg-white p-4" style={{ borderBottom: '1px solid #e2e8f0' }}>
           <div>
-            <p className="text-xs uppercase tracking-[0.24em] text-emerald-600">Super Admin Dashboard</p>
-            <h1 className="mt-2 text-2xl font-semibold text-slate-950">Executive overview</h1>
-            <p className="max-w-2xl text-sm text-slate-500">Monitor admissions, operations, finance, attendance, and student success from one premium experience.</p>
+            <div style={{ fontSize: 22, fontWeight: 700, color: '#0f172a' }}>Hello, Admin 👋</div>
+            <div style={{ fontSize: 13, color: '#64748b' }}>Nice to have you back, what an exciting day!</div>
           </div>
-          <div className="grid gap-2 sm:grid-cols-3">
-            {kpiHighlights.map((item) => (
-              <div key={item.title} className={`rounded-2xl px-3 py-3 shadow-sm ${item.accent}`}>
-                <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">{item.title}</p>
-                <p className="mt-1 text-lg font-semibold">{item.value}</p>
-              </div>
+          <div style={{ fontSize: 13, color: '#475569' }}>{now.toLocaleString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} | {now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}</div>
+        </div>
+
+        {/* Tabs */}
+        <div className="sticky top-[64px] z-20 mt-3 bg-white" style={{ borderBottom: '1px solid #e2e8f0' }}>
+          <div className="flex overflow-x-auto no-scrollbar" style={{ gap: 8 }}>
+            {['Quick Links','Student Overview','Fee','Admission','Attendance','Examination','Human Resource','Library','My Profile'].map((t, i) => (
+              <button key={t} className={`whitespace-nowrap px-4 py-3 text-[13px] font-medium ${i===0? 'text-[#059669] border-b-2 border-[#059669] font-semibold':'text-[#64748b]'} hover:text-[#0f172a]`}>
+                  {t.replace("'", "\u2019")}
+                </button>
             ))}
           </div>
         </div>
-      </div>
 
-      <div className="grid gap-4 xl:grid-cols-[1.45fr_0.95fr]">
-        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          {kpis.map((item) => (
-            <MetricCard key={item.label} {...item} />
+        {/* KPI cards */}
+        <div className="mt-4 grid gap-3" style={{ gridTemplateColumns: 'repeat(6,1fr)', gap: 14 }}>
+          {kpis.map((k) => (
+            <div key={k.id} style={{ background: k.bg, borderRadius: 14, padding: '18px 20px', boxShadow: '0 4px 20px rgba(0,0,0,0.12)', display: 'flex', alignItems: 'center', gap: 14, transition: 'all 0.2s ease', cursor: 'default' }} className="hover:translate-y-[-3px]">
+              <div style={{ width: 48, height: 48, borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.18)' }}>
+                <k.icon style={{ width: 24, height: 24, color: '#fff' }} />
+              </div>
+              <div>
+                <div style={{ fontSize: 28, fontWeight: 700, color: '#fff' }}>{k.value}</div>
+                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.9)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{k.label}</div>
+              </div>
+            </div>
           ))}
         </div>
 
-        <section className="rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <h2 className="text-lg font-semibold text-slate-950">Admissions performance</h2>
-              <p className="text-sm text-slate-500">Weekly funnel metrics and campaign performance.</p>
-            </div>
-            <button className="rounded-2xl bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100">Export</button>
-          </div>
-          <div className="mt-4 h-[220px]">
-            <Line
-              data={lineData}
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                  x: { grid: { display: false }, ticks: { color: '#64748b', maxRotation: 0 } },
-                  y: { grid: { color: 'rgba(148, 163, 184, 0.16)' }, ticks: { color: '#64748b' } },
-                },
-              }}
-            />
-          </div>
-        </section>
-      </div>
+        {/* Main 2-column layout */}
+        <div className="mt-6 grid" style={{ gridTemplateColumns: '1fr 380px', gap: 20 }}>
+          <div>
+            {/* Favorites */}
+            <div className="rounded p-5" style={{ background: '#fff', borderRadius: 14, border: '1px solid #d1fae5', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+              <div className="flex items-center justify-between">
+                <div>
+                  <div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Favorites</div>
+                  <div style={{ fontSize: 12, color: '#94a3b8' }}>Quick access to common tasks</div>
+                </div>
+              </div>
 
-      <div className="grid gap-4 xl:grid-cols-[1.4fr_0.95fr]">
-        <PanelCard title="Today's classes" items={['Advanced Data Structures', 'English Communication', 'Digital Marketing Lab', 'Financial Accounting']} />
-        <div className="rounded-[18px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-950">HR operations</h2>
-          <div className="mt-4 space-y-3 text-sm text-slate-600">
-            <div className="rounded-2xl bg-slate-50 p-3">Leave pending approvals: {leaveSummary.pendingApprovals}</div>
-            <div className="rounded-2xl bg-slate-50 p-3">Payroll due: {payrollSummary.due}</div>
-            <div className="rounded-2xl bg-slate-50 p-3">Payroll pending approvals: {payrollSummary.pendingApprovals}</div>
-            <div className="rounded-2xl bg-slate-50 p-3">Finance pending entries: {financeSummary.pendingEntries}</div>
-            <div className="rounded-2xl bg-slate-50 p-3">Finance debit/credit: ₹{financeSummary.totalDebit.toLocaleString()} / ₹{financeSummary.totalCredit.toLocaleString()}</div>
+              <div className="mt-4">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-[#64748b]">Actions</div>
+                <div className="mt-3 grid gap-3" style={{ gridTemplateColumns: 'repeat(4,1fr)' }}>
+                  {quickActions.map((a) => (
+                    <div key={a.id} onClick={() => navigate(a.to)} className="rounded p-4 text-center" style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 10, cursor: 'pointer', transition: 'all 0.2s ease' }}>
+                      <Star style={{ width: 28, height: 28, color: a.color }} />
+                      <div style={{ marginTop: 8, fontSize: 12, fontWeight: 600, color: a.color }}>{a.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* HR Operations */}
+            <div className="mt-4 rounded p-5" style={{ background: '#fff', borderRadius: 14, border: '1px solid #e0e7ff' }}>
+              <div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>HR Operations</div>
+              <div className="mt-3">
+                <div style={{ padding: '12px 0', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between' }}>
+                  <div style={{ color: '#334155' }}>Leave pending approvals</div>
+                  <div style={{ fontWeight: 700, color: '#0f172a' }}>0</div>
+                </div>
+                <div style={{ padding: '12px 0', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between' }}>
+                  <div style={{ color: '#334155' }}>Payroll due</div>
+                  <div style={{ fontWeight: 700, color: '#0f172a' }}>0</div>
+                </div>
+                <div style={{ padding: '12px 0', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between' }}>
+                  <div style={{ color: '#334155' }}>Payroll pending approvals</div>
+                  <div style={{ fontWeight: 700, color: '#0f172a' }}>0</div>
+                </div>
+                <div style={{ padding: '12px 0', display: 'flex', justifyContent: 'space-between' }}>
+                  <div style={{ color: '#334155' }}>Finance pending entries</div>
+                  <div style={{ fontWeight: 700, color: '#0f172a' }}>0</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            {/* Reports */}
+            <div style={{ background: '#fff', borderRadius: 14, padding: 20, border: '1px solid #fde68a', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Reports</div>
+                <button onClick={() => {}} style={{ border: '1px solid #fde68a', padding: '6px 10px', borderRadius: 8 }}><DownloadCloud style={{ width: 16, height: 16 }} /></button>
+              </div>
+
+              <div className="mt-4 grid" style={{ gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                {Array.from({ length: 6 }).map((_, idx) => (
+                  <div key={idx} style={{ borderRadius: 10, padding: 16, minHeight: 100, background: 'linear-gradient(135deg,#1e3a5f,#2d5a8e)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: 'pointer', transition: 'all 0.2s ease' }} onClick={() => navigate('/reports')}>
+                    <FileBarChart style={{ width: 36, height: 36 }} />
+                    <div style={{ marginTop: 8, fontSize: 12, fontWeight: 700, textAlign: 'center' }}>Report</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom row */}
+        <div className="mt-6 grid" style={{ gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+          <div style={{ background: '#fff', borderRadius: 14, padding: 20, border: '1px solid #d1fae5' }}>
+            <div className="flex items-center justify-between">
+              <div style={{ fontSize: 16, fontWeight: 700 }}>{"Today\u2019s Classes"}</div>
+              <button style={{ background: '#10b981', color: '#fff', padding: '6px 10px', borderRadius: 8 }}>View</button>
+            </div>
+            <div style={{ marginTop: 8, fontSize: 12, color: '#94a3b8' }}>Live overview and recent updates</div>
+            <div className="mt-4">
+              <div style={{ borderLeft: '3px solid #10b981', padding: '12px 16px', borderRadius: 8, marginBottom: 8 }}>Advanced Data Structures</div>
+              <div style={{ borderLeft: '3px solid #10b981', padding: '12px 16px', borderRadius: 8, marginBottom: 8 }}>English Communication</div>
+            </div>
+          </div>
+
+          <div style={{ background: '#fff', borderRadius: 14, padding: 20, border: '1px solid #fce7f3' }}>
+            <div className="flex items-center justify-between">
+              <div>
+                <div style={{ fontSize: 16, fontWeight: 700 }}>Admissions Performance</div>
+                <div style={{ fontSize: 12, color: '#94a3b8' }}>Weekly funnel metrics</div>
+              </div>
+              <button style={{ border: '1px solid #eee', padding: '6px 8px', borderRadius: 8 }}><DownloadCloud style={{ width: 16, height: 16 }} /></button>
+            </div>
+            <div className="mt-4" style={{ height: 200 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={monthsData}>
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Tooltip />
+                  <Area type="monotone" dataKey="value" stroke="#10b981" fill="rgba(16,185,129,0.1)" />
+                  <Line type="monotone" dataKey="value" stroke="#10b981" strokeWidth={2} dot={false} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </div>
       </div>

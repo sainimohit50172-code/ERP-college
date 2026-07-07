@@ -43,7 +43,10 @@ export default function LoginPage() {
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-b from-slate-900 to-slate-800 px-4 py-10">
       <div className="mx-auto flex max-w-6xl flex-col-reverse gap-6 rounded-[32px] border border-slate-800/80 bg-transparent p-1 shadow-2xl lg:flex-row">
-        <div className="hidden lg:block w-3/5 rounded-[32px] bg-[url('/images/campus-bg.jpg')] bg-cover bg-center p-10 lg:rounded-r-none lg:border-r lg:border-slate-800">
+        <div
+          className="hidden lg:block w-3/5 rounded-[32px] bg-cover bg-center p-10 lg:rounded-r-none lg:border-r lg:border-slate-800"
+          style={{ background: 'linear-gradient(135deg, #0a2540 0%, #1a4a2e 50%, #0d3b1e 100%)' }}
+        >
           <div className="space-y-6 text-slate-100">
             <div className="inline-flex items-center gap-3 rounded-full bg-sky-900/40 px-4 py-2 text-sm text-sky-200 ring-1 ring-white/10">
               <FaUniversity /> University ERP & Campus Operations

@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Menu, Search, Download, Settings2, Bell, UserCircle2, X } from 'lucide-react';
 import NotificationDropdown from './NotificationDropdown.jsx';
-import { useERP } from '../../services/ERPContext.jsx';
 import { useAuth } from '../../services/AuthContext.jsx';
+import { useERP } from '../../services/ERPContext.jsx';
 
 const navLinks = [
   { label: 'Fee', to: '/fees' },
@@ -37,7 +37,7 @@ const isActiveLink = (pathname, to) => pathname === to || pathname.startsWith(`$
 export default function Topbar({ onToggleSidebar }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { notifications, setSidebarCollapsed } = useERP();
+  const { notifications } = useERP();
   const { auth, logout } = useAuth();
   const [isNotificationsOpen, setNotificationsOpen] = useState(false);
   const [isSearchOpen, setSearchOpen] = useState(false);
@@ -76,14 +76,7 @@ export default function Topbar({ onToggleSidebar }) {
     <header className="sticky top-0 z-30 h-[52px] border-b border-slate-200 bg-white px-3">
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-2 whitespace-nowrap">
         <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => setSidebarCollapsed((c) => !c)}
-            className="hidden h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 md:inline-flex"
-            aria-label="Toggle sidebar collapse"
-          >
-            <Menu className="h-5 w-5" />
-          </button>
+          {/* desktop sidebar collapse control removed (sidebar is fixed) */}
           <button
             type="button"
             onClick={onToggleSidebar}
