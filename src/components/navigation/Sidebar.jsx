@@ -63,12 +63,14 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
   const [showFeeDropdown, setShowFeeDropdown] = useState(false);
   const [showAttendanceDropdown, setShowAttendanceDropdown] = useState(false);
   const [showExaminationDropdown, setShowExaminationDropdown] = useState(false);
+  const [showCOEDropdown, setShowCOEDropdown] = useState(false);
   const employeePortalRef = useRef(null);
   const admissionRef = useRef(null);
   const studentRef = useRef(null);
   const feeRef = useRef(null);
   const attendanceRef = useRef(null);
   const examinationRef = useRef(null);
+  const coeRef = useRef(null);
   const [dropdownTop, setDropdownTop] = useState(0);
 
   const EMPLOYEE_PORTAL_ITEMS = [
@@ -207,6 +209,48 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
     },
   };
 
+  const COE_ITEMS = {
+    left: {
+      examMaster: [
+        { id: 'exam-master', label: 'Exam Master', to: '/coe/exam-master' },
+        { id: 'datesheet', label: 'Datesheet', to: '/coe/datesheet' },
+        { id: 'exam-configuration', label: 'Exam Configuration', to: '/coe/configuration' },
+      ],
+      examRegistration: [
+        { id: 'exam-registration', label: 'Exam Registration', to: '/coe/registration' },
+        { id: 'approve-exam-registration', label: 'Approve Exam Registration', to: '/coe/approve-registration' },
+        { id: 'pending-registration-report', label: 'Pending Registration Report', to: '/coe/pending-registration' },
+        { id: 'transactions-list', label: 'Transactions List', to: '/coe/transactions' },
+        { id: 'issue-admit-card', label: 'Issue Admit Card', to: '/coe/admit-card' },
+      ],
+      examDayOperation: [
+        { id: 'daily-exam-dashboard', label: 'Daily Exam Dashboard', to: '/coe/daily-dashboard' },
+        { id: 'exam-attendance', label: 'Exam Attendance', to: '/coe/exam-attendance' },
+        { id: 'exam-attendance-report', label: 'Exam Attendance Report', to: '/coe/attendance-report' },
+        { id: 'attendance-sheet', label: 'Attendance Sheet', to: '/coe/attendance-sheet' },
+        { id: 'question-co-mapping', label: 'Question CO Mapping', to: '/coe/question-mapping' },
+      ],
+    },
+    right: {
+      marksEntry: [
+        { id: 'admin-marks-entry', label: 'Admin Marks Entry', to: '/coe/admin-marks' },
+        { id: 'theory-marks-entry', label: 'Theory Marks Entry', to: '/coe/theory-marks' },
+        { id: 'practical-marks-entry', label: 'Practical Marks Entry', to: '/coe/practical-marks' },
+        { id: 'internal-marks-entry', label: 'Internal Marks Entry', to: '/coe/internal-marks' },
+        { id: 'pending-marks-entry-report', label: 'Pending Marks Entry Report', to: '/coe/pending-marks' },
+      ],
+      result: [
+        { id: 'subject-wise-marks-report', label: 'Subject Wise Marks Report', to: '/coe/reports/subject-wise' },
+        { id: 'type-wise-marks-report', label: 'Type Wise Marks Report', to: '/coe/reports/type-wise' },
+        { id: 'result-analysis-report', label: 'Result Analysis Report', to: '/coe/reports/analysis' },
+        { id: 'result-declare', label: 'Result Declare', to: '/coe/result-declare' },
+        { id: 'result-sheet', label: 'Result Sheet', to: '/coe/result-sheet' },
+        { id: 'digi-locker-report', label: 'Digi Locker Report', to: '/coe/digi-locker' },
+        { id: 'student-dmc', label: 'Student DMC', to: '/coe/student-dmc' },
+      ],
+    },
+  };
+
   const STUDENT_ITEMS = {
     left: [
       { id: 'student-list', label: 'Student List', to: '/students' },
@@ -296,7 +340,23 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
     setShowStudentDropdown(false);
     setShowFeeDropdown(false);
     setShowAttendanceDropdown(false);
+    setShowCOEDropdown(false);
     setShowExaminationDropdown((prev) => !prev);
+  };
+
+  const handleCOEClick = () => {
+    if (coeRef.current) {
+      const rect = coeRef.current.getBoundingClientRect();
+      const topPosition = Math.max(rect.top, 56);
+      setDropdownTop(topPosition);
+    }
+    setShowEmployeePortal(false);
+    setShowAdmissionDropdown(false);
+    setShowStudentDropdown(false);
+    setShowFeeDropdown(false);
+    setShowAttendanceDropdown(false);
+    setShowExaminationDropdown(false);
+    setShowCOEDropdown((prev) => !prev);
   };
 
   useEffect(() => {
@@ -313,7 +373,9 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
         !e.target.closest('.attendance-dropdown') &&
         !e.target.closest('.attendance-trigger') &&
         !e.target.closest('.examination-dropdown') &&
-        !e.target.closest('.examination-trigger')
+        !e.target.closest('.examination-trigger') &&
+        !e.target.closest('.coe-dropdown') &&
+        !e.target.closest('.coe-trigger')
       ) {
         setShowEmployeePortal(false);
         setShowAdmissionDropdown(false);
@@ -321,6 +383,7 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
         setShowFeeDropdown(false);
         setShowAttendanceDropdown(false);
         setShowExaminationDropdown(false);
+        setShowCOEDropdown(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -1319,6 +1382,189 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
                   key={portalItem.id}
                   to={portalItem.to}
                   onClick={() => setShowExaminationDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+          </div>,
+          document.body
+        )}
+        {showCOEDropdown && ReactDOM.createPortal(
+          <div
+            className="coe-dropdown"
+            style={{
+              position: 'fixed',
+              left: 200,
+              top: Math.max(dropdownTop, 56) + 'px',
+              width: 520,
+              maxHeight: 'calc(100vh - 70px)',
+              overflowY: 'auto',
+              zIndex: 200,
+              background: 'white',
+              borderRadius: '10px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+              border: '1px solid #e2e8f0',
+              padding: 12,
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: 0,
+            }}
+          >
+            <div style={{ borderRight: '1px solid #f1f5f9' }}>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                EXAM MASTER
+              </div>
+              {COE_ITEMS.left.examMaster.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowCOEDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                EXAM REGISTRATION
+              </div>
+              {COE_ITEMS.left.examRegistration.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowCOEDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                EXAM DAY OPERATION
+              </div>
+              {COE_ITEMS.left.examDayOperation.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowCOEDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+            <div>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                MARKS ENTRY
+              </div>
+              {COE_ITEMS.right.marksEntry.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowCOEDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                RESULT
+              </div>
+              {COE_ITEMS.right.result.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowCOEDropdown(false)}
                   onMouseEnter={handleDropdownItemMouseEnter}
                   onMouseLeave={handleDropdownItemMouseLeave}
                   className="group flex items-center rounded-[8px]"
