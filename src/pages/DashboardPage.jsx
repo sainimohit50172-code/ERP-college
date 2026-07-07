@@ -7,7 +7,6 @@ import {
   UserPlus,
   CalendarCheck,
   Star,
-  FileBarChart,
   DownloadCloud,
   IndianRupee,
 } from 'lucide-react';
@@ -62,73 +61,70 @@ export default function DashboardPage() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg,#f0fdf4 0%,#f8fafc 40%,#f0f9ff 100%)', padding: 0, overflow: 'hidden' }}>
-      <div style={{ padding: '16px 20px', maxWidth: '100%' }}>
+      <div style={{ padding: '20px 24px', maxWidth: '100%' }}>
         {/* Top greeting bar */}
         <div className="flex items-center justify-between rounded bg-white p-4" style={{ borderBottom: '1px solid #e2e8f0' }}>
           <div>
-            <div style={{ fontSize: 20, fontWeight: 700, color: '#0f172a' }}>Hello, Admin 👋</div>
-            <div style={{ fontSize: 12, color: '#64748b' }}>Nice to have you back, what an exciting day!</div>
+            <div style={{ fontSize: 22, fontWeight: 700, color: '#0f172a' }}>Hello, Admin 👋</div>
+            <div style={{ fontSize: 13, color: '#64748b' }}>Nice to have you back, what an exciting day!</div>
           </div>
-          <div style={{ fontSize: 12, color: '#475569' }}>{now.toLocaleString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} | {now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}</div>
+          <div style={{ fontSize: 13, color: '#475569' }}>{now.toLocaleString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} | {now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}</div>
         </div>
 
         {/* Tabs */}
         <div className="sticky top-[64px] z-20 mt-3 bg-white" style={{ borderBottom: '1px solid #e2e8f0' }}>
           <div className="flex overflow-x-auto no-scrollbar" style={{ gap: 8 }}>
             {['Quick Links','Student Overview','Fee','Admission','Attendance','Examination','Human Resource','Library','My Profile'].map((t, i) => (
-              <button key={t} className={`whitespace-nowrap px-4 py-3 text-[12px] font-medium ${i===0? 'text-[#059669] border-b-2 border-[#059669] font-semibold':'text-[#64748b]'} hover:text-[#0f172a]`}>
-                {t.replace("'", "\u2019")}
-              </button>
+              <button key={t} className={`whitespace-nowrap px-4 py-3 text-[13px] font-medium ${i===0? 'text-[#059669] border-b-2 border-[#059669] font-semibold':'text-[#64748b]'} hover:text-[#0f172a]`}>
+                  {t.replace("'", "\u2019")}
+                </button>
             ))}
           </div>
         </div>
 
         {/* KPI cards */}
-        <div className="mt-3 grid" style={{ gridTemplateColumns: 'repeat(6, minmax(0, 1fr))', gap: 12 }}>
+        <div className="mt-4 grid gap-3" style={{ gridTemplateColumns: 'repeat(6,1fr)', gap: 14 }}>
           {kpis.map((k) => (
-            <div key={k.id} style={{ background: k.bg, borderRadius: 14, padding: '14px 16px', boxShadow: '0 4px 18px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', gap: 12, transition: 'all 0.2s ease', cursor: 'default' }} className="hover:translate-y-[-2px]">
-              <div style={{ width: 44, height: 44, borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.18)' }}>
-                <k.icon style={{ width: 22, height: 22, color: '#fff' }} />
+            <div key={k.id} style={{ background: k.bg, borderRadius: 14, padding: '18px 20px', boxShadow: '0 4px 20px rgba(0,0,0,0.12)', display: 'flex', alignItems: 'center', gap: 14, transition: 'all 0.2s ease', cursor: 'default' }} className="hover:translate-y-[-3px]">
+              <div style={{ width: 48, height: 48, borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.18)' }}>
+                <k.icon style={{ width: 24, height: 24, color: '#fff' }} />
               </div>
               <div>
-                <div style={{ fontSize: 22, fontWeight: 700, color: '#fff' }}>{k.value}</div>
-                <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.9)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{k.label}</div>
+                <div style={{ fontSize: 28, fontWeight: 700, color: '#fff' }}>{k.value}</div>
+                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.9)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{k.label}</div>
               </div>
             </div>
           ))}
         </div>
 
         {/* Favorites + Reports */}
-        <div className="mt-3 grid" style={{ gridTemplateColumns: '1fr 1fr', gap: 16, alignItems: 'stretch' }}>
-          <div style={{ background: '#fff', borderRadius: 14, padding: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', minHeight: 320 }}>
-            <div style={{ marginBottom: 12 }}>
+        <div className="mt-3 grid" style={{ gridTemplateColumns: '1fr 1fr', gap: 12, alignItems: 'stretch' }}>
+          <div style={{ background: '#fff', borderRadius: 14, padding: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+            <div>
               <div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Favorites</div>
-              <div style={{ fontSize: 12, color: '#94a3b8' }}>Quick access to common tasks</div>
+              <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 4 }}>Quick access to common tasks</div>
             </div>
-            <div className="grid" style={{ gridTemplateColumns: 'repeat(4,1fr)', gap: 10 }}>
+            <div className="mt-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 10 }}>
               {quickActions.map((a) => (
-                <button key={a.id} onClick={() => navigate(a.to)} className="rounded" style={{ background: '#fff', border: '1px solid #e2e8f0', padding: '14px 8px', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8, minHeight: 84, transition: 'all 0.2s ease' }}>
+                <div key={a.id} onClick={() => navigate(a.to)} style={{ padding: '14px 8px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 10, cursor: 'pointer', transition: 'all 0.2s ease', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                   <Star style={{ width: 22, height: 22, color: a.color }} />
-                  <span style={{ fontSize: 11, fontWeight: 600, color: a.color }}>{a.label}</span>
-                </button>
+                  <div style={{ marginTop: 8, fontSize: 11, fontWeight: 600, color: a.color }}>{a.label}</div>
+                </div>
               ))}
             </div>
           </div>
 
-          <div style={{ background: '#fff', borderRadius: 14, padding: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', minHeight: 320 }}>
-            <div style={{ marginBottom: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
-                <div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Reports</div>
-                <div style={{ fontSize: 12, color: '#94a3b8' }}>Run commonly used reports</div>
-              </div>
-              <button style={{ border: '1px solid #e2e8f0', padding: '8px 10px', borderRadius: 10 }}><DownloadCloud style={{ width: 16, height: 16 }} /></button>
+          <div style={{ background: '#fff', borderRadius: 14, padding: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+            <div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Reports</div>
+              <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 4 }}>Team and finance dashboards</div>
             </div>
-            <div className="grid" style={{ gridTemplateColumns: 'repeat(3,1fr)', gap: 10 }}>
+            <div className="mt-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10 }}>
               {Array.from({ length: 6 }).map((_, idx) => (
-                <button key={idx} onClick={() => navigate('/reports')} className="rounded" style={{ background: 'linear-gradient(135deg,#1e3a5f,#2d5a8e)', border: 'none', color: '#fff', padding: 14, minHeight: 84, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8, cursor: 'pointer', transition: 'all 0.2s ease' }}>
-                  <FileBarChart style={{ width: 22, height: 22 }} />
-                  <span style={{ fontSize: 11, fontWeight: 600 }}>Report</span>
-                </button>
+                <div key={idx} onClick={() => navigate('/reports')} style={{ padding: '14px 8px', background: '#0f172a', borderRadius: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 86, color: '#fff', cursor: 'pointer', transition: 'all 0.2s ease' }}>
+                  <DownloadCloud style={{ width: 22, height: 22 }} />
+                  <div style={{ marginTop: 8, fontSize: 11, fontWeight: 700, textAlign: 'center' }}>Report</div>
+                </div>
               ))}
             </div>
           </div>
