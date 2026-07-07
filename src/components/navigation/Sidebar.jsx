@@ -62,11 +62,13 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
   const [showStudentDropdown, setShowStudentDropdown] = useState(false);
   const [showFeeDropdown, setShowFeeDropdown] = useState(false);
   const [showAttendanceDropdown, setShowAttendanceDropdown] = useState(false);
+  const [showExaminationDropdown, setShowExaminationDropdown] = useState(false);
   const employeePortalRef = useRef(null);
   const admissionRef = useRef(null);
   const studentRef = useRef(null);
   const feeRef = useRef(null);
   const attendanceRef = useRef(null);
+  const examinationRef = useRef(null);
   const [dropdownTop, setDropdownTop] = useState(0);
 
   const EMPLOYEE_PORTAL_ITEMS = [
@@ -185,6 +187,26 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
     },
   };
 
+  const EXAMINATION_ITEMS = {
+    left: {
+      marksEntry: [
+        { id: 'assessment-wise-marks-entry', label: 'Assessment Wise Marks Entry', to: '/examination/assessment-marks' },
+        { id: 'subject-wise-marks-entry', label: 'Subject Wise Marks Entry', to: '/examination/subject-marks' },
+      ],
+    },
+    right: {
+      report: [
+        { id: 'assessment-wise-report', label: 'Assessment Wise Report', to: '/examination/reports/assessment' },
+        { id: 'green-sheet', label: 'Green Sheet', to: '/examination/reports/green-sheet' },
+        { id: 'university-green-sheet', label: 'University Green Sheet', to: '/examination/reports/university-green' },
+        { id: 'report-card', label: 'Report Card', to: '/examination/reports/report-card' },
+        { id: 'pending-assessment-marks', label: 'Pending Assessment Marks', to: '/examination/reports/pending-marks' },
+        { id: 'exam-analysis-report', label: 'Exam Analysis Report', to: '/examination/reports/analysis' },
+        { id: 'detailed-marks-certificate-report', label: 'Detailed Marks Certificate Report', to: '/examination/reports/certificate' },
+      ],
+    },
+  };
+
   const STUDENT_ITEMS = {
     left: [
       { id: 'student-list', label: 'Student List', to: '/students' },
@@ -259,7 +281,22 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
     setShowAdmissionDropdown(false);
     setShowStudentDropdown(false);
     setShowFeeDropdown(false);
+    setShowExaminationDropdown(false);
     setShowAttendanceDropdown((prev) => !prev);
+  };
+
+  const handleExaminationClick = () => {
+    if (examinationRef.current) {
+      const rect = examinationRef.current.getBoundingClientRect();
+      const topPosition = Math.max(rect.top, 56);
+      setDropdownTop(topPosition);
+    }
+    setShowEmployeePortal(false);
+    setShowAdmissionDropdown(false);
+    setShowStudentDropdown(false);
+    setShowFeeDropdown(false);
+    setShowAttendanceDropdown(false);
+    setShowExaminationDropdown((prev) => !prev);
   };
 
   useEffect(() => {
@@ -274,13 +311,16 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
         !e.target.closest('.fee-dropdown') &&
         !e.target.closest('.fee-trigger') &&
         !e.target.closest('.attendance-dropdown') &&
-        !e.target.closest('.attendance-trigger')
+        !e.target.closest('.attendance-trigger') &&
+        !e.target.closest('.examination-dropdown') &&
+        !e.target.closest('.examination-trigger')
       ) {
         setShowEmployeePortal(false);
         setShowAdmissionDropdown(false);
         setShowStudentDropdown(false);
         setShowFeeDropdown(false);
         setShowAttendanceDropdown(false);
+        setShowExaminationDropdown(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -454,6 +494,28 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
           <div style={{ marginLeft: 12, fontSize: 13, color: isActive ? '#ffffff' : '#86efac' }}>{item.label}</div>
           <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', transition: 'transform 0.2s ease' }}>
             <ChevronDown style={{ width: 16, height: 16, color: isActive ? '#ffffff' : '#86efac', transform: showAttendanceDropdown ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </div>
+        </div>
+      );
+    }
+    if (item.id === 'examination') {
+      return (
+        <div
+          key={item.id}
+          ref={examinationRef}
+          className="examination-trigger flex items-center px-3"
+          onClick={handleExaminationClick}
+          onMouseEnter={handleNavItemMouseEnter}
+          onMouseLeave={handleNavItemMouseLeave}
+          data-active={isActive ? 'true' : 'false'}
+          style={navItemStyle}
+        >
+          <div style={{ width: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {Icon ? <Icon style={{ width: 18, height: 18, color: isActive ? '#ffffff' : '#86efac' }} /> : null}
+          </div>
+          <div style={{ marginLeft: 12, fontSize: 13, color: isActive ? '#ffffff' : '#86efac' }}>{item.label}</div>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', transition: 'transform 0.2s ease' }}>
+            <ChevronDown style={{ width: 16, height: 16, color: isActive ? '#ffffff' : '#86efac', transform: showExaminationDropdown ? 'rotate(180deg)' : 'rotate(0deg)' }} />
           </div>
         </div>
       );
@@ -1167,6 +1229,96 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
                   key={portalItem.id}
                   to={portalItem.to}
                   onClick={() => setShowAttendanceDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+          </div>,
+          document.body
+        )}
+        {showExaminationDropdown && ReactDOM.createPortal(
+          <div
+            className="examination-dropdown"
+            style={{
+              position: 'fixed',
+              left: 200,
+              top: Math.max(dropdownTop, 56) + 'px',
+              width: 520,
+              maxHeight: 'calc(100vh - 70px)',
+              overflowY: 'auto',
+              zIndex: 200,
+              background: 'white',
+              borderRadius: '10px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+              border: '1px solid #e2e8f0',
+              padding: 12,
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: 0,
+            }}
+          >
+            <div style={{ borderRight: '1px solid #f1f5f9' }}>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                MARKS ENTRY
+              </div>
+              {EXAMINATION_ITEMS.left.marksEntry.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowExaminationDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+            <div>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                REPORT
+              </div>
+              {EXAMINATION_ITEMS.right.report.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowExaminationDropdown(false)}
                   onMouseEnter={handleDropdownItemMouseEnter}
                   onMouseLeave={handleDropdownItemMouseLeave}
                   className="group flex items-center rounded-[8px]"
