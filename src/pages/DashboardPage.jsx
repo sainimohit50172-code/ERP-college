@@ -95,47 +95,47 @@ export default function DashboardPage() {
         </div>
 
         {/* KPI cards */}
-        <div className="grid" style={{ gridTemplateColumns: 'repeat(6,1fr)', gap: 14, marginTop: 16 }}>
+        <div className="grid" style={{ gridTemplateColumns: 'repeat(6,1fr)', gap: 14, marginTop: 16, height: 90 }}>
           {kpis.map((k) => (
-            <div key={k.id} style={{ background: k.bg, borderRadius: 14, padding: '18px 20px', boxShadow: '0 4px 20px rgba(0,0,0,0.12)', display: 'flex', alignItems: 'center', gap: 14, transition: 'all 0.2s ease', cursor: 'default' }} className="hover:translate-y-[-3px]">
+            <div key={k.id} style={{ background: k.bg, borderRadius: 14, padding: '12px 16px', boxShadow: '0 4px 20px rgba(0,0,0,0.12)', display: 'flex', alignItems: 'center', gap: 14, transition: 'all 0.2s ease', cursor: 'default' }} className="hover:translate-y-[-3px]">
               <div style={{ width: 48, height: 48, borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.18)' }}>
                 <k.icon style={{ width: 24, height: 24, color: '#fff' }} />
               </div>
               <div>
-                <div style={{ fontSize: 28, fontWeight: 700, color: '#fff' }}>{k.value}</div>
-                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.9)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{k.label}</div>
+                <div style={{ fontSize: 24, fontWeight: 700, color: '#fff' }}>{k.value}</div>
+                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.9)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{k.label}</div>
               </div>
             </div>
           ))}
         </div>
 
         {/* Favorites + Reports */}
-        <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: 12, alignItems: 'stretch', height: 'calc(100vh - 280px)', marginTop: 16 }}>
-          <div style={{ background: '#fff', borderRadius: 14, padding: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: 12, alignItems: 'stretch', height: 'calc(100vh - 340px)', marginTop: 16 }}>
+          <div style={{ background: '#fff', borderRadius: 14, padding: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 340px)', boxSizing: 'border-box' }}>
             <div>
               <div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Favorites</div>
               <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 4 }}>Quick access to common tasks</div>
             </div>
             <div className="mt-3" style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gridTemplateRows: 'repeat(2,1fr)', gap: 10, alignContent: 'stretch' }}>
               {quickActions.map((a) => (
-                <div key={a.id} onClick={() => navigate(a.to)} style={{ padding: '14px 8px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 10, cursor: 'pointer', transition: 'all 0.2s ease', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-                  <Star style={{ width: 22, height: 22, color: a.color }} />
+                <div key={a.id} onClick={() => navigate(a.to)} style={{ padding: '10px 8px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 10, cursor: 'pointer', transition: 'all 0.2s ease', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', boxSizing: 'border-box' }}>
+                  <Star style={{ width: 20, height: 20, color: a.color }} />
                   <div style={{ marginTop: 8, fontSize: 11, fontWeight: 600, color: a.color }}>{a.label}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div style={{ background: '#fff', borderRadius: 14, padding: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', display: 'flex', flexDirection: 'column', height: '100%' }}>
+          <div style={{ background: '#fff', borderRadius: 14, padding: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 340px)', boxSizing: 'border-box' }}>
             <div>
               <div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Reports</div>
               <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 4 }}>Team and finance dashboards</div>
             </div>
             <div className="mt-3" style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gridTemplateRows: 'repeat(2,1fr)', gap: 10, alignContent: 'stretch' }}>
               {reportCards.map((card) => (
-                <div key={card.id} onClick={() => navigate('/reports')} style={{ padding: '14px 8px', background: '#0f172a', borderRadius: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 'unset', height: '100%', color: '#fff', cursor: 'pointer', transition: 'all 0.2s ease' }}>
-                  <card.icon style={{ width: 28, height: 28, color: '#fff' }} />
-                  <div style={{ marginTop: 8, fontSize: 11, fontWeight: 700, textAlign: 'center' }}>{card.label}</div>
+                <div key={card.id} onClick={() => navigate('/reports')} style={{ padding: 12, background: '#0f172a', borderRadius: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#fff', cursor: 'pointer', transition: 'all 0.2s ease', boxSizing: 'border-box' }}>
+                  <card.icon style={{ width: 24, height: 24, color: '#fff' }} />
+                  <div style={{ marginTop: 8, fontSize: 12, fontWeight: 700, textAlign: 'center' }}>{card.label}</div>
                 </div>
               ))}
             </div>
