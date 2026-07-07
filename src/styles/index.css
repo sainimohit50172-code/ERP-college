@@ -16,7 +16,9 @@
 html, body, #root {
   width: 100%;
   min-height: 100%;
+  height: 100%;
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 body {
@@ -24,11 +26,13 @@ body {
   color: var(--body-color);
   background-attachment: fixed;
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 #root {
   width: 100%;
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 * {

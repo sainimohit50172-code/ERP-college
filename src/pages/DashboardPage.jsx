@@ -9,10 +9,8 @@ import {
   Star,
   FileBarChart,
   DownloadCloud,
-  // CalendarX, Users, Building2 (kept for future use)
   IndianRupee,
 } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Area } from 'recharts';
 import { useResourceList } from '../hooks/useResourceHooks';
 
 export default function DashboardPage() {
@@ -51,15 +49,6 @@ export default function DashboardPage() {
     { id: 'k-attendance', label: 'Avg Attendance', value: avgAttendance, icon: CalendarCheck, bg: 'linear-gradient(135deg,#be123c,#f43f5e)' },
   ];
 
-  const monthsData = [
-    { month: 'Jan', value: Math.max(0, studentsCount - 3) },
-    { month: 'Feb', value: Math.max(0, studentsCount - 1) },
-    { month: 'Mar', value: studentsCount + 2 },
-    { month: 'Apr', value: studentsCount + 4 },
-    { month: 'May', value: studentsCount + 6 },
-    { month: 'Jun', value: studentsCount },
-  ];
-
   const quickActions = [
     { id: 'qa-students', label: 'Student List', to: '/students', color: '#3b82f6' },
     { id: 'qa-collect', label: 'Collect Fee', to: '/fees/collection', color: '#10b981' },
@@ -72,144 +61,75 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg,#f0fdf4 0%,#f8fafc 40%,#f0f9ff 100%)', padding: 0 }}>
-      <div style={{ padding: '20px 24px', maxWidth: '100%' }}>
+    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg,#f0fdf4 0%,#f8fafc 40%,#f0f9ff 100%)', padding: 0, overflow: 'hidden' }}>
+      <div style={{ padding: '16px 20px', maxWidth: '100%' }}>
         {/* Top greeting bar */}
         <div className="flex items-center justify-between rounded bg-white p-4" style={{ borderBottom: '1px solid #e2e8f0' }}>
           <div>
-            <div style={{ fontSize: 22, fontWeight: 700, color: '#0f172a' }}>Hello, Admin 👋</div>
-            <div style={{ fontSize: 13, color: '#64748b' }}>Nice to have you back, what an exciting day!</div>
+            <div style={{ fontSize: 20, fontWeight: 700, color: '#0f172a' }}>Hello, Admin 👋</div>
+            <div style={{ fontSize: 12, color: '#64748b' }}>Nice to have you back, what an exciting day!</div>
           </div>
-          <div style={{ fontSize: 13, color: '#475569' }}>{now.toLocaleString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} | {now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}</div>
+          <div style={{ fontSize: 12, color: '#475569' }}>{now.toLocaleString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} | {now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}</div>
         </div>
 
         {/* Tabs */}
         <div className="sticky top-[64px] z-20 mt-3 bg-white" style={{ borderBottom: '1px solid #e2e8f0' }}>
           <div className="flex overflow-x-auto no-scrollbar" style={{ gap: 8 }}>
             {['Quick Links','Student Overview','Fee','Admission','Attendance','Examination','Human Resource','Library','My Profile'].map((t, i) => (
-              <button key={t} className={`whitespace-nowrap px-4 py-3 text-[13px] font-medium ${i===0? 'text-[#059669] border-b-2 border-[#059669] font-semibold':'text-[#64748b]'} hover:text-[#0f172a]`}>
-                  {t.replace("'", "\u2019")}
-                </button>
+              <button key={t} className={`whitespace-nowrap px-4 py-3 text-[12px] font-medium ${i===0? 'text-[#059669] border-b-2 border-[#059669] font-semibold':'text-[#64748b]'} hover:text-[#0f172a]`}>
+                {t.replace("'", "\u2019")}
+              </button>
             ))}
           </div>
         </div>
 
         {/* KPI cards */}
-        <div className="mt-4 grid gap-3" style={{ gridTemplateColumns: 'repeat(6,1fr)', gap: 14 }}>
+        <div className="mt-3 grid" style={{ gridTemplateColumns: 'repeat(6, minmax(0, 1fr))', gap: 12 }}>
           {kpis.map((k) => (
-            <div key={k.id} style={{ background: k.bg, borderRadius: 14, padding: '18px 20px', boxShadow: '0 4px 20px rgba(0,0,0,0.12)', display: 'flex', alignItems: 'center', gap: 14, transition: 'all 0.2s ease', cursor: 'default' }} className="hover:translate-y-[-3px]">
-              <div style={{ width: 48, height: 48, borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.18)' }}>
-                <k.icon style={{ width: 24, height: 24, color: '#fff' }} />
+            <div key={k.id} style={{ background: k.bg, borderRadius: 14, padding: '14px 16px', boxShadow: '0 4px 18px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', gap: 12, transition: 'all 0.2s ease', cursor: 'default' }} className="hover:translate-y-[-2px]">
+              <div style={{ width: 44, height: 44, borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.18)' }}>
+                <k.icon style={{ width: 22, height: 22, color: '#fff' }} />
               </div>
               <div>
-                <div style={{ fontSize: 28, fontWeight: 700, color: '#fff' }}>{k.value}</div>
-                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.9)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{k.label}</div>
+                <div style={{ fontSize: 22, fontWeight: 700, color: '#fff' }}>{k.value}</div>
+                <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.9)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{k.label}</div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Main 2-column layout */}
-        <div className="mt-6 grid" style={{ gridTemplateColumns: '1fr 380px', gap: 20 }}>
-          <div>
-            {/* Favorites */}
-            <div className="rounded p-5" style={{ background: '#fff', borderRadius: 14, border: '1px solid #d1fae5', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-              <div className="flex items-center justify-between">
-                <div>
-                  <div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Favorites</div>
-                  <div style={{ fontSize: 12, color: '#94a3b8' }}>Quick access to common tasks</div>
-                </div>
-              </div>
-
-              <div className="mt-4">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-[#64748b]">Actions</div>
-                <div className="mt-3 grid gap-3" style={{ gridTemplateColumns: 'repeat(4,1fr)' }}>
-                  {quickActions.map((a) => (
-                    <div key={a.id} onClick={() => navigate(a.to)} className="rounded p-4 text-center" style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 10, cursor: 'pointer', transition: 'all 0.2s ease' }}>
-                      <Star style={{ width: 28, height: 28, color: a.color }} />
-                      <div style={{ marginTop: 8, fontSize: 12, fontWeight: 600, color: a.color }}>{a.label}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+        {/* Favorites + Reports */}
+        <div className="mt-3 grid" style={{ gridTemplateColumns: '1fr 1fr', gap: 16, alignItems: 'stretch' }}>
+          <div style={{ background: '#fff', borderRadius: 14, padding: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', minHeight: 320 }}>
+            <div style={{ marginBottom: 12 }}>
+              <div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Favorites</div>
+              <div style={{ fontSize: 12, color: '#94a3b8' }}>Quick access to common tasks</div>
             </div>
-
-            {/* HR Operations */}
-            <div className="mt-4 rounded p-5" style={{ background: '#fff', borderRadius: 14, border: '1px solid #e0e7ff' }}>
-              <div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>HR Operations</div>
-              <div className="mt-3">
-                <div style={{ padding: '12px 0', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between' }}>
-                  <div style={{ color: '#334155' }}>Leave pending approvals</div>
-                  <div style={{ fontWeight: 700, color: '#0f172a' }}>0</div>
-                </div>
-                <div style={{ padding: '12px 0', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between' }}>
-                  <div style={{ color: '#334155' }}>Payroll due</div>
-                  <div style={{ fontWeight: 700, color: '#0f172a' }}>0</div>
-                </div>
-                <div style={{ padding: '12px 0', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between' }}>
-                  <div style={{ color: '#334155' }}>Payroll pending approvals</div>
-                  <div style={{ fontWeight: 700, color: '#0f172a' }}>0</div>
-                </div>
-                <div style={{ padding: '12px 0', display: 'flex', justifyContent: 'space-between' }}>
-                  <div style={{ color: '#334155' }}>Finance pending entries</div>
-                  <div style={{ fontWeight: 700, color: '#0f172a' }}>0</div>
-                </div>
-              </div>
+            <div className="grid" style={{ gridTemplateColumns: 'repeat(4,1fr)', gap: 10 }}>
+              {quickActions.map((a) => (
+                <button key={a.id} onClick={() => navigate(a.to)} className="rounded" style={{ background: '#fff', border: '1px solid #e2e8f0', padding: '14px 8px', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8, minHeight: 84, transition: 'all 0.2s ease' }}>
+                  <Star style={{ width: 22, height: 22, color: a.color }} />
+                  <span style={{ fontSize: 11, fontWeight: 600, color: a.color }}>{a.label}</span>
+                </button>
+              ))}
             </div>
           </div>
 
-          <div>
-            {/* Reports */}
-            <div style={{ background: '#fff', borderRadius: 14, padding: 20, border: '1px solid #fde68a', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Reports</div>
-                <button onClick={() => {}} style={{ border: '1px solid #fde68a', padding: '6px 10px', borderRadius: 8 }}><DownloadCloud style={{ width: 16, height: 16 }} /></button>
-              </div>
-
-              <div className="mt-4 grid" style={{ gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                {Array.from({ length: 6 }).map((_, idx) => (
-                  <div key={idx} style={{ borderRadius: 10, padding: 16, minHeight: 100, background: 'linear-gradient(135deg,#1e3a5f,#2d5a8e)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: 'pointer', transition: 'all 0.2s ease' }} onClick={() => navigate('/reports')}>
-                    <FileBarChart style={{ width: 36, height: 36 }} />
-                    <div style={{ marginTop: 8, fontSize: 12, fontWeight: 700, textAlign: 'center' }}>Report</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom row */}
-        <div className="mt-6 grid" style={{ gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-          <div style={{ background: '#fff', borderRadius: 14, padding: 20, border: '1px solid #d1fae5' }}>
-            <div className="flex items-center justify-between">
-              <div style={{ fontSize: 16, fontWeight: 700 }}>{"Today\u2019s Classes"}</div>
-              <button style={{ background: '#10b981', color: '#fff', padding: '6px 10px', borderRadius: 8 }}>View</button>
-            </div>
-            <div style={{ marginTop: 8, fontSize: 12, color: '#94a3b8' }}>Live overview and recent updates</div>
-            <div className="mt-4">
-              <div style={{ borderLeft: '3px solid #10b981', padding: '12px 16px', borderRadius: 8, marginBottom: 8 }}>Advanced Data Structures</div>
-              <div style={{ borderLeft: '3px solid #10b981', padding: '12px 16px', borderRadius: 8, marginBottom: 8 }}>English Communication</div>
-            </div>
-          </div>
-
-          <div style={{ background: '#fff', borderRadius: 14, padding: 20, border: '1px solid #fce7f3' }}>
-            <div className="flex items-center justify-between">
+          <div style={{ background: '#fff', borderRadius: 14, padding: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', minHeight: 320 }}>
+            <div style={{ marginBottom: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
-                <div style={{ fontSize: 16, fontWeight: 700 }}>Admissions Performance</div>
-                <div style={{ fontSize: 12, color: '#94a3b8' }}>Weekly funnel metrics</div>
+                <div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Reports</div>
+                <div style={{ fontSize: 12, color: '#94a3b8' }}>Run commonly used reports</div>
               </div>
-              <button style={{ border: '1px solid #eee', padding: '6px 8px', borderRadius: 8 }}><DownloadCloud style={{ width: 16, height: 16 }} /></button>
+              <button style={{ border: '1px solid #e2e8f0', padding: '8px 10px', borderRadius: 10 }}><DownloadCloud style={{ width: 16, height: 16 }} /></button>
             </div>
-            <div className="mt-4" style={{ height: 200 }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={monthsData}>
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  <Area type="monotone" dataKey="value" stroke="#10b981" fill="rgba(16,185,129,0.1)" />
-                  <Line type="monotone" dataKey="value" stroke="#10b981" strokeWidth={2} dot={false} />
-                </LineChart>
-              </ResponsiveContainer>
+            <div className="grid" style={{ gridTemplateColumns: 'repeat(3,1fr)', gap: 10 }}>
+              {Array.from({ length: 6 }).map((_, idx) => (
+                <button key={idx} onClick={() => navigate('/reports')} className="rounded" style={{ background: 'linear-gradient(135deg,#1e3a5f,#2d5a8e)', border: 'none', color: '#fff', padding: 14, minHeight: 84, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8, cursor: 'pointer', transition: 'all 0.2s ease' }}>
+                  <FileBarChart style={{ width: 22, height: 22 }} />
+                  <span style={{ fontSize: 11, fontWeight: 600 }}>Report</span>
+                </button>
+              ))}
             </div>
           </div>
         </div>
