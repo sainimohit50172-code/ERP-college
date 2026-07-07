@@ -85,25 +85,6 @@ export default function GlobalSearch({ className = 'w-full' }) {
   }, [loadService]);
 
   useEffect(() => {
-    if (!open) return;
-    if (!query.trim()) {
-      setLoading(false);
-      setResults([]);
-      setActiveIndex(-1);
-      return;
-    }
-
-    setLoading(true);
-    clearTimeout(debounceRef.current);
-    debounceRef.current = window.setTimeout(() => {
-      runSearch(query.trim());
-      setActiveIndex(-1);
-    }, 300);
-
-    return () => clearTimeout(debounceRef.current);
-  }, [open, query, runSearch]);
-
-  useEffect(() => {
     function handleClickOutside(event) {
       if (open && panelRef.current && !panelRef.current.contains(event.target) && !inputRef.current?.contains(event.target)) {
         setOpen(false);
@@ -121,6 +102,13 @@ export default function GlobalSearch({ className = 'w-full' }) {
   const handleQueryChange = (value) => {
     setQuery(value);
     setOpen(true);
+    if (!value.trim()) {
+      setResults([]);
+      setLoading(false);
+      return;
+    }
+    clearTimeout(debounceRef.current);
+    debounceRef.current = window.setTimeout(() => handleImmediateSearch(value), 250);
   };
 
   const handleSelectResult = (item) => {
@@ -135,10 +123,14 @@ export default function GlobalSearch({ className = 'w-full' }) {
     setOpen(false);
     setQuery('');
     setActiveIndex(-1);
-    const term = item.title;
+    const term = item.title || item.description || item.category;
     const newRecents = [term, ...recentSearches.filter((entry) => entry !== term)].slice(0, 10);
     setRecentSearches(newRecents);
-    navigate(item.route || '/');
+    if (item.route) {
+      navigate(item.route);
+    } else {
+      navigate('/');
+    }
   };
 
   const handleClearRecent = (term) => {
@@ -173,6 +165,18 @@ export default function GlobalSearch({ className = 'w-full' }) {
       setOpen(false);
       inputRef.current?.blur();
     }
+  };
+
+  const handleImmediateSearch = (value) => {
+    const trimmed = value.trim();
+    if (!trimmed) {
+      setResults([]);
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    setActiveIndex(-1);
+    runSearch(trimmed);
   };
 
   return (

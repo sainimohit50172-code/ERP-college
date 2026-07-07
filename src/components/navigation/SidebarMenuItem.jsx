@@ -1,6 +1,13 @@
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 
+function isActivePath(item, activePath) {
+  if (!item.to) return false;
+  if (item.to === activePath) return true;
+  if (item.to === '/' && activePath === '/') return true;
+  return activePath.startsWith(`${item.to}/`);
+}
+
 export default function SidebarMenuItem({ item, isExpanded, onToggle, onNavigate, activePath }) {
   const Icon = item.icon;
 
@@ -45,7 +52,7 @@ export default function SidebarMenuItem({ item, isExpanded, onToggle, onNavigate
     );
   }
 
-  const isActive = Boolean(item.to && activePath === item.to);
+  const isActive = isActivePath(item, activePath);
 
   return (
     <Link

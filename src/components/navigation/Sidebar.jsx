@@ -3,6 +3,7 @@ import {
   Home,
   UserPlus,
   Users,
+  ChevronRight,
   School,
   Wallet,
   Layers,
@@ -37,6 +38,8 @@ import {
 import { useAuth } from '../../services/AuthContext.jsx';
 import { useEffect, useMemo, useState } from 'react';
 import { hasPermission } from '../../services/rbac.js';
+import { useERP } from '../../services/ERPContext.jsx';
+import { Link } from 'react-router-dom';
 import SidebarMenuItem from './SidebarMenuItem.jsx';
 
 const menuGroups = [
@@ -47,9 +50,9 @@ const menuGroups = [
     icon: UserPlus,
     children: [
       { id: 'admissions-root', label: 'Admissions', to: '/admissions', icon: UserPlus, moduleKey: 'admissions' },
-      { id: 'enquiries', label: 'Enquiries', icon: HelpCircle, disabled: true, comingSoon: true },
-      { id: 'counselling', label: 'Counselling', icon: Users, disabled: true, comingSoon: true },
-      { id: 'applications', label: 'Applications', icon: ClipboardList, disabled: true, comingSoon: true },
+      { id: 'enquiries', label: 'Enquiries', to: '/enquiries', icon: HelpCircle, moduleKey: 'admissions' },
+      { id: 'counselling', label: 'Counselling', to: '/counselling', icon: Users, moduleKey: 'admissions' },
+      { id: 'applications', label: 'Applications', to: '/applications', icon: ClipboardList, moduleKey: 'admissions' },
     ],
   },
   {
@@ -58,9 +61,9 @@ const menuGroups = [
     icon: Users,
     children: [
       { id: 'students-root', label: 'Student Management', to: '/students', icon: Users, moduleKey: 'students' },
-      { id: 'promotions', label: 'Promotions', icon: TrendingUp, disabled: true, comingSoon: true },
-      { id: 'certificates', label: 'Certificates', icon: Award, disabled: true, comingSoon: true },
-      { id: 'alumni', label: 'Alumni', icon: Users, disabled: true, comingSoon: true },
+      { id: 'promotions', label: 'Promotions', to: '/student-promotion', icon: TrendingUp, moduleKey: 'promotions' },
+      { id: 'certificates', label: 'Certificates', to: '/student-certificates', icon: Award, moduleKey: 'students' },
+      { id: 'alumni', label: 'Alumni', to: '/alumni', icon: Users, moduleKey: 'students' },
     ],
   },
   {
@@ -139,16 +142,16 @@ const menuGroups = [
     icon: BookOpen,
     children: [
       { id: 'library-root', label: 'Library', to: '/library', icon: BookOpen, moduleKey: 'library' },
-      { id: 'library-books-root', label: 'Books', icon: BookOpen, disabled: true, comingSoon: true },
-      { id: 'library-categories-root', label: 'Categories', icon: Layers, disabled: true, comingSoon: true },
-      { id: 'library-members-root', label: 'Members', icon: Users, disabled: true, comingSoon: true },
-      { id: 'library-issues-root', label: 'Issue Books', icon: BookOpen, disabled: true, comingSoon: true },
-      { id: 'library-return-root', label: 'Return Books', icon: BookOpen, disabled: true, comingSoon: true },
-      { id: 'library-reservations-root', label: 'Reservations', icon: CalendarDays, disabled: true, comingSoon: true },
-      { id: 'library-renewals-root', label: 'Renewals', icon: CalendarDays, disabled: true, comingSoon: true },
-      { id: 'library-fines-root', label: 'Fines', icon: Wallet, disabled: true, comingSoon: true },
-      { id: 'library-damages-root', label: 'Damages', icon: ShieldCheck, disabled: true, comingSoon: true },
-      { id: 'library-lost-root', label: 'Lost Books', icon: HelpCircle, disabled: true, comingSoon: true },
+      { id: 'library-books-root', label: 'Books', to: '/library/books', icon: BookOpen, moduleKey: 'library' },
+      { id: 'library-categories-root', label: 'Categories', to: '/library/categories', icon: Layers, moduleKey: 'library' },
+      { id: 'library-members-root', label: 'Members', to: '/library/members', icon: Users, moduleKey: 'library' },
+      { id: 'library-issues-root', label: 'Issue Books', to: '/library/issues', icon: BookOpen, moduleKey: 'library' },
+      { id: 'library-return-root', label: 'Return Books', to: '/library/returns', icon: BookOpen, moduleKey: 'library' },
+      { id: 'library-reservations-root', label: 'Reservations', to: '/library/reservations', icon: CalendarDays, moduleKey: 'library' },
+      { id: 'library-renewals-root', label: 'Renewals', to: '/library/renewals', icon: CalendarDays, moduleKey: 'library' },
+      { id: 'library-fines-root', label: 'Fines', to: '/library/fines', icon: Wallet, moduleKey: 'library' },
+      { id: 'library-damages-root', label: 'Damages', to: '/library/damages', icon: ShieldCheck, moduleKey: 'library' },
+      { id: 'library-lost-root', label: 'Lost Books', to: '/library/lost', icon: HelpCircle, moduleKey: 'library' },
     ],
   },
   {
@@ -157,13 +160,13 @@ const menuGroups = [
     icon: Home,
     children: [
       { id: 'hostel-root', label: 'Hostel', to: '/hostel', icon: Home, moduleKey: 'hostel' },
-      { id: 'hostel-rooms-root', label: 'Rooms', icon: Building, disabled: true, comingSoon: true },
-      { id: 'hostel-allocations-root', label: 'Allocations', icon: Layers, disabled: true, comingSoon: true },
-      { id: 'hostel-visitors-root', label: 'Visitors', icon: Users, disabled: true, comingSoon: true },
-      { id: 'hostel-complaints-root', label: 'Complaints', icon: ShieldCheck, disabled: true, comingSoon: true },
-      { id: 'hostel-fees-root', label: 'Fees', icon: Wallet, disabled: true, comingSoon: true },
-      { id: 'hostel-wardens-root', label: 'Wardens', icon: School, disabled: true, comingSoon: true },
-      { id: 'hostel-maintenance-root', label: 'Maintenance', icon: Settings2, disabled: true, comingSoon: true },
+      { id: 'hostel-rooms-root', label: 'Rooms', to: '/hostel/rooms', icon: Building, moduleKey: 'hostel' },
+      { id: 'hostel-allocations-root', label: 'Allocations', to: '/hostel/allocations', icon: Layers, moduleKey: 'hostel' },
+      { id: 'hostel-visitors-root', label: 'Visitors', to: '/hostel/visitors', icon: Users, moduleKey: 'hostel' },
+      { id: 'hostel-complaints-root', label: 'Complaints', to: '/hostel/complaints', icon: ShieldCheck, moduleKey: 'hostel' },
+      { id: 'hostel-fees-root', label: 'Fees', to: '/hostel/fees', icon: Wallet, moduleKey: 'hostel' },
+      { id: 'hostel-wardens-root', label: 'Wardens', to: '/hostel/wardens', icon: School, moduleKey: 'hostel' },
+      { id: 'hostel-maintenance-root', label: 'Maintenance', to: '/hostel/maintenance', icon: Settings2, moduleKey: 'hostel' },
     ],
   },
   {
@@ -172,15 +175,15 @@ const menuGroups = [
     icon: Truck,
     children: [
       { id: 'transport-root', label: 'Transport', to: '/transport', icon: Truck, moduleKey: 'transport' },
-      { id: 'transport-vehicles-root', label: 'Vehicles', icon: Truck, disabled: true, comingSoon: true },
-      { id: 'transport-drivers-root', label: 'Drivers', icon: Briefcase, disabled: true, comingSoon: true },
-      { id: 'transport-conductors-root', label: 'Conductors', icon: Briefcase, disabled: true, comingSoon: true },
-      { id: 'transport-routes-root', label: 'Routes', icon: CalendarDays, disabled: true, comingSoon: true },
-      { id: 'transport-stops-root', label: 'Stops', icon: Layers, disabled: true, comingSoon: true },
-      { id: 'transport-student-assignments-root', label: 'Student Assignments', icon: Users, disabled: true, comingSoon: true },
-      { id: 'transport-employee-assignments-root', label: 'Employee Assignments', icon: Briefcase, disabled: true, comingSoon: true },
-      { id: 'transport-fuel-root', label: 'Fuel Entries', icon: Fuel, disabled: true, comingSoon: true },
-      { id: 'transport-maintenance-root', label: 'Maintenance', icon: Settings2, disabled: true, comingSoon: true },
+      { id: 'transport-vehicles-root', label: 'Vehicles', to: '/transport/vehicles', icon: Truck, moduleKey: 'transport' },
+      { id: 'transport-drivers-root', label: 'Drivers', to: '/transport/drivers', icon: Briefcase, moduleKey: 'transport' },
+      { id: 'transport-conductors-root', label: 'Conductors', to: '/transport/conductors', icon: Briefcase, moduleKey: 'transport' },
+      { id: 'transport-routes-root', label: 'Routes', to: '/transport/routes', icon: CalendarDays, moduleKey: 'transport' },
+      { id: 'transport-stops-root', label: 'Stops', to: '/transport/stops', icon: Layers, moduleKey: 'transport' },
+      { id: 'transport-student-assignments-root', label: 'Student Assignments', to: '/transport/student-assignments', icon: Users, moduleKey: 'transport' },
+      { id: 'transport-employee-assignments-root', label: 'Employee Assignments', to: '/transport/employee-assignments', icon: Briefcase, moduleKey: 'transport' },
+      { id: 'transport-fuel-root', label: 'Fuel Entries', to: '/transport/fuel', icon: Fuel, moduleKey: 'transport' },
+      { id: 'transport-maintenance-root', label: 'Maintenance', to: '/transport/maintenance', icon: Settings2, moduleKey: 'transport' },
     ],
   },
   {
@@ -188,13 +191,13 @@ const menuGroups = [
     label: 'Finance',
     icon: Wallet,
     children: [
-      { id: 'finance-fee-collection-root', label: 'Fee Collection', icon: Wallet, disabled: true, comingSoon: true },
-      { id: 'finance-scholarships-root', label: 'Scholarships', icon: Award, disabled: true, comingSoon: true },
-      { id: 'finance-payments-root', label: 'Payments', icon: Wallet, disabled: true, comingSoon: true },
-      { id: 'finance-receipts-root', label: 'Receipts', icon: ClipboardCheck, disabled: true, comingSoon: true },
-      { id: 'finance-accounts-root', label: 'Accounts', icon: Database, disabled: true, comingSoon: true },
-      { id: 'finance-income-root', label: 'Income', icon: BarChart3, disabled: true, comingSoon: true },
-      { id: 'finance-expenses-root', label: 'Expenses', icon: Wallet, disabled: true, comingSoon: true },
+      { id: 'finance-fee-collection-root', label: 'Fee Collection', to: '/fee-collection', icon: Wallet, moduleKey: 'fees' },
+      { id: 'finance-scholarships-root', label: 'Scholarships', to: '/scholarships', icon: Award, moduleKey: 'fees' },
+      { id: 'finance-payments-root', label: 'Payments', to: '/payments', icon: Wallet, moduleKey: 'fees' },
+      { id: 'finance-receipts-root', label: 'Receipts', to: '/receipts', icon: ClipboardCheck, moduleKey: 'fees' },
+      { id: 'finance-accounts-root', label: 'Accounts', to: '/accounts', icon: Database, moduleKey: 'finance' },
+      { id: 'finance-income-root', label: 'Income', to: '/income', icon: BarChart3, moduleKey: 'finance' },
+      { id: 'finance-expenses-root', label: 'Expenses', to: '/expenses', icon: Wallet, moduleKey: 'finance' },
     ],
   },
   {
@@ -203,13 +206,13 @@ const menuGroups = [
     icon: Database,
     children: [
       { id: 'inventory-root', label: 'Inventory', to: '/inventory', icon: Database, moduleKey: 'inventory' },
-      { id: 'inventory-assets-root', label: 'Assets', icon: Database, disabled: true, comingSoon: true },
-      { id: 'inventory-categories-root', label: 'Categories', icon: Layers, disabled: true, comingSoon: true },
-      { id: 'inventory-stock-root', label: 'Stock', icon: Database, disabled: true, comingSoon: true },
-      { id: 'inventory-vendors-root', label: 'Vendors', icon: Building, disabled: true, comingSoon: true },
-      { id: 'inventory-purchase-orders-root', label: 'Purchase Orders', icon: ShoppingCart, disabled: true, comingSoon: true },
-      { id: 'inventory-goods-receipts-root', label: 'Goods Receipts', icon: ClipboardCheck, disabled: true, comingSoon: true },
-      { id: 'inventory-asset-assignments-root', label: 'Asset Assignments', icon: Briefcase, disabled: true, comingSoon: true },
+      { id: 'inventory-assets-root', label: 'Assets', to: '/inventory/assets', icon: Database, moduleKey: 'inventory' },
+      { id: 'inventory-categories-root', label: 'Categories', to: '/inventory/categories', icon: Layers, moduleKey: 'inventory' },
+      { id: 'inventory-stock-root', label: 'Stock', to: '/inventory/stock', icon: Database, moduleKey: 'inventory' },
+      { id: 'inventory-vendors-root', label: 'Vendors', to: '/inventory/vendors', icon: Building, moduleKey: 'inventory' },
+      { id: 'inventory-purchase-orders-root', label: 'Purchase Orders', to: '/inventory/purchase-orders', icon: ShoppingCart, moduleKey: 'inventory' },
+      { id: 'inventory-goods-receipts-root', label: 'Goods Receipts', to: '/inventory/goods-receipts', icon: ClipboardCheck, moduleKey: 'inventory' },
+      { id: 'inventory-asset-assignments-root', label: 'Asset Assignments', to: '/inventory/asset-assignments', icon: Briefcase, moduleKey: 'inventory' },
     ],
   },
   {
@@ -219,9 +222,9 @@ const menuGroups = [
     children: [
       { id: 'crm-root', label: 'CRM', to: '/leads', icon: TrendingUp, moduleKey: 'leads' },
       { id: 'crm-leads-root', label: 'Leads', to: '/leads', icon: TrendingUp, moduleKey: 'leads' },
-      { id: 'crm-counselling-root', label: 'Counselling', icon: Users, disabled: true, comingSoon: true },
-      { id: 'crm-marketing-root', label: 'Marketing', icon: TrendingUp, disabled: true, comingSoon: true },
-      { id: 'crm-campaigns-root', label: 'Campaigns', icon: ClipboardList, disabled: true, comingSoon: true },
+      { id: 'crm-counselling-root', label: 'Counselling', to: '/counselling', icon: Users, moduleKey: 'leads' },
+      { id: 'crm-marketing-root', label: 'Marketing', to: '/marketing', icon: TrendingUp, moduleKey: 'leads' },
+      { id: 'crm-campaigns-root', label: 'Campaigns', to: '/campaigns', icon: ClipboardList, moduleKey: 'leads' },
     ],
   },
   {
@@ -230,12 +233,12 @@ const menuGroups = [
     icon: Laptop,
     children: [
       { id: 'lms-root', label: 'LMS', to: '/lms', icon: Laptop, moduleKey: 'lms' },
-      { id: 'lms-courses-root', label: 'Courses', icon: BookOpen, disabled: true, comingSoon: true },
-      { id: 'lms-study-material-root', label: 'Study Material', icon: FileText, disabled: true, comingSoon: true },
-      { id: 'lms-video-lectures-root', label: 'Video Lectures', icon: Video, disabled: true, comingSoon: true },
-      { id: 'lms-assignments-root', label: 'Assignments', icon: ClipboardList, disabled: true, comingSoon: true },
-      { id: 'lms-online-tests-root', label: 'Online Tests', icon: ClipboardCheck, disabled: true, comingSoon: true },
-      { id: 'lms-certificates-root', label: 'Certificates', icon: Award, disabled: true, comingSoon: true },
+      { id: 'lms-courses-root', label: 'Courses', to: '/lms/courses', icon: BookOpen, moduleKey: 'lms' },
+      { id: 'lms-study-material-root', label: 'Study Material', to: '/lms/study-material', icon: FileText, moduleKey: 'lms' },
+      { id: 'lms-video-lectures-root', label: 'Video Lectures', to: '/lms/video-lectures', icon: Video, moduleKey: 'lms' },
+      { id: 'lms-assignments-root', label: 'Assignments', to: '/assignments', icon: ClipboardList, moduleKey: 'lms' },
+      { id: 'lms-online-tests-root', label: 'Online Tests', to: '/lms/online-tests', icon: ClipboardCheck, moduleKey: 'lms' },
+      { id: 'lms-certificates-root', label: 'Certificates', to: '/lms/certificates', icon: Award, moduleKey: 'lms' },
     ],
   },
   {
@@ -244,9 +247,9 @@ const menuGroups = [
     icon: ShieldCheck,
     children: [
       { id: 'security-root', label: 'Security', to: '/security', icon: ShieldCheck, moduleKey: 'security' },
-      { id: 'security-visitors-root', label: 'Visitors', icon: Users, disabled: true, comingSoon: true },
-      { id: 'security-gate-pass-root', label: 'Gate Pass', icon: ShieldCheck, disabled: true, comingSoon: true },
-      { id: 'security-incidents-root', label: 'Incidents', icon: AlertCircle, disabled: true, comingSoon: true },
+      { id: 'security-visitors-root', label: 'Visitors', to: '/security/visitors', icon: Users, moduleKey: 'security' },
+      { id: 'security-gate-pass-root', label: 'Gate Pass', to: '/security/gate-pass', icon: ShieldCheck, moduleKey: 'security' },
+      { id: 'security-incidents-root', label: 'Incidents', to: '/security/incidents', icon: AlertCircle, moduleKey: 'security' },
     ],
   },
   {
@@ -256,7 +259,7 @@ const menuGroups = [
     children: [
       { id: 'reports-root', label: 'Reports', to: '/reports', icon: BarChart3, moduleKey: 'reports' },
       { id: 'analytics-root', label: 'Analytics', to: '/analytics', icon: Activity, moduleKey: 'reports' },
-      { id: 'notifications-root', label: 'Notifications', to: '/notifications', icon: Bell, moduleKey: 'notifications' },
+      { id: 'notifications-root', label: 'Notifications', to: '/notifications', icon: Bell, moduleKey: 'reports' },
     ],
   },
   {
@@ -318,6 +321,8 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedGroups, setExpandedGroups] = useState(readExpandedState);
+  const { sidebarCollapsed, setSidebarCollapsed } = useERP();
+  const [isHovered, setIsHovered] = useState(false);
   const visibleGroups = useMemo(() => getMenuGroups(auth?.permissions), [auth?.permissions]);
   const desktopVisibleGroups = useMemo(
     () =>
@@ -399,6 +404,19 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
     return visibleGroups.map(filterNode).filter(Boolean);
   }, [searchTerm, visibleGroups]);
 
+  // Flatten groups into direct menu items (no dropdowns)
+  const flatMenuItems = useMemo(() => {
+    const items = [];
+    for (const g of desktopFilteredGroups) {
+      if (g.children && g.children.length) {
+        for (const c of g.children) items.push(c);
+      } else {
+        items.push(g);
+      }
+    }
+    return items;
+  }, [desktopFilteredGroups]);
+
   const toggleGroup = (groupId) => {
     setExpandedGroups((current) => ({ ...current, [groupId]: !current[groupId] }));
   };
@@ -409,48 +427,112 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
 
   return (
     <>
-      <aside className="hidden md:fixed md:left-0 md:top-0 md:z-50 md:flex md:h-full md:w-72 md:flex-col md:overflow-y-auto md:border-r md:border-slate-200/10 md:bg-[#05331e] md:px-4 md:py-6 md:shadow-[0_35px_80px_rgba(7,43,22,0.18)] md:backdrop-blur-xl">
-        <div className="mb-5 flex items-center gap-3 px-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-3xl bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-400/20">
-            <ShieldCheck className="h-5 w-5" />
-          </div>
-          <div>
-            <p className="text-sm uppercase tracking-[0.28em] text-emerald-100">Enterprise</p>
-            <h2 className="text-lg font-semibold text-white">College ERP</h2>
+      <aside
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className="hidden md:fixed md:left-0 md:top-0 md:z-50 md:flex md:flex-col md:overflow-y-auto md:py-4 md:shadow-[0_35px_80px_rgba(7,43,22,0.18)]"
+        style={{
+          width: sidebarCollapsed && !isHovered ? '72px' : '240px',
+          transition: 'width 0.25s ease',
+          height: '100vh',
+          background: '#0a2e1a',
+        }}
+      >
+        <div style={{ height: 64 }} className="flex items-center px-3">
+          <div className="flex w-full items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div
+                className="flex items-center justify-center rounded"
+                style={{ width: 32, height: 32, background: 'transparent' }}
+              >
+                <ShieldCheck className="h-8 w-8 text-emerald-400" />
+              </div>
+              <div style={{ opacity: sidebarCollapsed && !isHovered ? 0 : 1, transition: 'opacity 0.2s ease' }}>
+                <p className="text-[11px] uppercase tracking-[0.28em]" style={{ color: '#94a3b8' }}>ENTERPRISE</p>
+                <h2 className="text-[15px] font-semibold" style={{ color: '#ffffff' }}>College ERP</h2>
+              </div>
+            </div>
+            <button
+              onClick={() => setSidebarCollapsed((s) => !s)}
+              className="hidden rounded p-1 text-emerald-200 hover:text-white md:inline-flex"
+              title="Toggle sidebar"
+            >
+              <ChevronRight className={`h-4 w-4 transition-transform ${sidebarCollapsed ? '' : 'rotate-180'}`} />
+            </button>
           </div>
         </div>
 
-        <div className="mb-3 rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
-          <label className="flex items-center gap-2 rounded-2xl border border-white/10 bg-slate-950/20 px-3 py-2 text-sm text-slate-300">
-            <Search className="h-4 w-4 text-emerald-200" />
+        <div className="mb-3 px-3">
+          <label className="flex items-center gap-2 rounded bg-transparent px-2 py-1 text-sm text-slate-300">
+            <Search className="h-4 w-4 text-[#86efac]" />
             <input
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
               placeholder="Search menu"
               className="w-full bg-transparent text-sm text-white outline-none placeholder:text-slate-400"
+              style={{ opacity: sidebarCollapsed && !isHovered ? 0 : 1, transition: 'opacity 0.2s ease' }}
             />
           </label>
         </div>
 
-        <nav className="flex-1 space-y-2 overflow-y-auto pr-1" style={{ scrollbarWidth: 'thin', scrollbarColor: '#34d399 transparent' }}>
-          {desktopFilteredGroups.length === 0 ? (
-            <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-4 text-sm text-slate-300">
-              No matching menu items.
-            </div>
+        <nav className="flex-1 overflow-y-auto px-2" style={{ paddingBottom: 80 }}>
+          {flatMenuItems.length === 0 ? (
+            <div className="px-3 text-sm text-slate-300">No matching menu items.</div>
           ) : (
-            desktopFilteredGroups.map((group) => (
-              <div key={group.id} className="rounded-2xl border border-white/10 bg-white/5 p-2">
-                <SidebarMenuItem
-                  item={group}
-                  isExpanded={expandedGroups[group.id] !== false}
-                  onToggle={toggleGroup}
-                  onNavigate={onNavigate}
-                  activePath={location.pathname}
-                />
-              </div>
-            ))
+            flatMenuItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = item.to && (location.pathname === item.to || location.pathname.startsWith(`${item.to}/`));
+              return (
+                <Link
+                  key={item.id}
+                  to={item.to || '/'}
+                  title={sidebarCollapsed && !isHovered ? item.label : ''}
+                  onClick={onNavigate}
+                  data-nav-id={item.id}
+                  className="flex items-center"
+                  style={{ height: 52, margin: '6px 8px' }}
+                >
+                  <div
+                    className="flex items-center justify-center"
+                    style={{ width: 44, height: 44, borderRadius: 8, background: isActive ? 'rgba(255,255,255,0.06)' : 'transparent' }}
+                  >
+                    {Icon ? (
+                      <Icon className="" style={{ width: 20, height: 20, color: isActive ? '#ffffff' : '#86efac' }} />
+                    ) : null}
+                  </div>
+                  <div
+                    style={{
+                      marginLeft: 12,
+                      opacity: sidebarCollapsed && !isHovered ? 0 : 1,
+                      transition: 'opacity 0.2s ease',
+                      color: isActive ? '#ffffff' : '#86efac',
+                      fontSize: 13,
+                      fontWeight: 500,
+                    }}
+                  >
+                    {item.label}
+                  </div>
+                  {isActive ? (
+                    <div style={{ marginLeft: 'auto', borderLeft: '3px solid #4ade80', height: 36, marginRight: 8 }} />
+                  ) : null}
+                </Link>
+              );
+            })
           )}
         </nav>
+
+        <div className="absolute bottom-4 left-0 right-0 px-3">
+          <div className="flex items-center gap-3 rounded p-2" style={{ color: '#fff' }}>
+            <div style={{ width: 32, height: 32, borderRadius: 999, background: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#012' }}>
+              <span className="font-semibold text-sm">AD</span>
+            </div>
+            <div style={{ opacity: sidebarCollapsed && !isHovered ? 0 : 1, transition: 'opacity 0.2s ease' }}>
+              <div className="text-sm font-semibold">Admin Demo</div>
+              <div className="text-xs text-slate-300">Super Admin</div>
+            </div>
+            <button className="ml-auto rounded p-2 text-slate-200 hover:text-white">Logout</button>
+          </div>
+        </div>
       </aside>
 
       <div className={`fixed inset-0 z-50 md:hidden ${isOpen ? 'block' : 'hidden'}`} role="dialog" aria-modal="true">

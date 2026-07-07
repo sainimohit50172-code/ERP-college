@@ -63,6 +63,64 @@ import HostelManagementPage from './pages/HostelManagementPage.jsx';
 import TransportManagementPage from './pages/TransportManagementPage.jsx';
 import SecurityPage from './pages/SecurityPage.jsx';
 import InventoryPage from './pages/InventoryPage.jsx';
+import ParentsPage from './pages/ParentsPage.jsx';
+import EnquiriesPage from './pages/EnquiriesPage.jsx';
+import AdmissionCounsellingPage from './pages/AdmissionCounsellingPage.jsx';
+import ApplicationsPage from './pages/ApplicationsPage.jsx';
+import StudentCertificatesPage from './pages/StudentCertificatesPage.jsx';
+import AlumniPage from './pages/AlumniPage.jsx';
+import LibraryBooksPage from './pages/LibraryBooksPage.jsx';
+import LibraryCategoriesPage from './pages/LibraryCategoriesPage.jsx';
+import LibraryMembersPage from './pages/LibraryMembersPage.jsx';
+import LibraryIssuesPage from './pages/LibraryIssuesPage.jsx';
+import LibraryReturnsPage from './pages/LibraryReturnsPage.jsx';
+import LibraryReservationsPage from './pages/LibraryReservationsPage.jsx';
+import LibraryRenewalsPage from './pages/LibraryRenewalsPage.jsx';
+import LibraryFinesPage from './pages/LibraryFinesPage.jsx';
+import LibraryDamagesPage from './pages/LibraryDamagesPage.jsx';
+import LibraryLostPage from './pages/LibraryLostPage.jsx';
+import HostelRoomsPage from './pages/HostelRoomsPage.jsx';
+import HostelAllocationsPage from './pages/HostelAllocationsPage.jsx';
+import HostelVisitorsPage from './pages/HostelVisitorsPage.jsx';
+import HostelComplaintsPage from './pages/HostelComplaintsPage.jsx';
+import HostelFeesPage from './pages/HostelFeesPage.jsx';
+import HostelWardensPage from './pages/HostelWardensPage.jsx';
+import HostelMaintenancePage from './pages/HostelMaintenancePage.jsx';
+import TransportVehiclesPage from './pages/TransportVehiclesPage.jsx';
+import TransportDriversPage from './pages/TransportDriversPage.jsx';
+import TransportConductorsPage from './pages/TransportConductorsPage.jsx';
+import TransportRoutesPage from './pages/TransportRoutesPage.jsx';
+import TransportStopsPage from './pages/TransportStopsPage.jsx';
+import TransportStudentAssignmentsPage from './pages/TransportStudentAssignmentsPage.jsx';
+import TransportEmployeeAssignmentsPage from './pages/TransportEmployeeAssignmentsPage.jsx';
+import TransportFuelPage from './pages/TransportFuelPage.jsx';
+import TransportMaintenancePage from './pages/TransportMaintenancePage.jsx';
+import FeeCollectionPage from './pages/FeeCollectionPage.jsx';
+import ScholarshipsPage from './pages/ScholarshipsPage.jsx';
+import PaymentsPage from './pages/PaymentsPage.jsx';
+import ReceiptsPage from './pages/ReceiptsPage.jsx';
+import AccountsPage from './pages/AccountsPage.jsx';
+import IncomePage from './pages/IncomePage.jsx';
+import ExpensesPage from './pages/ExpensesPage.jsx';
+import AssetsPage from './pages/AssetsPage.jsx';
+import AssetCategoriesPage from './pages/AssetCategoriesPage.jsx';
+import StockPage from './pages/StockPage.jsx';
+import VendorsPage from './pages/VendorsPage.jsx';
+import PurchaseOrdersPage from './pages/PurchaseOrdersPage.jsx';
+import GoodsReceiptsPage from './pages/GoodsReceiptsPage.jsx';
+import AssetAssignmentsPage from './pages/AssetAssignmentsPage.jsx';
+import MarketingPage from './pages/MarketingPage.jsx';
+import CampaignsPage from './pages/CampaignsPage.jsx';
+import LMSCoursesPage from './pages/LMSCoursesPage.jsx';
+import StudyMaterialPage from './pages/StudyMaterialPage.jsx';
+import VideoLecturesPage from './pages/VideoLecturesPage.jsx';
+import OnlineTestsPage from './pages/OnlineTestsPage.jsx';
+import LMSCertificatesPage from './pages/LMSCertificatesPage.jsx';
+import SecurityVisitorsPage from './pages/SecurityVisitorsPage.jsx';
+import GatePassPage from './pages/GatePassPage.jsx';
+import IncidentsPage from './pages/IncidentsPage.jsx';
+import AnalyticsPage from './pages/AnalyticsPage.jsx';
+import NotificationsPage from './pages/NotificationsPage.jsx';
 import ForgotPasswordPage from './pages/ForgotPasswordPage.jsx';
 import ResetPasswordPage from './pages/ResetPasswordPage.jsx';
 import ChangePasswordPage from './pages/ChangePasswordPage.jsx';
@@ -98,6 +156,12 @@ function App() {
               <Route path="admissions" element={<ProtectedRoute moduleKey="admissions"><AdmissionsPage /></ProtectedRoute>} />
               <Route path="students" element={<ProtectedRoute moduleKey="students"><StudentManagementPage /></ProtectedRoute>} />
               <Route path="students/:studentId" element={<ProtectedRoute moduleKey="students"><StudentProfilePage /></ProtectedRoute>} />
+              <Route path="parents" element={<ProtectedRoute moduleKey="students"><ParentsPage /></ProtectedRoute>} />
+              <Route path="enquiries" element={<ProtectedRoute moduleKey="admissions"><EnquiriesPage /></ProtectedRoute>} />
+              <Route path="counselling" element={<ProtectedRoute moduleKey="admissions"><AdmissionCounsellingPage /></ProtectedRoute>} />
+              <Route path="applications" element={<ProtectedRoute moduleKey="admissions"><ApplicationsPage /></ProtectedRoute>} />
+              <Route path="student-certificates" element={<ProtectedRoute moduleKey="students"><StudentCertificatesPage /></ProtectedRoute>} />
+              <Route path="alumni" element={<ProtectedRoute moduleKey="students"><AlumniPage /></ProtectedRoute>} />
               <Route path="fees" element={<ProtectedRoute moduleKey="fees"><FeeManagementPage /></ProtectedRoute>} />
               <Route path="teachers" element={<ProtectedRoute moduleKey="teachers"><TeacherManagementPage /></ProtectedRoute>} />
               <Route path="teachers/:teacherId" element={<ProtectedRoute moduleKey="teachers"><TeacherProfilePage /></ProtectedRoute>} />
@@ -132,14 +196,57 @@ function App() {
               <Route path="internal-marks" element={<ProtectedRoute moduleKey="internalMarks"><InternalMarksPage /></ProtectedRoute>} />
               <Route path="practical-marks" element={<ProtectedRoute moduleKey="practicalMarks"><PracticalMarksPage /></ProtectedRoute>} />
               <Route path="library" element={<ProtectedRoute moduleKey="library"><LibraryManagementPage /></ProtectedRoute>} />
+              <Route path="library/books" element={<ProtectedRoute moduleKey="library"><LibraryBooksPage /></ProtectedRoute>} />
+              <Route path="library/categories" element={<ProtectedRoute moduleKey="library"><LibraryCategoriesPage /></ProtectedRoute>} />
+              <Route path="library/members" element={<ProtectedRoute moduleKey="library"><LibraryMembersPage /></ProtectedRoute>} />
+              <Route path="library/issues" element={<ProtectedRoute moduleKey="library"><LibraryIssuesPage /></ProtectedRoute>} />
+              <Route path="library/returns" element={<ProtectedRoute moduleKey="library"><LibraryReturnsPage /></ProtectedRoute>} />
+              <Route path="library/reservations" element={<ProtectedRoute moduleKey="library"><LibraryReservationsPage /></ProtectedRoute>} />
+              <Route path="library/renewals" element={<ProtectedRoute moduleKey="library"><LibraryRenewalsPage /></ProtectedRoute>} />
+              <Route path="library/fines" element={<ProtectedRoute moduleKey="library"><LibraryFinesPage /></ProtectedRoute>} />
+              <Route path="library/damages" element={<ProtectedRoute moduleKey="library"><LibraryDamagesPage /></ProtectedRoute>} />
+              <Route path="library/lost" element={<ProtectedRoute moduleKey="library"><LibraryLostPage /></ProtectedRoute>} />
               <Route path="hostel" element={<ProtectedRoute moduleKey="hostel"><HostelManagementPage /></ProtectedRoute>} />
+              <Route path="hostel/rooms" element={<ProtectedRoute moduleKey="hostel"><HostelRoomsPage /></ProtectedRoute>} />
+              <Route path="hostel/allocations" element={<ProtectedRoute moduleKey="hostel"><HostelAllocationsPage /></ProtectedRoute>} />
+              <Route path="hostel/visitors" element={<ProtectedRoute moduleKey="hostel"><HostelVisitorsPage /></ProtectedRoute>} />
+              <Route path="hostel/complaints" element={<ProtectedRoute moduleKey="hostel"><HostelComplaintsPage /></ProtectedRoute>} />
+              <Route path="hostel/fees" element={<ProtectedRoute moduleKey="hostel"><HostelFeesPage /></ProtectedRoute>} />
+              <Route path="hostel/wardens" element={<ProtectedRoute moduleKey="hostel"><HostelWardensPage /></ProtectedRoute>} />
+              <Route path="hostel/maintenance" element={<ProtectedRoute moduleKey="hostel"><HostelMaintenancePage /></ProtectedRoute>} />
               <Route path="transport" element={<ProtectedRoute moduleKey="transport"><TransportManagementPage /></ProtectedRoute>} />
+              <Route path="transport/vehicles" element={<ProtectedRoute moduleKey="transport"><TransportVehiclesPage /></ProtectedRoute>} />
+              <Route path="transport/drivers" element={<ProtectedRoute moduleKey="transport"><TransportDriversPage /></ProtectedRoute>} />
+              <Route path="transport/conductors" element={<ProtectedRoute moduleKey="transport"><TransportConductorsPage /></ProtectedRoute>} />
+              <Route path="transport/routes" element={<ProtectedRoute moduleKey="transport"><TransportRoutesPage /></ProtectedRoute>} />
+              <Route path="transport/stops" element={<ProtectedRoute moduleKey="transport"><TransportStopsPage /></ProtectedRoute>} />
+              <Route path="transport/student-assignments" element={<ProtectedRoute moduleKey="transport"><TransportStudentAssignmentsPage /></ProtectedRoute>} />
+              <Route path="transport/employee-assignments" element={<ProtectedRoute moduleKey="transport"><TransportEmployeeAssignmentsPage /></ProtectedRoute>} />
+              <Route path="transport/fuel" element={<ProtectedRoute moduleKey="transport"><TransportFuelPage /></ProtectedRoute>} />
+              <Route path="transport/maintenance" element={<ProtectedRoute moduleKey="transport"><TransportMaintenancePage /></ProtectedRoute>} />
               <Route path="examination" element={<ProtectedRoute moduleKey="examination"><ExaminationPage /></ProtectedRoute>} />
               <Route path="examination-attendance" element={<ProtectedRoute moduleKey="examination"><ExaminationAttendancePage /></ProtectedRoute>} />
               <Route path="seating-plan" element={<ProtectedRoute moduleKey="examination"><SeatingPlanPage /></ProtectedRoute>} />
               <Route path="invigilator-assignment" element={<ProtectedRoute moduleKey="teacherAssignments"><InvigilatorAssignmentPage /></ProtectedRoute>} />
               <Route path="security" element={<ProtectedRoute moduleKey="security"><SecurityPage /></ProtectedRoute>} />
+              <Route path="security/visitors" element={<ProtectedRoute moduleKey="security"><SecurityVisitorsPage /></ProtectedRoute>} />
+              <Route path="security/gate-pass" element={<ProtectedRoute moduleKey="security"><GatePassPage /></ProtectedRoute>} />
+              <Route path="security/incidents" element={<ProtectedRoute moduleKey="security"><IncidentsPage /></ProtectedRoute>} />
               <Route path="inventory" element={<ProtectedRoute moduleKey="inventory"><InventoryPage /></ProtectedRoute>} />
+              <Route path="inventory/assets" element={<ProtectedRoute moduleKey="inventory"><AssetsPage /></ProtectedRoute>} />
+              <Route path="inventory/categories" element={<ProtectedRoute moduleKey="inventory"><AssetCategoriesPage /></ProtectedRoute>} />
+              <Route path="inventory/stock" element={<ProtectedRoute moduleKey="inventory"><StockPage /></ProtectedRoute>} />
+              <Route path="inventory/vendors" element={<ProtectedRoute moduleKey="inventory"><VendorsPage /></ProtectedRoute>} />
+              <Route path="inventory/purchase-orders" element={<ProtectedRoute moduleKey="inventory"><PurchaseOrdersPage /></ProtectedRoute>} />
+              <Route path="inventory/goods-receipts" element={<ProtectedRoute moduleKey="inventory"><GoodsReceiptsPage /></ProtectedRoute>} />
+              <Route path="inventory/asset-assignments" element={<ProtectedRoute moduleKey="inventory"><AssetAssignmentsPage /></ProtectedRoute>} />
+              <Route path="fee-collection" element={<ProtectedRoute moduleKey="fees"><FeeCollectionPage /></ProtectedRoute>} />
+              <Route path="scholarships" element={<ProtectedRoute moduleKey="fees"><ScholarshipsPage /></ProtectedRoute>} />
+              <Route path="payments" element={<ProtectedRoute moduleKey="fees"><PaymentsPage /></ProtectedRoute>} />
+              <Route path="receipts" element={<ProtectedRoute moduleKey="fees"><ReceiptsPage /></ProtectedRoute>} />
+              <Route path="accounts" element={<ProtectedRoute moduleKey="finance"><AccountsPage /></ProtectedRoute>} />
+              <Route path="income" element={<ProtectedRoute moduleKey="finance"><IncomePage /></ProtectedRoute>} />
+              <Route path="expenses" element={<ProtectedRoute moduleKey="finance"><ExpensesPage /></ProtectedRoute>} />
               <Route path="examination-dashboard" element={<ProtectedRoute moduleKey="reports"><ExaminationDashboardPage /></ProtectedRoute>} />
               <Route path="examination-reports" element={<ProtectedRoute moduleKey="reports"><ExaminationReportsPage /></ProtectedRoute>} />
               <Route path="reports" element={<ProtectedRoute moduleKey="reports"><ExaminationReportsPage /></ProtectedRoute>} />
@@ -153,6 +260,15 @@ function App() {
               <Route path="lecture-attendance" element={<ProtectedRoute moduleKey="lectureAttendance"><LectureAttendancePage /></ProtectedRoute>} />
               <Route path="lms" element={<ProtectedRoute moduleKey="lms"><LMSPage /></ProtectedRoute>} />
               <Route path="leads" element={<ProtectedRoute moduleKey="leads"><LeadsPage /></ProtectedRoute>} />
+              <Route path="marketing" element={<ProtectedRoute moduleKey="leads"><MarketingPage /></ProtectedRoute>} />
+              <Route path="campaigns" element={<ProtectedRoute moduleKey="leads"><CampaignsPage /></ProtectedRoute>} />
+              <Route path="lms/courses" element={<ProtectedRoute moduleKey="lms"><LMSCoursesPage /></ProtectedRoute>} />
+              <Route path="lms/study-material" element={<ProtectedRoute moduleKey="lms"><StudyMaterialPage /></ProtectedRoute>} />
+              <Route path="lms/video-lectures" element={<ProtectedRoute moduleKey="lms"><VideoLecturesPage /></ProtectedRoute>} />
+              <Route path="lms/online-tests" element={<ProtectedRoute moduleKey="lms"><OnlineTestsPage /></ProtectedRoute>} />
+              <Route path="lms/certificates" element={<ProtectedRoute moduleKey="lms"><LMSCertificatesPage /></ProtectedRoute>} />
+              <Route path="analytics" element={<ProtectedRoute moduleKey="reports"><AnalyticsPage /></ProtectedRoute>} />
+              <Route path="notifications" element={<ProtectedRoute moduleKey="notifications"><NotificationsPage /></ProtectedRoute>} />
               <Route path="settings" element={<ProtectedRoute moduleKey="settings"><SettingsPage /></ProtectedRoute>} />
               <Route path="change-password" element={<ChangePasswordPage />} />
               <Route path="permissions" element={<ProtectedRoute moduleKey="permissionMatrix"><PermissionMatrixPage /></ProtectedRoute>} />

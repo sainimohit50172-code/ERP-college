@@ -10,13 +10,13 @@ import {
   useDeleteResource,
 } from '../hooks/useResourceHooks';
 import {
-  FaBus,
   FaDownload,
   FaEdit,
   FaFileImport,
   FaPlus,
   FaTrash,
   FaLink,
+  FaEye,
 } from 'react-icons/fa';
 import { assignVehicle, unassignVehicle } from '../services/driverService.js';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
@@ -322,11 +322,14 @@ export default function TransportManagementPage() {
     vehicle.gpsId,
     vehicle.status,
     <div key={`${vehicle.id}-actions`} className="flex items-center gap-2">
+      <WithPermission moduleKey="transport" action="view">
+        <button aria-label="View" onClick={() => {}} className="h-8 w-8 flex items-center justify-center rounded-full bg-slate-800/80 text-slate-200 hover:bg-slate-700"><FaEye /></button>
+      </WithPermission>
       <WithPermission moduleKey="transport" action="edit">
-        <button onClick={() => { setSelectedRecord(vehicle); setIsEditMode(true); setIsModalOpen(true); reset({ ...vehicle }); }} className="rounded-full border border-white/10 bg-slate-800 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700"><FaEdit /></button>
+        <button aria-label="Edit" onClick={() => { setSelectedRecord(vehicle); setIsEditMode(true); setIsModalOpen(true); reset({ ...vehicle }); }} className="h-8 w-8 flex items-center justify-center rounded-full bg-slate-800/80 text-slate-200 hover:bg-slate-700"><FaEdit /></button>
       </WithPermission>
       <WithPermission moduleKey="transport" action="delete">
-        <button onClick={() => deleteVehicle.mutate(vehicle.id)} className="rounded-full border border-white/10 bg-rose-500/10 px-3 py-2 text-xs text-rose-300 transition hover:bg-rose-500/20"><FaTrash /></button>
+        <button aria-label="Delete" onClick={() => deleteVehicle.mutate(vehicle.id)} className="h-8 w-8 flex items-center justify-center rounded-full bg-rose-500/10 text-rose-300 hover:bg-rose-500/20"><FaTrash /></button>
       </WithPermission>
     </div>,
   ]);
@@ -387,7 +390,7 @@ export default function TransportManagementPage() {
   return (
     <div className="space-y-8">
       <SectionHeader title="Transport management" subtitle="Manage transport operations including vehicles, drivers, routes, fuel, maintenance, and assignments." />
-      <div className="grid gap-6 xl:grid-cols-[1.5fr_0.9fr]">
+      <div className="grid gap-6">
         <div className="grid gap-4">
           <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-4">
             {[
@@ -447,7 +450,15 @@ export default function TransportManagementPage() {
             </div>
             <div className="mt-6">
               <DataTable
-                columns={['Vehicle #', 'Type', 'Name', 'Capacity', 'GPS ID', 'Status', 'Actions']}
+                columns={[
+                  { label: 'Vehicle #', key: 'vehicleNumber', minWidth: '160px' },
+                  { label: 'Type', key: 'type', minWidth: '100px' },
+                  { label: 'Name', key: 'name', minWidth: '160px' },
+                  { label: 'Capacity', key: 'capacity', minWidth: '90px' },
+                  { label: 'GPS ID', key: 'gps', minWidth: '120px' },
+                  { label: 'Status', key: 'status', minWidth: '90px' },
+                  { label: 'Actions', key: 'actions', minWidth: '120px' },
+                ]}
                 rows={vehicleRows}
               />
             </div>
@@ -484,7 +495,15 @@ export default function TransportManagementPage() {
             </div>
             <div className="mt-6">
               <DataTable
-                columns={['Name', 'Employee ID', 'License #', 'Mobile', 'Status', 'Assigned Vehicle', 'Actions']}
+                columns={[
+                  { label: 'Name', key: 'name', minWidth: '180px' },
+                  { label: 'Employee ID', key: 'employeeId', minWidth: '120px' },
+                  { label: 'License #', key: 'license', minWidth: '140px' },
+                  { label: 'Mobile', key: 'mobile', minWidth: '120px' },
+                  { label: 'Status', key: 'status', minWidth: '90px' },
+                  { label: 'Assigned Vehicle', key: 'assigned', minWidth: '140px' },
+                  { label: 'Actions', key: 'actions', minWidth: '120px' },
+                ]}
                 rows={driverRows}
               />
             </div>
@@ -493,29 +512,19 @@ export default function TransportManagementPage() {
             </div>
           </div>
         </div>
-        <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
-          <div className="mb-5 flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-sky-400/10 text-sky-300">
-              <FaBus className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Transport snapshot</p>
-              <h3 className="text-xl font-semibold text-white">Operations dashboard</h3>
-            </div>
+
+        <div className="grid gap-4 md:grid-cols-3">
+          <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
+            <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Route coverage</p>
+            <p className="mt-4 text-3xl font-semibold text-white">{routeCount} routes</p>
           </div>
-          <div className="grid gap-4">
-            <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5">
-              <p className="text-sm text-slate-400">Route coverage</p>
-              <p className="mt-3 text-3xl font-semibold text-white">{routeCount} routes</p>
-            </div>
-            <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5">
-              <p className="text-sm text-slate-400">Stop locations</p>
-              <p className="mt-3 text-3xl font-semibold text-white">{stopCount} stops</p>
-            </div>
-            <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-5">
-              <p className="text-sm text-slate-400">Fuel records</p>
-              <p className="mt-3 text-3xl font-semibold text-white">{fuelEntries.length}</p>
-            </div>
+          <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
+            <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Stop locations</p>
+            <p className="mt-4 text-3xl font-semibold text-white">{stopCount} stops</p>
+          </div>
+          <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
+            <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Fuel records</p>
+            <p className="mt-4 text-3xl font-semibold text-white">{fuelEntries.length}</p>
           </div>
         </div>
       </div>

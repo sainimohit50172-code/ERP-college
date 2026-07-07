@@ -50,7 +50,7 @@ export default function ResultProcessingPage() {
     if (pct >= 55) return 'D';
     return 'F';
   };
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const total = parseInt(data.internal) + parseInt(data.practical) + parseInt(data.external);
     const percentage = ((total / 200) * 100).toFixed(1);
     const grade = getGrade(percentage);
@@ -68,7 +68,7 @@ export default function ResultProcessingPage() {
       status: data.status || 'Pending',
     };
     createResultRecord(servicePayload);
-    createResult.mutate(payload, {
+    await createResult.mutateAsync(payload, {
       onSuccess: () => setNotifications((prev) => [{ id: `NOTIF-${Date.now()}`, title: 'Result processed', date: new Date().toISOString().split('T')[0], details: 'Result processed successfully' }, ...prev]),
       onError: () => setNotifications((prev) => [{ id: `NOTIF-${Date.now()}`, title: 'Process failed', date: new Date().toISOString().split('T')[0], details: 'Could not process result', type: 'error' }, ...prev]),
     });

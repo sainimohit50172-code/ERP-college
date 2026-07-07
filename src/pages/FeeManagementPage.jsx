@@ -237,7 +237,7 @@ export default function FeeManagementPage() {
     }
   };
 
-  const handleSubmitPayment = (data) => {
+  const handleSubmitPayment = async (data) => {
     const student = students.find((item) => item.id === data.studentId);
     const paymentPayload = {
       ...data,
@@ -247,7 +247,7 @@ export default function FeeManagementPage() {
       receiptNumber: data.receiptNumber || undefined,
       paymentId: data.paymentId || undefined,
     };
-    createPaymentMutation.mutate(paymentPayload, {
+    await createPaymentMutation.mutateAsync(paymentPayload, {
       onSuccess: () => {
         reset(defaultPaymentValues);
         setPage(1);

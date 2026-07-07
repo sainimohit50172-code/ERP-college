@@ -9,6 +9,7 @@ import Modal from '../components/ui/Modal.jsx';
 import FormField from '../components/forms/FormField.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
 import { useResourceList, useCreateResource } from '../hooks/useResourceHooks';
+import { calculateInternalMarkSummary } from '../utils/internalMarks.js';
 // internal marks centralized in ERPContext
 const statusOptions = [
   { value: 'All', label: 'All statuses' },
@@ -38,8 +39,17 @@ export default function InternalMarksPage() {
   }, [internalMarks, search, filter]);
   const pageCount = Math.max(1, Math.ceil(filteredMarks.length / pageSize));
   const displayedMarks = filteredMarks.slice((page - 1) * pageSize, page * pageSize);
-  const onSubmit = (data) => {
-    createInternalMark(data);
+  const onSubmit = async (data) => {
+    const summary = calculateInternalMarkSummary(data);
+    await createInternalMark.mutateAsync({
+      ...data,
+      assignment1: Number(data.assignment1 || 0),
+      assignment2: Number(data.assignment2 || 0),
+      midTerm: Number(data.midTerm || 0),
+      presentation: Number(data.presentation || 0),
+      total: summary.total,
+      percentage: summary.percentage,
+    });
     reset({ student: '', rollNo: '', subject: '', assignment1: '0', assignment2: '0', midTerm: '0', presentation: '0', status: 'Pending' });
     setPage(1);
     setIsModalOpen(false);

@@ -12,7 +12,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 import { useResourceList } from '../hooks/useResourceHooks';
 import MetricCard from '../components/ui/MetricCard.jsx';
 import PanelCard from '../components/ui/PanelCard.jsx';
-import { useMemo as useMemoReact } from 'react';
+import { buildDashboardSummary } from '../utils/dashboardStats.js';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend, Filler);
 
@@ -38,22 +38,27 @@ export default function DashboardPage() {
   const { data: financeEntriesData } = useResourceList('journalEntries', { page: 1, pageSize: 200 });
   const financeEntries = financeEntriesData?.items || [];
 
-  const attendancePercent = useMemo(() => {
-    if (!studentAttendance.length) return 0;
-    const presentCount = studentAttendance.filter((entry) => entry.status === 'Present').length;
-    return ((presentCount / studentAttendance.length) * 100).toFixed(1);
-  }, [studentAttendance]);
+  const summary = useMemo(() => buildDashboardSummary({
+    students,
+    teachers,
+    employees,
+    leads,
+    feePayments,
+    attendance: studentAttendance,
+    leaveRequests,
+    holidays,
+    payrollRuns,
+    financeEntries,
+  }), [students, teachers, employees, leads, feePayments, studentAttendance, leaveRequests, holidays, payrollRuns, financeEntries]);
 
-  const collectionAmount = useMemo(() => feePayments.reduce((sum, payment) => sum + payment.amount, 0), [feePayments]);
-
-  const kpis = [
-    { label: 'Students', value: students.length.toLocaleString(), icon: Users, delta: '+6.8%' },
-    { label: 'Teachers', value: teachers.length.toLocaleString(), icon: BookOpen, delta: '+3.1%' },
-    { label: 'Employees', value: employees.length.toLocaleString(), icon: Briefcase, delta: '+4.2%' },
-    { label: 'Admissions', value: leads.filter((lead) => lead.status === 'Admission Confirmed').length.toLocaleString(), icon: GraduationCap, delta: '+8.9%' },
-    { label: 'Revenue', value: `$${collectionAmount.toLocaleString()}`, icon: DollarSign, delta: '+12.4%' },
-    { label: 'Attendance', value: `${attendancePercent}%`, icon: Gauge, delta: '+1.6%' },
-  ];
+  const kpis = summary.kpis.map((item) => ({ ...item, icon: {
+    Users,
+    BookOpen,
+    Briefcase,
+    GraduationCap,
+    DollarSign,
+    Gauge,
+  }[item.icon] || Users }));
 
   const lineData = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
@@ -70,29 +75,10 @@ export default function DashboardPage() {
     ],
   };
 
-  const kpiHighlights = [
-    { title: 'Lead funnel', value: leads.length.toLocaleString(), accent: 'bg-emerald-50 text-emerald-700' },
-    { title: 'Fee collection', value: `$${collectionAmount.toLocaleString()}`, accent: 'bg-slate-50 text-slate-900' },
-    { title: 'Online payments', value: `${feePayments.filter((payment) => payment.method === 'Online').length}`, accent: 'bg-cyan-50 text-cyan-700' },
-  ];
-
-  const leaveSummary = useMemoReact(() => ({
-    pendingApprovals: leaveRequests.filter((request) => ['Submitted', 'Manager Review', 'HR Review'].includes(request.status)).length,
-    upcomingHolidays: holidays.slice(0, 3).length,
-    lowBalanceAlerts: leaveRequests.filter((request) => Number(request.days || 0) >= 3).length,
-  }), [leaveRequests, holidays]);
-
-  const payrollSummary = useMemoReact(() => ({
-    due: payrollRuns.filter((item) => item.status === 'Draft').length,
-    pendingApprovals: payrollRuns.filter((item) => ['Review', 'HR Approval', 'Finance Approval'].includes(item.status)).length,
-    salaryExpense: payrollRuns.reduce((sum, item) => sum + Number(item.netSalary || 0), 0),
-  }), [payrollRuns]);
-
-  const financeSummary = useMemoReact(() => ({
-    pendingEntries: financeEntries.filter((entry) => entry.status !== 'Posted').length,
-    totalDebit: financeEntries.reduce((sum, entry) => sum + Number(entry.debit || 0), 0),
-    totalCredit: financeEntries.reduce((sum, entry) => sum + Number(entry.credit || 0), 0),
-  }), [financeEntries]);
+  const kpiHighlights = summary.kpiHighlights;
+  const leaveSummary = summary.leave;
+  const payrollSummary = summary.payroll;
+  const financeSummary = summary.finance;
 
   return (
     <div className="space-y-4">

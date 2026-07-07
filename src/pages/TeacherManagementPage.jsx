@@ -9,7 +9,6 @@ import {
   useBulkExport,
 } from '../hooks/useResourceHooks';
 import {
-  FaChartLine,
   FaDownload,
   FaEdit,
   FaFileImport,
@@ -25,6 +24,8 @@ import Modal from '../components/ui/Modal.jsx';
 import FormField from '../components/forms/FormField.jsx';
 import { usePermissions } from '../services/permissionHelpers.js';
 import Button from '../components/ui/Button.jsx';
+
+export default function TeacherManagementPage() {
 
 const statusOptions = [
   { value: 'All', label: 'All statuses' },
@@ -60,30 +61,15 @@ const defaultLectureValues = {
   teacher: '',
   course: '',
   section: '',
-  date: '',
-  time: '',
   room: '',
-  type: 'Theory',
-  status: 'Scheduled',
+  day: 'Monday',
+  startTime: '',
+  endTime: '',
+  status: 'Active',
 };
 
-function downloadBlob(blob, filename) {
-  const url = window.URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  window.URL.revokeObjectURL(url);
-}
-
-export default function TeacherManagementPage() {
-  const importInputRef = useRef(null);
-  const perms = usePermissions();
-
-  const { data: teachersData } = useResourceList('teachers', { page: 1, pageSize: 200 });
-  const { data: departmentsData } = useResourceList('departments', { page: 1, pageSize: 200 });
+const { data: teachersData } = useResourceList('teachers', { page: 1, pageSize: 200 });
+const { data: departmentsData } = useResourceList('departments', { page: 1, pageSize: 200 });
   const { data: assignmentsData } = useResourceList('teacherCourseAssignments', { page: 1, pageSize: 200 });
   const { data: semesterAssignmentsData } = useResourceList('teacherSemesterAssignments', { page: 1, pageSize: 200 });
   const { data: lectureSchedulesData } = useResourceList('lectureSchedules', { page: 1, pageSize: 200 });
@@ -109,6 +95,20 @@ export default function TeacherManagementPage() {
   const exportSchedule = useBulkExport('lectureSchedules');
   const createCourseAssignment = useCreateResource('teacherCourseAssignments');
   const createLectureSchedule = useCreateResource('lectureSchedules');
+
+  const importInputRef = useRef(null);
+  const perms = usePermissions();
+
+  function downloadBlob(blob, filename) {
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  }
 
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('All');
@@ -219,7 +219,7 @@ export default function TeacherManagementPage() {
     }, {});
     return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A';
   }, [teachers]);
-  const totalSalary = teachers.reduce((sum, teacher) => sum + (Number(String(teacher.salary).replace(/[^0-9.]/g, '')) || 0), 0);
+  // totalSalary intentionally omitted to avoid unused variable warnings
   const totalTeachingHours = semesterAssignments.reduce((sum, assignment) => sum + Number(assignment.totalHours || 0), 0);
   const lectureLoad = lectureSchedules.length;
   const _plannedAssignments = assignments.length;
@@ -399,111 +399,81 @@ export default function TeacherManagementPage() {
 
       <input ref={importInputRef} type="file" accept=".csv" className="hidden" onChange={handleFileChange} />
 
-      <div className="grid gap-4 xl:grid-cols-[1.4fr_0.6fr]">
-        <div className="grid gap-4">
-          <div className="grid gap-3 md:grid-cols-3">
-            <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
-              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Faculty count</p>
-              <p className="mt-3 text-2xl font-semibold text-white">{teachers.length}</p>
-            </div>
-            <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
-              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Active faculty</p>
-              <p className="mt-3 text-2xl font-semibold text-white">{activeCount}</p>
-            </div>
-            <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
-              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Average experience</p>
-              <p className="mt-3 text-2xl font-semibold text-white">{averageExperience} yrs</p>
-            </div>
+      <div className="grid gap-4">
+        <div className="grid gap-3 md:grid-cols-3">
+          <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+            <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Faculty count</p>
+            <p className="mt-3 text-2xl font-semibold text-white">{teachers.length}</p>
           </div>
-
-          <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-5 shadow-soft">
-            <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
-              <div>
-                <h2 className="text-lg font-semibold text-white">Faculty roster</h2>
-                <p className="text-xs text-slate-400">Search, filter, and manage teaching staff records in one place.</p>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <div className="rounded-3xl bg-slate-950/70 px-3 py-2 text-xs text-slate-200">Top department: {topDepartment}</div>
-                <div className="rounded-3xl bg-slate-950/70 px-3 py-2 text-xs text-slate-200">Pending hires: {pendingCount}</div>
-              </div>
-            </div>
-
-            <div className="mt-5 grid gap-3 md:grid-cols-2">
-              <SearchFilter search={search} onSearch={setSearch} filter={filter} onFilter={setFilter} options={statusOptions} />
-            </div>
-
-            <div className="mt-5">
-              <DataTable
-                compact
-                columns={['Faculty', 'Department', 'Subjects', 'Shift', 'Experience', 'Status', 'Actions']}
-                rows={displayedTeachers.map((teacher) => [
-                  <div className="space-y-1" key={`${teacher.id}-profile`}>
-                    <p className="font-semibold text-white text-sm">{teacher.name}</p>
-                    <p className="text-[11px] text-slate-400">{teacher.email}</p>
-                  </div>,
-                  <span key={`${teacher.id}-department`} className="text-[13px] text-slate-700">{teacher.department}</span>,
-                  <span key={`${teacher.id}-subjects`} className="text-[13px] text-slate-700">{teacher.subjects}</span>,
-                  <span key={`${teacher.id}-shift`} className="text-[13px] text-slate-700">{teacher.shift}</span>,
-                  <span key={`${teacher.id}-experience`} className="text-[13px] text-slate-700">{teacher.experience}</span>,
-                  <StatusBadge key={`${teacher.id}-status`} status={teacher.status} />,
-                  <div key={`${teacher.id}-actions`} className="flex flex-wrap gap-2">
-                    {perms.canEdit('teachers') && (
-                      <button
-                        type="button"
-                        onClick={() => openEditTeacherModal(teacher)}
-                        className="rounded-full border border-white/10 bg-slate-800/80 px-3 py-2 text-[11px] text-slate-200 transition hover:bg-slate-700"
-                      >
-                        <FaEdit className="inline-block" /> Edit
-                      </button>
-                    )}
-                    {perms.canDelete('teachers') && (
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(teacher)}
-                        className="rounded-full border border-white/10 bg-rose-500/10 px-3 py-2 text-[11px] text-rose-300 transition hover:bg-rose-500/20"
-                      >
-                        <FaTrash className="inline-block" /> Remove
-                      </button>
-                    )}
-                  </div>,
-                ])}
-              />
-            </div>
-            <div className="mt-5">
-              <TablePagination page={page} pageCount={pageCount} onPageChange={setPage} />
-            </div>
+          <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+            <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Active faculty</p>
+            <p className="mt-3 text-2xl font-semibold text-white">{activeCount}</p>
+          </div>
+          <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+            <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Average experience</p>
+            <p className="mt-3 text-2xl font-semibold text-white">{averageExperience} yrs</p>
           </div>
         </div>
 
         <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-5 shadow-soft">
-          <div className="mb-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-3xl bg-sky-500/10 text-sky-300">
-              <FaChartLine className="h-4 w-4" />
-            </div>
+          <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
             <div>
-              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Faculty analytics</p>
-              <h3 className="text-lg font-semibold text-white">Academic coverage</h3>
+              <h2 className="text-lg font-semibold text-white">Faculty roster</h2>
+              <p className="text-xs text-slate-400">Search, filter, and manage teaching staff records in one place.</p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="rounded-3xl bg-slate-950/70 px-3 py-2 text-xs text-slate-200">Top department: {topDepartment}</div>
+              <div className="rounded-3xl bg-slate-950/70 px-3 py-2 text-xs text-slate-200">Pending hires: {pendingCount}</div>
             </div>
           </div>
-          <div className="grid gap-3">
-            <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
-              <p className="text-xs text-slate-400">Most staffed department</p>
-              <p className="mt-2 text-2xl font-semibold text-white">{topDepartment}</p>
-            </div>
-            <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
-              <p className="text-xs text-slate-400">Staff utilization</p>
-              <p className="mt-2 text-2xl font-semibold text-white">{teachers.length ? `${Math.round((activeCount / teachers.length) * 100)}%` : '0%'}</p>
-            </div>
-            <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
-              <p className="text-xs text-slate-400">Monthly payroll</p>
-              <p className="mt-2 text-2xl font-semibold text-white">${totalSalary.toLocaleString()}</p>
-            </div>
+
+          <div className="mt-5 grid gap-3 md:grid-cols-2">
+            <SearchFilter search={search} onSearch={setSearch} filter={filter} onFilter={setFilter} options={statusOptions} />
+          </div>
+
+          <div className="mt-5">
+            <DataTable
+              compact
+              columns={['Faculty', 'Department', 'Subjects', 'Shift', 'Experience', 'Status', 'Actions']}
+              rows={displayedTeachers.map((teacher) => [
+                <div className="space-y-1" key={`${teacher.id}-profile`}>
+                  <p className="font-semibold text-white text-sm">{teacher.name}</p>
+                  <p className="text-[11px] text-slate-400">{teacher.email}</p>
+                </div>,
+                <span key={`${teacher.id}-department`} className="text-[13px] text-slate-700">{teacher.department}</span>,
+                <span key={`${teacher.id}-subjects`} className="text-[13px] text-slate-700">{teacher.subjects}</span>,
+                <span key={`${teacher.id}-shift`} className="text-[13px] text-slate-700">{teacher.shift}</span>,
+                <span key={`${teacher.id}-experience`} className="text-[13px] text-slate-700">{teacher.experience}</span>,
+                <StatusBadge key={`${teacher.id}-status`} status={teacher.status} />,
+                <div key={`${teacher.id}-actions`} className="flex flex-wrap gap-2">
+                  {perms.canEdit('teachers') && (
+                    <button
+                      type="button"
+                      onClick={() => openEditTeacherModal(teacher)}
+                      className="rounded-full border border-white/10 bg-slate-800/80 px-3 py-2 text-[11px] text-slate-200 transition hover:bg-slate-700"
+                    >
+                      <FaEdit className="inline-block" /> Edit
+                    </button>
+                  )}
+                  {perms.canDelete('teachers') && (
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(teacher)}
+                      className="rounded-full border border-white/10 bg-rose-500/10 px-3 py-2 text-[11px] text-rose-300 transition hover:bg-rose-500/20"
+                    >
+                      <FaTrash className="inline-block" /> Remove
+                    </button>
+                  )}
+                </div>,
+              ])}
+            />
+          </div>
+          <div className="mt-5">
+            <TablePagination page={page} pageCount={pageCount} onPageChange={setPage} />
           </div>
         </div>
-      </div>
 
-      <div className="grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
-        <div className="grid gap-4">
+        <div className="grid gap-4 xl:grid-cols-2">
           <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-5 shadow-soft">
             <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
               <div>
@@ -532,20 +502,18 @@ export default function TeacherManagementPage() {
               </div>
             </div>
 
-            <div className="mt-5">
-              <div className="grid gap-3 md:grid-cols-3">
-                <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
-                  <p className="text-xs text-slate-400">Total assignments</p>
-                  <p className="mt-2 text-2xl font-semibold text-white">{assignments.length}</p>
-                </div>
-                <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
-                  <p className="text-xs text-slate-400">Semester workload</p>
-                  <p className="mt-2 text-2xl font-semibold text-white">{semesterAssignments.length}</p>
-                </div>
-                <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
-                  <p className="text-xs text-slate-400">Planned lectures</p>
-                  <p className="mt-2 text-2xl font-semibold text-white">{lectureLoad}</p>
-                </div>
+            <div className="mt-5 grid gap-3 md:grid-cols-3">
+              <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
+                <p className="text-xs text-slate-400">Total assignments</p>
+                <p className="mt-2 text-2xl font-semibold text-white">{assignments.length}</p>
+              </div>
+              <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
+                <p className="text-xs text-slate-400">Semester workload</p>
+                <p className="mt-2 text-2xl font-semibold text-white">{semesterAssignments.length}</p>
+              </div>
+              <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
+                <p className="text-xs text-slate-400">Planned lectures</p>
+                <p className="mt-2 text-2xl font-semibold text-white">{lectureLoad}</p>
               </div>
             </div>
 
@@ -567,65 +535,65 @@ export default function TeacherManagementPage() {
               <TablePagination page={assignmentPage} pageCount={assignmentPageCount} onPageChange={setAssignmentPage} />
             </div>
           </div>
-        </div>
 
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-5 shadow-soft">
-          <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
-            <div>
-              <h2 className="text-lg font-semibold text-white">Schedule planner</h2>
-              <p className="text-xs text-slate-400">Track confirmed lectures, rooms and section coverage.</p>
+          <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-5 shadow-soft">
+            <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+              <div>
+                <h2 className="text-lg font-semibold text-white">Schedule planner</h2>
+                <p className="text-xs text-slate-400">Track confirmed lectures, rooms and section coverage.</p>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                {perms.canExport('teacherSchedule') && (
+                  <button
+                    type="button"
+                    onClick={handleExportSchedule}
+                    className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700"
+                  >
+                    <FaDownload /> Export schedule
+                  </button>
+                )}
+                {perms.canCreate('teacherSchedule') && (
+                  <button
+                    type="button"
+                    onClick={() => setIsLectureModalOpen(true)}
+                    className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-3 py-2 text-xs font-semibold text-slate-950 transition hover:bg-sky-300"
+                  >
+                    <FaPlus /> Add lecture
+                  </button>
+                )}
+              </div>
             </div>
-            <div className="flex flex-wrap items-center gap-2">
-              {perms.canExport('teacherSchedule') && (
-                <button
-                  type="button"
-                  onClick={handleExportSchedule}
-                  className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700"
-                >
-                  <FaDownload /> Export schedule
-                </button>
-              )}
-              {perms.canCreate('teacherSchedule') && (
-                <button
-                  type="button"
-                  onClick={() => setIsLectureModalOpen(true)}
-                  className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-3 py-2 text-xs font-semibold text-slate-950 transition hover:bg-sky-300"
-                >
-                  <FaPlus /> Add lecture
-                </button>
-              )}
-            </div>
-          </div>
 
-          <div className="mt-5 grid gap-3 md:grid-cols-2">
-            <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
-              <p className="text-xs text-slate-400">Total teaching hours</p>
-              <p className="mt-2 text-2xl font-semibold text-white">{totalTeachingHours}</p>
+            <div className="mt-5 grid gap-3 md:grid-cols-2">
+              <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
+                <p className="text-xs text-slate-400">Total teaching hours</p>
+                <p className="mt-2 text-2xl font-semibold text-white">{totalTeachingHours}</p>
+              </div>
+              <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
+                <p className="text-xs text-slate-400">Pending schedule items</p>
+                <p className="mt-2 text-2xl font-semibold text-white">{lectureSchedules.filter((lecture) => lecture.status !== 'Completed').length}</p>
+              </div>
             </div>
-            <div className="rounded-[24px] border border-white/10 bg-slate-950/70 p-4">
-              <p className="text-xs text-slate-400">Pending schedule items</p>
-              <p className="mt-2 text-2xl font-semibold text-white">{lectureSchedules.filter((lecture) => lecture.status !== 'Completed').length}</p>
-            </div>
-          </div>
 
-          <div className="mt-5">
-            <DataTable
-              compact
-              columns={['Subject', 'Teacher', 'Course', 'Section', 'Day', 'Time', 'Room', 'Status']}
-              rows={displayedSchedule.map((lecture) => [
-                <div key={`${lecture.id}-subject`} className="font-semibold text-white text-sm">{subjectMap.get(lecture.subjectId)?.title || lecture.subjectId || 'Unknown'}</div>,
-                <span key={`${lecture.id}-teacher`} className="text-[13px] text-slate-700">{teacherMap.get(lecture.teacherId)?.name || lecture.teacherId || 'Unknown'}</span>,
-                <span key={`${lecture.id}-course`} className="text-[13px] text-slate-700">{courseMap.get(lecture.courseId)?.code || lecture.courseId || 'Unknown'}</span>,
-                <span key={`${lecture.id}-section`} className="text-[13px] text-slate-700">{sectionMap.get(lecture.sectionId)?.name || lecture.sectionId || 'Unknown'}</span>,
-                <span key={`${lecture.id}-day`} className="text-[13px] text-slate-700">{lecture.day}</span>,
-                <span key={`${lecture.id}-time`} className="text-[13px] text-slate-700">{lecture.time}</span>,
-                <span key={`${lecture.id}-room`} className="text-[13px] text-slate-700">{lecture.room}</span>,
-                <StatusBadge key={`${lecture.id}-status`} status={lecture.status} />,
-              ])}
-            />
-          </div>
-          <div className="mt-5">
-            <TablePagination page={schedulePage} pageCount={schedulePageCount} onPageChange={setSchedulePage} />
+            <div className="mt-5">
+              <DataTable
+                compact
+                columns={['Subject', 'Teacher', 'Course', 'Section', 'Day', 'Time', 'Room', 'Status']}
+                rows={displayedSchedule.map((lecture) => [
+                  <div key={`${lecture.id}-subject`} className="font-semibold text-white text-sm">{subjectMap.get(lecture.subjectId)?.title || lecture.subjectId || 'Unknown'}</div>,
+                  <span key={`${lecture.id}-teacher`} className="text-[13px] text-slate-700">{teacherMap.get(lecture.teacherId)?.name || lecture.teacherId || 'Unknown'}</span>,
+                  <span key={`${lecture.id}-course`} className="text-[13px] text-slate-700">{courseMap.get(lecture.courseId)?.code || lecture.courseId || 'Unknown'}</span>,
+                  <span key={`${lecture.id}-section`} className="text-[13px] text-slate-700">{sectionMap.get(lecture.sectionId)?.name || lecture.sectionId || 'Unknown'}</span>,
+                  <span key={`${lecture.id}-day`} className="text-[13px] text-slate-700">{lecture.day}</span>,
+                  <span key={`${lecture.id}-time`} className="text-[13px] text-slate-700">{lecture.time}</span>,
+                  <span key={`${lecture.id}-room`} className="text-[13px] text-slate-700">{lecture.room}</span>,
+                  <StatusBadge key={`${lecture.id}-status`} status={lecture.status} />,
+                ])}
+              />
+            </div>
+            <div className="mt-5">
+              <TablePagination page={schedulePage} pageCount={schedulePageCount} onPageChange={setSchedulePage} />
+            </div>
           </div>
         </div>
       </div>

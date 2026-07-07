@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaEye, FaEdit, FaTrash } from 'react-icons/fa';
 import { useResourceList } from '../hooks/useResourceHooks';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
 import WithPermission from '../components/auth/WithPermission.jsx';
@@ -202,7 +202,15 @@ export default function LibraryManagementPage() {
         </div>
         <div className="mt-6">
           <DataTable
-            columns={['Title', 'ISBN', 'Barcode', 'Copies', 'Available', 'Status', 'Actions']}
+            columns={[
+              { label: 'Title', key: 'title', minWidth: '220px' },
+              { label: 'ISBN', key: 'isbn', minWidth: '140px' },
+              { label: 'Barcode', key: 'barcode', minWidth: '140px' },
+              { label: 'Copies', key: 'copies', minWidth: '90px' },
+              { label: 'Available', key: 'available', minWidth: '90px' },
+              { label: 'Status', key: 'status', minWidth: '90px' },
+              { label: 'Actions', key: 'actions', minWidth: '120px' },
+            ]}
             rows={displayedBooks.map((book) => [
               <div key={book.id} className="space-y-1">
                 <p className="font-semibold text-white">{book.title}</p>
@@ -213,11 +221,11 @@ export default function LibraryManagementPage() {
               book.copies || 1,
               book.availableCopies || 0,
               <StatusBadge key={`${book.id}-status`} status={book.status || 'Available'} />,
-              <div key={`${book.id}-actions`} className="flex flex-wrap gap-2">
-                <button onClick={() => openIssueModal(book)} className="rounded-3xl bg-sky-400 px-3 py-2 text-xs font-semibold text-slate-950">Issue</button>
-                <button onClick={() => onReturnBook(book)} className="rounded-3xl bg-emerald-400 px-3 py-2 text-xs font-semibold text-slate-950">Return</button>
-                <button onClick={() => onCollectFine(book)} className="rounded-3xl bg-amber-400 px-3 py-2 text-xs font-semibold text-slate-950">Fine</button>
-                <button onClick={() => onDeleteBook(book)} className="rounded-3xl bg-rose-400 px-3 py-2 text-xs font-semibold text-slate-950">Delete</button>
+              <div key={`${book.id}-actions`} className="flex items-center gap-2">
+                <button aria-label="View" onClick={() => openIssueModal(book)} className="h-8 w-8 flex items-center justify-center rounded-full bg-sky-400 text-slate-950 hover:opacity-90"><FaEye /></button>
+                <button aria-label="Return" onClick={() => onReturnBook(book)} className="h-8 w-8 flex items-center justify-center rounded-full bg-emerald-400 text-slate-950 hover:opacity-90"><FaEdit /></button>
+                <button aria-label="Fine" onClick={() => onCollectFine(book)} className="h-8 w-8 flex items-center justify-center rounded-full bg-amber-400 text-slate-950 hover:opacity-90"><FaEdit /></button>
+                <button aria-label="Delete" onClick={() => onDeleteBook(book)} className="h-8 w-8 flex items-center justify-center rounded-full bg-rose-400 text-slate-950 hover:opacity-90"><FaTrash /></button>
               </div>,
             ])}
           />

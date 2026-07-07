@@ -52,7 +52,9 @@ export function ERPProvider({ children }) {
   const login = (user) => setCurrentUser(user);
 
   const [theme, setTheme] = useState('light');
+  // `sidebarOpen` controls mobile drawer; `sidebarCollapsed` controls desktop collapsed state
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
   const [notifications, setNotifications] = useState(() => notificationsService.getNotifications());
   const [permissions, setPermissions] = useState([]);
 
@@ -105,6 +107,8 @@ export function ERPProvider({ children }) {
         theme,
         setTheme,
         sidebarOpen,
+        sidebarCollapsed,
+        setSidebarCollapsed,
         setSidebarOpen,
         notifications,
         setNotifications,

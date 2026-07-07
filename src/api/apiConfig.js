@@ -10,6 +10,8 @@ export function resolveApiBaseUrl(env = {}) {
 }
 
 export function getApiBaseUrl() {
-  const runtimeEnv = (typeof import.meta !== 'undefined' && import.meta && import.meta.env) ? import.meta.env : (typeof process !== 'undefined' ? process.env : {});
+  const runtimeEnv = (typeof import.meta !== 'undefined' && import.meta && import.meta.env)
+    ? import.meta.env
+    : (typeof globalThis !== 'undefined' && globalThis.process ? globalThis.process.env : {});
   return resolveApiBaseUrl(runtimeEnv || {});
 }

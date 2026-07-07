@@ -8,6 +8,7 @@ import {
   useCreateResource,
   useResourceList,
 } from '../hooks/useResourceHooks';
+import { FaEye } from 'react-icons/fa';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
 import SearchFilter from '../components/forms/SearchFilter.jsx';
 import DataTable from '../components/ui/DataTable.jsx';
@@ -342,7 +343,15 @@ export default function HostelManagementPage() {
 
         <div className="mt-6">
           <DataTable
-            columns={['Hostel', 'Floor', 'Room', 'Capacity', 'Status', 'Occupied Beds', 'Actions']}
+            columns={[
+              { label: 'Hostel', key: 'hostel', minWidth: '180px' },
+              { label: 'Floor', key: 'floor', minWidth: '80px' },
+              { label: 'Room', key: 'room', minWidth: '120px' },
+              { label: 'Capacity', key: 'capacity', minWidth: '90px' },
+              { label: 'Status', key: 'status', minWidth: '90px' },
+              { label: 'Occupied Beds', key: 'occupied', minWidth: '120px' },
+              { label: 'Actions', key: 'actions', minWidth: '120px' },
+            ]}
             rows={displayedRooms.length > 0 ? displayedRooms.map((room) => [
               <div key={room.id} className="space-y-1">
                 <p className="font-semibold text-white">{hostelMap.get(room.hostelId) || room.hostelId}</p>
@@ -353,9 +362,9 @@ export default function HostelManagementPage() {
               room.capacity || '0',
               <StatusBadge key={`${room.id}-status`} status={room.status || 'Available'} />,
               `${room.occupiedBeds ?? Math.min(room.capacity || 0, 0)}/${room.capacity || 0}`,
-              <div key={`${room.id}-actions`} className="flex flex-wrap gap-2">
-                <button type="button" onClick={() => setIsAllocationModalOpen(true)} className="rounded-3xl bg-slate-800/80 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700">Allot</button>
-                <button type="button" onClick={handlePrint} className="rounded-3xl bg-slate-800/80 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700">Slip</button>
+              <div key={`${room.id}-actions`} className="flex items-center gap-2">
+                <button type="button" onClick={() => setIsAllocationModalOpen(true)} aria-label="Allot" className="h-8 w-8 flex items-center justify-center rounded-full bg-slate-800/80 text-slate-200 hover:bg-slate-700"><FaEye /></button>
+                <button type="button" onClick={handlePrint} aria-label="Slip" className="h-8 w-8 flex items-center justify-center rounded-full bg-slate-800/80 text-slate-200 hover:bg-slate-700">🏷</button>
               </div>,
             ]) : [[
               <div key="empty" className="col-span-7 py-10 text-center text-slate-400">No hostel rooms found. Add a room or import room records to get started.</div>,

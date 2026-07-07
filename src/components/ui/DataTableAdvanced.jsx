@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { ChevronDown, ChevronUp, Printer, Download } from 'lucide-react';
 import { useReactToPrint } from 'react-to-print';
 import { CSVLink } from 'react-csv';
@@ -55,8 +55,8 @@ export default function DataTableAdvanced({
     return sortedRows.slice(start, start + pageSize);
   }, [currentPage, pageSize, sortedRows]);
 
-  const tableRef = useState(null)[0];
-  const handlePrint = useReactToPrint({ content: () => tableRef });
+  const tableRef = useRef(null);
+  const handlePrint = useReactToPrint({ content: () => tableRef.current });
 
   const csvData = useMemo(() => buildCsvData(columns, filteredRows), [columns, filteredRows]);
 
@@ -127,11 +127,11 @@ export default function DataTableAdvanced({
         <EmptyState title="No matching records" description="Try a different search term or change the filters." />
       ) : (
         <div className="overflow-x-auto rounded-[20px] border border-slate-200/70">
-          <table ref={tableRef} className="min-w-full table-auto text-left text-sm text-slate-900">
+          <table ref={tableRef} className="w-full table-fixed text-left text-sm text-slate-900">
             <thead className="bg-slate-100 text-slate-600">
               <tr>
                 {columns.map((column) => (
-                  <th key={column.key} className="whitespace-nowrap px-4 py-3 font-semibold uppercase tracking-[0.18em] text-slate-600">
+                  <th key={column.key} className="min-w-[140px] px-4 py-3 font-semibold uppercase tracking-[0.18em] text-slate-600 text-left">
                     <button type="button" className="inline-flex items-center gap-2" onClick={() => toggleSort(column.key)}>
                       <span>{column.label}</span>
                       {sortColumn === column.key ? (
@@ -146,7 +146,7 @@ export default function DataTableAdvanced({
               {paginatedRows.map((row, index) => (
                 <tr key={`row-${index}`} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
                   {columns.map((column) => (
-                    <td key={`${index}-${column.key}`} className="whitespace-nowrap px-4 py-3 align-top text-slate-700">
+                  <td key={`${index}-${column.key}`} className="break-words px-4 py-3 align-top text-slate-700">
                       {column.render ? column.render(row[column.key], row) : row[column.key] ?? ''}
                     </td>
                   ))}

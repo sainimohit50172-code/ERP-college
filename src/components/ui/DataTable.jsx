@@ -6,7 +6,7 @@ import LoadingOverlay from './LoadingOverlay.jsx';
 function normalizeColumns(columns) {
   return columns.map((column, index) => {
     if (typeof column === 'string') {
-      return { label: column, key: String(index), sortable: false };
+      return { label: column, key: String(index), sortable: false, minWidth: '150px' };
     }
 
     return {
@@ -14,6 +14,7 @@ function normalizeColumns(columns) {
       key: String(column.key ?? index),
       sortable: column.sortable !== false,
       render: column.render,
+      minWidth: column.minWidth || '150px',
     };
   });
 }
@@ -171,11 +172,11 @@ export default function DataTable({ columns, rows, compact = false, loading = fa
         <EmptyState title="No matching records" description="Try adjusting your search query or changing the page size." />
       ) : (
         <div className="overflow-x-auto rounded-[20px] border border-slate-200/70">
-          <table className="min-w-full table-auto text-left text-sm text-slate-900">
+          <table className="w-full table-fixed text-left text-sm text-slate-900">
             <thead className="bg-slate-100 text-slate-600">
               <tr>
                 {columnsDefinition.map((column) => (
-                  <th key={column.key} className="whitespace-nowrap px-4 py-3 font-semibold uppercase tracking-[0.18em] text-slate-600">
+                  <th key={column.key} style={{ minWidth: column.minWidth }} className="px-4 py-3 font-semibold uppercase tracking-[0.18em] text-slate-600 text-left">
                     <button
                       type="button"
                       onClick={() => column.sortable && toggleSort(column.key)}
@@ -194,7 +195,7 @@ export default function DataTable({ columns, rows, compact = false, loading = fa
               {paginatedRows.map((row, rowIndex) => (
                 <tr key={`row-${rowIndex}`} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
                   {columnsDefinition.map((column, columnIndex) => (
-                    <td key={`${rowIndex}-${column.key}`} className="whitespace-nowrap px-4 py-3 align-top text-slate-700">
+                    <td key={`${rowIndex}-${column.key}`} className="break-words px-4 py-3 align-top text-slate-700">
                       {column.render ? column.render(getCellValue(row, column, columnIndex), row) : getCellValue(row, column, columnIndex)}
                     </td>
                   ))}

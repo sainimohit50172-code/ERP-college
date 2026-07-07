@@ -10,13 +10,13 @@ import {
   useBulkExport,
 } from '../hooks/useResourceHooks';
 import {
-  FaCalendarCheck,
   FaChartLine,
   FaDownload,
   FaEdit,
   FaFileImport,
   FaPlus,
   FaTrash,
+  FaEye,
 } from 'react-icons/fa';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
 import WithPermission from '../components/auth/WithPermission.jsx';
@@ -125,7 +125,6 @@ export default function EmployeeManagementPage() {
   const activeEmployees = employees.filter((employee) => employee.status === 'Active').length;
   const onLeaveEmployees = employees.filter((employee) => employee.status === 'On Leave').length;
   const dayShiftCount = employees.filter((employee) => employee.shift === 'Day').length;
-  const nightShiftCount = employees.filter((employee) => employee.shift === 'Night').length;
   const totalPayroll = employees.reduce((sum, employee) => sum + (Number(String(employee.salary).replace(/[^0-9.]/g, '')) || 0), 0);
   const topDepartment = useMemo(() => {
     const counts = employees.reduce((acc, employee) => {
@@ -278,115 +277,100 @@ export default function EmployeeManagementPage() {
         }
       />
       <input ref={importInputRef} type="file" accept=".csv" className="hidden" onChange={handleFileChange} />
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(280px,0.3fr)]">
-        <div className="grid gap-4">
-          <div className="grid gap-3 md:grid-cols-3">
-            <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
-              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Total employees</p>
-              <p className="mt-3 text-2xl font-semibold text-white">{employees.length}</p>
-            </div>
-            <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
-              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Day shift</p>
-              <p className="mt-3 text-2xl font-semibold text-white">{dayShiftCount}</p>
-            </div>
-            <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
-              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Payroll burn</p>
-              <p className="mt-3 text-2xl font-semibold text-white">${totalPayroll.toLocaleString()}</p>
-            </div>
+      <div className="grid gap-4">
+        <div className="grid gap-3 md:grid-cols-4">
+          <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+            <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Total employees</p>
+            <p className="mt-3 text-2xl font-semibold text-white">{employees.length}</p>
           </div>
-          <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
-            <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
-              <div>
-                <h2 className="text-xl font-semibold text-white">Workforce roster</h2>
-                <p className="text-sm text-slate-400">Search personnel records, filter by status, and manage role assignments.</p>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <div className="rounded-2xl bg-slate-950/70 px-3 py-2 text-sm text-slate-200">Top department: {topDepartment}</div>
-                <div className="rounded-2xl bg-slate-950/70 px-3 py-2 text-sm text-slate-200">On leave: {onLeaveEmployees}</div>
-              </div>
-            </div>
-            <div className="mt-4 grid gap-3 md:grid-cols-2">
-              <SearchFilter
-                search={searchRoster}
-                onSearch={setSearchRoster}
-                filter={filterRoster}
-                onFilter={setFilterRoster}
-                options={statusOptions}
-              />
-            </div>
-            <div className="mt-4">
-              <DataTable
-                columns={['Employee', 'Department', 'Designation', 'Shift', 'Salary', 'Status', 'Actions']}
-                rows={displayedEmployees.map((employee) => [
-                  <div className="space-y-1" key={employee.id}>
-                    <p className="font-semibold text-white">{employee.name}</p>
-                    <p className="text-sm text-slate-400">{employee.email}</p>
-                  </div>,
-                  employee.department,
-                  employee.designation,
-                  employee.shift,
-                  employee.salary,
-                  <StatusBadge key={`${employee.id}-status`} status={employee.status} />,
-                  <div key={`${employee.id}-actions`} className="flex flex-wrap gap-2">
-                    <WithPermission moduleKey="employees" action="view">
-                      <button
-                        type="button"
-                        onClick={() => navigate(`/employees/${employee.id}`)}
-                        className="rounded-full border border-white/10 bg-slate-800/80 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700"
-                      >
-                        View Profile
-                      </button>
-                    </WithPermission>
-                    <WithPermission moduleKey="employees" action="edit">
-                      <button
-                        type="button"
-                        onClick={() => openEditEmployeeModal(employee)}
-                        className="rounded-full border border-white/10 bg-slate-800/80 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700"
-                      >
-                        <FaEdit className="inline-block" /> Edit
-                      </button>
-                    </WithPermission>
-                    <WithPermission moduleKey="employees" action="delete">
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(employee)}
-                        className="rounded-full border border-white/10 bg-rose-500/10 px-3 py-2 text-xs text-rose-300 transition hover:bg-rose-500/20"
-                      >
-                        <FaTrash className="inline-block" /> Remove
-                      </button>
-                    </WithPermission>
-                  </div>,
-                ])}
-              />
-            </div>
-            <div className="mt-4">
-              <TablePagination page={page} pageCount={pageCount} onPageChange={setPage} />
-            </div>
+          <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+            <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Day shift</p>
+            <p className="mt-3 text-2xl font-semibold text-white">{dayShiftCount}</p>
+          </div>
+          <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+            <p className="text-xs uppercase tracking-[0.24em] text-slate-400">On leave</p>
+            <p className="mt-3 text-2xl font-semibold text-white">{onLeaveEmployees}</p>
+          </div>
+          <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+            <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Payroll burn</p>
+            <p className="mt-3 text-2xl font-semibold text-white">${totalPayroll.toLocaleString()}</p>
           </div>
         </div>
         <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
-          <div className="mb-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-300">
-              <FaCalendarCheck className="h-4 w-4" />
-            </div>
+          <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
             <div>
-              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">HR pulse</p>
-              <h3 className="text-lg font-semibold text-white">Employee health</h3>
+              <h2 className="text-xl font-semibold text-white">Workforce roster</h2>
+              <p className="text-sm text-slate-400">Search personnel records, filter by status, and manage role assignments.</p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="rounded-2xl bg-slate-950/70 px-3 py-2 text-sm text-slate-200">Top department: {topDepartment}</div>
+              <div className="rounded-2xl bg-slate-950/70 px-3 py-2 text-sm text-slate-200">On leave: {onLeaveEmployees}</div>
             </div>
           </div>
-          <div className="grid gap-3">
-            <div className="rounded-[22px] border border-white/10 bg-slate-950/70 p-4">
-              <p className="text-sm text-slate-400">Attendance compliance</p>
-              <p className="mt-2 text-2xl font-semibold text-white">{employees.length ? `${Math.round((activeEmployees / employees.length) * 100)}%` : '0%'}</p>
-            </div>
-            <div className="rounded-[22px] border border-white/10 bg-slate-950/70 p-4">
-              <p className="text-sm text-slate-400">Contract renewals due</p>
-              <p className="mt-2 text-2xl font-semibold text-white">2</p>
-            </div>
-            <div className="rounded-[22px] border border-white/10 bg-slate-950/70 p-4">
-              <p className="text-sm text-slate-400">Night shift coverage</p>
-              <p className="mt-2 text-2xl font-semibold text-white">{nightShiftCount}</p>
-            </div>
+          <div className="mt-4 grid gap-3 md:grid-cols-2">
+            <SearchFilter
+              search={searchRoster}
+              onSearch={setSearchRoster}
+              filter={filterRoster}
+              onFilter={setFilterRoster}
+              options={statusOptions}
+            />
+          </div>
+          <div className="mt-4">
+            <DataTable
+              columns={[
+                { label: 'Employee', key: 'employee', minWidth: '180px' },
+                { label: 'Email', key: 'email', minWidth: '200px' },
+                { label: 'Department', key: 'department', minWidth: '130px' },
+                { label: 'Designation', key: 'designation', minWidth: '140px' },
+                { label: 'Status', key: 'status', minWidth: '90px' },
+                { label: 'Actions', key: 'actions', minWidth: '120px' },
+              ]}
+              rows={displayedEmployees.map((employee) => [
+                <div className="space-y-1" key={employee.id}>
+                  <p className="font-semibold text-white">{employee.name}</p>
+                  <p className="text-sm text-slate-400">{employee.email}</p>
+                </div>,
+                employee.department,
+                employee.designation,
+                <StatusBadge key={`${employee.id}-status`} status={employee.status} />,
+                <div key={`${employee.id}-actions`} className="flex items-center gap-2">
+                  <WithPermission moduleKey="employees" action="view">
+                    <button
+                      type="button"
+                      onClick={() => navigate(`/employees/${employee.id}`)}
+                      aria-label="View"
+                      className="h-8 w-8 flex items-center justify-center rounded-full bg-slate-800/80 text-slate-200 hover:bg-slate-700"
+                    >
+                      <FaEye />
+                    </button>
+                  </WithPermission>
+                  <WithPermission moduleKey="employees" action="edit">
+                    <button
+                      type="button"
+                      onClick={() => openEditEmployeeModal(employee)}
+                      aria-label="Edit"
+                      className="h-8 w-8 flex items-center justify-center rounded-full bg-slate-800/80 text-slate-200 hover:bg-slate-700"
+                    >
+                      <FaEdit />
+                    </button>
+                  </WithPermission>
+                  <WithPermission moduleKey="employees" action="delete">
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(employee)}
+                      aria-label="Delete"
+                      className="h-8 w-8 flex items-center justify-center rounded-full bg-rose-500/10 text-rose-300 hover:bg-rose-500/20"
+                    >
+                      <FaTrash />
+                    </button>
+                  </WithPermission>
+                </div>,
+              ])}
+            />
+          </div>
+          <div className="mt-4">
+            <TablePagination page={page} pageCount={pageCount} onPageChange={setPage} />
           </div>
         </div>
       </div>
