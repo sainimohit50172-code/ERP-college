@@ -75,7 +75,8 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
   const handleEmployeePortalClick = () => {
     if (employeePortalRef.current) {
       const rect = employeePortalRef.current.getBoundingClientRect();
-      setDropdownTop(rect.top);
+      const topPosition = Math.max(rect.top, 56);
+      setDropdownTop(topPosition);
     }
     setShowEmployeePortal((prev) => !prev);
   };
@@ -177,7 +178,7 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
             style={{
               position: 'fixed',
               left: 200,
-              top: dropdownTop,
+              top: Math.max(dropdownTop, 56) + 'px',
               width: 280,
               zIndex: 200,
               background: 'white',
