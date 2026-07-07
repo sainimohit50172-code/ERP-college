@@ -1,4 +1,5 @@
 import { useLocation, Link } from 'react-router-dom';
+import ReactDOM from 'react-dom';
 import {
   Home,
   Briefcase,
@@ -22,8 +23,9 @@ import {
   CheckSquare2,
   Share2,
   HelpCircle,
+  Star,
 } from 'lucide-react';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 const MENU_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', to: '/', icon: Home },
@@ -53,6 +55,43 @@ const MENU_ITEMS = [
 
 export default function Sidebar({ isOpen = false, onClose = () => {} }) {
   const location = useLocation();
+  const [showEmployeePortal, setShowEmployeePortal] = useState(false);
+  const employeePortalRef = useRef(null);
+  const [dropdownTop, setDropdownTop] = useState(0);
+
+  const EMPLOYEE_PORTAL_ITEMS = [
+    { id: 'profile', label: 'Profile', to: '/employees/profile' },
+    { id: 'my-leaves', label: 'My Leaves', to: '/employees/leaves' },
+    { id: 'salary-slip', label: 'Salary Slip', to: '/employees/salary-slip' },
+    { id: 'attendance-regularization', label: 'Attendance Regularization', to: '/employees/attendance-regularization' },
+    { id: 'issued-books', label: 'Issued Books', to: '/employees/issued-books' },
+    { id: 'user-preference', label: 'User Preference', to: '/employees/user-preference' },
+    { id: 'employee-announcement', label: 'Employee Announcement', to: '/employees/announcements' },
+    { id: 'webopac', label: 'WebOPAC', to: '/employees/webopac' },
+    { id: 'individual-faculty-report', label: 'Individual Faculty Report', to: '/employees/faculty-report' },
+    { id: 'feedback-summary-report', label: 'Feedback Summary Report (New)', to: '/employees/feedback-summary' },
+  ];
+
+  const handleEmployeePortalClick = () => {
+    if (employeePortalRef.current) {
+      const rect = employeePortalRef.current.getBoundingClientRect();
+      setDropdownTop(rect.top);
+    }
+    setShowEmployeePortal((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        !e.target.closest('.employee-portal-dropdown') &&
+        !e.target.closest('.employee-portal-trigger')
+      ) {
+        setShowEmployeePortal(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Close on escape for mobile
   useEffect(() => {
@@ -68,11 +107,33 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
   const renderLink = (item) => {
     const Icon = item.icon;
     const isActive = item.to && (location.pathname === item.to || location.pathname.startsWith(`${item.to}/`));
+    if (item.id === 'employee-portal') {
+      return (
+        <div
+          key={item.id}
+          ref={employeePortalRef}
+          className="employee-portal-trigger flex items-center px-3"
+          onClick={handleEmployeePortalClick}
+          style={{ height: 44, color: isActive ? '#ffffff' : '#86efac', cursor: 'pointer' }}
+        >
+          <div style={{ width: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {Icon ? <Icon style={{ width: 18, height: 18, color: isActive ? '#ffffff' : '#86efac' }} /> : null}
+          </div>
+          <div style={{ marginLeft: 12, fontSize: 13, color: isActive ? '#ffffff' : '#86efac' }}>{item.label}</div>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
+            <span style={{ color: isActive ? '#ffffff' : '#86efac' }}>▾</span>
+          </div>
+          {isActive ? <div style={{ marginLeft: 8, borderLeft: '3px solid #4ade80', height: 36, marginRight: 8 }} /> : null}
+        </div>
+      );
+    }
+
     return (
       <Link
         key={item.id}
         to={item.to}
         onClick={() => {
+          setShowEmployeePortal(false);
           if (window.innerWidth < 768) onClose();
         }}
         className="flex items-center px-3"
@@ -109,6 +170,47 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
         <nav className="flex-1 overflow-y-auto px-1" style={{ paddingBottom: 80 }}>
           {items.map(renderLink)}
         </nav>
+
+        {showEmployeePortal && ReactDOM.createPortal(
+          <div
+            className="employee-portal-dropdown"
+            style={{
+              position: 'fixed',
+              left: 200,
+              top: dropdownTop,
+              width: 280,
+              zIndex: 200,
+              background: 'white',
+              borderRadius: '10px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+              border: '1px solid #e2e8f0',
+              padding: 8,
+              maxHeight: '80vh',
+              overflowY: 'auto',
+            }}
+          >
+            {EMPLOYEE_PORTAL_ITEMS.map((portalItem) => (
+              <Link
+                key={portalItem.id}
+                to={portalItem.to}
+                onClick={() => setShowEmployeePortal(false)}
+                className="flex items-center rounded p-2 hover:bg-slate-50"
+                style={{
+                  color: '#0f172a',
+                  textDecoration: 'none',
+                  fontSize: 13,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <span>{portalItem.label}</span>
+                <Star style={{ width: 14, height: 14, color: '#94a3b8' }} />
+              </Link>
+            ))}
+          </div>,
+          document.body
+        )}
 
         <div className="absolute bottom-4 left-0 right-0 px-3">
           <div className="flex items-center gap-3 rounded p-2" style={{ color: '#fff' }}>
