@@ -60,9 +60,13 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
   const [showEmployeePortal, setShowEmployeePortal] = useState(false);
   const [showAdmissionDropdown, setShowAdmissionDropdown] = useState(false);
   const [showStudentDropdown, setShowStudentDropdown] = useState(false);
+  const [showFeeDropdown, setShowFeeDropdown] = useState(false);
+  const [showAttendanceDropdown, setShowAttendanceDropdown] = useState(false);
   const employeePortalRef = useRef(null);
   const admissionRef = useRef(null);
   const studentRef = useRef(null);
+  const feeRef = useRef(null);
+  const attendanceRef = useRef(null);
   const [dropdownTop, setDropdownTop] = useState(0);
 
   const EMPLOYEE_PORTAL_ITEMS = [
@@ -105,6 +109,82 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
     ],
   };
 
+  const FEE_ITEMS = {
+    left: {
+      collectFee: [
+        { id: 'collect-fee', label: 'Collect Fee', to: '/fees/collect' },
+        { id: 'collect-fee-online', label: 'Collect Fee Online', to: '/fees/collect-online' },
+        { id: 'collect-miscellaneous-fee', label: 'Collect Miscellaneous Fee', to: '/fees/miscellaneous' },
+        { id: 'fee-update', label: 'Fee Update', to: '/fees/update' },
+      ],
+      otherIncome: [
+        { id: 'collect-other-income', label: 'Collect Other Income', to: '/fees/other-income' },
+        { id: 'other-income-transactions', label: 'Other Income Transaction List', to: '/fees/other-income-transactions' },
+      ],
+      transaction: [
+        { id: 'transaction-list', label: 'Transaction List', to: '/fees/transactions' },
+        { id: 'fee-adjustment', label: 'Fee Adjustment', to: '/fees/adjustment' },
+        { id: 'online-transaction-list', label: 'Online Transaction List', to: '/fees/online-transactions' },
+      ],
+      concession: [
+        { id: 'concession-report', label: 'Concession Report', to: '/fees/concession' },
+      ],
+      refund: [
+        { id: 'refund', label: 'Refund', to: '/fees/refund' },
+        { id: 'refund-transaction-list', label: 'Refund Transaction List', to: '/fees/refund-transactions' },
+        { id: 'refund-report', label: 'Refund Report', to: '/fees/refund-report' },
+      ],
+    },
+    right: {
+      feeReports: [
+        { id: 'combined-daily-collection-report', label: 'Combined Daily Collection Report', to: '/fees/reports/combined-daily' },
+        { id: 'daily-fee-report', label: 'Daily Fee Report', to: '/fees/reports/daily' },
+        { id: 'fee-head-collection-report', label: 'Fee Head Collection Report', to: '/fees/reports/fee-head' },
+        { id: 'payment-mode-collection-report', label: 'Daily PaymentMode Collection Report', to: '/fees/reports/payment-mode' },
+        { id: 'due-fee-report', label: 'Due Fee Report', to: '/fees/reports/due-fee' },
+        { id: 'due-fee-report-college-wise', label: 'Due Fee Report College Wise', to: '/fees/reports/due-fee-college' },
+        { id: 'transport-due-fee-report', label: 'Transport Due Fee Report', to: '/fees/reports/transport-due' },
+        { id: 'due-fee-report-sibling-wise', label: 'Due Fee Report Sibling Wise', to: '/fees/reports/sibling-wise' },
+      ],
+      feeSummary: [
+        { id: 'fee-summary-college-wise', label: 'Fee Summary - College Wise', to: '/fees/reports/summary-college' },
+        { id: 'fee-summary-category-wise', label: 'Fee Summary - Category Wise', to: '/fees/reports/summary-category' },
+        { id: 'fee-summary-head-wise', label: 'Fee Summary - Head Wise', to: '/fees/reports/summary-head' },
+        { id: 'fee-summary-combined-head-wise', label: 'Fee Summary - Combined Head Wise', to: '/fees/reports/summary-combined' },
+        { id: 'student-payment-summary', label: 'Student Payment Summary', to: '/fees/reports/student-payment' },
+      ],
+    },
+  };
+
+  const ATTENDANCE_ITEMS = {
+    left: {
+      markAttendance: [
+        { id: 'student-attendance', label: 'Student Attendance', to: '/attendance/students' },
+      ],
+      timetable: [
+        { id: 'daily-schedule-for-employees', label: 'Daily Schedule For Employees', to: '/attendance/employee-schedule' },
+        { id: 'employee-schedule', label: 'Employee Schedule', to: '/attendance/schedule' },
+        { id: 'college-wise-schedule', label: 'College Wise Schedule', to: '/attendance/college-schedule' },
+        { id: 'time-table-status', label: 'Time Table Status', to: '/attendance/timetable-status' },
+      ],
+    },
+    right: {
+      attendanceReports: [
+        { id: 'daily-report', label: 'Daily Report', to: '/attendance/reports/daily' },
+        { id: 'college-wise-summary', label: 'College Wise Summary', to: '/attendance/reports/college-wise' },
+        { id: 'college-wise-summary-all-subjects', label: 'College Wise Summary- All Subject', to: '/attendance/reports/all-subjects' },
+        { id: 'not-marked-report', label: 'Not Marked Report', to: '/attendance/reports/not-marked' },
+        { id: 'lecture-wise-not-marked-report', label: 'Lecture Wise Not Marked Report', to: '/attendance/reports/lecture-wise' },
+        { id: 'executive-daily-report', label: 'Executive Daily Report', to: '/attendance/reports/executive-daily' },
+        { id: 'faculty-load-report', label: 'Faculty Load Report', to: '/attendance/reports/faculty-load' },
+      ],
+      leaveAttendanceMarks: [
+        { id: 'applied-leave', label: 'Applied Leave', to: '/attendance/applied-leave' },
+        { id: 'attendance-marks', label: 'Attendance Marks', to: '/attendance/marks' },
+      ],
+    },
+  };
+
   const STUDENT_ITEMS = {
     left: [
       { id: 'student-list', label: 'Student List', to: '/students' },
@@ -140,6 +220,7 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
     }
     setShowEmployeePortal(false);
     setShowStudentDropdown(false);
+    setShowFeeDropdown(false);
     setShowAdmissionDropdown((prev) => !prev);
   };
 
@@ -151,7 +232,34 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
     }
     setShowEmployeePortal(false);
     setShowAdmissionDropdown(false);
+    setShowFeeDropdown(false);
     setShowStudentDropdown((prev) => !prev);
+  };
+
+  const handleFeeClick = () => {
+    if (feeRef.current) {
+      const rect = feeRef.current.getBoundingClientRect();
+      const topPosition = Math.max(rect.top, 56);
+      setDropdownTop(topPosition);
+    }
+    setShowEmployeePortal(false);
+    setShowAdmissionDropdown(false);
+    setShowStudentDropdown(false);
+    setShowAttendanceDropdown(false);
+    setShowFeeDropdown((prev) => !prev);
+  };
+
+  const handleAttendanceClick = () => {
+    if (attendanceRef.current) {
+      const rect = attendanceRef.current.getBoundingClientRect();
+      const topPosition = Math.max(rect.top, 56);
+      setDropdownTop(topPosition);
+    }
+    setShowEmployeePortal(false);
+    setShowAdmissionDropdown(false);
+    setShowStudentDropdown(false);
+    setShowFeeDropdown(false);
+    setShowAttendanceDropdown((prev) => !prev);
   };
 
   useEffect(() => {
@@ -162,11 +270,17 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
         !e.target.closest('.admission-dropdown') &&
         !e.target.closest('.admission-trigger') &&
         !e.target.closest('.student-dropdown') &&
-        !e.target.closest('.student-trigger')
+        !e.target.closest('.student-trigger') &&
+        !e.target.closest('.fee-dropdown') &&
+        !e.target.closest('.fee-trigger') &&
+        !e.target.closest('.attendance-dropdown') &&
+        !e.target.closest('.attendance-trigger')
       ) {
         setShowEmployeePortal(false);
         setShowAdmissionDropdown(false);
         setShowStudentDropdown(false);
+        setShowFeeDropdown(false);
+        setShowAttendanceDropdown(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -295,6 +409,51 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
           <div style={{ marginLeft: 12, fontSize: 13, color: isActive ? '#ffffff' : '#86efac' }}>{item.label}</div>
           <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', transition: 'transform 0.2s ease' }}>
             <ChevronDown style={{ width: 16, height: 16, color: isActive ? '#ffffff' : '#86efac', transform: showStudentDropdown ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </div>
+        </div>
+      );
+    }
+    if (item.id === 'fee') {
+      return (
+        <div
+          key={item.id}
+          ref={feeRef}
+          className="fee-trigger flex items-center px-3"
+          onClick={handleFeeClick}
+          onMouseEnter={handleNavItemMouseEnter}
+          onMouseLeave={handleNavItemMouseLeave}
+          data-active={isActive ? 'true' : 'false'}
+          style={navItemStyle}
+        >
+          <div style={{ width: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {Icon ? <Icon style={{ width: 18, height: 18, color: isActive ? '#ffffff' : '#86efac' }} /> : null}
+          </div>
+          <div style={{ marginLeft: 12, fontSize: 13, color: isActive ? '#ffffff' : '#86efac' }}>{item.label}</div>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', transition: 'transform 0.2s ease' }}>
+            <ChevronDown style={{ width: 16, height: 16, color: isActive ? '#ffffff' : '#86efac', transform: showFeeDropdown ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </div>
+        </div>
+      );
+    }
+
+    if (item.id === 'attendance') {
+      return (
+        <div
+          key={item.id}
+          ref={attendanceRef}
+          className="attendance-trigger flex items-center px-3"
+          onClick={handleAttendanceClick}
+          onMouseEnter={handleNavItemMouseEnter}
+          onMouseLeave={handleNavItemMouseLeave}
+          data-active={isActive ? 'true' : 'false'}
+          style={navItemStyle}
+        >
+          <div style={{ width: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {Icon ? <Icon style={{ width: 18, height: 18, color: isActive ? '#ffffff' : '#86efac' }} /> : null}
+          </div>
+          <div style={{ marginLeft: 12, fontSize: 13, color: isActive ? '#ffffff' : '#86efac' }}>{item.label}</div>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', transition: 'transform 0.2s ease' }}>
+            <ChevronDown style={{ width: 16, height: 16, color: isActive ? '#ffffff' : '#86efac', transform: showAttendanceDropdown ? 'rotate(180deg)' : 'rotate(0deg)' }} />
           </div>
         </div>
       );
@@ -609,6 +768,405 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
                   key={portalItem.id}
                   to={portalItem.to}
                   onClick={() => setShowStudentDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+          </div>,
+          document.body
+        )}
+        {showFeeDropdown && ReactDOM.createPortal(
+          <div
+            className="fee-dropdown"
+            style={{
+              position: 'fixed',
+              left: 200,
+              top: Math.max(dropdownTop, 56) + 'px',
+              width: 580,
+              maxHeight: 'calc(100vh - 70px)',
+              overflowY: 'auto',
+              zIndex: 200,
+              background: 'white',
+              borderRadius: '10px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+              border: '1px solid #e2e8f0',
+              padding: 12,
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: 0,
+            }}
+          >
+            <style>{`.fee-dropdown::-webkit-scrollbar { width: 4px; }
+.fee-dropdown::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }`}</style>
+            <div style={{ borderRight: '1px solid #f1f5f9' }}>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                COLLECT FEE
+              </div>
+              {FEE_ITEMS.left.collectFee.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowFeeDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                OTHER INCOME
+              </div>
+              {FEE_ITEMS.left.otherIncome.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowFeeDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                TRANSACTION
+              </div>
+              {FEE_ITEMS.left.transaction.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowFeeDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                CONCESSION
+              </div>
+              {FEE_ITEMS.left.concession.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowFeeDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                REFUND
+              </div>
+              {FEE_ITEMS.left.refund.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowFeeDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+            <div>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                FEE REPORTS
+              </div>
+              {FEE_ITEMS.right.feeReports.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowFeeDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                FEE SUMMARY
+              </div>
+              {FEE_ITEMS.right.feeSummary.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowFeeDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+          </div>,
+          document.body
+        )}
+        {showAttendanceDropdown && ReactDOM.createPortal(
+          <div
+            className="attendance-dropdown"
+            style={{
+              position: 'fixed',
+              left: 200,
+              top: Math.max(dropdownTop, 56) + 'px',
+              width: 560,
+              maxHeight: 'calc(100vh - 70px)',
+              overflowY: 'auto',
+              zIndex: 200,
+              background: 'white',
+              borderRadius: '10px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+              border: '1px solid #e2e8f0',
+              padding: 12,
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: 0,
+            }}
+          >
+            <div style={{ borderRight: '1px solid #f1f5f9' }}>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                MARK ATTENDANCE
+              </div>
+              {ATTENDANCE_ITEMS.left.markAttendance.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowAttendanceDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                TIME TABLE
+              </div>
+              {ATTENDANCE_ITEMS.left.timetable.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowAttendanceDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+            <div>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                ATTENDANCE REPORTS
+              </div>
+              {ATTENDANCE_ITEMS.right.attendanceReports.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowAttendanceDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                LEAVE & ATTENDANCE MARKS
+              </div>
+              {ATTENDANCE_ITEMS.right.leaveAttendanceMarks.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowAttendanceDropdown(false)}
                   onMouseEnter={handleDropdownItemMouseEnter}
                   onMouseLeave={handleDropdownItemMouseLeave}
                   className="group flex items-center rounded-[8px]"
