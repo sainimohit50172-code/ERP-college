@@ -16,10 +16,10 @@ export default function RootLayout() {
   return (
     <div className="min-h-screen overflow-hidden bg-transparent text-slate-900">
       <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <div className={`${isSidebarOpen ? 'pointer-events-none' : ''}`} style={{ marginLeft: `${marginLeft}px` }}>
+      <div className={`${isSidebarOpen ? 'pointer-events-none' : ''}`} style={{ margin: 0, padding: 0, width: 'calc(100% - 200px)', marginLeft: `${marginLeft}px`, overflowX: 'hidden' }}>
         <Topbar onToggleSidebar={() => setSidebarOpen((s) => !s)} />
-        <main className="min-h-screen overflow-hidden px-2 pb-6 pt-2 sm:px-3 md:px-4 lg:px-5 xl:px-6">
-          <div className="mx-auto w-full max-w-7xl min-w-0">
+        <main className="min-h-screen overflow-hidden px-0 pb-6 pt-2">
+          <div className="w-full min-w-0">
             <Outlet />
           </div>
         </main>

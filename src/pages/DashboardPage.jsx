@@ -9,6 +9,9 @@ import {
   Star,
   DownloadCloud,
   IndianRupee,
+  Users,
+  FileWarning,
+  Building2,
 } from 'lucide-react';
 import { useResourceList } from '../hooks/useResourceHooks';
 
@@ -59,11 +62,20 @@ export default function DashboardPage() {
     { id: 'qa-books', label: 'Books', to: '/library', color: '#ec4899' },
   ];
 
+  const reportCards = [
+    { id: 'report-strength', label: 'Strength Report', icon: Users },
+    { id: 'report-collection', label: 'Daily Collection', icon: IndianRupee },
+    { id: 'report-due-fee', label: 'Due Fee Report', icon: FileWarning },
+    { id: 'report-due-fee-college', label: 'Due Fee College Wise', icon: Building2 },
+    { id: 'report-employee', label: 'Employee Report', icon: Briefcase },
+    { id: 'report-subject', label: 'Subject Report', icon: BookOpen },
+  ];
+
   return (
-    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg,#f0fdf4 0%,#f8fafc 40%,#f0f9ff 100%)', padding: 0, overflow: 'hidden' }}>
-      <div style={{ padding: '20px 24px', maxWidth: '100%' }}>
+    <div style={{ minHeight: '100vh', width: '100%', margin: 0, padding: 0, background: 'linear-gradient(135deg,#f0fdf4 0%,#f8fafc 40%,#f0f9ff 100%)', overflow: 'hidden' }}>
+      <div style={{ width: '100%', margin: 0, padding: 0 }}>
         {/* Top greeting bar */}
-        <div className="flex items-center justify-between rounded bg-white p-4" style={{ borderBottom: '1px solid #e2e8f0' }}>
+        <div className="flex items-center justify-between rounded bg-white" style={{ paddingTop: 16, paddingLeft: 16, paddingRight: 16, paddingBottom: 16, borderBottom: '1px solid #e2e8f0' }}>
           <div>
             <div style={{ fontSize: 22, fontWeight: 700, color: '#0f172a' }}>Hello, Admin 👋</div>
             <div style={{ fontSize: 13, color: '#64748b' }}>Nice to have you back, what an exciting day!</div>
@@ -72,7 +84,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Tabs */}
-        <div className="sticky top-[64px] z-20 mt-3 bg-white" style={{ borderBottom: '1px solid #e2e8f0' }}>
+        <div className="sticky top-[64px] z-20 bg-white" style={{ marginTop: 8, borderBottom: '1px solid #e2e8f0' }}>
           <div className="flex overflow-x-auto no-scrollbar" style={{ gap: 8 }}>
             {['Quick Links','Student Overview','Fee','Admission','Attendance','Examination','Human Resource','Library','My Profile'].map((t, i) => (
               <button key={t} className={`whitespace-nowrap px-4 py-3 text-[13px] font-medium ${i===0? 'text-[#059669] border-b-2 border-[#059669] font-semibold':'text-[#64748b]'} hover:text-[#0f172a]`}>
@@ -83,7 +95,7 @@ export default function DashboardPage() {
         </div>
 
         {/* KPI cards */}
-        <div className="mt-4 grid gap-3" style={{ gridTemplateColumns: 'repeat(6,1fr)', gap: 14 }}>
+        <div className="grid" style={{ gridTemplateColumns: 'repeat(6,1fr)', gap: 14, marginTop: 16, padding: '0 16px' }}>
           {kpis.map((k) => (
             <div key={k.id} style={{ background: k.bg, borderRadius: 14, padding: '18px 20px', boxShadow: '0 4px 20px rgba(0,0,0,0.12)', display: 'flex', alignItems: 'center', gap: 14, transition: 'all 0.2s ease', cursor: 'default' }} className="hover:translate-y-[-3px]">
               <div style={{ width: 48, height: 48, borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.18)' }}>
@@ -98,7 +110,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Favorites + Reports */}
-        <div className="mt-3 grid" style={{ gridTemplateColumns: '1fr 1fr', gap: 12, alignItems: 'stretch' }}>
+        <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: 12, alignItems: 'stretch', marginTop: 16, padding: '0 16px 16px 16px' }}>
           <div style={{ background: '#fff', borderRadius: 14, padding: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
             <div>
               <div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Favorites</div>
@@ -120,10 +132,10 @@ export default function DashboardPage() {
               <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 4 }}>Team and finance dashboards</div>
             </div>
             <div className="mt-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10 }}>
-              {Array.from({ length: 6 }).map((_, idx) => (
-                <div key={idx} onClick={() => navigate('/reports')} style={{ padding: '14px 8px', background: '#0f172a', borderRadius: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 86, color: '#fff', cursor: 'pointer', transition: 'all 0.2s ease' }}>
-                  <DownloadCloud style={{ width: 22, height: 22 }} />
-                  <div style={{ marginTop: 8, fontSize: 11, fontWeight: 700, textAlign: 'center' }}>Report</div>
+              {reportCards.map((card) => (
+                <div key={card.id} onClick={() => navigate('/reports')} style={{ padding: '14px 8px', background: '#0f172a', borderRadius: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 86, color: '#fff', cursor: 'pointer', transition: 'all 0.2s ease' }}>
+                  <card.icon style={{ width: 28, height: 28, color: '#fff' }} />
+                  <div style={{ marginTop: 8, fontSize: 11, fontWeight: 700, textAlign: 'center' }}>{card.label}</div>
                 </div>
               ))}
             </div>
