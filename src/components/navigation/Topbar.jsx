@@ -73,8 +73,8 @@ export default function Topbar({ onToggleSidebar }) {
   }, [isSearchOpen, isExportOpen, isQuickActionsOpen, isProfileMenuOpen]);
 
   return (
-    <header className="sticky top-0 z-30 h-[52px] border-b border-slate-200 bg-white px-3">
-      <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-2 whitespace-nowrap">
+    <header className="fixed top-0 z-40 h-[52px] border-b border-slate-200 bg-white px-3" style={{ marginLeft: 200, width: 'calc(100% - 200px)' }}>
+      <div className="flex h-full items-center justify-between gap-2 whitespace-nowrap">
         <div className="flex items-center gap-3">
           {/* desktop sidebar collapse control removed (sidebar is fixed) */}
           <button

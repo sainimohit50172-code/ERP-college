@@ -73,9 +73,9 @@ export default function DashboardPage() {
 
   return (
     <div style={{ minHeight: '100vh', width: '100%', margin: 0, padding: 0, background: 'linear-gradient(135deg,#f0fdf4 0%,#f8fafc 40%,#f0f9ff 100%)', overflow: 'hidden' }}>
-      <div style={{ width: '100%', margin: 0, padding: 0 }}>
+      <div style={{ width: '100%', margin: 0, padding: 16 }}>
         {/* Top greeting bar */}
-        <div className="flex items-center justify-between rounded bg-white" style={{ paddingTop: 16, paddingLeft: 16, paddingRight: 16, paddingBottom: 16, borderBottom: '1px solid #e2e8f0' }}>
+        <div className="flex items-center justify-between rounded bg-white p-4" style={{ borderBottom: '1px solid #e2e8f0' }}>
           <div>
             <div style={{ fontSize: 22, fontWeight: 700, color: '#0f172a' }}>Hello, Admin 👋</div>
             <div style={{ fontSize: 13, color: '#64748b' }}>Nice to have you back, what an exciting day!</div>
@@ -95,7 +95,7 @@ export default function DashboardPage() {
         </div>
 
         {/* KPI cards */}
-        <div className="grid" style={{ gridTemplateColumns: 'repeat(6,1fr)', gap: 14, marginTop: 16, padding: '0 16px' }}>
+        <div className="grid" style={{ gridTemplateColumns: 'repeat(6,1fr)', gap: 14, marginTop: 16 }}>
           {kpis.map((k) => (
             <div key={k.id} style={{ background: k.bg, borderRadius: 14, padding: '18px 20px', boxShadow: '0 4px 20px rgba(0,0,0,0.12)', display: 'flex', alignItems: 'center', gap: 14, transition: 'all 0.2s ease', cursor: 'default' }} className="hover:translate-y-[-3px]">
               <div style={{ width: 48, height: 48, borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.18)' }}>
@@ -110,7 +110,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Favorites + Reports */}
-        <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: 12, alignItems: 'stretch', marginTop: 16, padding: '0 16px 16px 16px' }}>
+        <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: 12, alignItems: 'stretch', marginTop: 16 }}>
           <div style={{ background: '#fff', borderRadius: 14, padding: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
             <div>
               <div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Favorites</div>
