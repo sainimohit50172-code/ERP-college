@@ -138,9 +138,54 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
 
   const items = useMemo(() => MENU_ITEMS, []);
 
+  const handleNavItemMouseEnter = (e) => {
+    if (e.currentTarget.dataset.active === 'true') return;
+    e.currentTarget.style.background = 'rgba(255,255,255,0.07)';
+    e.currentTarget.style.color = '#ffffff';
+    e.currentTarget.style.borderLeft = '3px solid #4ade80';
+  };
+
+  const handleNavItemMouseLeave = (e) => {
+    if (e.currentTarget.dataset.active === 'true') return;
+    e.currentTarget.style.background = 'transparent';
+    e.currentTarget.style.color = '#86efac';
+    e.currentTarget.style.borderLeft = '3px solid transparent';
+  };
+
+  const handleDropdownItemMouseEnter = (e) => {
+    const el = e.currentTarget;
+    el.style.background = '#f0fdf4';
+    el.style.color = '#059669';
+    el.style.borderLeft = '3px solid #059669';
+    el.style.fontWeight = '600';
+    el.style.paddingLeft = '9px';
+  };
+
+  const handleDropdownItemMouseLeave = (e) => {
+    const el = e.currentTarget;
+    el.style.background = 'white';
+    el.style.color = '#334155';
+    el.style.borderLeft = '3px solid transparent';
+    el.style.fontWeight = '500';
+    el.style.paddingLeft = '12px';
+  };
+
   const renderLink = (item) => {
     const Icon = item.icon;
     const isActive = item.to && (location.pathname === item.to || location.pathname.startsWith(`${item.to}/`));
+    const navItemStyle = {
+      height: 44,
+      color: isActive ? '#ffffff' : '#86efac',
+      background: isActive ? 'rgba(255,255,255,0.12)' : 'transparent',
+      borderLeft: isActive ? '3px solid #4ade80' : '3px solid transparent',
+      cursor: 'pointer',
+      transition: 'all 0.15s ease',
+      display: 'flex',
+      alignItems: 'center',
+      padding: '0 12px',
+      fontWeight: isActive ? 600 : 500,
+    };
+
     if (item.id === 'employee-portal') {
       return (
         <div
@@ -148,7 +193,10 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
           ref={employeePortalRef}
           className="employee-portal-trigger flex items-center px-3"
           onClick={handleEmployeePortalClick}
-          style={{ height: 44, color: isActive ? '#ffffff' : '#86efac', cursor: 'pointer' }}
+          onMouseEnter={handleNavItemMouseEnter}
+          onMouseLeave={handleNavItemMouseLeave}
+          data-active={isActive ? 'true' : 'false'}
+          style={navItemStyle}
         >
           <div style={{ width: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {Icon ? <Icon style={{ width: 18, height: 18, color: isActive ? '#ffffff' : '#86efac' }} /> : null}
@@ -157,7 +205,6 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
           <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
             <span style={{ color: isActive ? '#ffffff' : '#86efac' }}>▾</span>
           </div>
-          {isActive ? <div style={{ marginLeft: 8, borderLeft: '3px solid #4ade80', height: 36, marginRight: 8 }} /> : null}
         </div>
       );
     }
@@ -169,7 +216,10 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
           ref={admissionRef}
           className="admission-trigger flex items-center px-3"
           onClick={handleAdmissionClick}
-          style={{ height: 44, color: isActive ? '#ffffff' : '#86efac', cursor: 'pointer' }}
+          onMouseEnter={handleNavItemMouseEnter}
+          onMouseLeave={handleNavItemMouseLeave}
+          data-active={isActive ? 'true' : 'false'}
+          style={navItemStyle}
         >
           <div style={{ width: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {Icon ? <Icon style={{ width: 18, height: 18, color: isActive ? '#ffffff' : '#86efac' }} /> : null}
@@ -178,7 +228,6 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
           <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', transition: 'transform 0.2s ease' }}>
             <ChevronRight style={{ width: 16, height: 16, color: isActive ? '#ffffff' : '#86efac', transform: showAdmissionDropdown ? 'rotate(90deg)' : 'rotate(0deg)' }} />
           </div>
-          {isActive ? <div style={{ marginLeft: 8, borderLeft: '3px solid #4ade80', height: 36, marginRight: 8 }} /> : null}
         </div>
       );
     }
@@ -192,13 +241,15 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
           if (window.innerWidth < 768) onClose();
         }}
         className="flex items-center px-3"
-        style={{ height: 44, color: isActive ? '#ffffff' : '#86efac' }}
+        onMouseEnter={handleNavItemMouseEnter}
+        onMouseLeave={handleNavItemMouseLeave}
+        data-active={isActive ? 'true' : 'false'}
+        style={navItemStyle}
       >
         <div style={{ width: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           {Icon ? <Icon style={{ width: 18, height: 18, color: isActive ? '#ffffff' : '#86efac' }} /> : null}
         </div>
         <div style={{ marginLeft: 12, fontSize: 13, color: isActive ? '#ffffff' : '#86efac' }}>{item.label}</div>
-        {isActive ? <div style={{ marginLeft: 'auto', borderLeft: '3px solid #4ade80', height: 36, marginRight: 8 }} /> : null}
       </Link>
     );
   };
@@ -249,14 +300,22 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
                 key={portalItem.id}
                 to={portalItem.to}
                 onClick={() => setShowEmployeePortal(false)}
-                className="group flex items-center rounded p-2 hover:bg-slate-50"
+                onMouseEnter={handleDropdownItemMouseEnter}
+                onMouseLeave={handleDropdownItemMouseLeave}
+                className="group flex items-center rounded"
                 style={{
-                  color: '#0f172a',
-                  textDecoration: 'none',
-                  fontSize: 13,
+                  padding: '9px 12px',
+                  borderRadius: '8px',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  color: '#334155',
+                  cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
+                  borderLeft: '3px solid transparent',
+                  transition: 'all 0.15s ease',
+                  textDecoration: 'none',
                 }}
               >
                 <span>{portalItem.label}</span>
@@ -292,31 +351,34 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
               <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '6px 12px 8px' }}>
                 STUDENT REGISTRATION
               </div>
-              {ADMISSION_ITEMS.left.map((portalItem) => {
-                const activeItem = portalItem.id === 'follow-ups';
-                return (
-                  <Link
-                    key={portalItem.id}
-                    to={portalItem.to}
-                    onClick={() => setShowAdmissionDropdown(false)}
-                    className="group flex items-center rounded-[8px] px-3 py-2 hover:bg-slate-50"
-                    style={{
-                      background: activeItem ? '#f0fdf4' : 'transparent',
-                      color: activeItem ? '#059669' : '#334155',
-                      borderLeft: activeItem ? '3px solid #059669' : '3px solid transparent',
-                      fontWeight: activeItem ? 600 : 500,
-                      textDecoration: 'none',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      margin: '4px 12px 4px 12px',
-                    }}
-                  >
-                    <span>{portalItem.label}</span>
-                    <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
-                  </Link>
-                );
-              })}
+              {ADMISSION_ITEMS.left.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowAdmissionDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
             </div>
             <div>
               <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '6px 12px 8px' }}>
@@ -327,14 +389,22 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
                   key={portalItem.id}
                   to={portalItem.to}
                   onClick={() => setShowAdmissionDropdown(false)}
-                  className="group flex items-center rounded-[8px] px-3 py-2 hover:bg-slate-50"
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
                   style={{
-                    color: '#334155',
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
                     fontWeight: 500,
-                    textDecoration: 'none',
+                    color: '#334155',
+                    cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
                     margin: '4px 12px 4px 12px',
                   }}
                 >
