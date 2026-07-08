@@ -162,16 +162,16 @@ export default function EmployeeProfilePage() {
   }
 
   return (
-    <div className="space-y-4 p-3 sm:space-y-6 sm:p-4 lg:p-6">
+    <div className="space-y-3 p-2 sm:space-y-6 sm:p-4 lg:p-6 md:space-y-5 md:p-5">
       <SectionHeader
         title="Employee profile"
         subtitle={`Detailed employee lifecycle record for ${employee.name}.`}
         action={
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:gap-3">
             <button
               type="button"
               onClick={() => setIsStatusModalOpen(true)}
-              className="rounded-3xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
+              className="flex-1 rounded-3xl bg-emerald-500 px-3 py-2 text-xs font-semibold text-slate-950 transition hover:bg-emerald-400 sm:flex-initial sm:px-4 sm:py-3 sm:text-sm"
             >
               Update status
             </button>
@@ -179,7 +179,7 @@ export default function EmployeeProfilePage() {
               type="button"
               disabled={isUploading}
               onClick={() => uploadInputRef.current?.click()}
-              className="rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-400"
+              className="flex-1 rounded-3xl bg-slate-800/80 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-400 sm:flex-initial sm:px-4 sm:py-3 sm:text-sm"
             >
               {isUploading ? 'Uploading…' : 'Upload document'}
             </button>
@@ -189,52 +189,52 @@ export default function EmployeeProfilePage() {
 
       <input ref={uploadInputRef} type="file" accept=".pdf,.jpg,.png,.jpeg,.doc,.docx" className="hidden" onChange={handleDocumentInputChange} />
 
-      <div className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
-        <div className="grid gap-6 lg:grid-cols-[1.3fr_0.9fr]">
-          <div className="space-y-4">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="rounded-[24px] border border-slate-200 bg-white p-3 shadow-sm sm:p-4 md:p-5 lg:p-6">
+        <div className="grid gap-4 sm:gap-6 lg:grid-cols-[1.3fr_0.9fr]">
+          <div className="space-y-3 sm:space-y-4">
+            <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:items-start sm:justify-between lg:items-center">
               <div>
-                <h1 className="text-2xl font-semibold text-slate-900">{employee.name}</h1>
-                <p className="mt-2 text-sm text-slate-600">Employee ID: {employee.id}</p>
+                <h1 className="text-xl font-semibold text-slate-900 sm:text-2xl">{employee.name}</h1>
+                <p className="mt-1 text-xs text-slate-600 sm:mt-2 sm:text-sm">Employee ID: {employee.id}</p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
                 <StatusBadge status={employee.status || 'Active'} />
-                <div className="rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-700">{employee.designation || 'Staff'}</div>
+                <div className="rounded-2xl bg-slate-50 px-3 py-2 text-xs text-slate-700 sm:px-4 sm:py-3 sm:text-sm">{employee.designation || 'Staff'}</div>
               </div>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
+            <div className="grid gap-2 sm:grid-cols-2 sm:gap-3">
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-3 sm:p-4">
                 <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Department</p>
-                <p className="mt-3 text-xl font-semibold text-slate-900">{employee.department || 'N/A'}</p>
+                <p className="mt-2 text-lg font-semibold text-slate-900 sm:mt-3 sm:text-xl">{employee.department || 'N/A'}</p>
               </div>
-              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-3 sm:p-4">
                 <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Joining date</p>
-                <p className="mt-3 text-xl font-semibold text-slate-900">{employee.joinDate || 'N/A'}</p>
+                <p className="mt-2 text-lg font-semibold text-slate-900 sm:mt-3 sm:text-xl">{employee.joinDate || 'N/A'}</p>
               </div>
             </div>
           </div>
 
-          <div className="grid gap-3">
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
+          <div className="grid gap-2 sm:gap-3">
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-3 sm:p-4">
               <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Email</p>
-              <p className="mt-3 text-sm text-slate-900">{employee.email || 'N/A'}</p>
+              <p className="mt-2 truncate text-xs text-slate-900 sm:mt-3 sm:text-sm">{employee.email || 'N/A'}</p>
             </div>
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-3 sm:p-4">
               <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Salary</p>
-              <p className="mt-3 text-sm text-slate-900">{employee.salary || 'N/A'}</p>
+              <p className="mt-2 text-lg font-semibold text-slate-900 sm:mt-3 sm:text-xl">{employee.salary || 'N/A'}</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-3 shadow-sm sm:p-4">
-        <div className="flex flex-wrap gap-2">
+      <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-2 shadow-sm sm:p-3 md:p-4">
+        <div className="flex overflow-x-auto gap-1 sm:gap-2 -mx-2 sm:-mx-3 md:-mx-4 px-2 sm:px-3 md:px-4 pb-2">
           {['overview', 'personal', 'employment', 'documents', 'activity'].map((tab) => (
             <button
               key={tab}
               type="button"
               onClick={() => setActiveTab(tab)}
-              className={`rounded-2xl border px-4 py-2 text-sm font-medium transition ${
+              className={`flex-shrink-0 rounded-2xl border px-3 py-2 text-xs font-medium transition sm:px-4 sm:py-2 sm:text-sm whitespace-nowrap ${
                 activeTab === tab ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-100'
               }`}
             >
@@ -252,12 +252,12 @@ export default function EmployeeProfilePage() {
         </div>
       </div>
 
-      <div className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+      <div className="rounded-[24px] border border-slate-200 bg-white p-3 shadow-sm sm:p-4 md:p-5 lg:p-6">
         {activeTab === 'overview' && (
-          <div className="grid gap-6 lg:grid-cols-2">
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
-              <h2 className="text-lg font-semibold text-slate-900">Employee overview</h2>
-              <div className="mt-5 space-y-3 text-sm text-slate-600">
+          <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+              <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Employee overview</h2>
+              <div className="mt-4 sm:mt-5 space-y-2 sm:space-y-3 text-xs text-slate-600 sm:text-sm">
                 <p><span className="font-semibold text-slate-900">Name:</span> {employee.name}</p>
                 <p><span className="font-semibold text-slate-900">Email:</span> {employee.email}</p>
                 <p><span className="font-semibold text-slate-900">Department:</span> {employee.department || 'N/A'}</p>
@@ -265,20 +265,20 @@ export default function EmployeeProfilePage() {
                 <p><span className="font-semibold text-slate-900">Status:</span> {employee.status || 'N/A'}</p>
               </div>
             </div>
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
-              <h2 className="text-lg font-semibold text-slate-900">Leave & payroll summary</h2>
-              <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                <div className="rounded-3xl bg-white p-4 shadow-sm">
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+              <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Leave & payroll summary</h2>
+              <div className="mt-4 sm:mt-5 grid gap-2 sm:grid-cols-3">
+                <div className="rounded-3xl bg-white p-3 sm:p-4 shadow-sm">
                   <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Approved leave</p>
-                  <p className="mt-3 text-xl font-semibold text-slate-900">{employeeLeaveSummary.approved}</p>
+                  <p className="mt-2 text-lg font-semibold text-slate-900 sm:mt-3 sm:text-xl">{employeeLeaveSummary.approved}</p>
                 </div>
-                <div className="rounded-3xl bg-white p-4 shadow-sm">
+                <div className="rounded-3xl bg-white p-3 sm:p-4 shadow-sm">
                   <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Pending leave</p>
-                  <p className="mt-3 text-xl font-semibold text-slate-900">{employeeLeaveSummary.pending}</p>
+                  <p className="mt-2 text-lg font-semibold text-slate-900 sm:mt-3 sm:text-xl">{employeeLeaveSummary.pending}</p>
                 </div>
-                <div className="rounded-3xl bg-white p-4 shadow-sm">
+                <div className="rounded-3xl bg-white p-3 sm:p-4 shadow-sm">
                   <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Latest net salary</p>
-                  <p className="mt-3 text-xl font-semibold text-slate-900">₹{employeePayrollSummary.latestNet.toLocaleString()}</p>
+                  <p className="mt-2 text-lg font-semibold text-slate-900 sm:mt-3 sm:text-xl">₹{employeePayrollSummary.latestNet.toLocaleString()}</p>
                 </div>
               </div>
             </div>
@@ -286,18 +286,18 @@ export default function EmployeeProfilePage() {
         )}
 
         {activeTab === 'personal' && (
-          <div className="grid gap-6 lg:grid-cols-2">
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
-              <h2 className="text-lg font-semibold text-slate-900">Contact details</h2>
-              <div className="mt-5 space-y-3 text-sm text-slate-600">
-                <p><span className="font-semibold text-slate-900">Email:</span> {employee.email || 'N/A'}</p>
+          <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+              <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Contact details</h2>
+              <div className="mt-4 sm:mt-5 space-y-2 sm:space-y-3 text-xs text-slate-600 sm:text-sm">
+                <p><span className="font-semibold text-slate-900">Email:</span> <span className="break-all">{employee.email || 'N/A'}</span></p>
                 <p><span className="font-semibold text-slate-900">Phone:</span> {employee.phone || 'N/A'}</p>
                 <p><span className="font-semibold text-slate-900">Location:</span> {employee.location || 'N/A'}</p>
               </div>
             </div>
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
-              <h2 className="text-lg font-semibold text-slate-900">Work details</h2>
-              <div className="mt-5 space-y-3 text-sm text-slate-600">
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+              <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Work details</h2>
+              <div className="mt-4 sm:mt-5 space-y-2 sm:space-y-3 text-xs text-slate-600 sm:text-sm">
                 <p><span className="font-semibold text-slate-900">Department:</span> {employee.department || 'N/A'}</p>
                 <p><span className="font-semibold text-slate-900">Designation:</span> {employee.designation || 'N/A'}</p>
                 <p><span className="font-semibold text-slate-900">Shift:</span> {employee.shift || 'Day'}</p>
@@ -307,19 +307,19 @@ export default function EmployeeProfilePage() {
         )}
 
         {activeTab === 'employment' && (
-          <div className="grid gap-6 lg:grid-cols-2">
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
-              <h2 className="text-lg font-semibold text-slate-900">Employment history</h2>
-              <p className="mt-4 text-sm text-slate-600">Current role and joining details are captured here. Use the status action to keep lifecycle updates aligned with HR operations.</p>
-              <div className="mt-5 space-y-3 text-sm text-slate-600">
+          <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+              <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Employment history</h2>
+              <p className="mt-3 text-xs text-slate-600 sm:text-sm">Current role and joining details are captured here. Use the status action to keep lifecycle updates aligned with HR operations.</p>
+              <div className="mt-4 sm:mt-5 space-y-2 sm:space-y-3 text-xs text-slate-600 sm:text-sm">
                 <p><span className="font-semibold text-slate-900">Status:</span> {employee.status || 'N/A'}</p>
                 <p><span className="font-semibold text-slate-900">Joined:</span> {employee.joinDate || 'N/A'}</p>
                 <p><span className="font-semibold text-slate-900">Employment type:</span> {employee.employmentType || 'Full time'}</p>
               </div>
             </div>
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
-              <h2 className="text-lg font-semibold text-slate-900">Current assignment</h2>
-              <div className="mt-5 space-y-3 text-sm text-slate-600">
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+              <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Current assignment</h2>
+              <div className="mt-4 sm:mt-5 space-y-2 sm:space-y-3 text-xs text-slate-600 sm:text-sm">
                 <p><span className="font-semibold text-slate-900">Department:</span> {employee.department || 'N/A'}</p>
                 <p><span className="font-semibold text-slate-900">Designation:</span> {employee.designation || 'N/A'}</p>
                 <p><span className="font-semibold text-slate-900">Manager:</span> {employee.manager || 'TBD'}</p>
@@ -329,48 +329,48 @@ export default function EmployeeProfilePage() {
         )}
 
         {activeTab === 'documents' && (
-          <div className="space-y-6">
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
-              <h2 className="text-lg font-semibold text-slate-900">Upload employee documents</h2>
-              <p className="mt-3 text-sm text-slate-600">Capture onboarding and compliance documents for this employee.</p>
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <div className="space-y-4 sm:space-y-6">
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+              <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Upload employee documents</h2>
+              <p className="mt-2 text-xs text-slate-600 sm:mt-3 sm:text-sm">Capture onboarding and compliance documents for this employee.</p>
+              <div className="mt-3 sm:mt-4 grid gap-2 grid-cols-1 sm:grid-cols-2">
                 {documentTypes.map((doc) => (
                   <button
                     key={doc.key}
                     type="button"
                     onClick={() => handleDocumentUploadClick(doc.key)}
-                    className="rounded-3xl border border-slate-300 bg-white px-4 py-3 text-left text-sm text-slate-700 shadow-sm transition hover:border-slate-400"
+                    className="rounded-3xl border border-slate-300 bg-white px-3 py-2 text-left text-xs text-slate-700 shadow-sm transition hover:border-slate-400 sm:px-4 sm:py-3 sm:text-sm"
                   >
                     <p className="font-semibold text-slate-900">{doc.label}</p>
-                    <p className="mt-1 text-xs text-slate-500">Upload or replace the document.</p>
+                    <p className="mt-1 text-xs text-slate-500">Upload or replace.</p>
                   </button>
                 ))}
               </div>
-              {uploadStatus && <p className="mt-4 text-sm text-slate-600">{uploadStatus}</p>}
+              {uploadStatus && <p className="mt-3 text-xs text-slate-600 sm:text-sm">{uploadStatus}</p>}
             </div>
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
-              <h2 className="text-lg font-semibold text-slate-900">Uploaded documents</h2>
-              <div className="mt-4 space-y-3">
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+              <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Uploaded documents</h2>
+              <div className="mt-3 sm:mt-4 space-y-2 sm:space-y-3">
                 {recentDocuments.length ? (
                   recentDocuments.map((upload) => (
-                    <div key={upload.id} className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
-                      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                        <div>
-                          <p className="text-sm font-semibold text-slate-900">{upload.documentType || 'Document'}</p>
-                          <p className="mt-1 text-sm text-slate-600">{upload.filename}</p>
+                    <div key={upload.id} className="rounded-3xl border border-slate-200 bg-white p-3 sm:p-4 shadow-sm">
+                      <div className="flex flex-col gap-2 sm:gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="min-w-0">
+                          <p className="text-xs font-semibold text-slate-900 sm:text-sm">{upload.documentType || 'Document'}</p>
+                          <p className="mt-1 text-xs text-slate-600 truncate sm:text-sm">{upload.filename}</p>
                         </div>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-1 sm:gap-2 flex-shrink-0">
                           <button
                             type="button"
                             onClick={() => handleDownloadDocument(upload)}
-                            className="rounded-full border border-slate-300 bg-slate-100 px-3 py-2 text-xs text-slate-700 transition hover:bg-slate-200"
+                            className="rounded-full border border-slate-300 bg-slate-100 px-2 py-1 text-xs text-slate-700 transition hover:bg-slate-200 sm:px-3 sm:py-2"
                           >
                             Download
                           </button>
                           <button
                             type="button"
                             onClick={() => handleRemoveDocument(upload)}
-                            className="rounded-full border border-rose-300 bg-rose-50 px-3 py-2 text-xs text-rose-600 transition hover:bg-rose-100"
+                            className="rounded-full border border-rose-300 bg-rose-50 px-2 py-1 text-xs text-rose-600 transition hover:bg-rose-100 sm:px-3 sm:py-2"
                           >
                             Delete
                           </button>
@@ -380,7 +380,7 @@ export default function EmployeeProfilePage() {
                     </div>
                   ))
                 ) : (
-                  <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50 p-6 text-sm text-slate-500">
+                  <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50 p-4 text-xs text-slate-500 sm:p-6 sm:text-sm">
                     No documents uploaded yet.
                   </div>
                 )}
@@ -390,24 +390,24 @@ export default function EmployeeProfilePage() {
         )}
 
         {activeTab === 'activity' && (
-          <div className="space-y-4">
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
-              <h2 className="text-lg font-semibold text-slate-900">Lifecycle activity</h2>
-              <p className="mt-3 text-sm text-slate-600">Recent updates are tracked using HR and audit event history.</p>
+          <div className="space-y-3 sm:space-y-4">
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+              <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Lifecycle activity</h2>
+              <p className="mt-2 text-xs text-slate-600 sm:mt-3 sm:text-sm">Recent updates are tracked using HR and audit event history.</p>
             </div>
-            <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-              <div className="space-y-3 text-sm text-slate-600">
-                <div className="flex items-center justify-between rounded-3xl border border-slate-100 bg-slate-50 px-4 py-3">
+            <div className="rounded-3xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm">
+              <div className="space-y-2 sm:space-y-3 text-xs text-slate-600 sm:text-sm">
+                <div className="flex flex-col gap-1 rounded-3xl border border-slate-100 bg-slate-50 px-3 py-2 sm:flex-row sm:items-center sm:justify-between sm:px-4 sm:py-3">
                   <span>Profile created</span>
-                  <span>{employee.joinDate || 'N/A'}</span>
+                  <span className="text-slate-900 font-semibold">{employee.joinDate || 'N/A'}</span>
                 </div>
-                <div className="flex items-center justify-between rounded-3xl border border-slate-100 bg-slate-50 px-4 py-3">
+                <div className="flex flex-col gap-1 rounded-3xl border border-slate-100 bg-slate-50 px-3 py-2 sm:flex-row sm:items-center sm:justify-between sm:px-4 sm:py-3">
                   <span>Status</span>
-                  <span>{employee.status || 'Active'}</span>
+                  <span className="text-slate-900 font-semibold">{employee.status || 'Active'}</span>
                 </div>
-                <div className="flex items-center justify-between rounded-3xl border border-slate-100 bg-slate-50 px-4 py-3">
+                <div className="flex flex-col gap-1 rounded-3xl border border-slate-100 bg-slate-50 px-3 py-2 sm:flex-row sm:items-center sm:justify-between sm:px-4 sm:py-3">
                   <span>Last document upload</span>
-                  <span>{recentDocuments[0]?.uploadedAt ? new Date(recentDocuments[0].uploadedAt).toLocaleDateString() : 'No uploads'}</span>
+                  <span className="text-slate-900 font-semibold">{recentDocuments[0]?.uploadedAt ? new Date(recentDocuments[0].uploadedAt).toLocaleDateString() : 'No uploads'}</span>
                 </div>
               </div>
             </div>
@@ -423,7 +423,7 @@ export default function EmployeeProfilePage() {
           <button
             type="button"
             onClick={handleStatusUpdate}
-            className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
+            className="w-full rounded-3xl bg-emerald-500 px-4 py-2 text-xs font-semibold text-slate-950 transition hover:bg-emerald-400 sm:w-auto sm:px-5 sm:py-3 sm:text-sm"
           >
             Save status
           </button>
@@ -434,7 +434,7 @@ export default function EmployeeProfilePage() {
             <select
               value={statusValue}
               onChange={(event) => setStatusValue(event.target.value)}
-              className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none focus:border-emerald-400"
+              className="w-full rounded-3xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-emerald-400 sm:px-4 sm:py-3"
             >
               {statusOptions.map((option) => (
                 <option key={option} value={option}>{option}</option>
