@@ -33,7 +33,7 @@ export default function IndividualFacultyReportPage() {
         </div>
 
         <div className="mt-8 rounded-[1rem] border border-[#E2E8F0] bg-white p-6 shadow-sm">
-          <div className="grid gap-4 xl:grid-cols-[minmax(220px,1fr)_minmax(220px,1fr)_minmax(220px,1fr)]">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
             <div className="space-y-2">
               <label className="block text-xs uppercase tracking-[0.3em] text-slate-500">Select Session</label>
               <select
@@ -133,7 +133,7 @@ export default function IndividualFacultyReportPage() {
           </div>
         </div>
 
-        <div className="mt-8 rounded-[1rem] border border-[#E2E8F0] bg-white p-10 shadow-sm">
+        <div className="mt-8 rounded-[1rem] border border-[#E2E8F0] bg-white p-6 shadow-sm sm:p-8">
           {showResult ? (
             <div className="space-y-6">
               <div className="grid gap-4 md:grid-cols-2">

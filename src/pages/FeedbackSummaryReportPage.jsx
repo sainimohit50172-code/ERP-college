@@ -39,7 +39,7 @@ export default function FeedbackSummaryReportPage() {
         </div>
 
         <div className="mt-8 rounded-[1rem] border border-[#E2E8F0] bg-white p-6 shadow-sm">
-          <div className="grid gap-6 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
             <div className="space-y-2">
               <label className="block text-xs uppercase tracking-[0.3em] text-slate-500">Select Session</label>
               <select
@@ -163,7 +163,7 @@ export default function FeedbackSummaryReportPage() {
           </div>
         </div>
 
-        <div className="mt-8 rounded-[1rem] border border-[#E2E8F0] bg-white p-10 shadow-sm">
+        <div className="mt-8 rounded-[1rem] border border-[#E2E8F0] bg-white p-6 shadow-sm sm:p-8">
           {showResults ? (
             <div className="overflow-x-auto">
               <table className="min-w-full table-auto divide-y divide-slate-200 text-sm">
