@@ -17,8 +17,8 @@ export default function TeacherProfilePage() {
   const teacher = teacherQuery.data;
 
   return (
-    <div className="space-y-6 p-6">
-      <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="space-y-4 p-3 sm:space-y-6 sm:p-4 lg:p-6">
+      <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-semibold">Faculty Profile</h1>
@@ -31,7 +31,7 @@ export default function TeacherProfilePage() {
         </div>
       </div>
 
-      <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="rounded-3xl border border-slate-200 bg-white p-3 shadow-sm sm:p-4">
         <div className="flex gap-2">
           {['overview', 'library'].map((t) => (
             <button key={t} onClick={() => setActiveTab(t)} className={`rounded-2xl border px-4 py-2 text-sm ${activeTab === t ? 'bg-slate-900 text-white' : ''}`}>{t === 'library' ? 'Library' : 'Overview'}</button>
@@ -39,7 +39,7 @@ export default function TeacherProfilePage() {
         </div>
       </div>
 
-      <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
+      <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 shadow-sm sm:p-6">
         {activeTab === 'library' ? <MemberLibraryTab memberId={teacher.id} memberType="teacher" /> : (
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="card p-4 bg-white border border-slate-200 rounded-xl shadow-sm">

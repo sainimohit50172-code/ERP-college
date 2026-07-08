@@ -41,8 +41,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-b from-slate-900 to-slate-800 px-4 py-10">
-      <div className="mx-auto flex max-w-6xl flex-col-reverse gap-6 rounded-[32px] border border-slate-800/80 bg-transparent p-1 shadow-2xl lg:flex-row">
+    <div className="min-h-[calc(100vh-2rem)] bg-gradient-to-b from-slate-900 to-slate-800 px-2 py-3 sm:px-4 sm:py-6 lg:px-6 lg:py-10">
+      <div className="mx-auto flex max-w-6xl flex-col-reverse gap-4 rounded-[24px] border border-slate-800/80 bg-transparent p-1 shadow-2xl sm:gap-6 sm:rounded-[32px] lg:flex-row">
         <div
           className="hidden lg:block w-3/5 rounded-[32px] bg-cover bg-center p-10 lg:rounded-r-none lg:border-r lg:border-slate-800"
           style={{ background: 'linear-gradient(135deg, #0a2540 0%, #1a4a2e 50%, #0d3b1e 100%)' }}
@@ -65,7 +65,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="w-full lg:w-2/5 rounded-[32px] bg-white p-10 lg:rounded-l-none">
+        <div className="w-full rounded-[24px] bg-white p-4 sm:p-6 md:p-8 lg:w-2/5 lg:rounded-l-none lg:p-10">
           <div className="mb-8 text-slate-900">
             <p className="text-sm uppercase tracking-[0.24em] text-sky-400/90">Sign in</p>
             <h2 className="mt-3 text-3xl font-semibold text-slate-900">Secure campus login</h2>
@@ -74,7 +74,7 @@ export default function LoginPage() {
 
           <div className="mb-6">
             <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Choose your access</p>
-            <div className="mt-4 grid gap-3 grid-cols-2">
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {roles.map((role) => (
                 <button
                   key={role}
@@ -118,7 +118,7 @@ export default function LoginPage() {
               {errors.password && <p className="text-sm text-rose-400">{errors.password.message}</p>}
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2 sm:items-center">
+            <div className="flex flex-col gap-3 sm:grid sm:grid-cols-2 sm:items-center">
               <label className="inline-flex items-center gap-2 text-sm text-slate-600">
                 <input type="checkbox" {...register('remember')} className="h-4 w-4 rounded border-gray-300 bg-white text-sky-400" />
                 Remember me

@@ -71,71 +71,69 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div style={{ minHeight: '100vh', width: '100%', margin: 0, padding: 0, background: 'linear-gradient(135deg,#f0fdf4 0%,#f8fafc 40%,#f0f9ff 100%)', overflow: 'hidden' }}>
-      <div style={{ width: '100%', margin: 0, padding: 16 }}>
-        {/* Top greeting bar */}
-        <div className="flex items-center justify-between rounded bg-white p-4" style={{ borderBottom: '1px solid #e2e8f0' }}>
+    <div className="min-h-screen w-full overflow-x-hidden bg-[linear-gradient(135deg,#f0fdf4_0%,#f8fafc_40%,#f0f9ff_100%)] p-0">
+      <div className="w-full p-3 sm:p-4 lg:p-6">
+        <div className="flex flex-col gap-3 rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:p-5">
           <div>
-            <div style={{ fontSize: 22, fontWeight: 700, color: '#0f172a' }}>Hello, Admin 👋</div>
-            <div style={{ fontSize: 13, color: '#64748b' }}>Nice to have you back, what an exciting day!</div>
+            <div className="text-xl font-bold text-slate-900 sm:text-2xl">Hello, Admin 👋</div>
+            <div className="mt-1 text-sm text-slate-600">Nice to have you back, what an exciting day!</div>
           </div>
-          <div style={{ fontSize: 13, color: '#475569' }}>{now.toLocaleString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} | {now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}</div>
+          <div className="text-sm text-slate-600">
+            {now.toLocaleString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} | {now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
+          </div>
         </div>
 
-        {/* Tabs */}
-        <div className="sticky top-[64px] z-20 bg-white" style={{ marginTop: 8, borderBottom: '1px solid #e2e8f0' }}>
-          <div className="flex overflow-x-auto no-scrollbar" style={{ gap: 8 }}>
+        <div className="sticky top-16 z-20 mt-3 rounded-2xl border border-slate-200/70 bg-white shadow-sm">
+          <div className="flex gap-2 overflow-x-auto px-2 py-2 sm:px-3">
             {['Quick Links','Student Overview','Fee','Admission','Attendance','Examination','Human Resource','Library','My Profile'].map((t, i) => (
-              <button key={t} className={`whitespace-nowrap px-4 py-3 text-[13px] font-medium ${i===0? 'text-[#059669] border-b-2 border-[#059669] font-semibold':'text-[#64748b]'} hover:text-[#0f172a]`}>
-                  {t.replace("'", "\u2019")}
-                </button>
+              <button key={t} className={`whitespace-nowrap rounded-full px-3 py-2 text-[13px] font-medium ${i===0 ? 'border border-emerald-500 bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}>
+                {t.replace("'", '’')}
+              </button>
             ))}
           </div>
         </div>
 
-        {/* KPI cards */}
-        <div className="grid" style={{ gridTemplateColumns: 'repeat(6,1fr)', gap: 14, marginTop: 16, height: 90 }}>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
           {kpis.map((k) => (
-            <div key={k.id} style={{ background: k.bg, borderRadius: 14, padding: '12px 16px', boxShadow: '0 4px 20px rgba(0,0,0,0.12)', display: 'flex', alignItems: 'center', gap: 14, transition: 'all 0.2s ease', cursor: 'default' }} className="hover:translate-y-[-3px]">
-              <div style={{ width: 48, height: 48, borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.18)' }}>
-                <k.icon style={{ width: 24, height: 24, color: '#fff' }} />
+            <div key={k.id} className="flex items-center gap-3 rounded-2xl p-4 text-white shadow-lg" style={{ background: k.bg }}>
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/20">
+                <k.icon className="h-6 w-6" />
               </div>
-              <div>
-                <div style={{ fontSize: 24, fontWeight: 700, color: '#fff' }}>{k.value}</div>
-                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.9)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{k.label}</div>
+              <div className="min-w-0">
+                <div className="text-xl font-bold">{k.value}</div>
+                <div className="text-[11px] uppercase tracking-[0.2em] text-white/90">{k.label}</div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Favorites + Reports */}
-        <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: 12, alignItems: 'stretch', height: 'calc(100vh - 340px)', marginTop: 16 }}>
-          <div style={{ background: '#fff', borderRadius: 14, padding: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 340px)', boxSizing: 'border-box' }}>
+        <div className="mt-4 grid gap-4 xl:grid-cols-2">
+          <div className="flex min-h-0 flex-col rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm sm:p-5">
             <div>
-              <div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Favorites</div>
-              <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 4 }}>Quick access to common tasks</div>
+              <div className="text-lg font-semibold text-slate-900">Favorites</div>
+              <div className="mt-1 text-sm text-slate-500">Quick access to common tasks</div>
             </div>
-            <div className="mt-3" style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gridTemplateRows: 'repeat(2,1fr)', gap: 10, alignContent: 'stretch' }}>
+            <div className="mt-4 grid flex-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {quickActions.map((a) => (
-                <div key={a.id} onClick={() => navigate(a.to)} style={{ padding: '10px 8px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 10, cursor: 'pointer', transition: 'all 0.2s ease', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', boxSizing: 'border-box' }}>
-                  <Star style={{ width: 20, height: 20, color: a.color }} />
-                  <div style={{ marginTop: 8, fontSize: 11, fontWeight: 600, color: a.color }}>{a.label}</div>
-                </div>
+                <button key={a.id} type="button" onClick={() => navigate(a.to)} className="flex min-h-[92px] flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white px-3 py-3 text-center transition hover:-translate-y-0.5 hover:shadow-sm">
+                  <Star className="h-5 w-5" style={{ color: a.color }} />
+                  <div className="mt-2 text-[11px] font-semibold" style={{ color: a.color }}>{a.label}</div>
+                </button>
               ))}
             </div>
           </div>
 
-          <div style={{ background: '#fff', borderRadius: 14, padding: 20, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 340px)', boxSizing: 'border-box' }}>
+          <div className="flex min-h-0 flex-col rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm sm:p-5">
             <div>
-              <div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Reports</div>
-              <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 4 }}>Team and finance dashboards</div>
+              <div className="text-lg font-semibold text-slate-900">Reports</div>
+              <div className="mt-1 text-sm text-slate-500">Team and finance dashboards</div>
             </div>
-            <div className="mt-3" style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gridTemplateRows: 'repeat(2,1fr)', gap: 10, alignContent: 'stretch' }}>
+            <div className="mt-4 grid flex-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {reportCards.map((card) => (
-                <div key={card.id} onClick={() => navigate('/reports')} style={{ padding: 12, background: '#0f172a', borderRadius: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#fff', cursor: 'pointer', transition: 'all 0.2s ease', boxSizing: 'border-box' }}>
-                  <card.icon style={{ width: 24, height: 24, color: '#fff' }} />
-                  <div style={{ marginTop: 8, fontSize: 12, fontWeight: 700, textAlign: 'center' }}>{card.label}</div>
-                </div>
+                <button key={card.id} type="button" onClick={() => navigate('/reports')} className="flex min-h-[92px] flex-col items-center justify-center rounded-2xl bg-slate-900 px-3 py-3 text-center text-white transition hover:-translate-y-0.5 hover:bg-slate-800">
+                  <card.icon className="h-5 w-5" />
+                  <div className="mt-2 text-[12px] font-semibold">{card.label}</div>
+                </button>
               ))}
             </div>
           </div>

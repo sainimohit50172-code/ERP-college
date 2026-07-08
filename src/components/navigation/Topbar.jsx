@@ -73,10 +73,9 @@ export default function Topbar({ onToggleSidebar }) {
   }, [isSearchOpen, isExportOpen, isQuickActionsOpen, isProfileMenuOpen]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-slate-200 bg-white px-3 md:left-[200px] md:w-[calc(100%-200px)]" style={{ height: 72 }}>
-      <div className="flex h-full flex-wrap items-center justify-between gap-2">
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-slate-200 bg-white px-3 py-3 md:left-[200px] md:w-[calc(100%-200px)]">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex min-w-0 items-center gap-3">
-          {/* desktop sidebar collapse control removed (sidebar is fixed) */}
           <button
             type="button"
             onClick={onToggleSidebar}
@@ -243,10 +242,10 @@ export default function Topbar({ onToggleSidebar }) {
                 setExportOpen(false);
                 setQuickActionsOpen(false);
               }}
-              className="inline-flex min-w-0 items-center gap-3 rounded-full border border-slate-200 bg-white px-3 py-2 text-left sm:min-w-[210px]"
-              style={{ whiteSpace: 'nowrap', marginRight: 8, flexShrink: 0 }}
+              className="inline-flex min-w-0 max-w-full items-center gap-3 rounded-full border border-slate-200 bg-white px-3 py-2 text-left sm:min-w-[210px]"
+              style={{ flexShrink: 0 }}
             >
-              <div className="min-w-0">
+              <div className="min-w-0 hidden truncate sm:block">
                 <p className="truncate text-[13px] font-semibold text-slate-900">Hello, {displayName}</p>
                 <p className="truncate text-[11px] text-slate-500">Nice to have you back!</p>
               </div>

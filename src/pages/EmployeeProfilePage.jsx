@@ -162,7 +162,7 @@ export default function EmployeeProfilePage() {
   }
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-4 p-3 sm:space-y-6 sm:p-4 lg:p-6">
       <SectionHeader
         title="Employee profile"
         subtitle={`Detailed employee lifecycle record for ${employee.name}.`}
@@ -189,7 +189,7 @@ export default function EmployeeProfilePage() {
 
       <input ref={uploadInputRef} type="file" accept=".pdf,.jpg,.png,.jpeg,.doc,.docx" className="hidden" onChange={handleDocumentInputChange} />
 
-      <div className="rounded-[24px] border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
         <div className="grid gap-6 lg:grid-cols-[1.3fr_0.9fr]">
           <div className="space-y-4">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -227,7 +227,7 @@ export default function EmployeeProfilePage() {
         </div>
       </div>
 
-      <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-4 shadow-sm">
+      <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-3 shadow-sm sm:p-4">
         <div className="flex flex-wrap gap-2">
           {['overview', 'personal', 'employment', 'documents', 'activity'].map((tab) => (
             <button
@@ -252,7 +252,7 @@ export default function EmployeeProfilePage() {
         </div>
       </div>
 
-      <div className="rounded-[24px] border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
         {activeTab === 'overview' && (
           <div className="grid gap-6 lg:grid-cols-2">
             <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">

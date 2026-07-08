@@ -191,7 +191,7 @@ export default function StudentProfilePage() {
   };
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-4 p-3 sm:space-y-6 sm:p-4 lg:p-6">
       <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -209,7 +209,7 @@ export default function StudentProfilePage() {
         </div>
       </div>
 
-      <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="rounded-3xl border border-slate-200 bg-white p-3 shadow-sm sm:p-4">
         <div className="flex flex-wrap gap-2">
           {tabDefinitions.map((tab) => (
             <button
@@ -224,7 +224,7 @@ export default function StudentProfilePage() {
         </div>
       </div>
 
-      <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
+      <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 shadow-sm sm:p-6">
         {activeTab === 'library' ? (
           <MemberLibraryTab memberId={student.id} memberType="student" />
         ) : activeTab === 'hostel' ? (
