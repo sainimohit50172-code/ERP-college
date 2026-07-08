@@ -27,19 +27,19 @@ export default function FeedbackSummaryReportPage() {
   ];
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[#F8FAFC] text-slate-900">
-      <div className="mx-auto max-w-[1240px] px-4 py-4 md:px-6 md:py-8">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900">
+      <div className="mx-auto max-w-[1240px] px-4 py-8">
         <div className="space-y-4">
           <div className="text-sm uppercase tracking-[0.28em] text-slate-500">
             Dashboard &gt; Institute Setup &gt; Feedback From Student
           </div>
-          <h1 className="text-xl font-bold tracking-tight text-slate-950 sm:text-2xl md:text-3xl">
+          <h1 className="text-3xl font-bold tracking-tight text-slate-950">
             Feedback Summary Report (New)
           </h1>
         </div>
 
         <div className="mt-8 rounded-[1rem] border border-[#E2E8F0] bg-white p-6 shadow-sm">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 lg:grid-cols-4">
             <div className="space-y-2">
               <label className="block text-xs uppercase tracking-[0.3em] text-slate-500">Select Session</label>
               <select
@@ -149,14 +149,14 @@ export default function FeedbackSummaryReportPage() {
             <button
               type="button"
               onClick={handleExport}
-              className="inline-flex w-full items-center justify-center rounded-lg border border-[#1E293B] bg-white px-4 py-3 text-sm font-semibold text-[#1E293B] transition hover:bg-slate-50 md:w-auto"
+              className="inline-flex items-center justify-center rounded-lg border border-[#1E293B] bg-white px-4 py-3 text-sm font-semibold text-[#1E293B] transition hover:bg-slate-50"
             >
               Export as Excel
             </button>
             <button
               type="button"
               onClick={handleGo}
-              className="inline-flex w-full items-center justify-center rounded-lg bg-[#1E293B] px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-900 md:w-auto"
+              className="inline-flex items-center justify-center rounded-lg bg-[#1E293B] px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-900"
             >
               Go
             </button>

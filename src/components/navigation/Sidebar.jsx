@@ -1418,17 +1418,9 @@ export default function Sidebar({ isOpen, onClose }) {
   return (
     <>
       {/* Desktop static sidebar */}
-      {isOpen ? (
-        <button
-          type="button"
-          aria-label="Close sidebar"
-          className="fixed inset-0 z-40 bg-black/50 md:hidden"
-          onClick={onClose}
-        />
-      ) : null}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col overflow-y-auto bg-[#0a2e1a] py-4 transition-transform duration-300 md:fixed md:left-0 md:top-0 md:z-50 md:flex md:w-[200px] ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}
-        style={{ height: '100vh' }}
+        className="hidden md:fixed md:left-0 md:top-0 md:z-50 md:flex md:flex-col md:overflow-y-auto md:py-4"
+        style={{ width: 200, height: '100vh', background: '#0a2e1a' }}
       >
         <div style={{ height: 64 }} className="flex items-center px-3">
           <div className="flex w-full items-center">

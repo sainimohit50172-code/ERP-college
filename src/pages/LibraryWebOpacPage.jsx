@@ -32,10 +32,10 @@ export default function LibraryWebOpacPage() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-[1240px] px-4 pb-10 pt-4 md:px-6 md:pt-8">
+      <div className="mx-auto max-w-[1240px] px-4 pb-10 pt-8">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="rounded-full bg-[#F1F5F9] p-1 shadow-sm">
-            <div className="flex overflow-x-auto whitespace-nowrap rounded-full bg-[#F1F5F9] no-scrollbar">
+            <div className="flex overflow-hidden rounded-full bg-[#F1F5F9]">
               {[
                 { id: 'book-search', label: 'Book Search' },
                 { id: 'subscription-search', label: 'Subscription Search' },
@@ -86,7 +86,7 @@ export default function LibraryWebOpacPage() {
             </div>
           </div>
 
-          <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[280px_1fr]">
+          <div className="mt-8 grid gap-6 lg:grid-cols-[280px_1fr]">
             <div className="space-y-2 text-sm text-slate-500">
               <label className="block uppercase tracking-[0.2em]">Search By</label>
               <select
@@ -102,7 +102,7 @@ export default function LibraryWebOpacPage() {
 
             <div className="space-y-2">
               <label className="block text-sm uppercase tracking-[0.2em] text-slate-500">Search</label>
-              <div className="flex flex-col gap-3 sm:flex-row">
+              <div className="flex gap-3">
                 <input
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
@@ -111,7 +111,7 @@ export default function LibraryWebOpacPage() {
                 />
                 <button
                   type="button"
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#1E293B] px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-900 sm:w-auto"
+                  className="inline-flex items-center gap-2 rounded-lg bg-[#1E293B] px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-900"
                 >
                   Go
                   <ArrowRight size={16} />

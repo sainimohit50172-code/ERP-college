@@ -20,6 +20,11 @@ html, body, #root {
   overflow-x: hidden;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   background: linear-gradient(135deg, #E6F7FF 0%, #DFFFEF 35%, #E7FFF2 65%, #FFFFFF 100%);
   color: var(--body-color);
@@ -38,6 +43,11 @@ body {
 
 main, section, article, aside, form, div, nav, header {
   min-width: 0;
+}
+
+img, svg {
+  max-width: 100%;
+  height: auto;
 }
 
 ::selection {
@@ -72,7 +82,28 @@ button, input, textarea, select {
 /* DataTable header sticky */
 .data-table { overflow: hidden; border-radius: 1rem; }
 .data-table-header { position: sticky; top: 0; z-index: 10; }
-.overflow-x-auto { overflow-x: hidden !important; }
+.overflow-x-auto { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+@media (max-width: 768px) {
+  table, .table-auto {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+
+  input, textarea, select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .modal {
+    width: min(94vw, 100%);
+    max-width: none;
+    margin: 1rem auto;
+  }
+}
 
 /* Soft premium card system */
 .soft-surface { @apply border border-slate-200/70 bg-white/90 shadow-sm; }

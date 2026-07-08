@@ -12,11 +12,11 @@ export default function RootLayout() {
   }, [isSidebarOpen]);
 
   return (
-    <div className={`flex min-h-screen overflow-x-hidden bg-transparent text-slate-900 ${isSidebarOpen ? 'overflow-hidden' : ''}`}>
+    <div className="min-h-screen overflow-x-hidden bg-transparent text-slate-900">
       <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <div className={`flex min-h-screen flex-1 flex-col ${isSidebarOpen ? 'pointer-events-none md:pointer-events-auto' : ''}`}>
+      <div className="relative min-h-screen w-full overflow-x-hidden transition-all duration-200 md:ml-[200px] md:w-[calc(100%-200px)]">
         <Topbar onToggleSidebar={() => setSidebarOpen((s) => !s)} />
-        <main className="min-h-screen overflow-x-hidden px-0 pb-6 pt-20 md:pt-20">
+        <main className="min-h-screen overflow-x-hidden px-3 pb-6 pt-20 sm:px-4 lg:px-6">
           <div className="w-full min-w-0">
             <Outlet />
           </div>

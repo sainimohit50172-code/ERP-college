@@ -19,13 +19,13 @@ export default function IndividualFacultyReportPage() {
   };
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[#F8FAFC] text-slate-900">
-      <div className="mx-auto max-w-[1240px] px-4 py-4 md:px-6 md:py-8">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900">
+      <div className="mx-auto max-w-[1240px] px-4 py-8">
         <div className="space-y-4">
           <div className="text-sm uppercase tracking-[0.28em] text-slate-500">Dashboard &gt; Individual Faculty Report</div>
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="flex flex-wrap items-center gap-3">
-              <h1 className="text-xl font-bold tracking-tight text-slate-950 sm:text-2xl md:text-3xl">Individual Faculty Report</h1>
+              <h1 className="text-3xl font-bold tracking-tight text-slate-950">Individual Faculty Report</h1>
               <span className="inline-flex h-10 w-px bg-slate-300" />
               <span className="text-3xl font-semibold tracking-tight text-slate-600">Individual Faculty Report</span>
             </div>
@@ -33,7 +33,7 @@ export default function IndividualFacultyReportPage() {
         </div>
 
         <div className="mt-8 rounded-[1rem] border border-[#E2E8F0] bg-white p-6 shadow-sm">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-[minmax(220px,1fr)_minmax(220px,1fr)_minmax(220px,1fr)]">
+          <div className="grid gap-4 xl:grid-cols-[minmax(220px,1fr)_minmax(220px,1fr)_minmax(220px,1fr)]">
             <div className="space-y-2">
               <label className="block text-xs uppercase tracking-[0.3em] text-slate-500">Select Session</label>
               <select
