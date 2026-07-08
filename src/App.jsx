@@ -31,6 +31,7 @@ import ProfilePage from './pages/employees/ProfilePage.jsx';
 import LeaveManagementPage from './pages/LeaveManagementPage.jsx';
 import MyLeavesPage from './pages/MyLeavesPage.jsx';
 import PayrollManagementPage from './pages/PayrollManagementPage.jsx';
+import SalarySlipPage from './pages/SalarySlipPage.jsx';
 import FinanceAccountingPage from './pages/FinanceAccountingPage.jsx';
 import SemesterManagementPage from './pages/SemesterManagementPage.jsx';
 import SectionManagementPage from './pages/SectionManagementPage.jsx';
@@ -184,6 +185,7 @@ function App() {
               <Route path="employees/reports/daily-attendance-department" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Daily Attendance Report Department Wise" /></ProtectedRoute>} />
               <Route path="employees/reports/absentees-late-arrival" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Absentees & Late Arrival Report" /></ProtectedRoute>} />
               <Route path="employees/reports/leave-approval" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Leave Approval Report" /></ProtectedRoute>} />
+              <Route path="employees/reports/salary-slip" element={<ProtectedRoute moduleKey="employees"><SalarySlipPage /></ProtectedRoute>} />
               <Route path="employees/reports/attendance-logs" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Attendance Logs" /></ProtectedRoute>} />
               <Route path="employees/reports/working-hour" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Working Hour Report" /></ProtectedRoute>} />
               <Route path="employees/attendance/day-wise" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Mark Attendance Day Wise" /></ProtectedRoute>} />
