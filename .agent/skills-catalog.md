@@ -8,8 +8,8 @@
 
 - **codex-fable5**: Apply Fable-inspired discipline to Codex work: inspect first, track goals and findings, ground conclusions in evidence, verify before completion, and adapt Claude/Fable prompt guidance without identity or provider claims. _(risk: critical)_
 - **dispatch**: Delegate tasks to OpenAI Codex CLI and Google Antigravity CLI from Claude Code with topic-aware sessions _(risk: critical)_
-- **zipai-optimizer**: Ultra-dense token optimizer skill for prompt caching, log pruning, AST-based inspection, and minified JSON payloads. _(risk: safe)_
 - **fable-safe-prompt**: Rewrite allowed prompts to reduce false-positive safety triggers without bypassing policy or changing intent. _(risk: safe)_
+- **zipai-optimizer**: Ultra-dense token optimizer skill for prompt caching, log pruning, AST-based inspection, and minified JSON payloads. _(risk: safe)_
 
 ## agent-evaluation
 
@@ -17,11 +17,11 @@
 
 ## agent-orchestration
 
-- **multi-agent-task-orchestrator**: Route tasks to specialized AI agents with anti-duplication, quality gates, and 30-minute heartbeat monitoring _(risk: safe)_
 - **agent-self-scheduling**: Schedule AI agent runs with cron, loops, or external clocks while avoiding unsafe tight autonomous timers. _(risk: critical)_
 - **codex-subagent**: Launch Codex CLI as an isolated subagent for bounded coding, review, or verification tasks. _(risk: critical)_
 - **delegating-to-agents**: Delegate bounded work to other AI agents while preserving context, ownership, and progress checks. _(risk: critical)_
 - **goal-loop**: Draft and explain persistent goal-loop prompts for long-running agent work with clear stop conditions. _(risk: safe)_
+- **multi-agent-task-orchestrator**: Route tasks to specialized AI agents with anti-duplication, quality gates, and 30-minute heartbeat monitoring _(risk: safe)_
 
 ## agent-squad
 
@@ -460,8 +460,8 @@ applications.
 
 ## browser-automation
 
-- **skyvern-browser-automation**: AI-powered browser automation — navigate sites, fill forms, extract structured data, log in with stored credentials, and build reusable workflows. _(risk: safe)_
 - **browser-harness**: Drive an existing browser through CDP for authenticated, visual, or interactive web automation. _(risk: critical)_
+- **skyvern-browser-automation**: AI-powered browser automation — navigate sites, fill forms, extract structured data, log in with stored credentials, and build reusable workflows. _(risk: safe)_
 
 ## business
 
@@ -1070,6 +1070,7 @@ api docs, reference,... _(risk: unknown)_
 - **agenttrace-session-audit**: Audit local AI coding-agent sessions with agenttrace for cost, tool failures, latency, anomalies, health, diffs, and CI gates. _(risk: safe)_
 - **ax-extract-workflow**: Reconstruct workflow behind a past coding-agent artifact using local ax sessions/commits/skills/tool traces. Use when asked how X was built. _(risk: safe)_
 - **brooks-lint**: AI code reviewer grounded in classic software engineering books for catching design smells, coupling issues, and architectural risks. _(risk: safe)_
+- **cmux**: Control cmux workspaces, panes, surfaces, and agent sessions safely from macOS terminal workflows. _(risk: critical)_
 - **code-polish**: Rewrites unprofessional code comments into clear ones and performs non-semantic cleanup. Use to professionalize code without altering logic or behavior. _(risk: critical)_
 - **code-review-and-quality**: Conducts multi-axis code review. Use before merging any change. Use when reviewing code written by yourself, another agent, or a human. Use when you need to assess code quality across multiple dimensions before it enters the main branch. _(risk: unknown)_
 - **code-showcase-core-components**: Core component library and design system patterns. Use when building UI, using design tokens, or working with the component library. _(risk: unknown)_
@@ -1082,7 +1083,10 @@ api docs, reference,... _(risk: unknown)_
 - **debugging-code**: Interactively debug source code — set breakpoints, step through execution line by line, inspect live variable state, evaluate expressions against the running program, and navigate the call stack to trace root causes. Use when a program crashes, raises unexpected exceptions, produces... _(risk: unknown)_
 - **debugging-toolkit**: Use when working with debugging toolkit smart debug (Alias for debugging-toolkit-smart-debug) _(risk: unknown)_
 - **diagnosing-bugs**: Diagnosis loop for hard bugs and performance regressions. Use when the user says "diagnose"/"debug this", or reports something broken/throwing/failing/slow. _(risk: safe)_
+- **distribute-skill-to-all-agents**: Distribute a skill across configured agent skill folders while respecting local symlink layouts. _(risk: critical)_
 - **ecl-harness-engineer**: Create or audit ECL Agent Harness infrastructure: AGENTS.md, change tracking, repository guidance, lint checks, CI gates, and agent handoff docs. _(risk: safe)_
+- **effective-agent-skills**: Author and review high-quality agent skills with triggers, progressive disclosure, and safety notes. _(risk: safe)_
+- **folder-specific-claude-and-agents-md**: Create folder-scoped CLAUDE.md and AGENTS.md guidance for future agents working in that area. _(risk: critical)_
 - **gdb-cli**: GDB debugging assistant for AI agents - analyze core dumps, debug live processes, investigate crashes and deadlocks with source code correlation _(risk: critical)_
 - **global-chat-agent-discovery**: Discover and search 18K+ MCP servers and AI agents across 6+ registries using Global Chat's cross-protocol directory and MCP server. _(risk: safe)_
 - **improve-codebase-architecture**: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick. _(risk: safe)_
@@ -1090,6 +1094,7 @@ api docs, reference,... _(risk: unknown)_
 - **logic-lens**: AI-powered Claude Code skill that performs deep code review using formal logic and reasoning frameworks to detect bugs, anti-patterns, and security risks beyond what linters catch. _(risk: safe)_
 - **performance-optimization**: Optimizes application performance. Use when performance requirements exist, when you suspect performance regressions, or when Core Web Vitals or load times need improvement. Use when profiling reveals bottlenecks that need fixing. _(risk: unknown)_
 - **prototype**: Build a throwaway prototype to flesh out a design — a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route. _(risk: safe)_
+- **push-skill-to-github**: Commit and push skill changes to the configured skills repository after review and validation. _(risk: critical)_
 - **python-development**: You are a Python project architecture expert specializing in scaffolding production-ready Python applications. Generate complete project structures with modern tooling (uv, FastAPI, Django), type hint (Alias for python-development-python-scaffold) _(risk: critical)_
 - **python-pptx-generator**: Generate complete Python scripts that build polished PowerPoint decks with python-pptx and real slide content. _(risk: safe)_
 - **rayden-code**: Generate React code with Rayden UI components using correct props, tokens, and premium layout patterns _(risk: safe)_
@@ -1102,11 +1107,6 @@ api docs, reference,... _(risk: unknown)_
 - **triage**: Move issues and external PRs through a state machine of triage roles — categorise, verify, grill if needed, and write agent-ready briefs. _(risk: safe)_
 - **unship**: Compare AI agent-made UI variants locally in a real app, then keep one and clean up unused temporary code. _(risk: critical)_
 - **wp-site-health-auditor**: Turns a WordPress Site Health report into a risk-tiered, backup-first fix plan with exact WP-CLI/PHP snippets. Use for site health, recommended improvements, or critical issue reports. _(risk: critical)_
-- **cmux**: Control cmux workspaces, panes, surfaces, and agent sessions safely from macOS terminal workflows. _(risk: critical)_
-- **distribute-skill-to-all-agents**: Distribute a skill across configured agent skill folders while respecting local symlink layouts. _(risk: critical)_
-- **effective-agent-skills**: Author and review high-quality agent skills with triggers, progressive disclosure, and safety notes. _(risk: safe)_
-- **folder-specific-claude-and-agents-md**: Create folder-scoped CLAUDE.md and AGENTS.md guidance for future agents working in that area. _(risk: critical)_
-- **push-skill-to-github**: Commit and push skill changes to the configured skills repository after review and validation. _(risk: critical)_
 
 ## development-and-testing
 
@@ -1522,11 +1522,11 @@ pageflip, 组件设计, 组件模式 _(risk: unknown)_
 - **content-creator**: Create SEO-optimized marketing content with consistent brand voice. Includes brand voice analyzer, SEO optimizer, content frameworks, and social media templates. Use when writing blog posts, creati... _(risk: unknown)_
 - **competitor-analysis**: Research competitors with Browserbase discovery, enrichment lanes, screenshots, matrices, and HTML reports. _(risk: safe)_
 - **linkedin-content-generator**: AI-powered LinkedIn content suite: generate posts, carousels, newsletters, and 30-day calendars with niche-specific SEO rules and a reinforcement-learning personal memory system. _(risk: safe)_
+- **linkedin-post-writer**: Draft LinkedIn posts from 16 tested hook formulas mapped to engagement goals (comments, reposts, likes, saves), with 2026 algorithm formatting rules and an AI-tell scrub pass before publishing.
 - **socialclaw**: Agent-first social media publishing skill — schedule and publish posts across 13 platforms (X, LinkedIn, Instagram, Facebook Pages, TikTok, Discord, Telegram, YouTube, Reddit, WordPress, Pinterest) via a single workspace API key. _(risk: critical)_
+- **taisly-social-media-posting**: Use Taisly Agent Kit to prepare and publish approved short-form video posts across TikTok, Instagram Reels, YouTube Shorts, X, and Facebook. _(risk: critical)_
 - **wechat-official-account-strategist**: Grow WeChat Official Accounts (微信公众号) with high-conversion content strategy, title formulas, article architecture, and Mini-Program integration. _(risk: safe)_
 - **xiaohongshu-content-strategist**: Create viral Xiaohongshu (小红书) content with platform-native strategy, save-rate optimization, trending formats, and search SEO for China's #1 lifestyle platform. _(risk: safe)_
-- **linkedin-post-writer**: Draft LinkedIn posts from 16 tested hook formulas mapped to engagement goals (comments, reposts, likes, saves), with 2026 algorithm formatting rules and an AI-tell scrub pass before publishing.
-- **taisly-social-media-posting**: Use Taisly Agent Kit to prepare and publish approved short-form video posts across TikTok, Instagram Reels, YouTube Shorts, X, and Facebook. _(risk: critical)_
 
 ## marketing-growth
 
@@ -1693,9 +1693,9 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 - **production-scheduling**: Codified expertise for production scheduling, job sequencing, line balancing, changeover optimisation, and bottleneck resolution in discrete and batch manufacturing. _(risk: safe)_
 - **quality-nonconformance**: Codified expertise for quality control, non-conformance investigation, root cause analysis, corrective action, and supplier quality management in regulated manufacturing. _(risk: safe)_
 - **returns-reverse-logistics**: Codified expertise for returns authorisation, receipt and inspection, disposition decisions, refund processing, fraud detection, and warranty claims management. _(risk: safe)_
-- **pre-release-review**: Run a read-only pre-release review for deploy readiness, migrations, config, secrets, rollout order, rollback risk, and launch blockers. _(risk: safe)_
 - **anti-sleep**: Keep a Mac awake with caffeinate during long builds, downloads, or supervised automation runs. _(risk: critical)_
 - **pi-custom-model**: Register custom Pi Agent model slugs so saved OpenRouter variants resolve correctly. _(risk: critical)_
+- **pre-release-review**: Run a read-only pre-release review for deploy readiness, migrations, config, secrets, rollout order, rollback risk, and launch blockers. _(risk: safe)_
 - **vps-server-management**: Manage authorized VPS hosts and server-side agents through cautious SSH and operations workflows. _(risk: critical)_
 
 ## orchestration
@@ -1764,6 +1764,7 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 
 - **interview-coach**: Full job search coaching system — JD decoding, resume, storybank, mock interviews, transcript analysis, comp negotiation. 23 commands, persistent state. _(risk: safe)_
 - **ask-matt**: Ask which skill or flow fits your situation. A router over the user-invoked skills in this repo. _(risk: safe)_
+- **brain-to-docs**: Interview the user to turn project vision and decisions into README and ADR documentation. _(risk: critical)_
 - **context-kit**: Evaluate, adapt, and safely install Context Kit personal context artifacts for Claude Code or adjacent agent workflows. _(risk: critical)_
 - **daily-gift**: Relationship-aware daily gift engine with five-stage creative pipeline — editorial judgment, synthesis, concept generation, visual strategy, and rendering in H5, image, or video _(risk: unknown)_
 - **faf-wizard**: Done-for-you .faf generator. One-click AI context for any project - new, legacy, or famous. Auto-detects stack, scores readiness, works everywhere. _(risk: safe)_
@@ -1771,16 +1772,15 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 - **grill-with-docs**: A relentless interview to sharpen a plan or design, which also creates docs (ADR's and glossary) as we go. _(risk: safe)_
 - **grilling**: Interview the user relentlessly about a plan or design. Use when the user wants to stress-test a plan before building, or uses any 'grill' trigger phrases. _(risk: safe)_
 - **handoff**: Compact the current conversation into a handoff document for another agent to pick up. _(risk: safe)_
+- **interview-style-doc-building**: Build structured strategy documents by asking one question at a time and patching the file. _(risk: critical)_
+- **markdown-rendering**: Open Markdown reliably in cmux panes and recover from blank rendered surfaces. _(risk: safe)_
 - **mdpr-skill**: Review MDPR Markdown presentation workflows with semantic hints, visual checks, and deterministic renderer boundaries. _(risk: safe)_
+- **read-all-adrs**: Read every ADR in a project before summarizing architectural context or decisions. _(risk: safe)_
 - **rich-elicitation**: Asks clarifying questions in multiple rounds before starting ambiguous tasks. Fires when 2+ task dimensions each have 3+ viable answers.
+- **setup-help**: Walk a user through setup or installation one step at a time with the remaining steps visible. _(risk: safe)_
 - **time-ledger**: Natural-language time tracking: parse what the user says they did into Activity/Minutes/Date rows in their own Notion database — asking instead of guessing when unsure. _(risk: critical)_
 - **trading-ledger**: A trading journal that captures the decision, not just the fill: thesis, plan, and emotion at the moment of entry, written to the user's own Notion database; reviews grade decisions, not P&L. _(risk: critical)_
 - **workorai**: WorkorAI talent-marketplace skill: candidates search jobs and manage applications; employers run the job lifecycle and get ranked candidate matches with white-box fit explanations. _(risk: critical)_
-- **brain-to-docs**: Interview the user to turn project vision and decisions into README and ADR documentation. _(risk: critical)_
-- **interview-style-doc-building**: Build structured strategy documents by asking one question at a time and patching the file. _(risk: critical)_
-- **markdown-rendering**: Open Markdown reliably in cmux panes and recover from blank rendered surfaces. _(risk: safe)_
-- **read-all-adrs**: Read every ADR in a project before summarizing architectural context or decisions. _(risk: safe)_
-- **setup-help**: Walk a user through setup or installation one step at a time with the remaining steps visible. _(risk: safe)_
 
 ## programming-languages
 
@@ -1839,13 +1839,13 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 - **web-scraper**: Web scraping inteligente multi-estrategia. Extrai dados estruturados de paginas web (tabelas, listas, precos). Paginacao, monitoramento e export CSV/JSON. _(risk: safe)_
 - **wiki-qa**: Answers questions about a code repository using source file analysis. Use when the user asks a question about how something works, wants to understand a component, or needs help navigating the code... _(risk: unknown)_
 - **wiki-researcher**: Conducts multi-turn iterative deep research on specific topics within a codebase with zero tolerance for shallow analysis. Use when the user wants an in-depth investigation, needs to understand how... _(risk: unknown)_
+- **deepapi**: Use DeepAPI for supported scraping, research, and email workflows with explicit credentials and approval. _(risk: critical)_
 - **ii-commons**: Deterministic search across arXiv, PubMed/PMC, and US policy corpora with daily freshness cutoffs. _(risk: safe)_
 - **news-sentiment-engine**: Multi-source RSS news aggregation with Claude-powered sentiment analysis and structured briefing output _(risk: critical)_
 - **papers-skill**: Skill for academic research workflows: search Semantic Scholar (200M+ papers), inspect citations, download arXiv PDFs, and extract PDF text. Bundles a self-contained Python CLI. _(risk: safe)_
-- **survey-generator**: Generate source-backed AI/ML survey paper artifacts with curated bibliographies and Fireworks/Kimi HTML rendering. _(risk: safe)_
-- **deepapi**: Use DeepAPI for supported scraping, research, and email workflows with explicit credentials and approval. _(risk: critical)_
 - **pi-web-search**: Give Pi Agents a safe web-search and fetch workflow using the installed pi-web-access package. _(risk: safe)_
 - **research-prompt**: Turn vague research needs into one precise deep-research prompt with context and output criteria. _(risk: safe)_
+- **survey-generator**: Generate source-backed AI/ML survey paper artifacts with curated bibliographies and Fireworks/Kimi HTML rendering. _(risk: safe)_
 - **youtube-transcript**: Fetch YouTube transcripts through DeepAPI or local fallback tooling and save clean text output. _(risk: safe)_
 
 ## rust
@@ -1966,12 +1966,12 @@ analysis across multiple languages and frameworks
 - **bumblebee**: Run Bumblebee supply-chain inventory and exposure scans on macOS/Linux to detect compromised packages, extensions, and MCP host configs. _(risk: safe)_
 - **container-security-hardening**: Harden Docker/container images and runtime deployments with secure base images, non-root users, CVE scanning, SBOM/signing, seccomp/AppArmor, and Kubernetes pod security controls. Use for Dockerfile security reviews, container CVEs, image scanning, distroless images, or production hardening.
  _(risk: safe)_
+- **cyber-audit**: Run read-only exposure checks for security advisories and write a structured local audit report. _(risk: safe)_
 - **developer-signup-flow**: Design frictionless signup experiences for developers including GitHub OAuth, API key generation, and onboarding personalization. Trigger phrases: developer signup, dev registration, OAuth flow, API key onboarding, reduce signup friction, developer authentication, signup conversion,... _(risk: unknown)_
 - **fsi-compliance-checker**: Maps code, architecture, and infrastructure changes to specific control IDs in PCI-DSS v4.0 and MAS TRM (Singapore financial regulator), producing an audit-traceable findings report with per-control remediation. _(risk: safe)_
 - **production-audit**: Audit a shipped repo for production-readiness gaps across RLS, webhooks, secrets, grants, Stripe idempotency, mobile UX, and deployment health. _(risk: critical)_
 - **security-and-hardening**: Hardens code against vulnerabilities. Use when handling user input, authentication, data storage, or external integrations. Use when building any feature that accepts untrusted data, manages user sessions, or interacts with third-party services. _(risk: unknown)_
 - **skill-audit**: Pre-install security scanner for AI agent skills. 7.5% of 14,706 skills are malicious. Audit before you trust. _(risk: safe)_
-- **cyber-audit**: Run read-only exposure checks for security advisories and write a structured local audit report. _(risk: safe)_
 
 ## seo
 
@@ -2392,5 +2392,5 @@ before implementation to verify project context.
 - **copy-editing**: When the user wants to edit, review, or improve existing marketing copy. Also use when the user mentions 'edit this copy,' 'review my copy,' 'copy feedback,' 'proofread,' 'polish this,' 'make this ... _(risk: unknown)_
 - **scientific-writing**: Core skill for the deep research and writing tool. Write scientific manuscripts in full paragraphs (never bullet points). Use two-stage process with (1) section outlines with key points using research-lookup then (2) convert to flowing prose. IMRAD... _(risk: unknown)_
 - **bulletmind**: Convert input into clean, structured, hierarchical bullet points for summarization, note-taking, and structured thinking. _(risk: safe)_
-- **unslop**: Post-process AI-generated text through the unslop CLI to strip AI writing patterns before publishing _(risk: safe)_
 - **short**: Rewrite the previous response more briefly while preserving the substance. _(risk: safe)_
+- **unslop**: Post-process AI-generated text through the unslop CLI to strip AI writing patterns before publishing _(risk: safe)_
