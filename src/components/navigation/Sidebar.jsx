@@ -39,6 +39,7 @@ const MENU_ITEMS = [
   { id: 'examination', label: 'Examination', to: '/examination', icon: ClipboardList },
   { id: 'coe', label: 'COE', to: '/settings/coe', icon: Building },
   { id: 'feedback', label: 'Feedback From Student', to: '/feedback', icon: MessageSquare },
+  { id: 'feedback-summary-report-main', label: 'Feedback Summary Report', to: '/employees/feedback-summary-report', icon: Star },
   { id: 'university-communication', label: 'University Communication', to: '/notifications', icon: Globe },
   { id: 'lesson', label: 'Lesson', to: '/lms', icon: BookOpen },
   { id: 'hrm', label: 'HRM', to: '/employees', icon: Users },
@@ -55,8 +56,7 @@ const MENU_ITEMS = [
   { id: 'student-queries', label: 'Student Queries', to: '/student-queries', icon: HelpCircle },
 ];
 
-export default function Sidebar({ isOpen = false, onClose = () => {} }) {
-  const location = useLocation();
+export default function Sidebar({ isOpen, onClose }) {
   const [showEmployeePortal, setShowEmployeePortal] = useState(false);
   const [showAdmissionDropdown, setShowAdmissionDropdown] = useState(false);
   const [showStudentDropdown, setShowStudentDropdown] = useState(false);
@@ -101,13 +101,13 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
     { id: 'profile', label: 'Profile', to: '/employees/profile' },
     { id: 'my-leaves', label: 'My Leaves', to: '/employees/leaves' },
     { id: 'salary-slip', label: 'Salary Slip', to: '/employees/salary-slip' },
-    { id: 'attendance-regularization', label: 'Attendance Regularization', to: '/employees/attendance-regularization' },
-    { id: 'issued-books', label: 'Issued Books', to: '/employees/issued-books' },
-    { id: 'user-preference', label: 'User Preference', to: '/employees/user-preference' },
-    { id: 'employee-announcement', label: 'Employee Announcement', to: '/employees/announcements' },
+    { id: 'attendance-regularization', label: 'Attendance Regularization', to: '/employees/attendance/regularization' },
+    { id: 'issued-books', label: 'Issued Books', to: '/library/issued-books' },
+    { id: 'user-preference', label: 'User Preferences', to: '/employees/user-preference' },
+    { id: 'employee-announcement', label: 'Employee Announcement', to: '/employees/announcement' },
     { id: 'webopac', label: 'WebOPAC', to: '/employees/webopac' },
     { id: 'individual-faculty-report', label: 'Individual Faculty Report', to: '/employees/faculty-report' },
-    { id: 'feedback-summary-report', label: 'Feedback Summary Report (New)', to: '/employees/feedback-summary' },
+    { id: 'feedback-summary-report', label: 'Feedback Summary Report (New)', to: '/employees/feedback-summary-report' },
   ];
 
   const handleEmployeePortalClick = () => {
@@ -309,7 +309,7 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
         { id: 'salary-summary-month-wise', label: 'Salary Summary Month Wise', to: '/employees/reports/salary-summary-month-wise' },
       ],
       salaryReports: [
-        { id: 'salary-slip', label: 'Salary Slip', to: '/employees/reports/salary-slip' },
+        { id: 'salary-slip', label: 'Salary Slip', to: '/employees/salary-slip' },
         { id: 'employee-salary-report', label: 'Employee Salary Report', to: '/employees/reports/salary' },
         { id: 'employee-salary-register', label: 'Employee Salary Register', to: '/employees/reports/salary-register' },
         { id: 'employee-salary-report-multiple-months', label: 'Employee Salary Report - Multiple Months', to: '/employees/reports/salary-multiple-months' },
@@ -351,6 +351,7 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
       ],
       webopac: [
         { id: 'webopac', label: 'WebOPAC', to: '/library/webopac' },
+        { id: 'web-opac', label: 'Web OPAC', to: '/library/web-opac' },
       ],
     },
   };
@@ -1607,7 +1608,7 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
                 </Link>
               ))}
               <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
-                WEBOPAC
+                WEB OPAC
               </div>
               {LIBRARY_ITEMS.right.webopac.map((portalItem) => (
                 <Link

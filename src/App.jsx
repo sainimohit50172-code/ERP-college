@@ -32,6 +32,7 @@ import LeaveManagementPage from './pages/LeaveManagementPage.jsx';
 import MyLeavesPage from './pages/MyLeavesPage.jsx';
 import PayrollManagementPage from './pages/PayrollManagementPage.jsx';
 import SalarySlipPage from './pages/SalarySlipPage.jsx';
+import EmployeeAttendanceRegularizationPage from './pages/EmployeeAttendanceRegularizationPage.jsx';
 import FinanceAccountingPage from './pages/FinanceAccountingPage.jsx';
 import SemesterManagementPage from './pages/SemesterManagementPage.jsx';
 import SectionManagementPage from './pages/SectionManagementPage.jsx';
@@ -83,6 +84,7 @@ import LibraryRenewalsPage from './pages/LibraryRenewalsPage.jsx';
 import LibraryFinesPage from './pages/LibraryFinesPage.jsx';
 import LibraryDamagesPage from './pages/LibraryDamagesPage.jsx';
 import LibraryLostPage from './pages/LibraryLostPage.jsx';
+import LibraryIssuedBooksPage from './pages/LibraryIssuedBooksPage.jsx';
 import HostelRoomsPage from './pages/HostelRoomsPage.jsx';
 import HostelAllocationsPage from './pages/HostelAllocationsPage.jsx';
 import HostelVisitorsPage from './pages/HostelVisitorsPage.jsx';
@@ -131,6 +133,11 @@ import ChangePasswordPage from './pages/ChangePasswordPage.jsx';
 import UnauthorizedPage from './pages/UnauthorizedPage.jsx';
 import PermissionMatrixPage from './pages/PermissionMatrixPage.jsx';
 import AuditLogPage from './pages/AuditLogPage.jsx';
+import UsersPreferencesPage from './pages/UsersPreferencesPage.jsx';
+import EmployeeAnnouncementPage from './pages/EmployeeAnnouncementPage.jsx';
+import LibraryWebOpacPage from './pages/LibraryWebOpacPage.jsx';
+import IndividualFacultyReportPage from './pages/IndividualFacultyReportPage.jsx';
+import FeedbackSummaryReportPage from './pages/FeedbackSummaryReportPage.jsx';
 import ProtectedRoute from './components/auth/ProtectedRoute.jsx';
 
 function App() {
@@ -170,8 +177,14 @@ function App() {
               <Route path="teachers" element={<ProtectedRoute moduleKey="teachers"><TeacherManagementPage /></ProtectedRoute>} />
               <Route path="teachers/:teacherId" element={<ProtectedRoute moduleKey="teachers"><TeacherProfilePage /></ProtectedRoute>} />
               <Route path="employees" element={<ProtectedRoute moduleKey="employees"><EmployeeManagementPage /></ProtectedRoute>} />
-              <Route path="employees/:employeeId" element={<ProtectedRoute moduleKey="employees"><EmployeeProfilePage /></ProtectedRoute>} />
               <Route path="employees/profile" element={<ProtectedRoute moduleKey="employees"><ProfilePage /></ProtectedRoute>} />
+              <Route path="employees/user-preference" element={<ProtectedRoute moduleKey="employees"><UsersPreferencesPage /></ProtectedRoute>} />
+              <Route path="employees/announcement" element={<ProtectedRoute moduleKey="employees"><EmployeeAnnouncementPage /></ProtectedRoute>} />
+              <Route path="employees/webopac" element={<ProtectedRoute moduleKey="library"><LibraryWebOpacPage /></ProtectedRoute>} />
+              <Route path="employees/faculty-report" element={<ProtectedRoute moduleKey="employees"><IndividualFacultyReportPage /></ProtectedRoute>} />
+              <Route path="employees/feedback-summary-report" element={<ProtectedRoute moduleKey="employees"><FeedbackSummaryReportPage /></ProtectedRoute>} />
+              <Route path="employees/:employeeId" element={<ProtectedRoute moduleKey="employees"><EmployeeProfilePage /></ProtectedRoute>} />
+              <Route path="employees/salary-slip" element={<ProtectedRoute moduleKey="employees"><SalarySlipPage /></ProtectedRoute>} />
               <Route path="employees/manage" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Manage Employee" /></ProtectedRoute>} />
               <Route path="employees/leaves" element={<ProtectedRoute moduleKey="employees"><MyLeavesPage /></ProtectedRoute>} />
               <Route path="employees/entitled-leaves" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Employee Entitled Leaves" /></ProtectedRoute>} />
@@ -185,13 +198,12 @@ function App() {
               <Route path="employees/reports/daily-attendance-department" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Daily Attendance Report Department Wise" /></ProtectedRoute>} />
               <Route path="employees/reports/absentees-late-arrival" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Absentees & Late Arrival Report" /></ProtectedRoute>} />
               <Route path="employees/reports/leave-approval" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Leave Approval Report" /></ProtectedRoute>} />
-              <Route path="employees/reports/salary-slip" element={<ProtectedRoute moduleKey="employees"><SalarySlipPage /></ProtectedRoute>} />
               <Route path="employees/reports/attendance-logs" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Attendance Logs" /></ProtectedRoute>} />
               <Route path="employees/reports/working-hour" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Working Hour Report" /></ProtectedRoute>} />
               <Route path="employees/attendance/day-wise" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Mark Attendance Day Wise" /></ProtectedRoute>} />
               <Route path="employees/attendance/month-wise" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Mark Attendance Month Wise" /></ProtectedRoute>} />
               <Route path="employees/attendance/biometric" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Biometric Attendance" /></ProtectedRoute>} />
-              <Route path="employees/attendance/regularization" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Attendance Regularization" /></ProtectedRoute>} />
+              <Route path="employees/attendance/regularization" element={<ProtectedRoute moduleKey="employees"><EmployeeAttendanceRegularizationPage /></ProtectedRoute>} />
               <Route path="employees/reports/compute-attendance" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Compute Attendance" /></ProtectedRoute>} />
               <Route path="employees/reports/salary-summary-month-wise" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Salary Summary Month Wise" /></ProtectedRoute>} />
               <Route path="employees/reports/salary-slip" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Salary Slip" /></ProtectedRoute>} />
@@ -242,7 +254,7 @@ function App() {
               <Route path="library/lost" element={<ProtectedRoute moduleKey="library"><LibraryLostPage /></ProtectedRoute>} />
               <Route path="library/issue-book" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Issue Book" /></ProtectedRoute>} />
               <Route path="library/issue-book-college-wise" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Issue Book College Wise" /></ProtectedRoute>} />
-              <Route path="library/issued-books" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Issued Books" /></ProtectedRoute>} />
+              <Route path="library/issued-books" element={<ProtectedRoute moduleKey="library"><LibraryIssuedBooksPage /></ProtectedRoute>} />
               <Route path="library/stock-verify" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Stock Verify" /></ProtectedRoute>} />
               <Route path="library/visitor" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Library Visitor" /></ProtectedRoute>} />
               <Route path="library/digital" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Digital Library" /></ProtectedRoute>} />
@@ -258,6 +270,7 @@ function App() {
               <Route path="library/reports/title-subtitle-summary" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="Title & Subtitle Category Summary Report" /></ProtectedRoute>} />
               <Route path="library/reports/webopac" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="WebOPAC Report" /></ProtectedRoute>} />
               <Route path="library/webopac" element={<ProtectedRoute moduleKey="library"><PlaceholderPage title="WebOPAC" /></ProtectedRoute>} />
+              <Route path="library/web-opac" element={<ProtectedRoute moduleKey="library"><LibraryWebOpacPage /></ProtectedRoute>} />
               <Route path="hostel" element={<ProtectedRoute moduleKey="hostel"><HostelManagementPage /></ProtectedRoute>} />
               <Route path="hostel/rooms" element={<ProtectedRoute moduleKey="hostel"><HostelRoomsPage /></ProtectedRoute>} />
               <Route path="hostel/allocations" element={<ProtectedRoute moduleKey="hostel"><HostelAllocationsPage /></ProtectedRoute>} />
@@ -390,6 +403,7 @@ function App() {
               <Route path="lesson/management" element={<ProtectedRoute moduleKey="lms"><PlaceholderPage title="Lesson Management" /></ProtectedRoute>} />
               <Route path="lesson/subject-wise-report" element={<ProtectedRoute moduleKey="lms"><PlaceholderPage title="Subject Wise Report" /></ProtectedRoute>} />
               <Route path="settings" element={<ProtectedRoute moduleKey="settings"><SettingsPage /></ProtectedRoute>} />
+              <Route path="users/preferences" element={<ProtectedRoute moduleKey="settings"><UsersPreferencesPage /></ProtectedRoute>} />
               <Route path="change-password" element={<ChangePasswordPage />} />
               <Route path="permissions" element={<ProtectedRoute moduleKey="permissionMatrix"><PermissionMatrixPage /></ProtectedRoute>} />
               <Route path="audit-log" element={<ProtectedRoute moduleKey="auditLog"><AuditLogPage /></ProtectedRoute>} />

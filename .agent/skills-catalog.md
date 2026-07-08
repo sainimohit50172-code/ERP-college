@@ -1,6 +1,6 @@
 # AI Agent Skills — Full Catalog
 
-> Auto-generated. Total: **1929 skills** across **114 categories**.
+> Auto-generated. Total: **1935 skills** across **114 categories**.
 > When asked "what skill should I use?", browse this file and suggest the most relevant skill IDs.
 > Install a skill: `Ctrl+Shift+/` → search for the skill ID → press Enter.
 
@@ -45,6 +45,7 @@
 - **loop-library**: Find, compare, adapt, and design bounded AI-agent feedback loops with explicit checks, stop rules, guardrails, and handoffs. _(risk: safe)_
 - **open-dynamic-workflows**: Plan, orchestrate, and adversarially verify parallel AI coding agents with a dynamic multi-agent workflow engine. _(risk: critical)_
 - **pydantic-ai**: Build production-ready AI agents with PydanticAI — type-safe tool use, structured outputs, dependency injection, and multi-model support. _(risk: safe)_
+- **pilot-protocol**: Give an AI agent a permanent network address, encrypted P2P messaging, and an installable app store via Pilot Protocol _(risk: critical)_
 
 ## ai-ml
 
@@ -226,6 +227,7 @@ Chat widget, Messages, PromptInput, Avatar, LLM _(risk: unknown)_
 - **trl-training**: Train and fine-tune transformer language models using TRL (Transformers Reinforcement Learning). Supports SFT, DPO, GRPO, KTO, RLOO and Reward Model training via CLI commands. _(risk: unknown)_
 - **unslop-commit**: Rewrites commit messages so they sound like a careful human engineer wrote them. Strips AI/marketing slop ("comprehensive solution", "robust implementation", "leverage", "enhance", "seamlessly", "This commit..."). Keeps Conventional Commits format. Subject ≤72 chars (aim ≤50),... _(risk: unknown)_
 - **unslop-file**: Humanize natural-language memory files (CLAUDE.md, todos, preferences, docs) by removing AI-isms and adding burstiness while preserving every code block, URL, path, command, and heading exactly. Two modes: --deterministic (fast, regex-based, no API) and LLM (default, calls Claude for... _(risk: unknown)_
+- **routerbase-model-gateway**: Integrate RouterBase as an OpenAI-compatible model gateway for routing GPT, Claude, Gemini, media, audio, and embedding requests. _(risk: safe)_
 
 ## ai-research
 
@@ -1107,6 +1109,8 @@ api docs, reference,... _(risk: unknown)_
 - **triage**: Move issues and external PRs through a state machine of triage roles — categorise, verify, grill if needed, and write agent-ready briefs. _(risk: safe)_
 - **unship**: Compare AI agent-made UI variants locally in a real app, then keep one and clean up unused temporary code. _(risk: critical)_
 - **wp-site-health-auditor**: Turns a WordPress Site Health report into a risk-tiered, backup-first fix plan with exact WP-CLI/PHP snippets. Use for site health, recommended improvements, or critical issue reports. _(risk: critical)_
+- **go-in-depth**: Go in depth harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report. _(risk: safe)_
+- **tree-ring-memory**: Use Tree Ring Memory for local-first AI-agent memory lifecycle work: recall, evidence, audit, forgetting, and consolidation without transcript dumping. _(risk: safe)_
 
 ## development-and-testing
 
@@ -1781,6 +1785,7 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 - **time-ledger**: Natural-language time tracking: parse what the user says they did into Activity/Minutes/Date rows in their own Notion database — asking instead of guessing when unsure. _(risk: critical)_
 - **trading-ledger**: A trading journal that captures the decision, not just the fill: thesis, plan, and emotion at the moment of entry, written to the user's own Notion database; reviews grade decisions, not P&L. _(risk: critical)_
 - **workorai**: WorkorAI talent-marketplace skill: candidates search jobs and manage applications; employers run the job lifecycle and get ranked candidate matches with white-box fit explanations. _(risk: critical)_
+- **codex-profiles**: Use codex-profiles to run Codex CLI or Codex Desktop with isolated CODEX_HOME profiles for separate accounts, projects, and local state. _(risk: critical)_
 
 ## programming-languages
 
@@ -1820,6 +1825,7 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 ## quality
 
 - **dos-verify-done-claims**: Before accepting an agent's 'done / shipped / fixed' claim, verify it against ground truth (git ancestry + the commit's own diff) using the DOS kernel's `dos verify` and `dos commit-audit` — never the agent's own narration. _(risk: critical)_
+- **pre-ship-gate**: A ship gate that runs before any production deploy: checks the silent failure modes that make a deploy 'succeed' while prod stays broken, then verifies the live revision instead of trusting deploy output. _(risk: safe)_
 
 ## reliability
 

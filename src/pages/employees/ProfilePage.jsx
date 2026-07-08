@@ -156,7 +156,7 @@ export default function ProfilePage() {
     return () => {
       isMounted = false;
     };
-  }, [auth?.user?.id, auth?.user?.employeeId, auth?.user?.employee_id, auth?.user?.name, auth?.user?.email]);
+  }, [auth]);
 
   const quickStats = useMemo(() => [
     { value: leaveStats.approved || 12, label: 'Leaves Taken', color: '#3b82f6' },

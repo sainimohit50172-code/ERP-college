@@ -8,6 +8,7 @@ from app.api.v1.admissions.router import router as admissions_router
 from app.api.v1.attendance.router import router as attendance_router
 from app.api.v1.audit.router import router as audit_router
 from app.api.v1.employees.router import router as employees_router
+from app.api.v1.leave.router import router as leave_router
 from app.api.v1.examinations.router import router as examinations_router
 from app.api.v1.fees.router import router as fees_router
 from app.api.v1.finance.router import router as finance_router
@@ -62,6 +63,7 @@ routers = [
     attendance_router,
     audit_router,
     employees_router,
+    leave_router,
     examinations_router,
     fees_router,
     finance_router,
