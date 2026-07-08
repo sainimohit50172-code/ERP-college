@@ -74,8 +74,10 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
   const [showTransportDropdown, setShowTransportDropdown] = useState(false);
   const [showHostelDropdown, setShowHostelDropdown] = useState(false);
   const [showAdvancedDropdown, setShowAdvancedDropdown] = useState(false);
+  const [showAnalyticsDropdown, setShowAnalyticsDropdown] = useState(false);
   const employeePortalRef = useRef(null);
   const advancedRef = useRef(null);
+  const analyticsRef = useRef(null);
   const admissionRef = useRef(null);
   const studentRef = useRef(null);
   const feeRef = useRef(null);
@@ -404,6 +406,21 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
     { id: 'resource-person', label: 'Resource Person', to: '/advanced/resource-person' },
     { id: 'incentive-report', label: 'Incentive Report', to: '/advanced/incentive-report' },
   ];
+
+  const ANALYTICS_ITEMS = {
+    left: [
+      { id: 'partner-manage', label: 'Manage', to: '/analytics/partner-institute/manage' },
+      { id: 'partner-companies', label: 'Partner Companies', to: '/analytics/partner-companies' },
+      { id: 'visits', label: 'Visits', to: '/analytics/visits' },
+      { id: 'placement-drive', label: 'Placement Drive', to: '/analytics/placement-drive' },
+    ],
+    right: [
+      { id: 'partner-placement-summary', label: 'Partner Placement Summary', to: '/analytics/reports/partner-placement' },
+      { id: 'placement-summary', label: 'Placement Summary', to: '/analytics/reports/placement-summary' },
+      { id: 'partner-session', label: 'Partner Summary Session Wise', to: '/analytics/reports/partner-session' },
+      { id: 'placement-session', label: 'Partner Placement Summary Session Wise', to: '/analytics/reports/placement-session' },
+    ],
+  };
 
   const FEEDBACK_ITEMS = {
     left: [
@@ -760,6 +777,31 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
     setShowHostelDropdown((prev) => !prev);
   };
 
+  const handleAnalyticsClick = () => {
+    if (analyticsRef.current) {
+      const rect = analyticsRef.current.getBoundingClientRect();
+      const topPosition = Math.max(rect.top, 56);
+      setDropdownTop(topPosition);
+    }
+    setShowEmployeePortal(false);
+    setShowAdmissionDropdown(false);
+    setShowStudentDropdown(false);
+    setShowFeeDropdown(false);
+    setShowAttendanceDropdown(false);
+    setShowExaminationDropdown(false);
+    setShowCOEDropdown(false);
+    setShowFeedbackDropdown(false);
+    setShowUniversityDropdown(false);
+    setShowLessonDropdown(false);
+    setShowHRMDropdown(false);
+    setShowLibraryDropdown(false);
+    setShowFrontDeskDropdown(false);
+    setShowCommunicationDropdown(false);
+    setShowTransportDropdown(false);
+    setShowHostelDropdown(false);
+    setShowAnalyticsDropdown((prev) => !prev);
+  };
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (
@@ -793,6 +835,8 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
         !e.target.closest('.communication-trigger') &&
         !e.target.closest('.advanced-dropdown') &&
         !e.target.closest('.advanced-trigger') &&
+        !e.target.closest('.analytics-dropdown') &&
+        !e.target.closest('.analytics-trigger') &&
         !e.target.closest('.hostel-dropdown') &&
         !e.target.closest('.hostel-trigger') &&
         !e.target.closest('.transport-dropdown') &&
@@ -813,6 +857,7 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
         setShowFrontDeskDropdown(false);
         setShowCommunicationDropdown(false);
         setShowHostelDropdown(false);
+        setShowAnalyticsDropdown(false);
         setShowTransportDropdown(false);
       }
     };
@@ -1267,6 +1312,29 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
       );
     }
 
+    if (item.id === 'analytics') {
+      return (
+        <div
+          key={item.id}
+          ref={analyticsRef}
+          className="analytics-trigger flex items-center px-3"
+          onClick={handleAnalyticsClick}
+          onMouseEnter={handleNavItemMouseEnter}
+          onMouseLeave={handleNavItemMouseLeave}
+          data-active={isActive ? 'true' : 'false'}
+          style={navItemStyle}
+        >
+          <div style={{ width: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {Icon ? <Icon style={{ width: 18, height: 18, color: isActive ? '#ffffff' : '#86efac' }} /> : null}
+          </div>
+          <div style={{ marginLeft: 12, fontSize: 13, color: isActive ? '#ffffff' : '#86efac' }}>{item.label}</div>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', transition: 'transform 0.2s ease' }}>
+            <ChevronDown style={{ width: 16, height: 16, color: isActive ? '#ffffff' : '#86efac', transform: showAnalyticsDropdown ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </div>
+        </div>
+      );
+    }
+
     return (
       <Link
         key={item.id}
@@ -1707,6 +1775,129 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
                   key={portalItem.id}
                   to={portalItem.to}
                   onClick={() => setShowHostelDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+          </div>,
+          document.body
+        )}
+
+        {showAnalyticsDropdown && ReactDOM.createPortal(
+          <div
+            className="analytics-dropdown"
+            style={{
+              position: 'fixed',
+              left: 200,
+              top: '56px',
+              width: 520,
+              height: 'calc(100vh - 56px)',
+              overflowY: 'auto',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              zIndex: 200,
+              background: 'white',
+              borderRadius: '0 10px 10px 0',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+              border: '1px solid #e2e8f0',
+              padding: 12,
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: 0,
+            }}
+          >
+            <style>{`.analytics-dropdown::-webkit-scrollbar { width: 0; }
+.analytics-dropdown::-webkit-scrollbar-thumb { background: transparent; }`}</style>
+            <div style={{ borderRight: '1px solid #f1f5f9' }}>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                PARTNER INSTITUTE
+              </div>
+              <Link
+                to={ANALYTICS_ITEMS.left[0].to}
+                onClick={() => setShowAnalyticsDropdown(false)}
+                onMouseEnter={handleDropdownItemMouseEnter}
+                onMouseLeave={handleDropdownItemMouseLeave}
+                className="group flex items-center rounded-[8px]"
+                style={{
+                  padding: '9px 12px',
+                  borderRadius: '8px',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  color: '#334155',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  borderLeft: '3px solid transparent',
+                  transition: 'all 0.15s ease',
+                  textDecoration: 'none',
+                  margin: '4px 12px 4px 12px',
+                }}
+              >
+                <span>{ANALYTICS_ITEMS.left[0].label}</span>
+                <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+              </Link>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                PARTNER COMPANIES
+              </div>
+              {ANALYTICS_ITEMS.left.slice(1).map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowAnalyticsDropdown(false)}
+                  onMouseEnter={handleDropdownItemMouseEnter}
+                  onMouseLeave={handleDropdownItemMouseLeave}
+                  className="group flex items-center rounded-[8px]"
+                  style={{
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#334155',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderLeft: '3px solid transparent',
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                    margin: '4px 12px 4px 12px',
+                  }}
+                >
+                  <span>{portalItem.label}</span>
+                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
+                </Link>
+              ))}
+            </div>
+            <div>
+              <div style={{ marginTop: 14, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 12px' }}>
+                PLACEMENT REPORTS
+              </div>
+              {ANALYTICS_ITEMS.right.map((portalItem) => (
+                <Link
+                  key={portalItem.id}
+                  to={portalItem.to}
+                  onClick={() => setShowAnalyticsDropdown(false)}
                   onMouseEnter={handleDropdownItemMouseEnter}
                   onMouseLeave={handleDropdownItemMouseLeave}
                   className="group flex items-center rounded-[8px]"
@@ -2599,7 +2790,7 @@ export default function Sidebar({ isOpen = false, onClose = () => {} }) {
           </div>,
           document.body
         )}
-        {showCoeDropdown && ReactDOM.createPortal(
+        {(typeof showCOEDropdown !== 'undefined' && showCOEDropdown) && ReactDOM.createPortal(
           <div
             className="coe-dropdown"
             style={{
