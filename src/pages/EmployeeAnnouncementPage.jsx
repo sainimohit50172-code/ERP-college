@@ -141,13 +141,13 @@ export default function EmployeeAnnouncementPage() {
   const pageRecords = filteredRecords.slice((page - 1) * pageSize, page * pageSize);
 
   return (
-    <div className="min-h-[calc(100vh-88px)] bg-[#F8FAFC] p-6 text-slate-900">
+    <div className="min-h-[calc(100vh-88px)] overflow-x-hidden bg-[#F8FAFC] p-4 text-slate-900 md:p-6">
       <ToastContainer position="top-right" autoClose={1500} hideProgressBar />
 
       <div className="mb-5">
         <p className="text-xs uppercase tracking-[0.28em] text-slate-500">Dashboard &gt; Employee Announcement</p>
         <div className="mt-3 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <h1 className="text-3xl font-bold text-slate-950">Employee Announcement</h1>
+          <h1 className="text-xl font-bold text-slate-950 sm:text-2xl md:text-3xl">Employee Announcement</h1>
           <div className="flex flex-wrap gap-3">
             <button
               type="button"
@@ -170,7 +170,7 @@ export default function EmployeeAnnouncementPage() {
       </div>
 
       <div className="mb-5 rounded-xl bg-[#F1F5F9] p-4 shadow-sm">
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <div className="flex gap-2 overflow-x-auto whitespace-nowrap no-scrollbar">
           {['all', 'shared', 'sent'].map((tabKey) => {
             const label = tabKey === 'all' ? 'All' : tabKey === 'shared' ? 'Shared With You' : 'Sent By You';
             const active = activeTab === tabKey;
@@ -191,7 +191,7 @@ export default function EmployeeAnnouncementPage() {
       </div>
 
       <div className="mb-5 rounded-xl border border-[#E2E8F0] bg-white p-5 shadow-sm">
-        <div className="grid gap-4 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <div className="space-y-2">
             <label className="text-[11px] uppercase tracking-[0.28em] text-slate-500">Enter Start Date</label>
             <div className="flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-slate-50 px-3 py-2">
@@ -267,11 +267,11 @@ export default function EmployeeAnnouncementPage() {
               ))}
             </select>
           </div>
-          <div className="flex items-end justify-end">
+          <div className="flex items-end justify-end sm:col-span-2 lg:col-span-1">
             <button
               type="button"
               onClick={() => setPage(1)}
-              className="w-full rounded-lg bg-[#1E293B] px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-900 sm:w-auto"
+              className="w-full rounded-lg bg-[#1E293B] px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-900 md:w-auto"
             >
               Go
             </button>
@@ -376,7 +376,7 @@ export default function EmployeeAnnouncementPage() {
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 px-4 py-6">
-          <div className="w-full max-w-2xl rounded-[24px] bg-white p-6 shadow-2xl">
+          <div className="w-[95%] max-w-lg overflow-y-auto rounded-[24px] bg-white p-4 shadow-2xl md:max-w-2xl md:p-6">
             <div className="mb-6 flex items-center justify-between">
               <div>
                 <h2 className="text-2xl font-bold text-slate-950">New Employee Announcement</h2>

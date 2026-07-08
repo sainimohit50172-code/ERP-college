@@ -50,13 +50,13 @@ export default function UsersPreferencesPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-88px)] bg-[#F8FAFC] p-6 font-sans text-slate-900">
+    <div className="min-h-[calc(100vh-88px)] overflow-x-hidden bg-[#F8FAFC] p-4 font-sans text-slate-900 md:p-6">
       <ToastContainer position="top-right" autoClose={1500} hideProgressBar />
 
       <div className="mb-5">
         <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Dashboard &gt; Users Preferences</p>
         <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
-          <h1 className="text-3xl font-bold text-slate-900">User Preferences</h1>
+          <h1 className="text-xl font-bold text-slate-900 sm:text-2xl md:text-3xl">User Preferences</h1>
           <div className="flex items-center gap-3 text-base text-slate-500">
             <span className="h-6 w-[1px] bg-slate-300" />
             <span className="text-slate-500">Preferences of User</span>
@@ -110,7 +110,7 @@ export default function UsersPreferencesPage() {
       <div className="grid gap-5 xl:grid-cols-[1.1fr_0.9fr]">
         <div className="rounded-xl border border-[#E2E8F0] bg-white p-6 shadow-sm">
           <h3 className="mb-5 text-xl font-semibold text-slate-900">Actions</h3>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {actionItems.map((item) => {
               const isFavorite = favoriteActions[item.id];
               return (
@@ -144,7 +144,7 @@ export default function UsersPreferencesPage() {
               className="w-full rounded-xl border border-[#E2E8F0] bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none sm:w-auto"
             />
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {filteredReports.map((report) => (
               <div key={report.id} className="flex h-full flex-col rounded-2xl bg-[#1E293B] p-5 text-white transition hover:bg-slate-950">
                 <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 text-white">

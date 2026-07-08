@@ -66,7 +66,7 @@ export default function SalarySlipPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-88px)] overflow-hidden bg-[#F8FAFC] px-6 py-6 font-sans">
+    <div className="min-h-[calc(100vh-88px)] overflow-x-hidden bg-[#F8FAFC] px-4 py-4 font-sans md:px-6 md:py-6">
       <div className="space-y-4">
         <div className="space-y-1 text-sm uppercase tracking-[0.2em] text-slate-500">
           <Breadcrumb items={[
@@ -75,13 +75,13 @@ export default function SalarySlipPage() {
             { label: 'Salary Slip' },
           ]} />
         </div>
-        <h1 className="text-3xl font-bold text-slate-900">Salary Slip</h1>
+        <h1 className="text-xl font-bold text-slate-900 sm:text-2xl md:text-3xl">Salary Slip</h1>
       </div>
 
       <div className="mt-6 space-y-4">
         <div className="rounded-xl border border-[#E2E8F0] bg-white p-4 shadow-sm">
-          <div className="flex flex-wrap items-end gap-3">
-            <div className="flex-1 min-w-[240px]">
+          <div className="flex flex-col gap-3 md:flex-row md:flex-wrap md:items-end md:gap-3">
+            <div className="w-full min-w-0 md:flex-1 md:min-w-[240px]">
               <label className="mb-2 block text-[11px] uppercase tracking-[0.12em] text-[#64748B]">Search Employee</label>
               <div className="flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-slate-50 px-3 py-2">
                 <input
@@ -128,7 +128,7 @@ export default function SalarySlipPage() {
               </div>
             </div>
 
-            <div className="min-w-[160px] flex-1">
+            <div className="w-full min-w-0 md:min-w-[160px] md:flex-1">
               <label className="mb-2 block text-[11px] uppercase tracking-[0.12em] text-[#64748B]">Status</label>
               <select
                 value={statusFilter}
@@ -141,11 +141,11 @@ export default function SalarySlipPage() {
               </select>
             </div>
 
-            <div className="ml-auto min-w-[120px]">
+            <div className="w-full md:ml-auto md:min-w-[120px]">
               <button
                 type="button"
                 onClick={handleGo}
-                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#1E293B] px-4 text-sm font-semibold text-white transition hover:bg-slate-800"
+                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#1E293B] px-4 text-sm font-semibold text-white transition hover:bg-slate-800 md:w-auto"
               >
                 Go
                 <ArrowRight size={16} />
@@ -154,7 +154,7 @@ export default function SalarySlipPage() {
           </div>
         </div>
 
-        <div className="grid gap-3 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           <div className="flex items-center gap-3 rounded-xl border border-[#E2E8F0] bg-white p-4 shadow-sm">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700">
               <UserCheck size={20} />
@@ -186,7 +186,7 @@ export default function SalarySlipPage() {
 
         <div className="rounded-xl border border-[#E2E8F0] bg-white p-4 shadow-sm">
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[920px] border-collapse text-left text-sm">
+            <table className="w-full min-w-[760px] border-collapse text-left text-sm">
               <thead className="bg-[#F8FAFC] text-[#64748B] uppercase tracking-[0.12em] text-xs">
                 <tr>
                   <th className="px-4 py-3">Employee Name</th>

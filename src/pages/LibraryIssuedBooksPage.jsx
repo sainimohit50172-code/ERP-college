@@ -56,14 +56,14 @@ export default function LibraryIssuedBooksPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-88px)] bg-[#F8FAFC] p-6 font-sans text-slate-900">
+    <div className="min-h-[calc(100vh-88px)] overflow-x-hidden bg-[#F8FAFC] p-4 font-sans text-slate-900 md:p-6">
       <div className="mb-6">
         <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Dashboard &gt; Issued Books</p>
-        <h1 className="mt-3 text-3xl font-bold text-slate-900">Issued Books</h1>
+        <h1 className="mt-3 text-xl font-bold text-slate-900 sm:text-2xl md:text-3xl">Issued Books</h1>
       </div>
 
       <div className="mb-6 rounded-xl border border-[#E2E8F0] bg-white p-5 shadow-sm">
-        <div className="grid gap-4 lg:grid-cols-[1.8fr_1fr_0.9fr] xl:grid-cols-[2fr_1fr_0.9fr]">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1.8fr_1fr_0.9fr] xl:grid-cols-[2fr_1fr_0.9fr]">
           <div>
             <label className="mb-2 block text-[11px] uppercase tracking-[0.24em] text-[#64748B]">Search</label>
             <div className="flex gap-2">
@@ -77,7 +77,7 @@ export default function LibraryIssuedBooksPage() {
               <button
                 type="button"
                 onClick={() => setCurrentPage(1)}
-                className="inline-flex items-center justify-center rounded-lg bg-[#1E293B] px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                className="inline-flex items-center justify-center rounded-lg bg-[#1E293B] px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 md:w-auto"
               >
                 Go
               </button>
@@ -131,7 +131,7 @@ export default function LibraryIssuedBooksPage() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full text-sm">
+            <table className="min-w-[720px] text-sm">
               <thead className="bg-[#F8FAFC] text-left text-xs uppercase tracking-[0.24em] text-slate-500">
                 <tr>
                   <th className="px-4 py-3">Book Title</th>
