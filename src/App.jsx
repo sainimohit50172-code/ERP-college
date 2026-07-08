@@ -27,7 +27,9 @@ import DesignationManagementPage from './pages/DesignationManagementPage.jsx';
 import OrganizationManagementPage from './pages/OrganizationManagementPage.jsx';
 import HRDocumentsPage from './pages/HRDocumentsPage.jsx';
 import EmployeeProfilePage from './pages/EmployeeProfilePage.jsx';
+import ProfilePage from './pages/employees/ProfilePage.jsx';
 import LeaveManagementPage from './pages/LeaveManagementPage.jsx';
+import MyLeavesPage from './pages/MyLeavesPage.jsx';
 import PayrollManagementPage from './pages/PayrollManagementPage.jsx';
 import FinanceAccountingPage from './pages/FinanceAccountingPage.jsx';
 import SemesterManagementPage from './pages/SemesterManagementPage.jsx';
@@ -168,7 +170,9 @@ function App() {
               <Route path="teachers/:teacherId" element={<ProtectedRoute moduleKey="teachers"><TeacherProfilePage /></ProtectedRoute>} />
               <Route path="employees" element={<ProtectedRoute moduleKey="employees"><EmployeeManagementPage /></ProtectedRoute>} />
               <Route path="employees/:employeeId" element={<ProtectedRoute moduleKey="employees"><EmployeeProfilePage /></ProtectedRoute>} />
+              <Route path="employees/profile" element={<ProtectedRoute moduleKey="employees"><ProfilePage /></ProtectedRoute>} />
               <Route path="employees/manage" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Manage Employee" /></ProtectedRoute>} />
+              <Route path="employees/leaves" element={<ProtectedRoute moduleKey="employees"><MyLeavesPage /></ProtectedRoute>} />
               <Route path="employees/entitled-leaves" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Employee Entitled Leaves" /></ProtectedRoute>} />
               <Route path="employees/attendance-calendar" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Attendance Calendar" /></ProtectedRoute>} />
               <Route path="employees/assign-salary-template" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="Assign Salary Template" /></ProtectedRoute>} />
