@@ -126,7 +126,7 @@ export default function Sidebar({ isOpen, onClose }) {
       { id: 'applications', label: 'Application Data', to: '/admissions/applications' },
       { id: 'leads', label: 'Admission Leads', to: '/admissions/leads' },
       { id: 'follow-ups', label: 'Follow Ups', to: '/admissions/follow-ups' },
-      { id: 'follow-up-remarks', label: 'Follow Up Remark Report', to: '/admissions/follow-up-remarks' },
+      { id: 'follow-up-remarks', label: 'Follow Up Remark Report', to: '/admissions/follow-up-remark-report' },
       { id: 'transactions', label: 'Admission Transactions', to: '/admissions/transactions' },
     ],
     right: [

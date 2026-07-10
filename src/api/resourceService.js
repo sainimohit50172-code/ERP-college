@@ -107,18 +107,36 @@ export const mapClassroomRecord = (record = {}) => ({
   hasAC: record.has_ac ?? record.hasAC ?? false,
 });
 
+const normalizeListParams = (params = {}) => {
+  const normalized = { ...params };
+  if ('pageSize' in normalized) {
+    normalized.page_size = normalized.pageSize;
+    delete normalized.pageSize;
+  }
+  if ('sortBy' in normalized) {
+    normalized.sort_by = normalized.sortBy;
+    delete normalized.sortBy;
+  }
+  if ('sortOrder' in normalized) {
+    normalized.sort_order = normalized.sortOrder;
+    delete normalized.sortOrder;
+  }
+  return normalized;
+};
+
 export const createResourceService = (resource) => {
   const endpoint = getEndpoint(resource);
   const repo = getRepository(resource);
 
   return {
     list: async (params = {}) => {
+      const requestParams = normalizeListParams(params);
       if (repo && typeof repo.list === 'function') {
-        const result = await repo.list(params);
+        const result = await repo.list(requestParams);
         return normalizeApiListResponse(result, params, resource);
       }
 
-      const res = await api.get(`/${endpoint}/`, { params });
+      const res = await api.get(`/${endpoint}/`, { params: requestParams });
       return normalizeApiListResponse(res, params, resource);
     },
     get: async (id) => {

@@ -13,10 +13,13 @@ import SecurityGuardAttendancePage from './pages/SecurityGuardAttendancePage.jsx
 import TimetableManagementPage from './pages/TimetableManagementPage.jsx';
 import LMSPage from './pages/LMSPage.jsx';
 import LeadsPage from './pages/LeadsPage.jsx';
+import FollowUpsPage from './pages/FollowUpsPage.jsx';
+import FollowUpRemarkReportPage from './pages/FollowUpRemarkReportPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import SettingsPage from './pages/SettingsPage.jsx';
 import StudentManagementPage from './pages/StudentManagementPage.jsx';
+import StudentCollegeWisePage from './pages/StudentCollegeWisePage.jsx';
 import StudentProfilePage from './pages/StudentProfilePage.jsx';
 import FeeManagementPage from './pages/FeeManagementPage.jsx';
 import TeacherManagementPage from './pages/TeacherManagementPage.jsx';
@@ -72,6 +75,7 @@ import ParentsPage from './pages/ParentsPage.jsx';
 import EnquiriesPage from './pages/EnquiriesPage.jsx';
 import AdmissionCounsellingPage from './pages/AdmissionCounsellingPage.jsx';
 import ApplicationsPage from './pages/ApplicationsPage.jsx';
+import AdmissionTransactionsPage from './pages/AdmissionTransactionsPage.jsx';
 import StudentCertificatesPage from './pages/StudentCertificatesPage.jsx';
 import AlumniPage from './pages/AlumniPage.jsx';
 import LibraryBooksPage from './pages/LibraryBooksPage.jsx';
@@ -136,6 +140,9 @@ import AuditLogPage from './pages/AuditLogPage.jsx';
 import UsersPreferencesPage from './pages/UsersPreferencesPage.jsx';
 import EmployeeAnnouncementPage from './pages/EmployeeAnnouncementPage.jsx';
 import LibraryWebOpacPage from './pages/LibraryWebOpacPage.jsx';
+import DailyCollectionReportPage from './pages/DailyCollectionReportPage.jsx';
+import AdmissionSummaryReportPage from './pages/AdmissionSummaryReportPage.jsx';
+import SubjectCombinationReportPage from './pages/SubjectCombinationReportPage.jsx';
 import IndividualFacultyReportPage from './pages/IndividualFacultyReportPage.jsx';
 import FeedbackSummaryReportPage from './pages/FeedbackSummaryReportPage.jsx';
 import ProtectedRoute from './components/auth/ProtectedRoute.jsx';
@@ -165,12 +172,22 @@ function App() {
             <Route path="/" element={<RootLayout />}>
               <Route index element={<ProtectedRoute moduleKey="dashboard"><DashboardPage /></ProtectedRoute>} />
               <Route path="admissions" element={<ProtectedRoute moduleKey="admissions"><AdmissionsPage /></ProtectedRoute>} />
+              <Route path="admissions/follow-ups" element={<ProtectedRoute moduleKey="admissions"><FollowUpsPage /></ProtectedRoute>} />
+              <Route path="admissions/follow-up-remark-report" element={<ProtectedRoute moduleKey="admissions"><FollowUpRemarkReportPage /></ProtectedRoute>} />
+              <Route path="admissions/reports/daily-collection" element={<ProtectedRoute moduleKey="admissions"><DailyCollectionReportPage /></ProtectedRoute>} />
+              <Route path="admissions/reports/summary" element={<ProtectedRoute moduleKey="admissions"><AdmissionSummaryReportPage /></ProtectedRoute>} />
+              <Route path="admissions/reports/subject-combination" element={<ProtectedRoute moduleKey="admissions"><SubjectCombinationReportPage /></ProtectedRoute>} />
+              <Route path="admissions/transactions" element={<ProtectedRoute moduleKey="admissions"><AdmissionTransactionsPage /></ProtectedRoute>} />
               <Route path="students" element={<ProtectedRoute moduleKey="students"><StudentManagementPage /></ProtectedRoute>} />
+              <Route path="students/college-wise" element={<ProtectedRoute moduleKey="students"><StudentCollegeWisePage /></ProtectedRoute>} />
               <Route path="students/:studentId" element={<ProtectedRoute moduleKey="students"><StudentProfilePage /></ProtectedRoute>} />
               <Route path="parents" element={<ProtectedRoute moduleKey="students"><ParentsPage /></ProtectedRoute>} />
               <Route path="enquiries" element={<ProtectedRoute moduleKey="admissions"><EnquiriesPage /></ProtectedRoute>} />
               <Route path="counselling" element={<ProtectedRoute moduleKey="admissions"><AdmissionCounsellingPage /></ProtectedRoute>} />
               <Route path="applications" element={<ProtectedRoute moduleKey="admissions"><ApplicationsPage /></ProtectedRoute>} />
+              <Route path="admissions/applications" element={<ProtectedRoute moduleKey="admissions"><ApplicationsPage /></ProtectedRoute>} />
+              <Route path="leads" element={<ProtectedRoute moduleKey="leads"><LeadsPage /></ProtectedRoute>} />
+              <Route path="admissions/leads" element={<ProtectedRoute moduleKey="leads"><LeadsPage /></ProtectedRoute>} />
               <Route path="student-certificates" element={<ProtectedRoute moduleKey="students"><StudentCertificatesPage /></ProtectedRoute>} />
               <Route path="alumni" element={<ProtectedRoute moduleKey="students"><AlumniPage /></ProtectedRoute>} />
               <Route path="fees" element={<ProtectedRoute moduleKey="fees"><FeeManagementPage /></ProtectedRoute>} />
@@ -376,6 +393,7 @@ function App() {
               <Route path="lecture-attendance" element={<ProtectedRoute moduleKey="lectureAttendance"><LectureAttendancePage /></ProtectedRoute>} />
               <Route path="lms" element={<ProtectedRoute moduleKey="lms"><LMSPage /></ProtectedRoute>} />
               <Route path="leads" element={<ProtectedRoute moduleKey="leads"><LeadsPage /></ProtectedRoute>} />
+              <Route path="admissions/leads" element={<ProtectedRoute moduleKey="leads"><LeadsPage /></ProtectedRoute>} />
               <Route path="marketing" element={<ProtectedRoute moduleKey="leads"><MarketingPage /></ProtectedRoute>} />
               <Route path="campaigns" element={<ProtectedRoute moduleKey="leads"><CampaignsPage /></ProtectedRoute>} />
               <Route path="lms/courses" element={<ProtectedRoute moduleKey="lms"><LMSCoursesPage /></ProtectedRoute>} />

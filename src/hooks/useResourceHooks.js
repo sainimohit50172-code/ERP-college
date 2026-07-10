@@ -9,7 +9,8 @@ import uploadService from '../api/uploadService';
 
 export function useResourceList(resource, params = {}) {
   const service = createResourceService(resource);
-  return useQuery({ queryKey: [resource, params], queryFn: () => service.list(params), keepPreviousData: true });
+  const serializedParams = JSON.stringify(params || {});
+  return useQuery({ queryKey: [resource, serializedParams], queryFn: () => service.list(params), keepPreviousData: true });
 }
 
 export function useResourceDetails(resource, id) {

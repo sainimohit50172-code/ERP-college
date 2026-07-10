@@ -1,6 +1,6 @@
 # AI Agent Skills — Full Catalog
 
-> Auto-generated. Total: **1935 skills** across **114 categories**.
+> Auto-generated. Total: **1943 skills** across **114 categories**.
 > When asked "what skill should I use?", browse this file and suggest the most relevant skill IDs.
 > Install a skill: `Ctrl+Shift+/` → search for the skill ID → press Enter.
 
@@ -21,6 +21,7 @@
 - **codex-subagent**: Launch Codex CLI as an isolated subagent for bounded coding, review, or verification tasks. _(risk: critical)_
 - **delegating-to-agents**: Delegate bounded work to other AI agents while preserving context, ownership, and progress checks. _(risk: critical)_
 - **goal-loop**: Draft and explain persistent goal-loop prompts for long-running agent work with clear stop conditions. _(risk: safe)_
+- **grok-build**: Delegate well-specified implementation tasks to xAI's Grok Build CLI running headlessly while the orchestrating agent plans, writes task specs, reviews every diff, and owns the result. _(risk: critical)_
 - **multi-agent-task-orchestrator**: Route tasks to specialized AI agents with anti-duplication, quality gates, and 30-minute heartbeat monitoring _(risk: safe)_
 
 ## agent-squad
@@ -293,7 +294,8 @@ Chat widget, Messages, PromptInput, Avatar, LLM _(risk: unknown)_
 - **wiki-architect**: Analyzes code repositories and generates hierarchical documentation structures with onboarding guides. Use when the user wants to create a wiki, generate documentation, map a codebase structure, or... _(risk: unknown)_
 - **codebase-design**: Shared vocabulary for designing deep modules. Use when the user wants to design or improve a module's interface, find deepening opportunities, decide where a seam goes, make code more testable or AI-navigable, or when another skill needs the deep-module vocabulary. _(risk: safe)_
 - **domain-modeling**: Build and sharpen a project's domain model. Use when the user wants to pin down domain terminology or a ubiquitous language, record an architectural decision, or when another skill needs to maintain the domain model. _(risk: safe)_
-- **monopoly**: MONOPOLY is a Senior System Design Engineer skill for architecting, reviewing, and scaling systems. Triggers on requests involving architecture, databases, scaling, microservices, or infrastructure design. Proactively engages to design resilient backend systems. _(risk: unknown)_
+- **monopoly**: MONOPOLY is a Senior System Design Engineer skill for architecting, reviewing, and scaling systems. Triggers on requests involving architecture, databases, scaling, microservices, or infrastructure design. Proactively engages to design resilient backend systems.
+ _(risk: unknown)_
 - **site-architecture**: Plan or restructure website hierarchy, navigation, URL patterns, breadcrumbs, and internal linking. Use when mapping pages, sections, and site structure, but not for XML sitemap auditing or schema markup. _(risk: unknown)_
 
 ## auth
@@ -393,6 +395,7 @@ Matrix 集成, 聊天客户端 _(risk: unknown)_
 - **yes-md**: 6-layer AI governance: safety gates, evidence-based debugging, anti-slack detection, and machine-enforced hooks. Makes AI safe, thorough, and honest. _(risk: safe)_
 - **zapier-make-patterns**: No-code automation democratizes workflow building. Zapier and Make (formerly Integromat) let non-developers automate business processes without writing code. But no-code doesn't mean no-complexity ... _(risk: unknown)_
 - **zendesk-automation**: Automate Zendesk tasks via Rube MCP (Composio): tickets, users, organizations, replies. Always search tools first for current schemas. _(risk: unknown)_
+- **auto-research**: Research uncertain questions with an explicit, user-approved web search or ChatGPT consultation, then present options and wait for implementation approval. _(risk: critical)_
 - **community-building**: When the user wants to build, grow, or improve a developer community on Discord, Slack, or forums. Trigger phrases include "developer community," "Discord server," "Slack community," "community strategy," "community engagement," "community moderation," "community growth," or "community... _(risk: unknown)_
 - **flowhunt-skill**: Automation discovery audit skill. Walks through a 5-question workflow intake, then audits Gmail/Calendar/Slack/task trackers to identify automation opportunities. Use when a user wants to discover what processes in their business can be automated. _(risk: safe)_
 - **sendblue-notify**: Text the user's phone when a long-running task, agent turn, or scheduled job finishes — via @sendblue/cli for outbound, optionally wired to a Claude Code Stop hook for automatic fire. _(risk: critical)_
@@ -838,6 +841,7 @@ market, solution, financials, and strategy
 - **monte-carlo-prevent**: Surfaces Monte Carlo data observability context (table health, alerts, lineage, blast radius) before SQL/dbt edits. _(risk: safe)_
 - **monte-carlo-push-ingestion**: Expert guide for pushing metadata, lineage, and query logs to Monte Carlo from any data warehouse. _(risk: safe)_
 - **monte-carlo-validation-notebook**: Generates SQL validation notebooks for dbt PR changes with before/after comparison queries. _(risk: safe)_
+- **postgres-readonly-queries**: Execute safe read-only SQL queries against PostgreSQL databases with multi-connection support and defense-in-depth write protection. _(risk: safe)_
 - **sql-sentinel**: Audit SQL for the cost & performance anti-patterns that burn warehouse credits. Scores warehouse health 0-100 and outputs a prioritized cost-reduction plan for BigQuery, Snowflake, Redshift, and Postgres. _(risk: critical)_
 
 ## data-ai
@@ -1070,6 +1074,7 @@ api docs, reference,... _(risk: unknown)_
 - **performance-optimizer**: Identifies and fixes performance bottlenecks in code, databases, and APIs. Measures before and after to prove improvements. _(risk: safe)_
 - **skill-check**: Validate Claude Code skills against the agentskills specification. Catches structural, semantic, and naming issues before users do. _(risk: safe)_
 - **agenttrace-session-audit**: Audit local AI coding-agent sessions with agenttrace for cost, tool failures, latency, anomalies, health, diffs, and CI gates. _(risk: safe)_
+- **ask-copilot**: Use GitHub Copilot CLI in non-interactive mode to ask questions, review code, or generate snippets without manual interaction. _(risk: critical)_
 - **ax-extract-workflow**: Reconstruct workflow behind a past coding-agent artifact using local ax sessions/commits/skills/tool traces. Use when asked how X was built. _(risk: safe)_
 - **brooks-lint**: AI code reviewer grounded in classic software engineering books for catching design smells, coupling issues, and architectural risks. _(risk: safe)_
 - **cmux**: Control cmux workspaces, panes, surfaces, and agent sessions safely from macOS terminal workflows. _(risk: critical)_
@@ -1120,6 +1125,7 @@ api docs, reference,... _(risk: unknown)_
 
 - **docker-expert**: Docker containerization expert with deep knowledge of multi-stage builds, image optimization, container security, Docker Compose orchestration, and production deployment patterns. Use PROACTIVELY f... _(risk: unknown)_
 - **aegisops-ai**: Autonomous DevSecOps & FinOps Guardrails. Orchestrates Gemini 3 Flash to audit Linux Kernel patches, Terraform cost drifts, and K8s compliance. _(risk: safe)_
+- **apple-container**: Build, run, and manage OCI/Linux containers as lightweight per-container VMs on Apple-silicon macOS using Apple's open-source container CLI, no Docker daemon required. _(risk: critical)_
 - **cron-doctor**: Diagnose and validate cron expressions before they ship. Catches the five silent death-traps: impossible dates that never fire, OR-semantics that fire too often, midnight spikes, uneven step drift, and leap-year February 29. _(risk: safe)_
 - **deploy-to-vercel**: Deploy applications and websites to Vercel. Use when the user requests deployment actions like "deploy my app", "deploy and give me the link", "push this live", or "create a preview deployment". _(risk: safe)_
 - **github-actions-advanced**: Design, debug, and harden GitHub Actions CI/CD workflows, including reusable workflows, matrix builds, self-hosted runners, OIDC authentication, caching, environments, secrets, and release automation.
@@ -1744,6 +1750,7 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 ## product
 
 - **before-you-build**: Review product risk before coding by checking demand, alternatives, channels, switching costs, and failure signals. _(risk: safe)_
+- **product-decision-agent**: 中文产品决策 Agent。用于需求优先级、Roadmap、增长、留存、运营、数据异常、A/B Test、项目延期和跨团队协作；先判断事实、阶段、核心阻塞与主导机制，再给出下一步、停止清单和切换条件。默认中文，不引用原文或讲历史。 _(risk: safe)_
 
 ## product-management
 
@@ -1783,6 +1790,7 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 - **read-all-adrs**: Read every ADR in a project before summarizing architectural context or decisions. _(risk: safe)_
 - **rich-elicitation**: Asks clarifying questions in multiple rounds before starting ambiguous tasks. Fires when 2+ task dimensions each have 3+ viable answers.
 - **setup-help**: Walk a user through setup or installation one step at a time with the remaining steps visible. _(risk: safe)_
+- **telegram-bot-messaging**: Send Telegram messages, files, and alerts via bot API; ask questions with inline buttons and wait for the answer. Supports multiple bots, named chat targets, and CI/cron/hook notifications. _(risk: critical)_
 - **time-ledger**: Natural-language time tracking: parse what the user says they did into Activity/Minutes/Date rows in their own Notion database — asking instead of guessing when unsure. _(risk: critical)_
 - **trading-ledger**: A trading journal that captures the decision, not just the fill: thesis, plan, and emotion at the moment of entry, written to the user's own Notion database; reviews grade decisions, not P&L. _(risk: critical)_
 - **workorai**: WorkorAI talent-marketplace skill: candidates search jobs and manage applications; employers run the job lifecycle and get ranked candidate matches with white-box fit explanations. _(risk: critical)_
@@ -1846,6 +1854,7 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 - **wiki-qa**: Answers questions about a code repository using source file analysis. Use when the user asks a question about how something works, wants to understand a component, or needs help navigating the code... _(risk: unknown)_
 - **wiki-researcher**: Conducts multi-turn iterative deep research on specific topics within a codebase with zero tolerance for shallow analysis. Use when the user wants an in-depth investigation, needs to understand how... _(risk: unknown)_
 - **deepapi**: Use DeepAPI for supported scraping, research, and email workflows with explicit credentials and approval. _(risk: critical)_
+- **gemini-deep-research**: Run autonomous multi-step research with Google's Gemini Deep Research Agent: kick off a query, poll progress, and collect a cited report for market analysis or literature reviews. _(risk: critical)_
 - **ii-commons**: Deterministic search across arXiv, PubMed/PMC, and US policy corpora with daily freshness cutoffs. _(risk: safe)_
 - **news-sentiment-engine**: Multi-source RSS news aggregation with Claude-powered sentiment analysis and structured briefing output _(risk: critical)_
 - **papers-skill**: Skill for academic research workflows: search Semantic Scholar (200M+ papers), inspect citations, download arXiv PDFs, and extract PDF text. Bundles a self-contained Python CLI. _(risk: safe)_

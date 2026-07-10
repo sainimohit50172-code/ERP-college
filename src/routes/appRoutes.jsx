@@ -5,6 +5,7 @@ import EmployeeAttendancePage from '../pages/EmployeeAttendancePage.jsx';
 import EmployeeManagementPage from '../pages/EmployeeManagementPage.jsx';
 import LMSPage from '../pages/LMSPage.jsx';
 import LeadsPage from '../pages/LeadsPage.jsx';
+import FollowUpsPage from '../pages/FollowUpsPage.jsx';
 import LoginPage from '../pages/LoginPage.jsx';
 import NotFoundPage from '../pages/NotFoundPage.jsx';
 import SecurityGuardAttendancePage from '../pages/SecurityGuardAttendancePage.jsx';
@@ -81,6 +82,7 @@ export const routes = [
   { path: '/lecture-attendance', element: LectureAttendancePage },
   { path: '/lms', element: LMSPage },
   { path: '/leads', element: LeadsPage },
+  { path: '/admissions/follow-ups', element: FollowUpsPage },
   { path: '/settings', element: SettingsPage },
   { path: '/auth/login', element: LoginPage },
   { path: '*', element: NotFoundPage },

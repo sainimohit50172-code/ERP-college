@@ -74,39 +74,41 @@ export default function StudentManagementPage() {
     isLoading: isCoursesLoading,
     isError: isCoursesError,
     error: coursesError,
-  } = useResourceList('courses', { page: 1, pageSize: 200 });
+  } = useResourceList('courses', { page: 1, pageSize: 100 });
   const courses = coursesData?.items || [];
   const {
     data: semestersData,
     isLoading: isSemestersLoading,
     isError: isSemestersError,
     error: semestersError,
-  } = useResourceList('semesters', { page: 1, pageSize: 200 });
+  } = useResourceList('semesters', { page: 1, pageSize: 100 });
   const semesters = semestersData?.items || [];
   const {
     data: sectionsData,
     isLoading: isSectionsLoading,
     isError: isSectionsError,
     error: sectionsError,
-  } = useResourceList('sections', { page: 1, pageSize: 200 });
+  } = useResourceList('sections', { page: 1, pageSize: 100 });
   const sections = sectionsData?.items || [];
   const {
     data: departmentsData,
     isLoading: isDepartmentsLoading,
     isError: isDepartmentsError,
     error: departmentsError,
-  } = useResourceList('departments', { page: 1, pageSize: 200 });
+  } = useResourceList('departments', { page: 1, pageSize: 100 });
   const departments = departmentsData?.items || [];
   const {
     data: attendanceData,
     isLoading: isAttendanceLoading,
     isError: isAttendanceError,
     error: attendanceError,
-  } = useResourceList('studentAttendance', { page: 1, pageSize: 200 });
+  } = useResourceList('studentAttendance', { page: 1, pageSize: 100 });
   const attendanceRecords = attendanceData?.items || [];
-  const isLoadingData = isStudentsLoading || isCoursesLoading || isSemestersLoading || isSectionsLoading || isDepartmentsLoading || isAttendanceLoading;
-  const isError = isStudentsError || isCoursesError || isSemestersError || isSectionsError || isDepartmentsError || isAttendanceError;
-  const loadingError = studentsError || coursesError || semestersError || sectionsError || departmentsError || attendanceError;
+  const isMetadataLoading = isCoursesLoading || isSemestersLoading || isSectionsLoading || isDepartmentsLoading || isAttendanceLoading;
+  const isLoadingData = isStudentsLoading;
+  const isError = isStudentsError;
+  const loadingError = studentsError;
+  const metadataError = coursesError || semestersError || sectionsError || departmentsError || attendanceError;
   const createStudent = useCreateResource('students');
   const updateStudent = useUpdateResource('students');
   const deleteStudent = useDeleteResource('students');

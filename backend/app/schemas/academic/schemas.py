@@ -127,11 +127,11 @@ class SubjectUpdate(BaseModel):
 class SubjectListItem(BaseModel):
     id: int
     name: str
+    course_id: Optional[int] = None
 
 
 class SubjectDetail(SubjectListItem):
     code: Optional[str] = None
-    course_id: Optional[int] = None
 
 
 class AcademicClassCreate(BaseModel):

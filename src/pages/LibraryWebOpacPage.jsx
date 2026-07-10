@@ -11,9 +11,9 @@ export default function LibraryWebOpacPage() {
   const visitorCount = 2;
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 max-w-full">
       <div className="bg-[#1E293B] px-4 py-5 text-white">
-        <div className="mx-auto flex max-w-[1240px] flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="flex w-full flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="min-w-[220px] text-sm leading-5 text-white/85">
             {instituteAddress.split('\n').map((line, index) => (
               <p key={index}>{line}</p>
@@ -32,7 +32,7 @@ export default function LibraryWebOpacPage() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-[1240px] px-4 pb-10 pt-8">
+      <div className="w-full px-0 pb-10 pt-8">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="rounded-full bg-[#F1F5F9] p-1 shadow-sm">
             <div className="flex overflow-hidden rounded-full bg-[#F1F5F9]">
@@ -65,7 +65,7 @@ export default function LibraryWebOpacPage() {
           </div>
         </div>
 
-        <div className="mt-7 rounded-xl border border-[#E2E8F0] bg-white px-6 py-6 shadow-sm">
+        <div className="mt-7 rounded-xl border border-[#E2E8F0] bg-white px-6 py-6 shadow-sm w-full max-w-full">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h1 className="text-2xl font-bold text-slate-950">Book Search</h1>
             <div className="flex items-center gap-3 text-sm text-slate-500">
