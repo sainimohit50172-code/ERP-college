@@ -25,7 +25,7 @@ function renderTabContent(student, activeTab, workflowHistory, timeline) {
   switch (activeTab) {
     case 'personal':
       return (
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="responsive-card-grid gap-4">
           <div className="card p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
             <h3 className="text-sm font-semibold text-slate-900">Contact</h3>
             <p className="mt-2 text-sm text-slate-600">Email: {student.email || 'N/A'}</p>
@@ -42,7 +42,7 @@ function renderTabContent(student, activeTab, workflowHistory, timeline) {
       );
     case 'parents':
       return (
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="responsive-card-grid gap-4">
           <div className="card p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
             <h3 className="text-sm font-semibold text-slate-900">Father</h3>
             <p className="mt-2 text-sm text-slate-600">Name: {student.fatherName || 'N/A'}</p>
@@ -132,7 +132,7 @@ function renderTabContent(student, activeTab, workflowHistory, timeline) {
       );
     default:
       return (
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="responsive-card-grid gap-4">
           <div className="card p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
             <h3 className="text-sm font-semibold text-slate-900">Profile Summary</h3>
             <p className="mt-2 text-sm text-slate-600">Name: {student.name}</p>

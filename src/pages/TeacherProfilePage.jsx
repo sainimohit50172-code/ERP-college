@@ -41,7 +41,7 @@ export default function TeacherProfilePage() {
 
       <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 shadow-sm sm:p-6">
         {activeTab === 'library' ? <MemberLibraryTab memberId={teacher.id} memberType="teacher" /> : (
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="responsive-card-grid gap-4">
             <div className="card p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
               <h3 className="text-sm font-semibold">Profile Summary</h3>
               <p className="mt-2 text-sm text-slate-600">Name: {teacher.name}</p>

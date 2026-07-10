@@ -201,7 +201,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="h-[calc(100vh-88px)] overflow-hidden bg-[linear-gradient(135deg,_#f0fdf4_0%,_#f8fafc_40%,_#f0f9ff_100%)] p-4">
+    <div className="min-h-[calc(100vh-88px)] overflow-x-hidden overflow-y-auto bg-[linear-gradient(135deg,_#f0fdf4_0%,_#f8fafc_40%,_#f0f9ff_100%)] p-4">
       <ToastContainer position="top-right" autoClose={2500} />
       <div className="mb-3 flex h-11 items-center justify-between">
         <div className="flex items-center gap-2 text-sm">
@@ -219,8 +219,8 @@ export default function ProfilePage() {
         </button>
       </div>
 
-      <div className="grid h-[calc(100%-56px)] grid-cols-[260px_minmax(0,1fr)_240px] gap-[14px]">
-        <aside className="flex h-full flex-col items-center gap-3 rounded-[14px] border border-slate-200 bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+      <div className="responsive-profile-shell min-h-0">
+        <aside className="mobile-safe-panel flex h-full flex-col items-center gap-3 rounded-[14px] border border-slate-200 bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
           <div className="flex h-[72px] w-[72px] items-center justify-center rounded-full border-[3px] border-white bg-[linear-gradient(135deg,_#1e3a5f,_#059669)] text-[26px] font-bold text-white shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
             {getInitials(profile.name)}
           </div>
@@ -260,7 +260,7 @@ export default function ProfilePage() {
 
           <div className="mt-auto h-px w-full bg-slate-100" />
 
-          <div className="grid w-full grid-cols-2 gap-2">
+          <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
             {quickStats.map((stat) => (
               <div key={stat.label} className="rounded-lg border border-slate-200 bg-slate-50 p-2 text-center">
                 <div className="text-[16px] font-bold" style={{ color: stat.color }}>{stat.value}</div>
@@ -270,7 +270,7 @@ export default function ProfilePage() {
           </div>
         </aside>
 
-        <section className="flex h-full flex-col rounded-[14px] border border-slate-200 bg-white p-4 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+        <section className="mobile-safe-panel flex h-full flex-col rounded-[14px] border border-slate-200 bg-white p-4 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
           <div className="flex gap-2">
             {tabs.map((tab) => (
               <button
@@ -286,7 +286,7 @@ export default function ProfilePage() {
 
           <div className="mt-4 flex-1 overflow-hidden">
             {activeTab === 'personal' && (
-              <div className="grid h-full grid-cols-2 gap-3">
+              <div className="responsive-card-grid h-full gap-3">
                 {[
                   { label: 'Full Name', value: profile.name },
                   { label: 'Employee Code', value: profile.employeeCode },
@@ -306,7 +306,7 @@ export default function ProfilePage() {
             )}
 
             {activeTab === 'work' && (
-              <div className="grid h-full grid-cols-2 gap-3">
+              <div className="responsive-card-grid h-full gap-3">
                 {[
                   { label: 'Department', value: profile.department },
                   { label: 'Designation', value: profile.designation },
@@ -326,7 +326,7 @@ export default function ProfilePage() {
             )}
 
             {activeTab === 'documents' && (
-              <div className="grid h-full grid-cols-2 gap-3">
+              <div className="responsive-card-grid h-full gap-3">
                 {documentCards.map((doc) => (
                   <div key={doc.title} className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-3">
                     <div className="flex items-center gap-2">
@@ -346,7 +346,7 @@ export default function ProfilePage() {
           </div>
         </section>
 
-        <aside className="flex h-full flex-col gap-[12px]">
+        <aside className="mobile-safe-panel flex h-full flex-col gap-[12px]">
           <div className="flex-none rounded-[12px] border border-slate-200 bg-white p-3 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
             <div className="flex items-center justify-between">
               <div className="text-[13px] font-semibold text-slate-800">Attendance</div>

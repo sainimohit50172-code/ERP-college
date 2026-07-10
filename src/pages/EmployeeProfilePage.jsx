@@ -202,7 +202,7 @@ export default function EmployeeProfilePage() {
                 <div className="rounded-2xl bg-slate-50 px-3 py-2 text-xs text-slate-700 sm:px-4 sm:py-3 sm:text-sm">{employee.designation || 'Staff'}</div>
               </div>
             </div>
-            <div className="grid gap-2 sm:grid-cols-2 sm:gap-3">
+            <div className="responsive-card-grid gap-2 sm:gap-3">
               <div className="rounded-3xl border border-slate-200 bg-slate-50 p-3 sm:p-4">
                 <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Department</p>
                 <p className="mt-2 text-lg font-semibold text-slate-900 sm:mt-3 sm:text-xl">{employee.department || 'N/A'}</p>
@@ -254,7 +254,7 @@ export default function EmployeeProfilePage() {
 
       <div className="rounded-[24px] border border-slate-200 bg-white p-3 shadow-sm sm:p-4 md:p-5 lg:p-6">
         {activeTab === 'overview' && (
-          <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
+          <div className="responsive-card-grid gap-4 sm:gap-6 lg:grid-cols-2">
             <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
               <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Employee overview</h2>
               <div className="mt-4 sm:mt-5 space-y-2 sm:space-y-3 text-xs text-slate-600 sm:text-sm">
@@ -286,7 +286,7 @@ export default function EmployeeProfilePage() {
         )}
 
         {activeTab === 'personal' && (
-          <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
+          <div className="responsive-card-grid gap-4 sm:gap-6 lg:grid-cols-2">
             <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
               <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Contact details</h2>
               <div className="mt-4 sm:mt-5 space-y-2 sm:space-y-3 text-xs text-slate-600 sm:text-sm">
@@ -307,7 +307,7 @@ export default function EmployeeProfilePage() {
         )}
 
         {activeTab === 'employment' && (
-          <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
+          <div className="responsive-card-grid gap-4 sm:gap-6 lg:grid-cols-2">
             <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
               <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Employment history</h2>
               <p className="mt-3 text-xs text-slate-600 sm:text-sm">Current role and joining details are captured here. Use the status action to keep lifecycle updates aligned with HR operations.</p>
@@ -333,7 +333,7 @@ export default function EmployeeProfilePage() {
             <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
               <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Upload employee documents</h2>
               <p className="mt-2 text-xs text-slate-600 sm:mt-3 sm:text-sm">Capture onboarding and compliance documents for this employee.</p>
-              <div className="mt-3 sm:mt-4 grid gap-2 grid-cols-1 sm:grid-cols-2">
+              <div className="mt-3 sm:mt-4 responsive-card-grid gap-2">
                 {documentTypes.map((doc) => (
                   <button
                     key={doc.key}
