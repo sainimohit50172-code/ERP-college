@@ -1,424 +1,546 @@
+
+
+import DataTable from '../components/ui/DataTable.jsx';
+import Modal from '../components/ui/Modal.jsx';
+import { useResourceList, useCreateResource } from '../hooks/useResourceHooks';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { useCreateResource, useResourceList } from '../hooks/useResourceHooks';
-import { ChevronDown, Download, Filter, Printer, UserPlus, X } from 'lucide-react';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
+import { UserPlus, Filter, Printer, Download } from 'lucide-react';
 
-const NAVY = 'text-white bg-[#1e3a5f] border-[#1e3a5f]';
-const OUTLINE = 'border border-white text-white bg-transparent hover:bg-white/10';
+const NAVY_BTN = 'inline-flex items-center gap-2 rounded-xl bg-[#1e3a5f] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900';
+const OUTLINE_BTN = 'inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50';
 
 const defaultFormValues = {
+  instituteCollege: '',
+  college: '',
+  rollNumber: '',
+  course: '',
+  semester: '',
+  section: '',
+  admissionCategory: '',
+  feeCategory: '',
+  branchId: '',
+  studentName: '',
   firstName: '',
   lastName: '',
-  admissionNo: '',
-  rollNo: '',
-  email: '',
+  dateOfBirth: '',
+  dateOfBirthWords: '',
+  gender: 'Male',
+  aadharNo: '',
+  apaarId: '',
+  nationality: '',
+  religion: '',
+  socialCategory: '',
+  admissionDate: '',
   phone: '',
-  dob: '',
-  gender: 'M',
-  status: 'Active',
-  college: '',
-  courseSection: '',
-  semester: '',
-  fatherName: '',
-  motherName: '',
-  guardianName: '',
-  guardianMobile: '',
-  guardianEmail: '',
+  email: '',
   address: '',
-  remarks: '',
+  city: '',
+  state: '',
+  district: '',
+  country: '',
+  pinCode: '',
+  correspondenceAddress: '',
+  correspondenceCity: '',
+  correspondenceState: '',
+  correspondenceCountry: '',
+  correspondencePinCode: '',
+  correspondenceDistrict: '',
+  officialEmail: '',
+  fatherName: '',
+  fatherMobileNo: '',
+  fatherQualification: '',
+  fatherOccupation: '',
+  motherName: '',
+  motherMobileNo: '',
+  motherQualification: '',
+  motherOccupation: '',
+  studentLedgerMaster: '',
+  studentLedgerGroupMaster: '',
+  accountHolderName: '',
+  ifsc: '',
+  accountNumber: '',
+  bankName: '',
+  bankBranch: '',
+  tenthSchoolName: '',
+  tenthBoardName: '',
+  tenthPassingYear: '',
+  tenthPercentage: '',
+  twelfthSchoolName: '',
+  twelfthBoardName: '',
+  twelfthPassingYear: '',
+  twelfthPercentage: '',
+  diplomaInstituteName: '',
+  diplomaBoardUniversity: '',
+  diplomaPassingYear: '',
+  diplomaPercentage: '',
+  courseName: '',
+  qualifyingExamRank1: '',
+  qualifyingExamRank2: '',
+  partnerInstituteName: '',
+  ugInstituteName: '',
+  universityName: '',
+  ugPassingYear: '',
+  ugPercentage: '',
+  qualifyingSubject1Name: '',
+  qualifyingSubject1TotalMarks: '',
+  qualifyingSubject1ObtainedMarks: '',
+  qualifyingSubject2Name: '',
+  qualifyingSubject2TotalMarks: '',
+  qualifyingSubject2ObtainedMarks: '',
+  qualifyingSubject3Name: '',
+  qualifyingSubject3TotalMarks: '',
+  qualifyingSubject3ObtainedMarks: '',
+  qualifyingSubject4Name: '',
+  qualifyingSubject4TotalMarks: '',
+  qualifyingSubject4ObtainedMarks: '',
+  qualifyingSubject5Name: '',
+  qualifyingSubject5TotalMarks: '',
+  qualifyingSubject5ObtainedMarks: '',
 };
 
-function formatCell(value) {
-  return value || '—';
-}
+const demoStudents = [
+  {
+    firstName: 'Aditya',
+    lastName: 'Sharma',
+    admissionNo: 'STU-1001',
+    rollNo: '101',
+    fatherName: 'Rajesh Sharma',
+    motherName: 'Sunita Sharma',
+    dob: '2005-08-12',
+    gender: 'Male',
+    phone: '9876543210',
+    email: 'aditya.sharma@example.com',
+    college: 'Roorkee College of Engineering',
+    course: 'B.Tech. CSE',
+    section: 'A',
+    semester: '5',
+    status: 'Active',
+  },
+  {
+    firstName: 'Priya',
+    lastName: 'Verma',
+    admissionNo: 'STU-1002',
+    rollNo: '102',
+    fatherName: 'Amit Verma',
+    motherName: 'Rekha Verma',
+    dob: '2005-11-05',
+    gender: 'Female',
+    phone: '9123456780',
+    email: 'priya.verma@example.com',
+    college: 'Roorkee College of Engineering',
+    course: 'B.Sc. Nursing',
+    section: 'B',
+    semester: '3',
+    status: 'Active',
+  },
+  {
+    firstName: 'Rahul',
+    lastName: 'Kumar',
+    admissionNo: 'STU-1003',
+    rollNo: '103',
+    fatherName: 'Sunil Kumar',
+    motherName: 'Neetu Kumar',
+    dob: '2004-03-22',
+    gender: 'Male',
+    phone: '9988776655',
+    email: 'rahul.kumar@example.com',
+    college: 'Roorkee College of Smart Computing',
+    course: 'BCA Cyber Security',
+    section: 'C',
+    semester: '4',
+    status: 'Active',
+  },
+  {
+    firstName: 'Sneha',
+    lastName: 'Joshi',
+    admissionNo: 'STU-1004',
+    rollNo: '104',
+    fatherName: 'Vinod Joshi',
+    motherName: 'Anjali Joshi',
+    dob: '2006-02-17',
+    gender: 'Female',
+    phone: '9012345678',
+    email: 'sneha.joshi@example.com',
+    college: 'Roorkee College of Allied Health Sciences',
+    course: 'B.Sc. Nursing',
+    section: 'A',
+    semester: '1',
+    status: 'Active',
+  },
+  {
+    firstName: 'Karan',
+    lastName: 'Mehta',
+    admissionNo: 'STU-1005',
+    rollNo: '105',
+    fatherName: 'Rakesh Mehta',
+    motherName: 'Pooja Mehta',
+    dob: '2004-07-29',
+    gender: 'Male',
+    phone: '9345678901',
+    email: 'karan.mehta@example.com',
+    college: 'Roorkee College of Business Studies',
+    course: 'B.Com',
+    section: 'D',
+    semester: '6',
+    status: 'Active',
+  },
+  {
+    firstName: 'Nisha',
+    lastName: 'Patel',
+    admissionNo: 'STU-1006',
+    rollNo: '106',
+    fatherName: 'Jitendra Patel',
+    motherName: 'Himani Patel',
+    dob: '2005-01-09',
+    gender: 'Female',
+    phone: '8765432109',
+    email: 'nisha.patel@example.com',
+    college: 'Roorkee College of Engineering',
+    course: 'B.Tech. Civil',
+    section: 'B',
+    semester: '2',
+    status: 'Active',
+  },
+  {
+    firstName: 'Vikram',
+    lastName: 'Yadav',
+    admissionNo: 'STU-1007',
+    rollNo: '107',
+    fatherName: 'Rajesh Yadav',
+    motherName: 'Sita Yadav',
+    dob: '2004-04-11',
+    gender: 'Male',
+    phone: '9456123780',
+    email: 'vikram.yadav@example.com',
+    college: 'Roorkee College of Smart Computing',
+    course: 'B.Tech. AI & ML',
+    section: 'A',
+    semester: '7',
+    status: 'Active',
+  },
+  {
+    firstName: 'Anjali',
+    lastName: 'Rao',
+    admissionNo: 'STU-1008',
+    rollNo: '108',
+    fatherName: 'Manoj Rao',
+    motherName: 'Savita Rao',
+    dob: '2005-06-15',
+    gender: 'Female',
+    phone: '9023456781',
+    email: 'anjali.rao@example.com',
+    college: 'Roorkee College of Engineering',
+    course: 'B.Tech. ECE',
+    section: 'C',
+    semester: '5',
+    status: 'Active',
+  },
+  {
+    firstName: 'Sameer',
+    lastName: 'Singh',
+    admissionNo: 'STU-1009',
+    rollNo: '109',
+    fatherName: 'Ashok Singh',
+    motherName: 'Meena Singh',
+    dob: '2004-10-02',
+    gender: 'Male',
+    phone: '9234567890',
+    email: 'sameer.singh@example.com',
+    college: 'Roorkee College of Business Studies',
+    course: 'BBA',
+    section: 'B',
+    semester: '4',
+    status: 'Active',
+  },
+  {
+    firstName: 'Ritika',
+    lastName: 'Gupta',
+    admissionNo: 'STU-1010',
+    rollNo: '110',
+    fatherName: 'Sunil Gupta',
+    motherName: 'Kavita Gupta',
+    dob: '2006-09-20',
+    gender: 'Female',
+    phone: '9123456792',
+    email: 'ritika.gupta@example.com',
+    college: 'Roorkee College of Smart Computing',
+    course: 'BCA Data Science',
+    section: 'D',
+    semester: '2',
+    status: 'Active',
+  },
+];
 
-function makeCsvRow(values) {
-  return values.map((value) => `"${String(value || '').replace(/"/g, '""')}"`).join(',');
+function mapStudentsToRows(students) {
+  return students.map((s, idx) => ({
+    checkbox: false,
+    sno: idx + 1,
+    photo: s.photo || null,
+    name: s.name || `${s.firstName || ''} ${s.lastName || ''}`.trim(),
+    admissionNo: s.admissionNo,
+    rollNo: s.rollNo,
+    fatherName: s.fatherName,
+    motherName: s.motherName,
+    dob: s.dob || s.date_of_birth,
+    gender: s.gender,
+    phone: s.phone,
+    email: s.email,
+    college: s.college,
+    course: s.courseSection || s.course,
+    section: s.section || '-',
+    semester: s.semester || '-',
+    status: s.status || 'Active',
+    raw: s,
+  }));
 }
 
 export default function StudentCollegeWisePage() {
-  const [showNewStudent, setShowNewStudent] = useState(false);
-  const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('All');
-  const [page, setPage] = useState(1);
-  const [selectedIds, setSelectedIds] = useState([]);
-  const pageSize = 20;
+  const [queryParams, setQueryParams] = useState({ page: 1, pageSize: 20 });
+  const { data: studentsData, isLoading, isError } = useResourceList('students', queryParams);
+  const students = studentsData?.items?.length ? studentsData.items : demoStudents;
 
-  const queryParams = useMemo(() => {
-    const params = { page, pageSize };
-    if (search.trim()) params.search = search.trim();
-    if (statusFilter !== 'All') {
-      params.filter_field = 'status';
-      params.filter_value = statusFilter;
-      params.filter_operator = 'eq';
-    }
-    return params;
-  }, [page, pageSize, search, statusFilter]);
+  const rows = useMemo(() => mapStudentsToRows(students), [students]);
 
-  const {
-    data: studentsData,
-    isLoading: isStudentsLoading,
-    isError: isStudentsError,
-    error: studentsError,
-  } = useResourceList('students', queryParams);
-  const students = studentsData?.items || [];
-  const pageCount = Math.max(1, studentsData?.pages ?? 1);
+  const [showModal, setShowModal] = useState(false);
   const createStudent = useCreateResource('students');
 
-  const { register, handleSubmit, reset, formState: { isSubmitting } } = useForm({ defaultValues: defaultFormValues });
+  const { register, handleSubmit, reset } = useForm({ defaultValues: defaultFormValues });
 
-  useEffect(() => {
-    reset(defaultFormValues);
-  }, [reset]);
+  useEffect(() => { reset(defaultFormValues); }, [reset]);
 
-  const totalCount = studentsData?.total ?? 0;
-  const displayedStudents = students;
+  const columns = [
+    { label: '', key: 'checkbox', minWidth: '48px', sortable: false, render: (val) => <input type="checkbox" className="h-4 w-4" /> },
+    { label: 'S.No', key: 'sno', minWidth: '60px' },
+    { label: 'Photo', key: 'photo', minWidth: '80px', render: (val) => (val ? <img src={val} alt="photo" className="h-8 w-8 rounded-full" /> : <div className="h-8 w-8 rounded-full bg-slate-200" />) },
+    { label: 'Student Name', key: 'name', minWidth: '220px' },
+    { label: 'Admission No', key: 'admissionNo', minWidth: '140px' },
+    { label: 'Roll No', key: 'rollNo', minWidth: '120px' },
+    { label: 'Father Name', key: 'fatherName', minWidth: '160px' },
+    { label: 'Mother Name', key: 'motherName', minWidth: '160px' },
+    { label: 'DOB', key: 'dob', minWidth: '120px' },
+    { label: 'Gender', key: 'gender', minWidth: '100px' },
+    { label: 'Phone', key: 'phone', minWidth: '140px' },
+    { label: 'Email', key: 'email', minWidth: '220px' },
+    { label: 'College', key: 'college', minWidth: '200px' },
+    { label: 'Course', key: 'course', minWidth: '160px' },
+    { label: 'Section', key: 'section', minWidth: '120px' },
+    { label: 'Semester', key: 'semester', minWidth: '120px' },
+    { label: 'Status', key: 'status', minWidth: '120px', render: (val) => <StatusBadge status={val} /> },
+    { label: 'Actions', key: 'actions', minWidth: '140px', render: (v, row) => (
+      <div className="inline-flex">
+        <button className="rounded-2xl border border-slate-300 bg-white px-3 py-2 text-[11px] text-slate-700">Actions</button>
+      </div>
+    ) },
+  ];
 
-  useEffect(() => {
-    if (page > pageCount) {
-      setPage(pageCount);
-    }
-  }, [pageCount, page]);
-
-  useEffect(() => {
-    setSelectedIds((current) => current.filter((id) => displayedStudents.some((student) => student.id === id)));
-  }, [displayedStudents]);
-
-  const toggleSelect = (id) => {
-    setSelectedIds((current) => (current.includes(id) ? current.filter((item) => item !== id) : [...current, id]));
-  };
-
-  const toggleSelectAll = () => {
-    const pageIds = displayedStudents.map((student) => student.id);
-    const allSelected = pageIds.every((id) => selectedIds.includes(id));
-    setSelectedIds(allSelected ? [] : pageIds);
-  };
-
-  const handleExport = () => {
-    const header = ['S.No', 'Admission No', 'Name', 'Email', 'Phone', 'DOB', 'Gender', 'Status'];
-    const rows = students.map((student, index) => [
-      index + 1,
-      student.admissionNo,
-      student.name || `${student.firstName || ''} ${student.lastName || ''}`.trim(),
-      student.email,
-      student.phone,
-      student.dob || student.date_of_birth,
-      student.gender,
-      student.status,
-    ]);
-    const csv = [header, ...rows].map(makeCsvRow).join('\r\n');
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'student-list-college-wise.csv';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  const handleCreateStudent = async (values) => {
+  const onSubmit = async (data) => {
     try {
-      await createStudent.mutateAsync({
-        name: `${values.firstName} ${values.lastName}`.trim(),
-        email: values.email,
-        phone: values.phone,
-        admissionNo: values.admissionNo,
-        rollNo: values.rollNo,
-        admissionDate: values.dob,
-        gender: values.gender,
-        status: values.status,
-      });
-      toast.success('Student saved successfully');
-      setShowNewStudent(false);
+      await createStudent.mutateAsync(data);
+      toast.success('Student record created successfully.');
       reset(defaultFormValues);
-      setPage(1);
-    } catch (err) {
-      toast.error(err?.message || 'Unable to save student');
+      setShowModal(false);
+    } catch (error) {
+      toast.error(error?.message || 'Failed to create student.');
     }
   };
-
-  const tableRows = displayedStudents.map((student, index) => ({
-    id: student.id,
-    serial: (page - 1) * pageSize + index + 1,
-    admissionNo: student.admissionNo,
-    photo: student.photo || student.avatar || null,
-    name: student.name || `${student.firstName || ''} ${student.lastName || ''}`.trim(),
-    email: student.email,
-    phone: student.phone,
-    dob: student.dob || student.date_of_birth,
-    gender: student.gender,
-    status: student.status || 'Active',
-  }));
 
   return (
-    <div className="space-y-6 px-4 pb-16 pt-6 md:px-8">
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-slate-500">Dashboard &gt; Student List College Wise</p>
-            <h1 className="mt-2 text-3xl font-semibold text-slate-950">Student List College Wise</h1>
-            <p className="mt-1 text-sm text-slate-500">List of Students College Wise</p>
-          </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <button type="button" className={`inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-medium ${OUTLINE}`} onClick={() => window.print()}>
-              <Printer className="h-4 w-4" /> Print All ID Cards
-            </button>
-            <button type="button" className={`inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-medium ${OUTLINE}`}>
-              <Filter className="h-4 w-4" /> Filter
-            </button>
-            <button type="button" className={`inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-medium ${NAVY}`} onClick={() => setShowNewStudent(true)}>
-              <UserPlus className="h-4 w-4" /> New Student
-            </button>
-            <button type="button" className={`inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-medium ${NAVY}`} onClick={handleExport}>
-              <Download className="h-4 w-4" /> Export To Excel
-            </button>
-            <button type="button" className={`inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-medium ${NAVY}`} onClick={() => window.print()}>
-              <Printer className="h-4 w-4" /> Print
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="rounded-[24px] border border-slate-200 bg-white/95 p-4 shadow-sm">
-        <div className="flex flex-col gap-3 border-b border-slate-200 pb-4 md:flex-row md:items-center md:justify-between">
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="min-h-screen bg-[#f5f6fa] text-slate-900">
+      <div className="w-full max-w-full px-4 pb-10 pt-6 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Search</label>
-              <input
-                type="search"
-                value={search}
-                onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none focus:border-[#1e3a5f] focus:ring-2 focus:ring-[#1e3a5f]/10"
-                placeholder="Search students"
-              />
+              <p className="text-sm uppercase tracking-[0.3em] text-slate-500">Dashboard &gt; Student List College Wise</p>
+              <h1 className="mt-2 text-3xl font-semibold text-slate-950">Student List College Wise</h1>
+              <p className="mt-1 text-sm text-slate-500">List of Students College Wise</p>
             </div>
-            <div>
-              <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Status</label>
-              <select value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }} className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none focus:border-[#1e3a5f] focus:ring-2 focus:ring-[#1e3a5f]/10">
-                <option value="All">All</option>
-                <option value="Active">Active</option>
-                <option value="Alumni">Alumni</option>
-                <option value="Withdrawn">Withdrawn</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-4 overflow-hidden rounded-[24px] border border-slate-200">
-          <div className="overflow-x-auto">
-            <table className="min-w-full table-fixed border-separate border-spacing-0 text-left text-[12px] leading-5">
-              <thead className="bg-[#1e3a5f] text-white">
-                <tr>
-                  <th className="w-[40px] px-3 py-3 text-left"><input type="checkbox" checked={displayedStudents.length > 0 && displayedStudents.every((student) => selectedIds.includes(student.id))} onChange={toggleSelectAll} className="h-4 w-4 rounded border-white bg-transparent" /></th>
-                  <th className="w-[44px] px-3 py-3 font-semibold">S.No</th>
-                  <th className="w-[180px] px-3 py-3 font-semibold">Admission No</th>
-                  <th className="w-[200px] px-3 py-3 font-semibold">Name</th>
-                  <th className="w-[220px] px-3 py-3 font-semibold">Email</th>
-                  <th className="w-[130px] px-3 py-3 font-semibold">Phone</th>
-                  <th className="w-[110px] px-3 py-3 font-semibold">DOB</th>
-                  <th className="w-[90px] px-3 py-3 font-semibold">Gender</th>
-                  <th className="w-[100px] px-3 py-3 font-semibold">Status</th>
-                  <th className="w-[120px] px-3 py-3 font-semibold">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {isStudentsLoading ? (
-                  <tr>
-                    <td colSpan="10" className="px-3 py-12 text-center text-sm text-slate-500">Loading students…</td>
-                  </tr>
-                ) : students.length === 0 ? (
-                  <tr>
-                    <td colSpan="10" className="px-3 py-12 text-center text-sm text-slate-500">No students available.</td>
-                  </tr>
-                ) : displayedStudents.length === 0 ? (
-                  <tr>
-                    <td colSpan="10" className="px-3 py-12 text-center text-sm text-slate-500">No matching students. Adjust filters or search.</td>
-                  </tr>
-                ) : (
-                  tableRows.map((row, rowIndex) => (
-                    <tr key={row.id} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
-                      <td className="px-3 py-3"><input type="checkbox" checked={selectedIds.includes(row.id)} onChange={() => toggleSelect(row.id)} className="h-4 w-4 rounded border-slate-300 text-[#1e3a5f]" /></td>
-                      <td className="px-3 py-3 font-medium text-slate-700">{row.serial}</td>
-                      <td className="px-3 py-3 text-slate-700">{formatCell(row.admissionNo)}</td>
-                      <td className="px-3 py-3 text-slate-700">{formatCell(row.name)}</td>
-                      <td className="px-3 py-3 text-slate-700 break-words">{formatCell(row.email)}</td>
-                      <td className="px-3 py-3 text-slate-700">{formatCell(row.phone)}</td>
-                      <td className="px-3 py-3 text-slate-700">{formatCell(row.dob)}</td>
-                      <td className="px-3 py-3 text-slate-700">{formatCell(row.gender)}</td>
-                      <td className="px-3 py-3"><StatusBadge status={row.status} /></td>
-                      <td className="px-3 py-3">
-                        <div className="inline-flex rounded-2xl border border-slate-300 bg-white px-3 py-2 text-[11px] text-slate-700">
-                          Actions <ChevronDown className="ml-2 h-3.5 w-3.5" />
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div className="mt-4 flex flex-col gap-3 border-t border-slate-200 pt-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-slate-500">Showing {displayedStudents.length} of {totalCount} students</p>
-          <div className="flex flex-wrap items-center gap-2">
-            <button type="button" disabled={page === 1} onClick={() => setPage((value) => Math.max(value - 1, 1))} className="rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-700 disabled:opacity-50">Prev</button>
-            <span className="text-sm text-slate-700">Page {page} of {pageCount}</span>
-            <button type="button" disabled={page === pageCount} onClick={() => setPage((value) => Math.min(value + 1, pageCount))} className="rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-700 disabled:opacity-50">Next</button>
-          </div>
-        </div>
-      </div>
-
-      {showNewStudent && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/40 px-4 py-6 backdrop-blur-sm">
-          <div className="mx-auto min-h-[90vh] w-full max-w-[95vw] overflow-hidden rounded-[28px] bg-white shadow-2xl">
-            <div className="flex flex-col gap-3 border-b border-slate-200 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <h2 className="text-2xl font-semibold text-slate-950">New Student Registration</h2>
-                <p className="mt-1 text-sm text-slate-500">Add a new student record and save directly to the database.</p>
-              </div>
-              <button type="button" className="rounded-full border border-slate-300 p-2 text-slate-600 transition hover:bg-slate-100" onClick={() => setShowNewStudent(false)}>
-                <X className="h-5 w-5" />
+            <div className="flex flex-wrap items-center gap-3">
+              <button type="button" className={OUTLINE_BTN} onClick={() => window.print()}>
+                <Printer className="h-4 w-4" /> Print All ID Cards
+              </button>
+              <button type="button" className={OUTLINE_BTN}>
+                <Filter className="h-4 w-4" /> Filter
+              </button>
+              <button type="button" className={NAVY_BTN} onClick={() => setShowModal(true)}>
+                <UserPlus className="h-4 w-4" /> New Student
+              </button>
+              <button type="button" className={NAVY_BTN} onClick={() => { /* DataTable export already available */ }}>
+                <Download className="h-4 w-4" /> Export To Excel
+              </button>
+              <button type="button" className={NAVY_BTN} onClick={() => window.print()}>
+                <Printer className="h-4 w-4" /> Print
               </button>
             </div>
-            <form onSubmit={handleSubmit(handleCreateStudent)} className="flex min-h-[80vh] flex-col">
-              <div className="flex-1 overflow-y-auto px-6 py-5">
-                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                  <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
-                    <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">Student Photo</h3>
-                    <div className="mb-4 flex h-28 w-28 items-center justify-center rounded-full bg-slate-200 text-slate-500">Upload</div>
-                    <input type="file" className="w-full rounded-2xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900" />
-                  </div>
-                  <div className="rounded-3xl border border-slate-200 bg-white p-4">
-                    <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">Personal Details</h3>
-                    <div className="grid gap-3">
-                      <div className="grid gap-2 text-sm">
-                        <label className="text-slate-700">First name</label>
-                        <input type="text" {...register('firstName')} className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900" />
-                      </div>
-                      <div className="grid gap-2 text-sm">
-                        <label className="text-slate-700">Last name</label>
-                        <input type="text" {...register('lastName')} className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900" />
-                      </div>
-                      <div className="grid gap-2 text-sm">
-                        <label className="text-slate-700">Admission No</label>
-                        <input type="text" {...register('admissionNo')} className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900" />
-                      </div>
-                      <div className="grid gap-2 text-sm">
-                        <label className="text-slate-700">Roll No</label>
-                        <input type="text" {...register('rollNo')} className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="rounded-3xl border border-slate-200 bg-white p-4">
-                    <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">Academic Details</h3>
-                    <div className="grid gap-3">
-                      <div className="grid gap-2 text-sm">
-                        <label className="text-slate-700">College</label>
-                        <input type="text" {...register('college')} className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900" />
-                      </div>
-                      <div className="grid gap-2 text-sm">
-                        <label className="text-slate-700">Course / Section</label>
-                        <input type="text" {...register('courseSection')} className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900" />
-                      </div>
-                      <div className="grid gap-2 text-sm">
-                        <label className="text-slate-700">Semester</label>
-                        <input type="text" {...register('semester')} className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900" />
-                      </div>
-                      <div className="grid gap-2 text-sm">
-                        <label className="text-slate-700">Status</label>
-                        <select {...register('status')} className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900">
-                          <option value="Active">Active</option>
-                          <option value="Alumni">Alumni</option>
-                          <option value="Withdrawn">Withdrawn</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-4 grid gap-4 xl:grid-cols-3">
-                  <div className="rounded-3xl border border-slate-200 bg-white p-4">
-                    <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">Parents & Guardian</h3>
-                    <div className="grid gap-3">
-                      <div className="grid gap-2 text-sm">
-                        <label className="text-slate-700">Father Name</label>
-                        <input type="text" {...register('fatherName')} className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900" />
-                      </div>
-                      <div className="grid gap-2 text-sm">
-                        <label className="text-slate-700">Mother Name</label>
-                        <input type="text" {...register('motherName')} className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900" />
-                      </div>
-                      <div className="grid gap-2 text-sm">
-                        <label className="text-slate-700">Guardian Name</label>
-                        <input type="text" {...register('guardianName')} className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900" />
-                      </div>
-                      <div className="grid gap-2 text-sm">
-                        <label className="text-slate-700">Guardian Mobile</label>
-                        <input type="text" {...register('guardianMobile')} className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900" />
-                      </div>
-                      <div className="grid gap-2 text-sm">
-                        <label className="text-slate-700">Guardian Email</label>
-                        <input type="email" {...register('guardianEmail')} className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="rounded-3xl border border-slate-200 bg-white p-4 xl:col-span-2">
-                    <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">Contact, Address & Documents</h3>
-                    <div className="grid gap-3 md:grid-cols-2">
-                      <div className="grid gap-2 text-sm">
-                        <label className="text-slate-700">Email</label>
-                        <input type="email" {...register('email')} className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900" />
-                      </div>
-                      <div className="grid gap-2 text-sm">
-                        <label className="text-slate-700">Mobile No</label>
-                        <input type="text" {...register('phone')} className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900" />
-                      </div>
-                      <div className="grid gap-2 text-sm">
-                        <label className="text-slate-700">DOB</label>
-                        <input type="date" {...register('dob')} className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900" />
-                      </div>
-                      <div className="grid gap-2 text-sm">
-                        <label className="text-slate-700">Gender</label>
-                        <select {...register('gender')} className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900">
-                          <option value="Male">Male</option>
-                          <option value="Female">Female</option>
-                          <option value="Other">Other</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="mt-4 grid gap-3">
-                      <div className="grid gap-2 text-sm">
-                        <label className="text-slate-700">Address</label>
-                        <textarea {...register('address')} rows="3" className="w-full rounded-3xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900" />
-                      </div>
-                      <div className="grid gap-2 text-sm">
-                        <label className="text-slate-700">Document Uploads</label>
-                        <input type="file" className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900" />
-                      </div>
-                      <div className="grid gap-2 text-sm">
-                        <label className="text-slate-700">Remarks</label>
-                        <textarea {...register('remarks')} rows="2" className="w-full rounded-3xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="sticky bottom-0 z-30 border-t border-slate-200 bg-white px-6 py-4 shadow-[0_-12px_30px_-22px_rgba(15,23,42,0.12)]">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
-                  <button type="button" onClick={() => setShowNewStudent(false)} className="rounded-2xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Cancel</button>
-                  <button type="submit" disabled={isSubmitting} className="rounded-2xl bg-[#1e3a5f] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#152d52] disabled:opacity-60">Save Student</button>
-                </div>
-              </div>
-            </form>
           </div>
         </div>
-      )}
 
-      {isStudentsError && (
-        <div className="rounded-[24px] border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">Unable to load students. {studentsError?.message || 'Please refresh the page.'}</div>
+        <div className="mt-4">
+          <DataTable columns={columns} rows={rows} loading={isLoading} initialPageSize={20} placeholder="Search students" />
+        </div>
+      </div>
+
+      {showModal && (
+        <Modal isOpen={true} onClose={() => setShowModal(false)} title="Add Student">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <div className="grid gap-4 lg:grid-cols-2">
+              <div>
+                <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-slate-600">Institute Info</h2>
+                <div className="grid gap-3">
+                  <input {...register('instituteCollege')} placeholder="Institute / College" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('college')} placeholder="College" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('rollNumber')} placeholder="Roll Number" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('course')} placeholder="Course" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('semester')} placeholder="Semester" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('section')} placeholder="Section" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('admissionCategory')} placeholder="Admission Category" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('feeCategory')} placeholder="Fee Category" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('branchId')} placeholder="Branch Id" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                </div>
+              </div>
+              <div>
+                <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-slate-600">Personal Details</h2>
+                <div className="grid gap-3">
+                  <input {...register('studentName')} placeholder="Student Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('firstName')} placeholder="Student First Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('lastName')} placeholder="Student Last Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('dateOfBirth')} placeholder="Date of Birth" type="date" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('dateOfBirthWords')} placeholder="Date of Birth In Words" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <select {...register('gender')} className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <input {...register('aadharNo')} placeholder="Aadhar No." className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('apaarId')} placeholder="APAAR ID" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('nationality')} placeholder="Nationality" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('religion')} placeholder="Religion" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('socialCategory')} placeholder="Social Category" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                </div>
+              </div>
+            </div>
+            <div className="grid gap-4 lg:grid-cols-2">
+              <div>
+                <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-slate-600">Contact Details</h2>
+                <div className="grid gap-3">
+                  <input {...register('admissionDate')} placeholder="Admission Date" type="date" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('phone')} placeholder="Phone No." className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('email')} placeholder="Email" type="email" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('officialEmail')} placeholder="Official Email" type="email" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('address')} placeholder="Address" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('city')} placeholder="City" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('state')} placeholder="State" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('district')} placeholder="District" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('country')} placeholder="Country" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('pinCode')} placeholder="Pin Code" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                </div>
+              </div>
+              <div>
+                <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-slate-600">Correspondence Address</h2>
+                <div className="grid gap-3">
+                  <input {...register('correspondenceAddress')} placeholder="Correspondence Address" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('correspondenceCity')} placeholder="Correspondence City" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('correspondenceState')} placeholder="Correspondence State" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('correspondenceCountry')} placeholder="Correspondence Country" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('correspondencePinCode')} placeholder="Correspondence Pin Code" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('correspondenceDistrict')} placeholder="Correspondence District" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                </div>
+              </div>
+            </div>
+            <div className="grid gap-4 lg:grid-cols-2">
+              <div>
+                <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-slate-600">Parent Details</h2>
+                <div className="grid gap-3">
+                  <input {...register('fatherName')} placeholder="Father Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('fatherMobileNo')} placeholder="Father Mobile No." className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('fatherQualification')} placeholder="Father Qualification" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('fatherOccupation')} placeholder="Father Occupation" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('motherName')} placeholder="Mother Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('motherMobileNo')} placeholder="Mother Mobile No" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('motherQualification')} placeholder="Mother Qualification" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('motherOccupation')} placeholder="Mother Occupation" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                </div>
+              </div>
+              <div>
+                <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-slate-600">Accounting & Bank</h2>
+                <div className="grid gap-3">
+                  <input {...register('studentLedgerMaster')} placeholder="Student Ledger Master" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('studentLedgerGroupMaster')} placeholder="Student Ledger Group Master" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('accountHolderName')} placeholder="Account Holder Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('ifsc')} placeholder="IFSC" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('accountNumber')} placeholder="Account Number" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('bankName')} placeholder="Bank Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('bankBranch')} placeholder="Bank Branch" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                </div>
+              </div>
+            </div>
+            <div className="grid gap-4 lg:grid-cols-2">
+              <div>
+                <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-slate-600">Academic Details</h2>
+                <div className="grid gap-3">
+                  <input {...register('tenthSchoolName')} placeholder="10th School Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('tenthBoardName')} placeholder="10th Board Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('tenthPassingYear')} placeholder="10th Passing Year" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('tenthPercentage')} placeholder="10th Percentage Achieved" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('twelfthSchoolName')} placeholder="12th School Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('twelfthBoardName')} placeholder="12th Board Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('twelfthPassingYear')} placeholder="12th Passing Year" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('twelfthPercentage')} placeholder="12th Percentage Achieved" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                </div>
+              </div>
+              <div>
+                <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-slate-600">Additional Qualifications</h2>
+                <div className="grid gap-3">
+                  <input {...register('diplomaInstituteName')} placeholder="Diploma Institute Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('diplomaBoardUniversity')} placeholder="Board / University" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('diplomaPassingYear')} placeholder="Passing Year" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('diplomaPercentage')} placeholder="Percentage Achieved" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('courseName')} placeholder="Course Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('qualifyingExamRank1')} placeholder="Qualifying Exam Rank1" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('qualifyingExamRank2')} placeholder="Qualifying Exam Rank2" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('partnerInstituteName')} placeholder="Partner Institute Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                </div>
+              </div>
+            </div>
+            <div className="grid gap-4 lg:grid-cols-2">
+              <div>
+                <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-slate-600">Undergraduate Details</h2>
+                <div className="grid gap-3">
+                  <input {...register('ugInstituteName')} placeholder="UG Institute Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('universityName')} placeholder="University Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('ugPassingYear')} placeholder="Passing Year" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('ugPercentage')} placeholder="Percentage Achieved" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                </div>
+              </div>
+              <div>
+                <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-slate-600">Qualifying Subjects</h2>
+                <div className="grid gap-3">
+                  <input {...register('qualifyingSubject1Name')} placeholder="Qualifying Subject1 Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('qualifyingSubject1TotalMarks')} placeholder="Qualifying Subject1 Total Marks" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('qualifyingSubject1ObtainedMarks')} placeholder="Qualifying Subject1 Obtained Marks" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('qualifyingSubject2Name')} placeholder="Qualifying Subject2 Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('qualifyingSubject2TotalMarks')} placeholder="Qualifying Subject2 Total Marks" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('qualifyingSubject2ObtainedMarks')} placeholder="Qualifying Subject2 Obtained Marks" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('qualifyingSubject3Name')} placeholder="Qualifying Subject3 Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('qualifyingSubject3TotalMarks')} placeholder="Qualifying Subject3 Total Marks" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('qualifyingSubject3ObtainedMarks')} placeholder="Qualifying Subject3 Obtained Marks" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('qualifyingSubject4Name')} placeholder="Qualifying Subject4 Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('qualifyingSubject4TotalMarks')} placeholder="Qualifying Subject4 Total Marks" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('qualifyingSubject4ObtainedMarks')} placeholder="Qualifying Subject4 Obtained Marks" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('qualifyingSubject5Name')} placeholder="Qualifying Subject5 Name" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('qualifyingSubject5TotalMarks')} placeholder="Qualifying Subject5 Total Marks" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                  <input {...register('qualifyingSubject5ObtainedMarks')} placeholder="Qualifying Subject5 Obtained Marks" className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900" />
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center justify-end gap-3">
+              <button type="button" onClick={() => setShowModal(false)} className="rounded-2xl border border-slate-300 bg-white px-5 py-2 text-sm font-semibold text-slate-700">Cancel</button>
+              <button type="submit" className="rounded-2xl bg-[#1e3a5f] px-6 py-2 text-sm font-semibold text-white">Save</button>
+            </div>
+          </form>
+        </Modal>
       )}
     </div>
   );
