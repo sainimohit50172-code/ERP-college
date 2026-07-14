@@ -1,6 +1,6 @@
 # AI Agent Skills — Full Catalog
 
-> Auto-generated. Total: **1943 skills** across **114 categories**.
+> Auto-generated. Total: **1948 skills** across **114 categories**.
 > When asked "what skill should I use?", browse this file and suggest the most relevant skill IDs.
 > Install a skill: `Ctrl+Shift+/` → search for the skill ID → press Enter.
 
@@ -945,6 +945,7 @@ font atlas, text layout, font family, font size, text shaping,
 makepad 字体, makepad 文字, makepad 排版, makepad 字形
  _(risk: unknown)_
 - **rayden-use**: Build and maintain Rayden UI components and screens in Figma via Figma MCP with full design token enforcement _(risk: safe)_
+- **uizze-ui-research**: Use when building or reviewing web and iOS product UI and you need real UI references, structured design contracts, or implementation validation through UIZZE MCP. _(risk: safe)_
 - **uxui-principles**: Evaluate interfaces against 168 research-backed UX/UI principles, detect antipatterns, and inject UX context into AI coding sessions. _(risk: safe)_
 
 ## design-it
@@ -1100,6 +1101,7 @@ api docs, reference,... _(risk: unknown)_
 - **improve-codebase-architecture**: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick. _(risk: safe)_
 - **jq**: Expert jq usage for JSON querying, filtering, transformation, and pipeline integration. Practical patterns for real shell workflows. _(risk: safe)_
 - **logic-lens**: AI-powered Claude Code skill that performs deep code review using formal logic and reasoning frameworks to detect bugs, anti-patterns, and security risks beyond what linters catch. _(risk: safe)_
+- **lore**: Markdown project memory for AI agents. Use for decisions, architecture, conventions, monorepo scopes, `.lore/`, or `lore` commands; not native `/init`/`/compact` or generic init/compress/audit/query. _(risk: safe)_
 - **performance-optimization**: Optimizes application performance. Use when performance requirements exist, when you suspect performance regressions, or when Core Web Vitals or load times need improvement. Use when profiling reveals bottlenecks that need fixing. _(risk: unknown)_
 - **prototype**: Build a throwaway prototype to flesh out a design — a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route. _(risk: safe)_
 - **push-skill-to-github**: Commit and push skill changes to the configured skills repository after review and validation. _(risk: critical)_
@@ -1736,6 +1738,7 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 
 ## personal-development
 
+- **quit-sponsor**: Helps an AI agent provide non-judgmental, evidence-informed quit-smoking support with user-consented tracking, craving check-ins, and escalation to human or clinical help. Not medical care. _(risk: safe)_
 - **satori**: Clinically informed wisdom companion blending psychology and philosophy into a structured thinking partner _(risk: safe)_
 
 ## planning
@@ -1750,6 +1753,7 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 ## product
 
 - **before-you-build**: Review product risk before coding by checking demand, alternatives, channels, switching costs, and failure signals. _(risk: safe)_
+- **idea-autopsy**: Autopsy a business idea before you build it: kill-list check, five hard filters, a free-AI one-prompt test, live ad-market verification, and a verdict with a named kill-pattern. _(risk: critical)_
 - **product-decision-agent**: 中文产品决策 Agent。用于需求优先级、Roadmap、增长、留存、运营、数据异常、A/B Test、项目延期和跨团队协作；先判断事实、阶段、核心阻塞与主导机制，再给出下一步、停止清单和切换条件。默认中文，不引用原文或讲历史。 _(risk: safe)_
 
 ## product-management
@@ -2215,6 +2219,7 @@ calculations
 - **monte-carlo-storage-cost-analysis**: Analyze a warehouse for stale, unused, or redundant tables via the analyze_storage_costs MCP tool. Classifies waste patterns and table categories, computes safety tiers, and handles category drill-downs and lineage follow-ups. _(risk: unknown)_
 - **neon-object-storage**: S3-compatible object storage that branches with your Neon project, so files and the database stay in sync across every branch. Use when a user wants object storage, a bucket, blob/file storage, or somewhere to put uploads, images, documents, avatars, or user-generated files for their... _(risk: unknown)_
 - **newman-cicd-integration**: Generate ready-to-use CI/CD pipeline configurations that install and run Newman for automated API testing. Use this skill whenever the user wants to run Newman in a CI pipeline, integrate Postman collections into automated builds, set up API tests in GitHub Actions, GitLab CI, Jenkins,... _(risk: unknown)_
+- **nika**: Runs repeatable AI work as checked, budgeted workflow files. _(risk: critical)_
 - **not-a-vibe-coder**: Turns vague prompts into 8 structured planning files for brand new projects. DO NOT use on existing codebases. _(risk: critical)_
 - **objection-preemptor**: One sentence - what this skill does and when to invoke it _(risk: safe)_
 - **obsidian-bases**: Create and edit Obsidian Bases (.base files) with views, filters, formulas, and summaries. Use when working with .base files, creating database-like views of notes, or when the user mentions Bases, table views, card views, filters, or formulas in Obsidian. _(risk: unknown)_

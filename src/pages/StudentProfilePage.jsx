@@ -157,7 +157,9 @@ export default function StudentProfilePage() {
   const [workflowStatus, setWorkflowStatus] = useState('Submitted');
   const queryClient = useQueryClient();
 
-  const studentQuery = useQuery(['studentProfile', studentId], () => getStudentProfile(studentId), {
+  const studentQuery = useQuery({
+    queryKey: ['studentProfile', studentId],
+    queryFn: () => getStudentProfile(studentId),
     enabled: Boolean(studentId),
   });
 

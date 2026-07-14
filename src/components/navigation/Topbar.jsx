@@ -37,7 +37,8 @@ const isActiveLink = (pathname, to) => pathname === to || pathname.startsWith(`$
 export default function Topbar({ onToggleSidebar }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { notifications } = useERP();
+  const erpContext = useERP() || {};
+  const notifications = erpContext.notifications || [];
   const { auth, logout } = useAuth();
   const [isNotificationsOpen, setNotificationsOpen] = useState(false);
   const [isSearchOpen, setSearchOpen] = useState(false);

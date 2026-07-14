@@ -18,11 +18,13 @@ from app.api.v1.library.router import router as library_router
 from app.api.v1.notifications.router import router as notifications_router
 from app.api.v1.procurement.router import router as procurement_router
 from app.api.v1.students.router import router as students_router
+from app.api.v1.certificates.router import router as certificates_router
 from app.api.v1.transport.router import router as transport_router
 from app.api.v1.academic.router import router as academic_router
 from app.api.v1.teachers.router import router as teachers_router
 from app.api.v1.shared.exceptions import register_exception_handlers
 
+import os
 from app.core.config import get_settings
 from app.core.logging import logger
 from app.db.database import Base, engine
@@ -73,6 +75,7 @@ routers = [
     notifications_router,
     procurement_router,
     students_router,
+    certificates_router,
     transport_router,
     academic_router,
     teachers_router,
@@ -81,6 +84,15 @@ routers = [
 for router in routers:
     app.include_router(router, prefix=settings.api_v1_str)
     app.include_router(router, prefix="/api")
+
+# Mount uploads static directory so saved images can be served
+from fastapi.staticfiles import StaticFiles
+# Use absolute path relative to this file to avoid CWD issues
+uploads_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "uploads"))
+os.makedirs(uploads_path, exist_ok=True)
+# Avoid accessing attributes that may not exist on middleware objects
+if not any(getattr(m, "path", None) == "/uploads" for m in getattr(app, "user_middleware", [])):
+    app.mount("/uploads", StaticFiles(directory=uploads_path), name="uploads")
 
 
 @app.get("/health")

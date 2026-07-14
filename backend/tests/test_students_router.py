@@ -80,6 +80,60 @@ class InMemoryStudentRepository:
     async def find_by_email(self, email: str):
         return next((student for student in self._items.values() if (student.contact or {}).get("email") == email), None)
 
+    async def list_students(
+        self,
+        page: int,
+        page_size: int,
+        search: str | None = None,
+        filter_field: str | None = None,
+        filter_value: str | None = None,
+        filter_operator: str = "eq",
+        sort_by: str | None = None,
+        sort_order: str = "asc",
+    ):
+        items = list(self._items.values())
+
+        if search:
+            lowered = search.lower()
+            items = [
+                student
+                for student in items
+                if lowered in (student.admission_no or "").lower()
+                or lowered in (student.first_name or "").lower()
+                or lowered in (student.last_name or "").lower()
+                or lowered in str((student.contact or {}).get("email", "")).lower()
+                or lowered in str((student.contact or {}).get("phone", "")).lower()
+            ]
+
+        if filter_field and filter_value is not None:
+            if filter_operator == "contains":
+                items = [
+                    student
+                    for student in items
+                    if filter_value.lower() in str(getattr(student, filter_field, "")).lower()
+                ]
+            elif filter_operator == "eq":
+                items = [student for student in items if str(getattr(student, filter_field, "")) == filter_value]
+            elif filter_operator == "ne":
+                items = [student for student in items if str(getattr(student, filter_field, "")) != filter_value]
+            elif filter_operator == "gt":
+                items = [student for student in items if str(getattr(student, filter_field, "")) > filter_value]
+            elif filter_operator == "gte":
+                items = [student for student in items if str(getattr(student, filter_field, "")) >= filter_value]
+            elif filter_operator == "lt":
+                items = [student for student in items if str(getattr(student, filter_field, "")) < filter_value]
+            elif filter_operator == "lte":
+                items = [student for student in items if str(getattr(student, filter_field, "")) <= filter_value]
+
+        if sort_by:
+            reverse = sort_order == "desc"
+            items = sorted(items, key=lambda student: str(getattr(student, sort_by, "") or "").lower(), reverse=reverse)
+
+        total = len(items)
+        start = (page - 1) * page_size
+        end = start + page_size
+        return items[start:end], total
+
 
 @pytest.fixture()
 def client():

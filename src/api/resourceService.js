@@ -44,18 +44,26 @@ export const normalizeApiListResponse = (response, params = {}, resource = 'stud
 
 export const mapStudentPayload = (payload = {}) => {
   const fullName = String(payload.name || '').trim();
-  const [firstName = '', ...rest] = fullName.split(' ');
-  const lastName = rest.join(' ');
+  const [embeddedFirstName = '', ...embeddedRest] = fullName.split(' ').filter(Boolean);
+  const embeddedLastName = embeddedRest.join(' ');
+  const firstName = payload.firstName || payload.first_name || embeddedFirstName || '';
+  const lastName = payload.lastName || payload.last_name || embeddedLastName || '';
+  const dateOfBirth = payload.dateOfBirth || payload.date_of_birth || payload.admissionDate || null;
+
+  const contact = {
+    ...(payload.email != null ? { email: payload.email } : {}),
+    ...(payload.phone != null ? { phone: payload.phone } : {}),
+  };
 
   return {
     admission_number: payload.admissionNo || payload.admission_number || '',
-    first_name: firstName || payload.first_name || '',
-    last_name: lastName || payload.last_name || '',
-    email: payload.email || null,
-    phone: payload.phone || null,
-    date_of_birth: payload.date_of_birth || payload.admissionDate || null,
+    first_name: firstName,
+    last_name: lastName,
+    date_of_birth: dateOfBirth,
     gender: payload.gender || null,
     status: payload.status || 'Active',
+    contact: Object.keys(contact).length > 0 ? contact : undefined,
+    meta: payload.meta ?? null,
   };
 };
 
@@ -66,6 +74,8 @@ export const mapStudentRecord = (record = {}) => ({
   email: record.contact?.email || record.email || '',
   phone: record.contact?.phone || record.phone || '',
   admissionNo: record.admission_number || record.admissionNo || record.admission_no || '',
+  dateOfBirth: record.date_of_birth || record.dob || record.dateOfBirth || '',
+  gender: record.gender || '',
   firstName: record.first_name || '',
   lastName: record.last_name || '',
   status: record.status || 'Active',
@@ -73,8 +83,8 @@ export const mapStudentRecord = (record = {}) => ({
   departmentId: record.departmentId || '',
   semesterId: record.semesterId || '',
   sectionId: record.sectionId || '',
-  rollNo: record.rollNo || '',
-  enrollmentNo: record.enrollmentNo || '',
+  rollNo: record.rollNo || record.roll_no || '',
+  enrollmentNo: record.enrollmentNo || record.enrollment_no || '',
   address: record.address || '',
   totalFee: record.totalFee || 0,
 });

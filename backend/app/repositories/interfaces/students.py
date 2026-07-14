@@ -19,3 +19,17 @@ class StudentRepository(BaseRepository[Student], ABC):
     @abstractmethod
     async def find_by_email(self, email: str) -> Optional[Student]:
         raise NotImplementedError
+
+    @abstractmethod
+    async def list_students(
+        self,
+        page: int,
+        page_size: int,
+        search: str | None = None,
+        filter_field: str | None = None,
+        filter_value: str | None = None,
+        filter_operator: str = "eq",
+        sort_by: str | None = None,
+        sort_order: str = "asc",
+    ) -> tuple[list[Student], int]:
+        raise NotImplementedError

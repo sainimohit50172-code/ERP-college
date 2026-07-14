@@ -23,7 +23,9 @@ export default function StatusBadge({ status }) {
     alumni: 'bg-slate-200/80 text-slate-700',
   };
   return (
-    <span className={`inline-flex max-w-full items-center justify-center rounded-full px-3 py-1.5 text-xs font-semibold tracking-[0.08em] uppercase ${variants[normalized] || 'bg-slate-200/80 text-slate-700'}`}>
+    <span
+      className={`inline-flex items-center justify-center rounded-full px-4 py-1 text-xs font-medium leading-none tracking-[0.08em] uppercase ${variants[normalized] || 'bg-slate-200/80 text-slate-700'}`}
+    >
       {display}
     </span>
   );

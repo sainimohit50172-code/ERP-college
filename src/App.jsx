@@ -18,8 +18,11 @@ import FollowUpRemarkReportPage from './pages/FollowUpRemarkReportPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import SettingsPage from './pages/SettingsPage.jsx';
-import StudentManagementPage from './pages/StudentManagementPage.jsx';
+import StudentListPage from './pages/StudentListPage.jsx';
 import StudentCollegeWisePage from './pages/StudentCollegeWisePage.jsx';
+import StudentCertificatesPage from './pages/StudentCertificatesPage.jsx';
+import UpdateRollNumberPage from './pages/UpdateRollNumberPage.jsx';
+import AssignUniversityRollPage from './pages/AssignUniversityRollPage.jsx';
 import StudentProfilePage from './pages/StudentProfilePage.jsx';
 import FeeManagementPage from './pages/FeeManagementPage.jsx';
 import TeacherManagementPage from './pages/TeacherManagementPage.jsx';
@@ -76,7 +79,6 @@ import EnquiriesPage from './pages/EnquiriesPage.jsx';
 import AdmissionCounsellingPage from './pages/AdmissionCounsellingPage.jsx';
 import ApplicationsPage from './pages/ApplicationsPage.jsx';
 import AdmissionTransactionsPage from './pages/AdmissionTransactionsPage.jsx';
-import StudentCertificatesPage from './pages/StudentCertificatesPage.jsx';
 import AlumniPage from './pages/AlumniPage.jsx';
 import LibraryBooksPage from './pages/LibraryBooksPage.jsx';
 import LibraryCategoriesPage from './pages/LibraryCategoriesPage.jsx';
@@ -125,7 +127,6 @@ import LMSCoursesPage from './pages/LMSCoursesPage.jsx';
 import StudyMaterialPage from './pages/StudyMaterialPage.jsx';
 import VideoLecturesPage from './pages/VideoLecturesPage.jsx';
 import OnlineTestsPage from './pages/OnlineTestsPage.jsx';
-import LMSCertificatesPage from './pages/LMSCertificatesPage.jsx';
 import SecurityVisitorsPage from './pages/SecurityVisitorsPage.jsx';
 import GatePassPage from './pages/GatePassPage.jsx';
 import IncidentsPage from './pages/IncidentsPage.jsx';
@@ -145,6 +146,8 @@ import AdmissionSummaryReportPage from './pages/AdmissionSummaryReportPage.jsx';
 import SubjectCombinationReportPage from './pages/SubjectCombinationReportPage.jsx';
 import IndividualFacultyReportPage from './pages/IndividualFacultyReportPage.jsx';
 import FeedbackSummaryReportPage from './pages/FeedbackSummaryReportPage.jsx';
+import StudentFeedbackPage from './pages/StudentFeedbackPage.jsx';
+import ComingSoonPage from './pages/ComingSoonPage.jsx';
 import ProtectedRoute from './components/auth/ProtectedRoute.jsx';
 
 function App() {
@@ -178,8 +181,11 @@ function App() {
               <Route path="admissions/reports/summary" element={<ProtectedRoute moduleKey="admissions"><AdmissionSummaryReportPage /></ProtectedRoute>} />
               <Route path="admissions/reports/subject-combination" element={<ProtectedRoute moduleKey="admissions"><SubjectCombinationReportPage /></ProtectedRoute>} />
               <Route path="admissions/transactions" element={<ProtectedRoute moduleKey="admissions"><AdmissionTransactionsPage /></ProtectedRoute>} />
-              <Route path="students" element={<ProtectedRoute moduleKey="students"><StudentManagementPage /></ProtectedRoute>} />
+              <Route path="students" element={<ProtectedRoute moduleKey="students"><StudentListPage /></ProtectedRoute>} />
               <Route path="students/college-wise" element={<ProtectedRoute moduleKey="students"><StudentCollegeWisePage /></ProtectedRoute>} />
+              <Route path="students/certificates" element={<ProtectedRoute moduleKey="students"><StudentCertificatesPage /></ProtectedRoute>} />
+              <Route path="students/update-roll" element={<ProtectedRoute moduleKey="students"><UpdateRollNumberPage /></ProtectedRoute>} />
+              <Route path="students/assign-university-roll" element={<ProtectedRoute moduleKey="students"><AssignUniversityRollPage /></ProtectedRoute>} />
               <Route path="students/:studentId" element={<ProtectedRoute moduleKey="students"><StudentProfilePage /></ProtectedRoute>} />
               <Route path="parents" element={<ProtectedRoute moduleKey="students"><ParentsPage /></ProtectedRoute>} />
               <Route path="enquiries" element={<ProtectedRoute moduleKey="admissions"><EnquiriesPage /></ProtectedRoute>} />
@@ -188,7 +194,6 @@ function App() {
               <Route path="admissions/applications" element={<ProtectedRoute moduleKey="admissions"><ApplicationsPage /></ProtectedRoute>} />
               <Route path="leads" element={<ProtectedRoute moduleKey="leads"><LeadsPage /></ProtectedRoute>} />
               <Route path="admissions/leads" element={<ProtectedRoute moduleKey="leads"><LeadsPage /></ProtectedRoute>} />
-              <Route path="student-certificates" element={<ProtectedRoute moduleKey="students"><StudentCertificatesPage /></ProtectedRoute>} />
               <Route path="alumni" element={<ProtectedRoute moduleKey="students"><AlumniPage /></ProtectedRoute>} />
               <Route path="fees" element={<ProtectedRoute moduleKey="fees"><FeeManagementPage /></ProtectedRoute>} />
               <Route path="teachers" element={<ProtectedRoute moduleKey="teachers"><TeacherManagementPage /></ProtectedRoute>} />
@@ -347,7 +352,7 @@ function App() {
               <Route path="coe/result-sheet" element={<ProtectedRoute><PlaceholderPage title="Result Sheet" /></ProtectedRoute>} />
               <Route path="coe/digi-locker" element={<ProtectedRoute><PlaceholderPage title="Digi Locker Report" /></ProtectedRoute>} />
               <Route path="coe/student-dmc" element={<ProtectedRoute><PlaceholderPage title="Student DMC" /></ProtectedRoute>} />
-              <Route path="feedback" element={<ProtectedRoute><PlaceholderPage title="Feedback From Student" /></ProtectedRoute>} />
+              <Route path="feedback" element={<ProtectedRoute><StudentFeedbackPage /></ProtectedRoute>} />
               <Route path="feedback/form" element={<ProtectedRoute><PlaceholderPage title="Student Feedback Form" /></ProtectedRoute>} />
               <Route path="feedback/submissions" element={<ProtectedRoute><PlaceholderPage title="Feedback Submissions" /></ProtectedRoute>} />
               <Route path="feedback/dashboard" element={<ProtectedRoute><PlaceholderPage title="Feedback Dashboard" /></ProtectedRoute>} />
@@ -355,7 +360,7 @@ function App() {
               <Route path="feedback/reports/summary" element={<ProtectedRoute><PlaceholderPage title="Feedback Summary Report" /></ProtectedRoute>} />
               <Route path="feedback/reports/analysis" element={<ProtectedRoute><PlaceholderPage title="Feedback Analysis Report" /></ProtectedRoute>} />
               <Route path="feedback/reports/trends" element={<ProtectedRoute><PlaceholderPage title="Feedback Trend Report" /></ProtectedRoute>} />
-              <Route path="feedback/reports/student" element={<ProtectedRoute><PlaceholderPage title="Student Feedback Report" /></ProtectedRoute>} />
+              <Route path="feedback/reports/student" element={<ProtectedRoute><StudentFeedbackPage /></ProtectedRoute>} />
               <Route path="invigilator-assignment" element={<ProtectedRoute moduleKey="teacherAssignments"><InvigilatorAssignmentPage /></ProtectedRoute>} />
               <Route path="security" element={<ProtectedRoute moduleKey="security"><SecurityPage /></ProtectedRoute>} />
               <Route path="security/visitors" element={<ProtectedRoute moduleKey="security"><SecurityVisitorsPage /></ProtectedRoute>} />
@@ -400,7 +405,6 @@ function App() {
               <Route path="lms/study-material" element={<ProtectedRoute moduleKey="lms"><StudyMaterialPage /></ProtectedRoute>} />
               <Route path="lms/video-lectures" element={<ProtectedRoute moduleKey="lms"><VideoLecturesPage /></ProtectedRoute>} />
               <Route path="lms/online-tests" element={<ProtectedRoute moduleKey="lms"><OnlineTestsPage /></ProtectedRoute>} />
-              <Route path="lms/certificates" element={<ProtectedRoute moduleKey="lms"><LMSCertificatesPage /></ProtectedRoute>} />
               <Route path="analytics" element={<ProtectedRoute moduleKey="reports"><AnalyticsPage /></ProtectedRoute>} />
               <Route path="notifications" element={<ProtectedRoute moduleKey="notifications"><NotificationsPage /></ProtectedRoute>} />
               <Route path="notifications/assignment" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Assignment" /></ProtectedRoute>} />
@@ -425,7 +429,7 @@ function App() {
               <Route path="change-password" element={<ChangePasswordPage />} />
               <Route path="permissions" element={<ProtectedRoute moduleKey="permissionMatrix"><PermissionMatrixPage /></ProtectedRoute>} />
               <Route path="audit-log" element={<ProtectedRoute moduleKey="auditLog"><AuditLogPage /></ProtectedRoute>} />
-              <Route path="*" element={<NotFoundPage />} />
+              <Route path="*" element={<ComingSoonPage />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFoundPage />} />

@@ -23,6 +23,7 @@ def _student_to_detail(student: Student) -> StudentDetail:
         date_of_birth=student.dob,
         gender=student.gender,
         status=student.status,
+        meta=student.meta,
         created_at=student.created_at,
     )
 
@@ -39,6 +40,7 @@ def _student_to_list_item(student: Student) -> StudentListItem:
         date_of_birth=student.dob,
         gender=student.gender,
         status=student.status,
+        meta=student.meta,
     )
 
 
@@ -75,6 +77,7 @@ def _build_student_from_payload(payload: StudentCreate | StudentUpdate, existing
         if payload.phone is not None:
             contact["phone"] = payload.phone
         student.contact = contact or None
+        student.meta = payload.meta
     elif isinstance(payload, StudentUpdate):
         contact = dict(existing.contact or {}) if existing is not None else {}
         provided = provided or {}
@@ -90,6 +93,8 @@ def _build_student_from_payload(payload: StudentCreate | StudentUpdate, existing
             else:
                 contact["phone"] = payload.phone
         student.contact = contact or None
+        if "meta" in provided:
+            student.meta = payload.meta
 
     return student
 
@@ -158,34 +163,48 @@ async def list_students(
     filter_operator: str = Query(default="eq", pattern="^(eq|ne|gt|gte|lt|lte|contains)$"),
     repository=Depends(get_student_repository),
 ):
-    items = await repository.get_all()
-    items = await _apply_search(items, search)
-    items = await _apply_filter(items, filter_field, filter_value, filter_operator)
+    if hasattr(repository, "list_students"):
+        items, total = await repository.list_students(
+            page=pagination.page,
+            page_size=pagination.page_size,
+            search=search,
+            filter_field=filter_field,
+            filter_value=filter_value,
+            filter_operator=filter_operator,
+            sort_by=pagination.sort_by,
+            sort_order=pagination.sort_order,
+        )
+    else:
+        items = await repository.get_all()
+        items = await _apply_search(items, search)
+        items = await _apply_filter(items, filter_field, filter_value, filter_operator)
 
-    if pagination.sort_by:
-        sort_field = pagination.sort_by
-        sort_key = {
-            "admission_number": "admission_no",
-            "date_of_birth": "dob",
-            "first_name": "first_name",
-            "last_name": "last_name",
-            "status": "status",
-            "email": "contact",
-            "phone": "contact",
-        }.get(sort_field, sort_field)
+        if pagination.sort_by:
+            sort_field = pagination.sort_by
+            sort_key = {
+                "admission_number": "admission_no",
+                "date_of_birth": "dob",
+                "first_name": "first_name",
+                "last_name": "last_name",
+                "status": "status",
+                "email": "contact",
+                "phone": "contact",
+            }.get(sort_field, sort_field)
 
-        def sort_item(student: Student) -> Any:
-            if sort_key == "contact":
-                return (student.contact or {}).get("email", "")
-            return getattr(student, sort_key, None)
+            def sort_item(student: Student) -> Any:
+                if sort_key == "contact":
+                    return (student.contact or {}).get("email", "")
+                return getattr(student, sort_key, None)
 
-        items = sorted(items, key=sort_item, reverse=(pagination.sort_order == "desc"))
+            items = sorted(items, key=sort_item, reverse=(pagination.sort_order == "desc"))
 
-    total = len(items)
-    start = (pagination.page - 1) * pagination.page_size
-    end = start + pagination.page_size
+        total = len(items)
+        start = (pagination.page - 1) * pagination.page_size
+        end = start + pagination.page_size
+        items = items[start:end]
+
     response = PaginationResponse[StudentListItem](
-        items=[_student_to_list_item(item) for item in items[start:end]],
+        items=[_student_to_list_item(item) for item in items],
         total=total,
         page=pagination.page,
         page_size=pagination.page_size,

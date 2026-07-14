@@ -467,11 +467,11 @@ export default function Sidebar({ isOpen, onClose }) {
       { id: 'student-list', label: 'Student List', to: '/students' },
       { id: 'student-list-college-wise', label: 'Student List College Wise', to: '/students/college-wise' },
       { id: 'student-certificates', label: 'Student Certificates', to: '/students/certificates' },
-      { id: 'student-feedback', label: 'Student Feedback', to: '/students/feedback' },
+      { id: 'student-feedback', label: 'Student Feedback', to: '/feedback/reports/student' },
     ],
     utilities: [
       { id: 'update-roll-number', label: 'Update Roll Number', to: '/students/update-roll' },
-      { id: 'assign-university-roll', label: 'Assign University Roll No.', to: '/students/assign-roll' },
+      { id: 'assign-university-roll', label: 'Assign University Roll No.', to: '/students/assign-university-roll' },
       { id: 'allocate-subjects', label: 'Allocate Subjects', to: '/students/allocate-subjects' },
       { id: 'student-session-management', label: 'Student Session Management', to: '/students/session' },
     ],
@@ -900,6 +900,11 @@ export default function Sidebar({ isOpen, onClose }) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    const isStudentSectionRoute = location.pathname === '/students' || location.pathname.startsWith('/students/');
+    setShowStudentDropdown(isStudentSectionRoute);
+  }, [location.pathname]);
+
   // Close on escape for mobile
   useEffect(() => {
     const onKey = (e) => {
@@ -942,6 +947,8 @@ export default function Sidebar({ isOpen, onClose }) {
     el.style.fontWeight = '500';
     el.style.paddingLeft = '12px';
   };
+
+  const isStudentMenuItemActive = (to) => Boolean(to && (location.pathname === to || location.pathname.startsWith(`${to}/`)));
 
   const renderLink = (item) => {
     const Icon = item.icon;
@@ -2279,129 +2286,145 @@ export default function Sidebar({ isOpen, onClose }) {
               <div style={{ marginTop: 12, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '6px 12px 4px' }}>
                 STUDENT
               </div>
-              {STUDENT_ITEMS.left.map((portalItem) => (
-                <Link
-                  key={portalItem.id}
-                  to={portalItem.to}
-                  onClick={() => setShowStudentDropdown(false)}
-                  onMouseEnter={handleDropdownItemMouseEnter}
-                  onMouseLeave={handleDropdownItemMouseLeave}
-                  className="group flex items-center rounded-[8px]"
-                  style={{
-                    padding: '9px 12px',
-                    borderRadius: '8px',
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    color: '#334155',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    borderLeft: '3px solid transparent',
-                    transition: 'all 0.15s ease',
-                    textDecoration: 'none',
-                    margin: '4px 12px 4px 12px',
-                  }}
-                >
-                  <span>{portalItem.label}</span>
-                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
-                </Link>
-              ))}
+              {STUDENT_ITEMS.left.map((portalItem) => {
+                const isActive = isStudentMenuItemActive(portalItem.to);
+                return (
+                  <Link
+                    key={portalItem.id}
+                    to={portalItem.to}
+                    onClick={() => setShowStudentDropdown(false)}
+                    onMouseEnter={handleDropdownItemMouseEnter}
+                    onMouseLeave={handleDropdownItemMouseLeave}
+                    className="group flex items-center rounded-[8px]"
+                    style={{
+                      padding: isActive ? '9px 12px' : '9px 12px',
+                      borderRadius: '8px',
+                      fontSize: '13px',
+                      fontWeight: isActive ? 600 : 500,
+                      color: isActive ? '#059669' : '#334155',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      borderLeft: isActive ? '3px solid #059669' : '3px solid transparent',
+                      background: isActive ? '#f0fdf4' : 'white',
+                      transition: 'all 0.15s ease',
+                      textDecoration: 'none',
+                      margin: '4px 12px 4px 12px',
+                    }}
+                  >
+                    <span>{portalItem.label}</span>
+                    <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: isActive ? '#059669' : '#cbd5e1' }} />
+                  </Link>
+                );
+              })}
               <div style={{ marginTop: 12, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '6px 12px 4px' }}>
                 STUDENT UTILITIES
               </div>
-              {STUDENT_ITEMS.utilities.map((portalItem) => (
-                <Link
-                  key={portalItem.id}
-                  to={portalItem.to}
-                  onClick={() => setShowStudentDropdown(false)}
-                  onMouseEnter={handleDropdownItemMouseEnter}
-                  onMouseLeave={handleDropdownItemMouseLeave}
-                  className="group flex items-center rounded-[8px]"
-                  style={{
-                    padding: '9px 12px',
-                    borderRadius: '8px',
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    color: '#334155',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    borderLeft: '3px solid transparent',
-                    transition: 'all 0.15s ease',
-                    textDecoration: 'none',
-                    margin: '4px 12px 4px 12px',
-                  }}
-                >
-                  <span>{portalItem.label}</span>
-                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
-                </Link>
-              ))}
+              {STUDENT_ITEMS.utilities.map((portalItem) => {
+                const isActive = isStudentMenuItemActive(portalItem.to);
+                return (
+                  <Link
+                    key={portalItem.id}
+                    to={portalItem.to}
+                    onClick={() => setShowStudentDropdown(false)}
+                    onMouseEnter={handleDropdownItemMouseEnter}
+                    onMouseLeave={handleDropdownItemMouseLeave}
+                    className="group flex items-center rounded-[8px]"
+                    style={{
+                      padding: '9px 12px',
+                      borderRadius: '8px',
+                      fontSize: '13px',
+                      fontWeight: isActive ? 600 : 500,
+                      color: isActive ? '#059669' : '#334155',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      borderLeft: isActive ? '3px solid #059669' : '3px solid transparent',
+                      background: isActive ? '#f0fdf4' : 'white',
+                      transition: 'all 0.15s ease',
+                      textDecoration: 'none',
+                      margin: '4px 12px 4px 12px',
+                    }}
+                  >
+                    <span>{portalItem.label}</span>
+                    <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: isActive ? '#059669' : '#cbd5e1' }} />
+                  </Link>
+                );
+              })}
             </div>
             <div>
               <div style={{ marginTop: 12, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '6px 12px 4px' }}>
                 STUDENT ACADEMIC REPORTS
               </div>
-              {STUDENT_ITEMS.reports.map((portalItem) => (
-                <Link
-                  key={portalItem.id}
-                  to={portalItem.to}
-                  onClick={() => setShowStudentDropdown(false)}
-                  onMouseEnter={handleDropdownItemMouseEnter}
-                  onMouseLeave={handleDropdownItemMouseLeave}
-                  className="group flex items-center rounded-[8px]"
-                  style={{
-                    padding: '9px 12px',
-                    borderRadius: '8px',
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    color: '#334155',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    borderLeft: '3px solid transparent',
-                    transition: 'all 0.15s ease',
-                    textDecoration: 'none',
-                    margin: '4px 12px 4px 12px',
-                  }}
-                >
-                  <span>{portalItem.label}</span>
-                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
-                </Link>
-              ))}
+              {STUDENT_ITEMS.reports.map((portalItem) => {
+                const isActive = isStudentMenuItemActive(portalItem.to);
+                return (
+                  <Link
+                    key={portalItem.id}
+                    to={portalItem.to}
+                    onClick={() => setShowStudentDropdown(false)}
+                    onMouseEnter={handleDropdownItemMouseEnter}
+                    onMouseLeave={handleDropdownItemMouseLeave}
+                    className="group flex items-center rounded-[8px]"
+                    style={{
+                      padding: '9px 12px',
+                      borderRadius: '8px',
+                      fontSize: '13px',
+                      fontWeight: isActive ? 600 : 500,
+                      color: isActive ? '#059669' : '#334155',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      borderLeft: isActive ? '3px solid #059669' : '3px solid transparent',
+                      background: isActive ? '#f0fdf4' : 'white',
+                      transition: 'all 0.15s ease',
+                      textDecoration: 'none',
+                      margin: '4px 12px 4px 12px',
+                    }}
+                  >
+                    <span>{portalItem.label}</span>
+                    <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: isActive ? '#059669' : '#cbd5e1' }} />
+                  </Link>
+                );
+              })}
               <div style={{ marginTop: 12, fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '6px 12px 4px' }}>
                 STUDENT REPORTS
               </div>
-              {STUDENT_ITEMS.reportsSecondary.map((portalItem) => (
-                <Link
-                  key={portalItem.id}
-                  to={portalItem.to}
-                  onClick={() => setShowStudentDropdown(false)}
-                  onMouseEnter={handleDropdownItemMouseEnter}
-                  onMouseLeave={handleDropdownItemMouseLeave}
-                  className="group flex items-center rounded-[8px]"
-                  style={{
-                    padding: '9px 12px',
-                    borderRadius: '8px',
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    color: '#334155',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    borderLeft: '3px solid transparent',
-                    transition: 'all 0.15s ease',
-                    textDecoration: 'none',
-                    margin: '4px 12px 4px 12px',
-                  }}
-                >
-                  <span>{portalItem.label}</span>
-                  <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: '#cbd5e1' }} />
-                </Link>
-              ))}
+              {STUDENT_ITEMS.reportsSecondary.map((portalItem) => {
+                const isActive = isStudentMenuItemActive(portalItem.to);
+                return (
+                  <Link
+                    key={portalItem.id}
+                    to={portalItem.to}
+                    onClick={() => setShowStudentDropdown(false)}
+                    onMouseEnter={handleDropdownItemMouseEnter}
+                    onMouseLeave={handleDropdownItemMouseLeave}
+                    className="group flex items-center rounded-[8px]"
+                    style={{
+                      padding: '9px 12px',
+                      borderRadius: '8px',
+                      fontSize: '13px',
+                      fontWeight: isActive ? 600 : 500,
+                      color: isActive ? '#059669' : '#334155',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      borderLeft: isActive ? '3px solid #059669' : '3px solid transparent',
+                      background: isActive ? '#f0fdf4' : 'white',
+                      transition: 'all 0.15s ease',
+                      textDecoration: 'none',
+                      margin: '4px 12px 4px 12px',
+                    }}
+                  >
+                    <span>{portalItem.label}</span>
+                    <Star className="group-hover:text-amber-500" style={{ width: 14, height: 14, color: isActive ? '#059669' : '#cbd5e1' }} />
+                  </Link>
+                );
+              })}
             </div>
           </div>,
           document.body

@@ -194,14 +194,14 @@ export default function ProfilePage() {
 
   if (loading || !profile) {
     return (
-      <div className="flex h-[calc(100vh-88px)] items-center justify-center overflow-hidden rounded-[20px] border border-slate-200 bg-white/80 p-6 text-slate-600 shadow-sm">
+      <div className="flex h-[calc(100vh-88px)] items-center justify-center overflow-hidden rounded-[20px] border border-slate-200 bg-white p-6 text-slate-600 shadow-sm">
         Loading your profile…
       </div>
     );
   }
 
   return (
-    <div className="min-h-[calc(100vh-88px)] overflow-x-hidden overflow-y-auto bg-[linear-gradient(135deg,_#f0fdf4_0%,_#f8fafc_40%,_#f0f9ff_100%)] p-4">
+    <div className="min-h-[calc(100vh-88px)] w-full max-w-full overflow-x-hidden overflow-y-auto bg-white px-[10px] py-4 -mx-3 sm:-mx-4 lg:-mx-6">
       <ToastContainer position="top-right" autoClose={2500} />
       <div className="mb-3 flex h-11 items-center justify-between">
         <div className="flex items-center gap-2 text-sm">

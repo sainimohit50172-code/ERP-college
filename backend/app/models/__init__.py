@@ -51,6 +51,7 @@ from app.models.procurement.models import (
     Supplier,
 )
 from app.models.students.models import Guardian, Student, StudentAssignment
+from app.models.certificates.models import Certificate
 from app.models.transport.models import Driver, Route, RouteStop, Vehicle, VehicleAssignment
 from app.models.teachers.models import Teacher
 
@@ -111,6 +112,7 @@ __all__ = [
     "StockMovement",
     "Student",
     "StudentAssignment",
+    "Certificate",
     "Subject",
     "Teacher",
     "User",

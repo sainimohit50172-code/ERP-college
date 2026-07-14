@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import date, datetime
-from typing import Optional
+from typing import Any, Optional
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 
@@ -17,6 +17,7 @@ class StudentBase(BaseModel):
     date_of_birth: Optional[date] = None
     gender: Optional[str] = Field(default=None, max_length=10)
     status: str = Field(default="active", max_length=20)
+    meta: Optional[dict[str, Any]] = None
 
 
 class StudentCreate(StudentBase):

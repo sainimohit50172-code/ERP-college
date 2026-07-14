@@ -29,6 +29,7 @@ export default function DataTableAdvanced({
   placeholder = 'Search records...',
   initialPageSize = 10,
   hideHeader = false,
+  className = '',
 }) {
   const [query, setQuery] = useState('');
   const [sortColumn, setSortColumn] = useState(null);
@@ -74,7 +75,7 @@ export default function DataTableAdvanced({
   }
 
   return (
-    <div className="rounded-[20px] border border-slate-200/70 bg-white/95 p-4 shadow-sm sm:p-5">
+    <div className={`w-full max-w-full rounded-[20px] border border-slate-200/70 bg-white/95 p-4 shadow-sm sm:p-5 ${className}`}>
       {!hideHeader && (
         <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-col gap-2">
@@ -128,10 +129,10 @@ export default function DataTableAdvanced({
       ) : (
         <div className="overflow-x-auto rounded-[20px] border border-slate-200/70">
           <table ref={tableRef} className="w-full table-fixed text-left text-sm text-slate-900">
-            <thead className="bg-slate-100 text-slate-600">
+            <thead className="bg-[#1e3a5f] text-white">
               <tr>
                 {columns.map((column) => (
-                  <th key={column.key} className="min-w-[140px] px-4 py-3 font-semibold uppercase tracking-[0.18em] text-slate-600 text-left">
+                  <th key={column.key} className="min-w-[140px] px-4 py-3 font-semibold uppercase tracking-[0.18em] text-white text-left">
                     <button type="button" className="inline-flex items-center gap-2" onClick={() => toggleSort(column.key)}>
                       <span>{column.label}</span>
                       {sortColumn === column.key ? (

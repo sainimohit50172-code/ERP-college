@@ -1,7 +1,19 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, Download, Printer } from 'lucide-react';
 import EmptyState from './EmptyState.jsx';
 import LoadingOverlay from './LoadingOverlay.jsx';
+
+// Debounce hook for search input
+function useDebounce(value, delay = 300) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+  return debouncedValue;
+}
 
 function normalizeColumns(columns) {
   return columns.map((column, index) => {
@@ -62,16 +74,19 @@ function getSortedRows(rows, columns, sortKey, direction) {
   });
 }
 
-export default function DataTable({ columns, rows, compact = false, loading = false, placeholder = 'Search...', initialPageSize = 10, hideHeader = false }) {
+export default function DataTable({ columns, rows, loading = false, placeholder = 'Search...', initialPageSize = 10, hideHeader = false }) {
   const columnsDefinition = useMemo(() => normalizeColumns(columns), [columns]);
   const [query, setQuery] = useState('');
   const [sortKey, setSortKey] = useState(null);
   const [sortDirection, setSortDirection] = useState('asc');
   const [pageSize, setPageSize] = useState(initialPageSize);
   const [currentPage, setCurrentPage] = useState(1);
+  
+  // Debounce search input
+  const debouncedQuery = useDebounce(query, 300);
 
   const filteredRows = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
+    const normalizedQuery = debouncedQuery.trim().toLowerCase();
     if (!normalizedQuery) return rows;
 
     return rows.filter((row, _rowIndex) =>
@@ -80,7 +95,7 @@ export default function DataTable({ columns, rows, compact = false, loading = fa
         return value.toLowerCase().includes(normalizedQuery);
       }),
     );
-  }, [columnsDefinition, query, rows]);
+  }, [columnsDefinition, debouncedQuery, rows]);
 
   const sortedRows = useMemo(() => getSortedRows(filteredRows, columnsDefinition, sortKey, sortDirection), [filteredRows, columnsDefinition, sortKey, sortDirection]);
   const pageCount = Math.max(1, Math.ceil(sortedRows.length / pageSize));
@@ -117,13 +132,16 @@ export default function DataTable({ columns, rows, compact = false, loading = fa
   };
 
   return (
-    <div className={`relative rounded-[20px] border border-slate-200/70 bg-white/95 p-4 shadow-sm ${compact ? 'text-sm' : 'text-base'}`}>
-      <LoadingOverlay loading={loading} message="Loading table data..." />
+    <div className="relative rounded-[20px] border border-slate-200/70 bg-white/95 p-4 shadow-sm text-xs">
+      {/* Only show loading on initial load, not on pagination */}
+      {loading && rows?.length === 0 && (
+        <LoadingOverlay loading={true} message="Loading table data..." />
+      )}
       {!hideHeader && (
         <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-slate-950">Data table</h2>
-            <p className="mt-1 text-sm text-slate-500">Search, sort, paginate, export, and print your records.</p>
+            <h2 className="text-base font-semibold text-slate-950">Data table</h2>
+            <p className="mt-1 text-xs text-slate-500">Search, sort, paginate, export, and print your records.</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <button type="button" onClick={downloadCsv} className="btn btn-secondary inline-flex items-center gap-2">
@@ -146,18 +164,18 @@ export default function DataTable({ columns, rows, compact = false, loading = fa
               setCurrentPage(1);
             }}
             placeholder={placeholder}
-            className="w-full rounded-3xl border border-slate-200/80 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+            className="w-full rounded-3xl border border-slate-200/80 bg-slate-50 px-3 py-2 text-xs text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
           />
         </div>
-        <div className="flex items-center gap-3">
-          <label className="whitespace-nowrap text-sm text-slate-500">Rows per page</label>
+        <div className="flex items-center gap-2">
+          <label className="whitespace-nowrap text-xs text-slate-500">Rows per page</label>
           <select
             value={pageSize}
             onChange={(event) => {
               setPageSize(Number(event.target.value));
               setCurrentPage(1);
             }}
-            className="rounded-3xl border border-slate-200/80 bg-white px-3 py-2 text-sm text-slate-900 outline-none"
+            className="rounded-3xl border border-slate-200/80 bg-white px-2 py-1 text-xs text-slate-900 outline-none"
           >
             {[10, 20, 30, 50].map((size) => (
               <option key={size} value={size}>
@@ -171,24 +189,37 @@ export default function DataTable({ columns, rows, compact = false, loading = fa
       {paginatedRows.length === 0 ? (
         <EmptyState title="No matching records" description="Try adjusting your search query or changing the page size." />
       ) : (
-        <div className="rounded-[20px] border border-slate-200/70 overflow-hidden">
-          <table className="w-full table-auto text-left text-sm text-slate-900">
-            <thead className="bg-slate-100 text-slate-600">
+        <div className="rounded-[20px] border border-slate-200/70 overflow-x-auto">
+          <table className="w-full table-fixed border-collapse text-xs text-slate-900">
+            <colgroup>
+              {columnsDefinition.map((column) => {
+                let width = 'auto';
+                if (column.key === 'checkbox') width = '5%';
+                else if (column.key === 'sno') width = '4%';
+                else if (column.key === 'photo') width = '5%';
+                else if (column.key === 'status' || column.key === 'gender' || column.key === 'actions') width = '8%';
+                else if (column.key === 'dob' || column.key === 'semester' || column.key === 'section') width = '7%';
+                else if (column.key === 'admissionNo' || column.key === 'rollNo' || column.key === 'phone') width = '8%';
+                else width = '12%';
+                return <col key={column.key} style={{ width }} />;
+              })}
+            </colgroup>
+            <thead className="bg-slate-100 text-slate-700 sticky top-0 border-b-2 border-slate-300">
               <tr>
                 {columnsDefinition.map((column) => (
                   <th
                     key={column.key}
-                    style={column.minWidth ? { minWidth: column.minWidth } : undefined}
-                    className="whitespace-normal break-words px-4 py-3 font-semibold uppercase tracking-[0.18em] text-slate-600 text-left"
+                    className="whitespace-nowrap break-words px-4 py-3 font-semibold uppercase tracking-wider text-slate-700 text-center align-middle border-r border-slate-200"
                   >
                     <button
                       type="button"
                       onClick={() => column.sortable && toggleSort(column.key)}
-                      className="inline-flex items-center gap-2"
+                      className="inline-flex items-center justify-center gap-1 w-full"
+                      title={column.label}
                     >
-                      <span>{column.label}</span>
+                      <span className="truncate">{column.label}</span>
                       {column.sortable && sortKey === column.key ? (
-                        sortDirection === 'asc' ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />
+                        sortDirection === 'asc' ? <ChevronUp className="h-3 w-3 flex-shrink-0" /> : <ChevronDown className="h-3 w-3 flex-shrink-0" />
                       ) : null}
                     </button>
                   </th>
@@ -197,12 +228,39 @@ export default function DataTable({ columns, rows, compact = false, loading = fa
             </thead>
             <tbody>
               {paginatedRows.map((row, rowIndex) => (
-                <tr key={`row-${rowIndex}`} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
-                  {columnsDefinition.map((column, columnIndex) => (
-                    <td key={`${rowIndex}-${column.key}`} className="break-words px-4 py-3 align-top text-slate-700">
-                      <div className="inline-block min-w-0 break-words">{column.render ? column.render(getCellValue(row, column, columnIndex), row) : getCellValue(row, column, columnIndex)}</div>
-                    </td>
-                  ))}
+                <tr key={`row-${rowIndex}`} className={`${rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50'} hover:bg-blue-100 transition-colors border-b border-slate-200`}>
+                  {columnsDefinition.map((column, columnIndex) => {
+                    const cellValue = getCellValue(row, column, columnIndex);
+                    const rendered = column.render ? column.render(cellValue, row) : cellValue;
+                    
+                    // Handle image lazy loading
+                    let finalContent = rendered;
+                    if (column.key === 'photo' && typeof rendered === 'object' && rendered?.type === 'img') {
+                      finalContent = {
+                        ...rendered,
+                        props: {
+                          ...rendered.props,
+                          loading: 'lazy',
+                          alt: rendered.props.alt || 'Photo',
+                        }
+                      };
+                    }
+                    
+                    return (
+                      <td 
+                        key={`${rowIndex}-${column.key}`} 
+                        className="px-4 py-3 align-middle border-r border-slate-200 text-slate-700 overflow-hidden text-center"
+                        style={{
+                          wordWrap: 'break-word',
+                          whiteSpace: column.key === 'photo' ? 'nowrap' : 'normal',
+                        }}
+                      >
+                        <div className={`${column.key === 'photo' ? 'flex items-center justify-center' : 'flex items-center justify-center'}`}>
+                          {finalContent}
+                        </div>
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>
@@ -211,24 +269,30 @@ export default function DataTable({ columns, rows, compact = false, loading = fa
       )}
 
       <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm text-slate-500">
+        <p className="text-xs text-slate-500">
           Showing {paginatedRows.length} of {filteredRows.length} entries
+          {loading && rows?.length > 0 && (
+            <span className="ml-2 inline-flex items-center gap-1 text-blue-600">
+              <span className="h-2 w-2 animate-pulse rounded-full bg-blue-600" />
+              Updating...
+            </span>
+          )}
         </p>
-        <div className="flex flex-wrap items-center gap-2 text-sm">
+        <div className="flex flex-wrap items-center gap-2 text-xs">
           <button
             type="button"
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((current) => Math.max(current - 1, 1))}
-            className="btn btn-secondary rounded-full px-4 py-2 disabled:opacity-50"
+            className="btn btn-secondary rounded-full px-3 py-1 text-xs disabled:opacity-50"
           >
             Previous
           </button>
-          <span className="px-3 text-slate-700">Page {currentPage} of {pageCount}</span>
+          <span className="px-2 text-slate-700 text-xs">Page {currentPage} of {pageCount}</span>
           <button
             type="button"
             disabled={currentPage === pageCount}
             onClick={() => setCurrentPage((current) => Math.min(current + 1, pageCount))}
-            className="btn btn-secondary rounded-full px-4 py-2 disabled:opacity-50"
+            className="btn btn-secondary rounded-full px-3 py-1 text-xs disabled:opacity-50"
           >
             Next
           </button>

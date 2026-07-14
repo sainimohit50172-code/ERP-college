@@ -11,7 +11,7 @@ import NotFoundPage from '../pages/NotFoundPage.jsx';
 import SecurityGuardAttendancePage from '../pages/SecurityGuardAttendancePage.jsx';
 import SettingsPage from '../pages/SettingsPage.jsx';
 import StudentAttendancePage from '../pages/StudentAttendancePage.jsx';
-import StudentManagementPage from '../pages/StudentManagementPage.jsx';
+import StudentListPage from '../pages/StudentListPage.jsx';
 import TeacherAttendancePage from '../pages/TeacherAttendancePage.jsx';
 import TeacherManagementPage from '../pages/TeacherManagementPage.jsx';
 import FeeManagementPage from '../pages/FeeManagementPage.jsx';
@@ -45,7 +45,7 @@ import LectureAttendancePage from '../pages/LectureAttendancePage.jsx';
 export const routes = [
   { path: '/', element: DashboardPage },
   { path: '/admissions', element: AdmissionsPage },
-  { path: '/students', element: StudentManagementPage },
+  { path: '/students', element: StudentListPage },
   { path: '/teachers', element: TeacherManagementPage },
   { path: '/employees', element: EmployeeManagementPage },
   { path: '/designations', element: DesignationManagementPage },

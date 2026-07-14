@@ -3,7 +3,7 @@ import { toast } from '../utils/toast.js';
 import { getApiBaseUrl } from './apiConfig.js';
 
 const API_BASE = getApiBaseUrl();
-const DEFAULT_TIMEOUT = 30000;
+const DEFAULT_TIMEOUT = 10000; // Reduced to 10 seconds for faster failure detection
 
 const api = axios.create({
   baseURL: API_BASE,

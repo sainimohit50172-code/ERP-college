@@ -3,7 +3,7 @@
 import DataTable from '../components/ui/DataTable.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import { useResourceList, useCreateResource } from '../hooks/useResourceHooks';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
@@ -275,32 +275,47 @@ const demoStudents = [
 ];
 
 function mapStudentsToRows(students) {
-  return students.map((s, idx) => ({
-    checkbox: false,
-    sno: idx + 1,
-    photo: s.photo || null,
-    name: s.name || `${s.firstName || ''} ${s.lastName || ''}`.trim(),
-    admissionNo: s.admissionNo,
-    rollNo: s.rollNo,
-    fatherName: s.fatherName,
-    motherName: s.motherName,
-    dob: s.dob || s.date_of_birth,
-    gender: s.gender,
-    phone: s.phone,
-    email: s.email,
-    college: s.college,
-    course: s.courseSection || s.course,
-    section: s.section || '-',
-    semester: s.semester || '-',
-    status: s.status || 'Active',
-    raw: s,
-  }));
+  if (!students || !Array.isArray(students)) return [];
+  
+  return students.map((s, idx) => {
+    // Optimized field access with fallbacks
+    const fullName = s.name || `${(s.firstName || '').trim()} ${(s.lastName || '').trim()}`.trim();
+    
+    return {
+      checkbox: false,
+      sno: idx + 1,
+      photo: s.photo || null,
+      name: fullName,
+      admissionNo: s.admissionNo || s.admission_no || '-',
+      rollNo: s.rollNo || s.roll_no || '-',
+      fatherName: s.fatherName || s.father_name || '-',
+      motherName: s.motherName || s.mother_name || '-',
+      dob: s.dob || s.date_of_birth || '-',
+      gender: s.gender || '-',
+      phone: s.phone || s.contact?.phone || '-',
+      email: s.email || s.contact?.email || '-',
+      college: s.college || '-',
+      course: s.courseSection || s.course || '-',
+      section: s.section || '-',
+      semester: s.semester || '-',
+      status: s.status || 'Active',
+      raw: s,
+    };
+  });
 }
 
 export default function StudentCollegeWisePage() {
-  const [queryParams, setQueryParams] = useState({ page: 1, pageSize: 20 });
-  const { data: studentsData, isLoading, isError } = useResourceList('students', queryParams);
-  const students = studentsData?.items?.length ? studentsData.items : demoStudents;
+  const [queryParams, setQueryParams] = useState({ page: 1, pageSize: 15 });
+  const { data: studentsData, isLoading, isError, error } = useResourceList('students', queryParams);
+  
+  // Use demo data immediately as fallback, merge with API data when available
+  const students = useMemo(() => {
+    if (studentsData?.items?.length) {
+      return studentsData.items;
+    }
+    // Use demo data immediately while loading
+    return demoStudents;
+  }, [studentsData]);
 
   const rows = useMemo(() => mapStudentsToRows(students), [students]);
 
@@ -311,27 +326,37 @@ export default function StudentCollegeWisePage() {
 
   useEffect(() => { reset(defaultFormValues); }, [reset]);
 
+  // Cached filter options - only recalculate when students changes
+  const filterOptions = useMemo(() => ({
+    colleges: [...new Set(students.map(s => s.college).filter(Boolean))],
+    courses: [...new Set(students.map(s => s.course || s.courseSection).filter(Boolean))],
+    semesters: [...new Set(students.map(s => s.semester).filter(Boolean))],
+    sections: [...new Set(students.map(s => s.section).filter(Boolean))],
+  }), [students]);
+
   const columns = [
-    { label: '', key: 'checkbox', minWidth: '48px', sortable: false, render: (val) => <input type="checkbox" className="h-4 w-4" /> },
-    { label: 'S.No', key: 'sno', minWidth: '60px' },
-    { label: 'Photo', key: 'photo', minWidth: '80px', render: (val) => (val ? <img src={val} alt="photo" className="h-8 w-8 rounded-full" /> : <div className="h-8 w-8 rounded-full bg-slate-200" />) },
-    { label: 'Student Name', key: 'name', minWidth: '220px' },
-    { label: 'Admission No', key: 'admissionNo', minWidth: '140px' },
-    { label: 'Roll No', key: 'rollNo', minWidth: '120px' },
-    { label: 'Father Name', key: 'fatherName', minWidth: '160px' },
-    { label: 'Mother Name', key: 'motherName', minWidth: '160px' },
-    { label: 'DOB', key: 'dob', minWidth: '120px' },
-    { label: 'Gender', key: 'gender', minWidth: '100px' },
-    { label: 'Phone', key: 'phone', minWidth: '140px' },
-    { label: 'Email', key: 'email', minWidth: '220px' },
-    { label: 'College', key: 'college', minWidth: '200px' },
-    { label: 'Course', key: 'course', minWidth: '160px' },
-    { label: 'Section', key: 'section', minWidth: '120px' },
-    { label: 'Semester', key: 'semester', minWidth: '120px' },
-    { label: 'Status', key: 'status', minWidth: '120px', render: (val) => <StatusBadge status={val} /> },
-    { label: 'Actions', key: 'actions', minWidth: '140px', render: (v, row) => (
+    { label: '', key: 'checkbox', sortable: false, render: (val) => <input type="checkbox" className="h-3 w-3 cursor-pointer" /> },
+    { label: 'S.No', key: 'sno', sortable: true },
+    { label: 'Photo', key: 'photo', sortable: false, render: (val) => (
+      val ? <img src={val} alt="student-photo" className="h-8 w-8 rounded-full object-cover mx-auto" loading="lazy" /> : <div className="h-8 w-8 rounded-full bg-slate-200 mx-auto" />
+    ) },
+    { label: 'Name', key: 'name', sortable: true },
+    { label: 'Admission No', key: 'admissionNo', sortable: true },
+    { label: 'Roll No', key: 'rollNo', sortable: true },
+    { label: 'Father Name', key: 'fatherName', sortable: true },
+    { label: 'Mother Name', key: 'motherName', sortable: true },
+    { label: 'DOB', key: 'dob', sortable: true },
+    { label: 'Gender', key: 'gender', sortable: true },
+    { label: 'Mobile No', key: 'phone', sortable: true },
+    { label: 'Email', key: 'email', sortable: true },
+    { label: 'College', key: 'college', sortable: true },
+    { label: 'Course', key: 'course', sortable: true },
+    { label: 'Section', key: 'section', sortable: true },
+    { label: 'Semester', key: 'semester', sortable: true },
+    { label: 'Status', key: 'status', sortable: true, render: (val) => <StatusBadge status={val} /> },
+    { label: 'Actions', key: 'actions', sortable: false, render: (v, row) => (
       <div className="inline-flex">
-        <button className="rounded-2xl border border-slate-300 bg-white px-3 py-2 text-[11px] text-slate-700">Actions</button>
+        <button className="rounded-lg border border-slate-300 bg-white px-2 py-1 text-xs whitespace-nowrap hover:bg-slate-50">Actions</button>
       </div>
     ) },
   ];

@@ -9,7 +9,11 @@ export default function TeacherProfilePage() {
   const { teacherId } = useParams();
   const [activeTab, setActiveTab] = useState('overview');
 
-  const teacherQuery = useQuery(['teacherProfile', teacherId], () => getTeacherProfile(teacherId), { enabled: Boolean(teacherId) });
+  const teacherQuery = useQuery({
+    queryKey: ['teacherProfile', teacherId],
+    queryFn: () => getTeacherProfile(teacherId),
+    enabled: Boolean(teacherId),
+  });
 
   if (teacherQuery.isLoading) return <div className="p-6">Loading faculty profile...</div>;
   if (teacherQuery.isError || !teacherQuery.data) return <div className="p-6 text-red-600">Faculty not found.</div>;

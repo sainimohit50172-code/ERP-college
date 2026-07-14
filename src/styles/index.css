@@ -2,6 +2,120 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Full-Screen Login Page CSS */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+/* Parent wrapper for login and authenticated app layout */
+#root {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.login-page-wrapper {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  min-height: calc(100vh - 100px);
+  /* Ensure flex children stretch to same height */
+  align-items: stretch;
+  /* Use explicit height so children with 100% height match exactly */
+  height: calc(100vh - 100px);
+  margin: 25px auto;
+  padding: 0;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* Image Section: 65% width, vertically centered content */
+.login-image-section {
+  flex: 0 0 65%;
+  max-width: 65%;
+  min-width: 0;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
+.login-image-content {
+  width: 100%;
+  padding: 0 60px;
+}
+
+/* Form Section: 35% width, centered form content */
+.login-form-section {
+  flex: 0 0 35%;
+  max-width: 35%;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  overflow-y: auto;
+  background: #ffffff;
+}
+
+.login-form-section > * {
+  width: 100%;
+  max-width: 380px;
+}
+
+.login-form-section input {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  #root {
+    padding: 0;
+  }
+
+  .login-page-wrapper {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    border-radius: 0;
+  }
+
+  .login-image-section {
+    flex: 0 0 auto;
+    max-width: 100%;
+    width: 100%;
+    height: 35vh;
+  }
+
+  .login-image-content {
+    padding: 0 24px;
+  }
+
+  .login-form-section {
+    flex: 0 0 auto;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    padding: 24px;
+  }
+}
+
 :root {
   color-scheme: light;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -12,7 +126,7 @@
   --brand-500: #10b981;
   --primary-navy: #1e3a5f;
   --primary-navy-dark: #16374d;
-  background-color: #f8fafc;
+  background-color: #ffffff;
 }
 
 html, body, #root {
@@ -28,19 +142,14 @@ html {
 }
 
 body {
-  background: linear-gradient(135deg, #E6F7FF 0%, #DFFFEF 35%, #E7FFF2 65%, #FFFFFF 100%);
+  background: #ffffff;
   color: var(--body-color);
-  background-attachment: fixed;
   overflow-x: hidden;
 }
 
 #root {
   width: 100%;
   overflow-x: hidden;
-}
-
-* {
-  box-sizing: border-box;
 }
 
 main, section, article, aside, form, div, nav, header {
@@ -131,7 +240,7 @@ button, input, textarea, select {
   }
 
   .responsive-profile-shell {
-    @apply grid grid-cols-1 gap-[14px] xl:grid-cols-[260px_minmax(0,1fr)_240px];
+    @apply grid grid-cols-1 gap-[10px] xl:grid-cols-[260px_minmax(0,1fr)_240px];
   }
 
   .mobile-safe-panel {

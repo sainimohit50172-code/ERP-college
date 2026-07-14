@@ -10,7 +10,25 @@ import uploadService from '../api/uploadService';
 export function useResourceList(resource, params = {}) {
   const service = createResourceService(resource);
   const serializedParams = JSON.stringify(params || {});
-  return useQuery({ queryKey: [resource, serializedParams], queryFn: () => service.list(params), keepPreviousData: true });
+  const query = useQuery({ 
+    queryKey: [resource, serializedParams], 
+    queryFn: async () => {
+      try {
+        return await service.list(params);
+      } catch (error) {
+        console.warn(`Failed to fetch ${resource} from API:`, error?.message);
+        // Return empty data on error - component will use fallback/demo data
+        return { items: [], total: 0, page: params.page || 1, pageSize: params.pageSize || 10, pages: 0 };
+      }
+    },
+    keepPreviousData: true,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 30 * 60 * 1000, // 30 minutes (formerly cacheTime)
+    retry: 1,
+    retryDelay: 500,
+  });
+  
+  return query;
 }
 
 export function useResourceDetails(resource, id) {

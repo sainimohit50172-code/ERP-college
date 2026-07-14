@@ -57,22 +57,6 @@ export const MODULES = [
 export const ROLES = [
   'Super Admin',
   'Admin',
-  'Principal',
-  'HOD',
-  'Faculty',
-  'Accountant',
-  'Librarian',
-  'Transport Manager',
-  'Hostel Warden',
-  'HR Manager',
-  'Student',
-  'Parent',
-  'Security Guard',
-  'Director',
-  'Dean',
-  'Telecaller',
-  'Admission Counselor',
-  'Receptionist',
 ];
 
 const ROLE_ALIASES = {
