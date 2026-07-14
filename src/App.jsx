@@ -149,6 +149,7 @@ import FeedbackSummaryReportPage from './pages/FeedbackSummaryReportPage.jsx';
 import StudentFeedbackPage from './pages/StudentFeedbackPage.jsx';
 import ComingSoonPage from './pages/ComingSoonPage.jsx';
 import ProtectedRoute from './components/auth/ProtectedRoute.jsx';
+import AllocateSubjectPage from './pages/AllocateSubjectPage.jsx';
 
 function App() {
   const location = useLocation();
@@ -186,6 +187,8 @@ function App() {
               <Route path="students/certificates" element={<ProtectedRoute moduleKey="students"><StudentCertificatesPage /></ProtectedRoute>} />
               <Route path="students/update-roll" element={<ProtectedRoute moduleKey="students"><UpdateRollNumberPage /></ProtectedRoute>} />
               <Route path="students/assign-university-roll" element={<ProtectedRoute moduleKey="students"><AssignUniversityRollPage /></ProtectedRoute>} />
+              <Route path="students/allocate-subject" element={<ProtectedRoute moduleKey="students"><AllocateSubjectPage /></ProtectedRoute>} />
+              <Route path="students/allocate-subjects" element={<ProtectedRoute moduleKey="students"><AllocateSubjectPage /></ProtectedRoute>} />
               <Route path="students/:studentId" element={<ProtectedRoute moduleKey="students"><StudentProfilePage /></ProtectedRoute>} />
               <Route path="parents" element={<ProtectedRoute moduleKey="students"><ParentsPage /></ProtectedRoute>} />
               <Route path="enquiries" element={<ProtectedRoute moduleKey="admissions"><EnquiriesPage /></ProtectedRoute>} />
