@@ -208,8 +208,8 @@ export default function ApplicationsPage() {
 
           <div className="mb-6 h-[1px] bg-slate-200"></div>
 
-          <div className="overflow-hidden">
-            <table className="w-full table-fixed text-xs">
+          <div className="overflow-x-auto rounded-3xl border border-slate-200 bg-white">
+            <table className="w-full table-fixed text-xs min-w-[860px]">
               <colgroup>
                 <col className="w-[4%]" />
                 <col className="w-[8%]" />
@@ -241,7 +241,7 @@ export default function ApplicationsPage() {
                     className={`${index % 2 === 0 ? 'bg-white' : 'bg-slate-50'} border-l-4 border-red-500`}
                   >
                     <td className="whitespace-nowrap px-2 py-3 font-medium text-slate-900">{row.id}</td>
-                    <td className="whitespace-nowrap px-2 py-3 text-slate-700">
+                    <td className="whitespace-nowrap px-2 py-3 text-slate-700 action-cell">
                       <button className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-slate-100 text-slate-700 transition hover:bg-slate-200">
                         <Settings size={14} />
                       </button>

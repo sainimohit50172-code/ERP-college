@@ -8,7 +8,6 @@ import {
   useCreateResource,
   useResourceList,
 } from '../hooks/useResourceHooks';
-import { FaEye } from 'react-icons/fa';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
 import SearchFilter from '../components/forms/SearchFilter.jsx';
 import DataTable from '../components/ui/DataTable.jsx';
@@ -363,7 +362,7 @@ export default function HostelManagementPage() {
               <StatusBadge key={`${room.id}-status`} status={room.status || 'Available'} />,
               `${room.occupiedBeds ?? Math.min(room.capacity || 0, 0)}/${room.capacity || 0}`,
               <div key={`${room.id}-actions`} className="flex items-center gap-2">
-                <button type="button" onClick={() => setIsAllocationModalOpen(true)} aria-label="Allot" className="h-8 w-8 flex items-center justify-center rounded-full bg-slate-800/80 text-slate-200 hover:bg-slate-700"><FaEye /></button>
+                <button type="button" onClick={() => setIsAllocationModalOpen(true)} aria-label="Allot" className="h-8 w-8 flex items-center justify-center rounded-full bg-slate-800/80 text-slate-200 hover:bg-slate-700"><FaBed /></button>
                 <button type="button" onClick={handlePrint} aria-label="Slip" className="h-8 w-8 flex items-center justify-center rounded-full bg-slate-800/80 text-slate-200 hover:bg-slate-700">🏷</button>
               </div>,
             ]) : [[

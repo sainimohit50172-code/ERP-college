@@ -37,6 +37,7 @@ import ResultProcessingPage from '../pages/ResultProcessingPage.jsx';
 import GradeCardPage from '../pages/GradeCardPage.jsx';
 import TranscriptPage from '../pages/TranscriptPage.jsx';
 import StudentPromotionPage from '../pages/StudentPromotionPage.jsx';
+import StudentSessionManagementPage from '../pages/StudentSessionManagementPage.jsx';
 import TeacherSemesterAssignmentPage from '../pages/TeacherSemesterAssignmentPage.jsx';
 import TeacherCourseAssignmentPage from '../pages/TeacherCourseAssignmentPage.jsx';
 import TeacherWorkloadManagementPage from '../pages/TeacherWorkloadManagementPage.jsx';
@@ -76,6 +77,7 @@ export const routes = [
   { path: '/grade-card', element: GradeCardPage },
   { path: '/transcript', element: TranscriptPage },
   { path: '/student-promotion', element: StudentPromotionPage },
+  { path: '/students/session', element: StudentSessionManagementPage },
   { path: '/teacher-semester-assignment', element: TeacherSemesterAssignmentPage },
   { path: '/teacher-course-assignment', element: TeacherCourseAssignmentPage },
   { path: '/teacher-workload', element: TeacherWorkloadManagementPage },

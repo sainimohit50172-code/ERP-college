@@ -16,7 +16,6 @@ import {
   FaPlus,
   FaTrash,
   FaLink,
-  FaEye,
 } from 'react-icons/fa';
 import { assignVehicle, unassignVehicle } from '../services/driverService.js';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
@@ -323,7 +322,12 @@ export default function TransportManagementPage() {
     vehicle.status,
     <div key={`${vehicle.id}-actions`} className="flex items-center gap-2">
       <WithPermission moduleKey="transport" action="view">
-        <button aria-label="View" onClick={() => {}} className="h-8 w-8 flex items-center justify-center rounded-full bg-slate-800/80 text-slate-200 hover:bg-slate-700"><FaEye /></button>
+        <ViewButton
+          title="View vehicle"
+          ariaLabel="View vehicle"
+          className="h-8 w-8 rounded-full bg-slate-800/80 text-slate-200 hover:bg-slate-700"
+          onClick={() => {}}
+        />
       </WithPermission>
       <WithPermission moduleKey="transport" action="edit">
         <button aria-label="Edit" onClick={() => { setSelectedRecord(vehicle); setIsEditMode(true); setIsModalOpen(true); reset({ ...vehicle }); }} className="h-8 w-8 flex items-center justify-center rounded-full bg-slate-800/80 text-slate-200 hover:bg-slate-700"><FaEdit /></button>

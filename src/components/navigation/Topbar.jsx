@@ -1,16 +1,53 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Menu, Search, Download, Settings2, Bell, UserCircle2, X } from 'lucide-react';
+import { Menu, Search, Download, Settings2, Bell, UserCircle2, X, ChevronDown, CircleDollarSign, BookOpen, BarChart3, Users, BadgeCheck, Ticket, MoreHorizontal, FileText, CalendarDays } from 'lucide-react';
 import NotificationDropdown from './NotificationDropdown.jsx';
 import { useAuth } from '../../services/AuthContext.jsx';
 import { useERP } from '../../services/ERPContext.jsx';
 
+const feeDropdownItems = [
+  { label: 'Collect Fee', route: '/fees', icon: CircleDollarSign },
+  { label: 'Collect Fee Online', route: '/fees', icon: CircleDollarSign },
+  { label: 'Collect Miscellaneous Fee', route: '/fees', icon: CircleDollarSign },
+  { label: 'Other Income', route: '/fees', icon: CircleDollarSign },
+  { label: 'Refund', route: '/fees', icon: CircleDollarSign },
+  { label: 'Fee Reports', route: '/fees', icon: FileText },
+  { label: 'Fee Summary', route: '/fees', icon: FileText },
+  { label: 'Transaction List', route: '/fees', icon: FileText },
+  { label: 'Fee Adjustment', route: '/fees', icon: CircleDollarSign },
+  { label: 'Online Transaction List', route: '/fees', icon: FileText },
+];
+
+const advancedDropdownItems = [
+  { label: 'Resource Person', route: '/settings', icon: BadgeCheck },
+  { label: 'Seminar', route: '/settings', icon: BookOpen },
+  { label: 'Events', route: '/settings', icon: CalendarDays },
+  { label: 'Research Publication', route: '/settings', icon: BookOpen },
+  { label: 'Book / Chapter / Proceeding', route: '/settings', icon: BookOpen },
+  { label: 'Incentive', route: '/settings', icon: BadgeCheck },
+];
+
+const analyticsDropdownItems = [
+  { label: 'Partner Institute', route: '/reports', icon: Users },
+  { label: 'Partner Companies', route: '/reports', icon: Users },
+  { label: 'Visits', route: '/reports', icon: BarChart3 },
+  { label: 'Placement Drive', route: '/reports', icon: BarChart3 },
+  { label: 'Internship Management', route: '/reports', icon: BarChart3 },
+];
+
+const admissionDropdownItems = [
+  { label: 'Application Data', route: '/admissions', icon: Users },
+  { label: 'Admission Leads', route: '/leads', icon: Users },
+  { label: 'Transactions', route: '/admissions', icon: CircleDollarSign },
+  { label: 'Admission Reports', route: '/admissions', icon: FileText },
+  { label: 'Follow Ups', route: '/admissions/follow-ups', icon: BadgeCheck },
+];
+
 const navLinks = [
-  { label: 'Fee', to: '/fees' },
-  { label: 'Admission', to: '/admissions' },
-  { label: 'Attendance', to: '/attendance/students' },
-  { label: 'Examination', to: '/examination' },
-  { label: 'Human Resource', to: '/employees' },
+  { label: 'Fee', to: '/fees', hasDropdown: true, dropdownItems: feeDropdownItems },
+  { label: 'Admission', to: '/admissions', hasDropdown: true, dropdownItems: admissionDropdownItems },
+  { label: 'Advanced', to: '/settings', hasDropdown: true, dropdownItems: advancedDropdownItems },
+  { label: 'Analytics', to: '/reports', hasDropdown: true, dropdownItems: analyticsDropdownItems },
 ];
 
 const quickActions = [
@@ -45,10 +82,13 @@ export default function Topbar({ onToggleSidebar }) {
   const [isExportOpen, setExportOpen] = useState(false);
   const [isQuickActionsOpen, setQuickActionsOpen] = useState(false);
   const [isProfileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [isMobileNavOpen, setMobileNavOpen] = useState(false);
   const searchRef = useRef(null);
   const exportRef = useRef(null);
   const quickActionsRef = useRef(null);
   const profileRef = useRef(null);
+  const mobileNavRef = useRef(null);
 
   const userName = auth?.user?.name || 'Admin';
   const displayName = userName.split(' ')[0];
@@ -68,10 +108,16 @@ export default function Topbar({ onToggleSidebar }) {
       if (isProfileMenuOpen && profileRef.current && !profileRef.current.contains(event.target)) {
         setProfileMenuOpen(false);
       }
+      if (activeDropdown && (!event.target.closest('[data-nav-dropdown]') || event.target.closest('[data-nav-dropdown]')?.dataset.navDropdown !== activeDropdown)) {
+        setActiveDropdown(null);
+      }
+      if (isMobileNavOpen && mobileNavRef.current && !mobileNavRef.current.contains(event.target)) {
+        setMobileNavOpen(false);
+      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isSearchOpen, isExportOpen, isQuickActionsOpen, isProfileMenuOpen]);
+  }, [activeDropdown, isMobileNavOpen, isProfileMenuOpen, isQuickActionsOpen, isSearchOpen, isExportOpen]);
 
   return (
     <header className="fixed inset-x-0 top-0 z-40 border-b border-slate-200 bg-white px-3 py-3 md:left-[200px] md:w-[calc(100%-200px)]">
@@ -94,23 +140,95 @@ export default function Topbar({ onToggleSidebar }) {
           </div>
         </div>
 
-        <nav className="hidden items-center gap-6 md:flex">
+        <div className="hidden items-center gap-2 md:flex">
           {navLinks.map((link) => {
             const active = isActiveLink(location.pathname, link.to);
+            const isOpen = activeDropdown === link.label;
             return (
-              <button
+              <div
                 key={link.label}
-                type="button"
-                onClick={() => navigate(link.to)}
-                className={`text-[13px] font-medium transition ${active ? 'text-[#00c896] border-b-2 border-[#00c896]' : 'text-[#475569] hover:text-[#00c896]'}`}
+                className="relative"
+                onMouseEnter={() => link.hasDropdown && setActiveDropdown(link.label)}
+                onMouseLeave={() => link.hasDropdown && activeDropdown === link.label && !isOpen && setActiveDropdown(null)}
               >
-                {link.label}
-              </button>
+                <button
+                  type="button"
+                  data-nav-dropdown={link.label}
+                  onClick={() => {
+                    if (link.hasDropdown) {
+                      setActiveDropdown((current) => (current === link.label ? null : link.label));
+                      setSearchOpen(false);
+                      setExportOpen(false);
+                      setQuickActionsOpen(false);
+                      setProfileMenuOpen(false);
+                    } else {
+                      navigate(link.to);
+                    }
+                  }}
+                  className={`inline-flex items-center gap-1 rounded-full px-3 py-2 text-[13px] font-medium transition ${active ? 'border-b-2 border-[#00c896] text-[#00c896]' : 'text-[#475569] hover:text-[#00c896]'}`}
+                >
+                  <span>{link.label}</span>
+                  {link.hasDropdown ? <ChevronDown className={`h-4 w-4 transition ${isOpen ? 'rotate-180' : ''}`} /> : null}
+                </button>
+                {link.hasDropdown && isOpen ? (
+                  <div className="absolute left-0 top-full z-30 mt-2 w-[260px] rounded-[10px] border border-slate-200 bg-white p-2 shadow-[0_16px_36px_rgba(15,23,42,0.12)]">
+                    {link.dropdownItems.map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <button
+                          key={item.label}
+                          type="button"
+                          onClick={() => {
+                            setActiveDropdown(null);
+                            navigate(item.route);
+                          }}
+                          className="flex h-10 w-full items-center gap-2 rounded-[8px] px-3 text-left text-[13px] text-slate-700 transition hover:bg-[#F4F7FB] hover:text-[#00c896]"
+                        >
+                          <Icon className="h-4 w-4" />
+                          <span>{item.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : null}
+              </div>
             );
           })}
-        </nav>
+        </div>
 
         <div className="flex flex-wrap items-center justify-end gap-2 pr-0 md:pr-4" style={{ flexShrink: 0 }}>
+          <div className="relative md:hidden" ref={mobileNavRef}>
+            <button
+              type="button"
+              onClick={() => setMobileNavOpen((open) => !open)}
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+              aria-label="Open navigation menu"
+            >
+              <MoreHorizontal className="h-4 w-4" />
+            </button>
+            {isMobileNavOpen ? (
+              <div className="absolute right-0 top-full z-30 mt-2 w-[220px] rounded-[10px] border border-slate-200 bg-white p-2 shadow-[0_16px_36px_rgba(15,23,42,0.12)]">
+                {navLinks.map((link) => (
+                  <button
+                    key={link.label}
+                    type="button"
+                    onClick={() => {
+                      setMobileNavOpen(false);
+                      if (link.hasDropdown) {
+                        setActiveDropdown(link.label);
+                      } else {
+                        navigate(link.to);
+                      }
+                    }}
+                    className="flex w-full items-center justify-between rounded-[8px] px-3 py-2 text-left text-[13px] text-slate-700 transition hover:bg-[#F4F7FB] hover:text-[#00c896]"
+                  >
+                    <span>{link.label}</span>
+                    {link.hasDropdown ? <ChevronDown className="h-4 w-4" /> : null}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+          </div>
           <div className="relative" ref={searchRef}>
             <button
               type="button"
@@ -232,6 +350,21 @@ export default function Topbar({ onToggleSidebar }) {
                 {unreadCount}
               </span>
             ) : null}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setActiveDropdown(null);
+              setSearchOpen(false);
+              setExportOpen(false);
+              setQuickActionsOpen(false);
+              setProfileMenuOpen(false);
+            }}
+            className="inline-flex h-[38px] items-center gap-2 rounded-[8px] border border-emerald-700 bg-[#14532D] px-[18px] text-[13px] font-medium text-white shadow-sm transition hover:bg-[#166534]"
+          >
+            <Ticket className="h-4 w-4" />
+            <span>Raise Ticket</span>
           </button>
 
           <div className="relative" ref={profileRef}>

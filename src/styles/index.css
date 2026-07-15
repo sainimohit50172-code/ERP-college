@@ -198,6 +198,75 @@ button, input, textarea, select {
 .data-table { overflow: hidden; border-radius: 1rem; }
 .data-table-header { position: sticky; top: 0; z-index: 10; }
 .overflow-x-auto { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.overflow-x-auto table {
+  width: 100%;
+  min-width: 100%;
+  border-collapse: collapse;
+}
+.overflow-x-auto table th,
+.overflow-x-auto table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.overflow-x-auto table th.action-header,
+.overflow-x-auto table td.action-cell {
+  min-width: 180px;
+}
+.overflow-x-auto table td.action-cell > div { display: flex; align-items: center; justify-content: center; gap: 8px; }
+.overflow-x-auto table td.action-cell button { white-space: nowrap; }
+.overflow-x-auto table th.photo-cell,
+.overflow-x-auto table td.photo-cell {
+  min-width: 70px;
+}
+.overflow-x-auto table th.name-cell,
+.overflow-x-auto table td.name-cell {
+  min-width: 180px;
+}
+.overflow-x-auto table th.email-cell,
+.overflow-x-auto table td.email-cell {
+  min-width: 240px;
+}
+.overflow-x-auto table th.college-cell,
+.overflow-x-auto table td.college-cell {
+  min-width: 220px;
+}
+.overflow-x-auto table th.university-roll-cell,
+.overflow-x-auto table td.university-roll-cell {
+  min-width: 170px;
+}
+.overflow-x-auto table th.status-cell,
+.overflow-x-auto table td.status-cell {
+  min-width: 120px;
+}
+.overflow-x-auto table th.roll-number-cell,
+.overflow-x-auto table td.roll-number-cell {
+  min-width: 140px;
+}
+.overflow-x-auto table th.semester-cell,
+.overflow-x-auto table td.semester-cell {
+  min-width: 100px;
+}
+.overflow-x-auto table th.section-cell,
+.overflow-x-auto table td.section-cell {
+  min-width: 100px;
+}
+.overflow-x-auto table th.dob-cell,
+.overflow-x-auto table td.dob-cell {
+  min-width: 130px;
+}
+.overflow-x-auto table th.gender-cell,
+.overflow-x-auto table td.gender-cell {
+  min-width: 100px;
+}
+.overflow-x-auto table th.mobile-cell,
+.overflow-x-auto table td.mobile-cell {
+  min-width: 140px;
+}
+.overflow-x-auto table td > div {
+  min-width: 0;
+}
+
 
 @media (max-width: 768px) {
   table, .table-auto {
@@ -230,6 +299,30 @@ button, input, textarea, select {
 .soft-teal-card { background: linear-gradient(135deg, #F1FFFC 0%, #E6FFF9 100%); }
 .soft-green-card { background: linear-gradient(135deg, #F3FFF8 0%, #EAFBF0 100%); }
 
+/* Custom Scrollbar */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
 @layer utilities {
   .responsive-card-grid {
     @apply grid grid-cols-1 gap-3 md:grid-cols-2;
@@ -247,6 +340,32 @@ button, input, textarea, select {
     @apply min-w-0 overflow-x-hidden;
   }
 }
+
+/* Global table resilience: apply safe defaults for any raw <table> in the app */
+table {
+  width: 100%;
+  min-width: 0;
+  border-collapse: collapse;
+}
+
+table th,
+table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+/* Ensure action column never shrinks and buttons remain visible */
+table th.action-header,
+table td.action-cell {
+  min-width: 180px;
+}
+
+table td.action-cell > * { display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+/* Ensure images inside tables are constrained */
+table img { max-width: 100%; height: auto; display: block; }
 
 /* Accessibility helpers */
 .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }

@@ -3,6 +3,7 @@
 import DataTable from '../components/ui/DataTable.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import { useResourceList, useCreateResource } from '../hooks/useResourceHooks';
+import { useUpdateResource, useDeleteResource } from '../hooks/useResourceHooks';
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -320,7 +321,10 @@ export default function StudentCollegeWisePage() {
   const rows = useMemo(() => mapStudentsToRows(students), [students]);
 
   const [showModal, setShowModal] = useState(false);
+  const [editingStudent, setEditingStudent] = useState(null);
   const createStudent = useCreateResource('students');
+  const updateStudent = useUpdateResource('students');
+  const deleteStudent = useDeleteResource('students');
 
   const { register, handleSubmit, reset } = useForm({ defaultValues: defaultFormValues });
 
@@ -355,20 +359,52 @@ export default function StudentCollegeWisePage() {
     { label: 'Semester', key: 'semester', sortable: true },
     { label: 'Status', key: 'status', sortable: true, render: (val) => <StatusBadge status={val} /> },
     { label: 'Actions', key: 'actions', sortable: false, render: (v, row) => (
-      <div className="inline-flex">
-        <button className="rounded-lg border border-slate-300 bg-white px-2 py-1 text-xs whitespace-nowrap hover:bg-slate-50">Actions</button>
+      <div className="inline-flex gap-2">
+        <button
+          type="button"
+            onClick={() => {
+            // open edit modal by populating form
+            const raw = row.raw || row;
+            setEditingStudent(raw);
+            // Use the existing modal flow: set fields via form reset
+            reset({ ...defaultFormValues, ...raw });
+            setShowModal(true);
+          }}
+          className="rounded-2xl bg-sky-500 px-3 py-1 text-xs font-semibold text-white"
+        >Edit</button>
+        <button
+          type="button"
+          onClick={async () => {
+            const raw = row.raw || row;
+            if (!window.confirm(`Delete student ${raw.name || raw.firstName || raw.admissionNo || ''}?`)) return;
+            try {
+              await deleteStudent.mutateAsync(raw.id || raw.admissionNo || raw.admission_no);
+              toast.success('Student deleted');
+            } catch (err) {
+              toast.error(err?.message || 'Could not delete student');
+            }
+          }}
+          className="rounded-2xl bg-rose-500 px-3 py-1 text-xs font-semibold text-white"
+        >Delete</button>
       </div>
     ) },
   ];
 
   const onSubmit = async (data) => {
     try {
-      await createStudent.mutateAsync(data);
-      toast.success('Student record created successfully.');
+      if (editingStudent) {
+        const id = editingStudent.id || editingStudent.admissionNo || editingStudent.admission_no;
+        await updateStudent.mutateAsync({ id, payload: data });
+        toast.success('Student updated successfully.');
+      } else {
+        await createStudent.mutateAsync(data);
+        toast.success('Student record created successfully.');
+      }
       reset(defaultFormValues);
       setShowModal(false);
+      setEditingStudent(null);
     } catch (error) {
-      toast.error(error?.message || 'Failed to create student.');
+      toast.error(error?.message || 'Failed to save student.');
     }
   };
 

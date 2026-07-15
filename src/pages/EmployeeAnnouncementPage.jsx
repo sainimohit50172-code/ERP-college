@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
-import { Download, Plus, Calendar, Eye, Edit2, X } from 'lucide-react';
+import { Download, Plus, Calendar, Edit2, X } from 'lucide-react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ViewButton from '../components/ui/ViewButton.jsx';
 
 const departments = ['Administration', 'Finance', 'Academic', 'Support'];
 const designations = ['Manager', 'Senior Staff', 'Junior Staff', 'Coordinator'];
@@ -313,10 +314,11 @@ export default function EmployeeAnnouncementPage() {
                     </td>
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-3 text-slate-500">
-                        <button type="button" className="inline-flex items-center gap-1 text-slate-600 transition hover:text-slate-900">
-                          <Eye size={16} />
-                          <span className="hidden sm:inline">View</span>
-                        </button>
+                        <ViewButton
+                          title="View announcement"
+                          ariaLabel="View announcement"
+                          className="h-9 w-9 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200"
+                        />
                         {record.sentBy === 'Admin' && (
                           <button type="button" className="inline-flex items-center gap-1 text-slate-600 transition hover:text-slate-900">
                             <Edit2 size={16} />

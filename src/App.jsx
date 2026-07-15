@@ -24,6 +24,7 @@ import StudentCertificatesPage from './pages/StudentCertificatesPage.jsx';
 import UpdateRollNumberPage from './pages/UpdateRollNumberPage.jsx';
 import AssignUniversityRollPage from './pages/AssignUniversityRollPage.jsx';
 import StudentProfilePage from './pages/StudentProfilePage.jsx';
+import StudentSessionManagementPage from './pages/StudentSessionManagementPage.jsx';
 import FeeManagementPage from './pages/FeeManagementPage.jsx';
 import TeacherManagementPage from './pages/TeacherManagementPage.jsx';
 import TeacherProfilePage from './pages/TeacherProfilePage.jsx';
@@ -189,6 +190,7 @@ function App() {
               <Route path="students/assign-university-roll" element={<ProtectedRoute moduleKey="students"><AssignUniversityRollPage /></ProtectedRoute>} />
               <Route path="students/allocate-subject" element={<ProtectedRoute moduleKey="students"><AllocateSubjectPage /></ProtectedRoute>} />
               <Route path="students/allocate-subjects" element={<ProtectedRoute moduleKey="students"><AllocateSubjectPage /></ProtectedRoute>} />
+              <Route path="students/session" element={<ProtectedRoute moduleKey="students"><StudentSessionManagementPage /></ProtectedRoute>} />
               <Route path="students/:studentId" element={<ProtectedRoute moduleKey="students"><StudentProfilePage /></ProtectedRoute>} />
               <Route path="parents" element={<ProtectedRoute moduleKey="students"><ParentsPage /></ProtectedRoute>} />
               <Route path="enquiries" element={<ProtectedRoute moduleKey="admissions"><EnquiriesPage /></ProtectedRoute>} />

@@ -1,3 +1,5 @@
+import ViewButton from '../ui/ViewButton.jsx';
+
 export default function VehicleList({ vehicles = [], onView = () => {}, onEdit = () => {}, onDelete = () => {}, onArchive = () => {} }) {
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -10,7 +12,12 @@ export default function VehicleList({ vehicles = [], onView = () => {}, onEdit =
               <div className="text-xs text-slate-500">{v.make || ''} · {v.capacity || 'N/A'}</div>
             </div>
             <div className="flex items-center gap-2">
-              <button onClick={() => onView(v)} className="text-xs text-slate-500 hover:underline">View</button>
+              <ViewButton
+                title="View vehicle"
+                ariaLabel="View vehicle"
+                className="h-8 w-8 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200"
+                onClick={() => onView(v)}
+              />
               <button onClick={() => onEdit(v)} className="text-xs text-sky-500 hover:underline">Edit</button>
               <button onClick={() => onArchive(v)} className="text-xs text-amber-600 hover:underline">Archive</button>
               <button onClick={() => onDelete(v)} className="text-xs text-rose-600 hover:underline">Delete</button>

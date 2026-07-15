@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FaPlus, FaEye, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
+import ViewButton from '../components/ui/ViewButton.jsx';
 import { useResourceList } from '../hooks/useResourceHooks';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
 import WithPermission from '../components/auth/WithPermission.jsx';
@@ -222,7 +223,12 @@ export default function LibraryManagementPage() {
               book.availableCopies || 0,
               <StatusBadge key={`${book.id}-status`} status={book.status || 'Available'} />,
               <div key={`${book.id}-actions`} className="flex items-center gap-2">
-                <button aria-label="View" onClick={() => openIssueModal(book)} className="h-8 w-8 flex items-center justify-center rounded-full bg-sky-400 text-slate-950 hover:opacity-90"><FaEye /></button>
+                <ViewButton
+                  title="View book"
+                  ariaLabel="View book"
+                  className="h-8 w-8 rounded-full bg-sky-400 text-slate-950 hover:opacity-90"
+                  onClick={() => openIssueModal(book)}
+                />
                 <button aria-label="Return" onClick={() => onReturnBook(book)} className="h-8 w-8 flex items-center justify-center rounded-full bg-emerald-400 text-slate-950 hover:opacity-90"><FaEdit /></button>
                 <button aria-label="Fine" onClick={() => onCollectFine(book)} className="h-8 w-8 flex items-center justify-center rounded-full bg-amber-400 text-slate-950 hover:opacity-90"><FaEdit /></button>
                 <button aria-label="Delete" onClick={() => onDeleteBook(book)} className="h-8 w-8 flex items-center justify-center rounded-full bg-rose-400 text-slate-950 hover:opacity-90"><FaTrash /></button>

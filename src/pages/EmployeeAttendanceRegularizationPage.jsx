@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 import {
   Plus,
   Calendar,
-  Eye,
   Edit3,
   Clock3,
   ArrowRight,
@@ -237,9 +236,11 @@ export default function EmployeeAttendanceRegularizationPage() {
                             </td>
                             <td className="px-4 py-4">
                               <div className="flex items-center gap-2 text-slate-600">
-                                <button type="button" className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-slate-50 p-2 transition hover:bg-slate-100">
-                                  <Eye size={16} />
-                                </button>
+                                <ViewButton
+                                  title="View request"
+                                  ariaLabel="View request"
+                                  className="rounded-lg border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100"
+                                />
                                 {item.status === 'Pending' && (
                                   <button type="button" className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-slate-50 p-2 transition hover:bg-slate-100">
                                     <Edit3 size={16} />

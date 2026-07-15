@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
-import { Eye, Filter, Printer } from 'lucide-react';
+import { Filter, Printer } from 'lucide-react';
 import Breadcrumb from '../components/ui/Breadcrumb.jsx';
+import ViewButton from '../components/ui/ViewButton.jsx';
 import Button from '../components/ui/Button.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import TablePagination from '../components/tables/TablePagination.jsx';
@@ -390,9 +391,11 @@ export default function StudentFeedbackPage() {
                     <td className="px-4 py-4 text-slate-700">{record.submittedAt}</td>
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-2">
-                        <button type="button" title="View Feedback" className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 transition hover:bg-slate-200">
-                          <Eye className="h-4 w-4" />
-                        </button>
+                        <ViewButton
+                          title="View feedback"
+                          ariaLabel="View feedback"
+                          className="h-10 w-10 rounded-2xl bg-slate-100 text-slate-700 hover:bg-slate-200"
+                        />
                         <button type="button" title="Print Feedback" className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 transition hover:bg-slate-200" onClick={() => window.print()}>
                           <Printer className="h-4 w-4" />
                         </button>

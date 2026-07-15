@@ -27,8 +27,39 @@ function normalizeColumns(columns) {
       sortable: column.sortable !== false,
       render: column.render,
       minWidth: column.minWidth,
+      align: column.align || 'center',
     };
   });
+}
+
+function getColumnMinWidth(column) {
+  const key = String(column.key || '').toLowerCase();
+  const widthMap = {
+    checkbox: '40px',
+    sno: '60px',
+    photo: '70px',
+    name: '180px',
+    'rollnumber': '140px',
+    rollno: '140px',
+    'universityrollnumber': '170px',
+    'universityrollno': '170px',
+    fathername: '180px',
+    mothername: '180px',
+    dob: '130px',
+    gender: '100px',
+    mobile: '140px',
+    phone: '140px',
+    email: '240px',
+    college: '220px',
+    course: '180px',
+    semester: '100px',
+    section: '100px',
+    status: '120px',
+    action: '180px',
+    actions: '180px',
+    options: '180px',
+  };
+  return column.minWidth || widthMap[key] || 'auto';
 }
 
 function getCellValue(row, column, columnIndex) {
@@ -74,7 +105,7 @@ function getSortedRows(rows, columns, sortKey, direction) {
   });
 }
 
-export default function DataTable({ columns, rows, loading = false, placeholder = 'Search...', initialPageSize = 10, hideHeader = false }) {
+export default function DataTable({ columns, rows, loading = false, placeholder = 'Search...', initialPageSize = 10, hideHeader = false, onEdit = () => {}, onDelete = () => {} }) {
   const columnsDefinition = useMemo(() => normalizeColumns(columns), [columns]);
   const [query, setQuery] = useState('');
   const [sortKey, setSortKey] = useState(null);
@@ -132,7 +163,7 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
   };
 
   return (
-    <div className="relative rounded-[20px] border border-slate-200/70 bg-white/95 p-4 shadow-sm text-xs">
+    <div className="relative rounded-[20px] border border-slate-200/70 bg-white/95 p-4 shadow-sm text-xs" style={{ marginLeft: 10, marginRight: 10 }}>
       {/* Only show loading on initial load, not on pagination */}
       {loading && rows?.length === 0 && (
         <LoadingOverlay loading={true} message="Loading table data..." />
@@ -190,46 +221,46 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
         <EmptyState title="No matching records" description="Try adjusting your search query or changing the page size." />
       ) : (
         <div className="rounded-[20px] border border-slate-200/70 overflow-x-auto">
-          <table className="w-full table-fixed border-collapse text-xs text-slate-900">
+          <table className="w-full table-auto border-collapse text-xs text-slate-900">
             <colgroup>
               {columnsDefinition.map((column) => {
-                let width = 'auto';
-                if (column.key === 'checkbox') width = '5%';
-                else if (column.key === 'sno') width = '4%';
-                else if (column.key === 'photo') width = '5%';
-                else if (column.key === 'status' || column.key === 'gender' || column.key === 'actions') width = '8%';
-                else if (column.key === 'dob' || column.key === 'semester' || column.key === 'section') width = '7%';
-                else if (column.key === 'admissionNo' || column.key === 'rollNo' || column.key === 'phone') width = '8%';
-                else width = '12%';
-                return <col key={column.key} style={{ width }} />;
+                const minW = getColumnMinWidth(column);
+                // Use explicit pixel width when we have a px-based min width (ensures action/buttons visible)
+                const widthStyle = minW && minW.endsWith('px') ? minW : undefined;
+                return <col key={column.key} style={{ minWidth: minW !== 'auto' ? minW : undefined, width: widthStyle }} />;
               })}
             </colgroup>
             <thead className="bg-slate-100 text-slate-700 sticky top-0 border-b-2 border-slate-300">
               <tr>
-                {columnsDefinition.map((column) => (
-                  <th
-                    key={column.key}
-                    className="whitespace-nowrap break-words px-4 py-3 font-semibold uppercase tracking-wider text-slate-700 text-center align-middle border-r border-slate-200"
-                  >
-                    <button
-                      type="button"
-                      onClick={() => column.sortable && toggleSort(column.key)}
-                      className="inline-flex items-center justify-center gap-1 w-full"
-                      title={column.label}
+                {columnsDefinition.map((column) => {
+                  const isAction = ['action', 'actions', 'options'].includes(column.key.toLowerCase());
+                  const width = getColumnMinWidth(column);
+                  return (
+                    <th
+                      key={column.key}
+                      className={`whitespace-nowrap break-words px-4 py-3 font-semibold uppercase tracking-wider text-slate-700 text-center align-middle border-r border-slate-200 ${isAction ? 'action-header' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
+                      style={{ minWidth: width !== 'auto' ? width : undefined }}
                     >
-                      <span className="truncate">{column.label}</span>
-                      {column.sortable && sortKey === column.key ? (
-                        sortDirection === 'asc' ? <ChevronUp className="h-3 w-3 flex-shrink-0" /> : <ChevronDown className="h-3 w-3 flex-shrink-0" />
-                      ) : null}
-                    </button>
-                  </th>
-                ))}
+                      <button
+                        type="button"
+                        onClick={() => column.sortable && toggleSort(column.key)}
+                        className="inline-flex items-center justify-center gap-1 w-full"
+                        title={column.label}
+                      >
+                        <span className="truncate">{column.label}</span>
+                        {column.sortable && sortKey === column.key ? (
+                          sortDirection === 'asc' ? <ChevronUp className="h-3 w-3 flex-shrink-0" /> : <ChevronDown className="h-3 w-3 flex-shrink-0" />
+                        ) : null}
+                      </button>
+                    </th>
+                  );
+                })}
               </tr>
             </thead>
             <tbody>
               {paginatedRows.map((row, rowIndex) => (
                 <tr key={`row-${rowIndex}`} className={`${rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50'} hover:bg-blue-100 transition-colors border-b border-slate-200`}>
-                  {columnsDefinition.map((column, columnIndex) => {
+                    {columnsDefinition.map((column, columnIndex) => {
                     const cellValue = getCellValue(row, column, columnIndex);
                     const rendered = column.render ? column.render(cellValue, row) : cellValue;
                     
@@ -246,17 +277,41 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
                       };
                     }
                     
+                    const isAction = ['action', 'actions', 'options'].includes(column.key.toLowerCase());
+                    const width = getColumnMinWidth(column);
+                    // If the column is action and a custom renderer wasn't provided,
+                    // render default Edit/Delete buttons wired to props.
+                    if (isAction && !column.render && (onEdit || onDelete)) {
+                      return (
+                        <td
+                          key={`${rowIndex}-${column.key}`}
+                          className={`px-4 py-3 align-middle border-r border-slate-200 text-slate-700 overflow-hidden text-center action-cell ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
+                          style={{ whiteSpace: 'nowrap', minWidth: width !== 'auto' ? width : undefined }}
+                        >
+                          <div className="min-w-0 flex items-center justify-center gap-2">
+                            <button type="button" onClick={() => onEdit(row)} className="rounded-2xl bg-sky-500 px-3 py-1 text-xs font-semibold text-white">Edit</button>
+                            <button type="button" onClick={() => onDelete(row)} className="rounded-2xl bg-rose-500 px-3 py-1 text-xs font-semibold text-white">Delete</button>
+                          </div>
+                        </td>
+                      );
+                    }
+
                     return (
-                      <td 
-                        key={`${rowIndex}-${column.key}`} 
-                        className="px-4 py-3 align-middle border-r border-slate-200 text-slate-700 overflow-hidden text-center"
+                      <td
+                        key={`${rowIndex}-${column.key}`}
+                        className={`px-4 py-3 align-middle border-r border-slate-200 text-slate-700 overflow-hidden text-center ${isAction ? 'action-cell' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
                         style={{
                           wordWrap: 'break-word',
                           whiteSpace: column.key === 'photo' ? 'nowrap' : 'normal',
+                          minWidth: width !== 'auto' ? width : undefined,
                         }}
                       >
-                        <div className={`${column.key === 'photo' ? 'flex items-center justify-center' : 'flex items-center justify-center'}`}>
-                          {finalContent}
+                        <div className="min-w-0 flex items-center justify-center gap-2">
+                          {typeof finalContent === 'string' || typeof finalContent === 'number' || typeof finalContent === 'boolean' ? (
+                            <span className="truncate">{finalContent}</span>
+                          ) : (
+                            finalContent
+                          )}
                         </div>
                       </td>
                     );

@@ -17,6 +17,36 @@ function getSortedRows(rows, sortColumn, sortDirection) {
   });
 }
 
+function getColumnMinWidth(column) {
+  const key = String(column.key || '').toLowerCase();
+  const widthMap = {
+    checkbox: '40px',
+    sno: '60px',
+    photo: '70px',
+    name: '180px',
+    'rollnumber': '140px',
+    rollno: '140px',
+    'universityrollnumber': '170px',
+    'universityrollno': '170px',
+    fathername: '180px',
+    mothername: '180px',
+    dob: '130px',
+    gender: '100px',
+    mobile: '140px',
+    phone: '140px',
+    email: '240px',
+    college: '220px',
+    course: '180px',
+    semester: '100px',
+    section: '100px',
+    status: '120px',
+    action: '180px',
+    actions: '180px',
+    options: '180px',
+  };
+  return widthMap[key] || 'auto';
+}
+
 function buildCsvData(columns, rows) {
   return [columns.map((column) => column.label || column.key), ...rows.map((row) => columns.map((column) => String(row[column.key] ?? '')),)];
 }
@@ -30,6 +60,8 @@ export default function DataTableAdvanced({
   initialPageSize = 10,
   hideHeader = false,
   className = '',
+  onEdit = () => {},
+  onDelete = () => {},
 }) {
   const [query, setQuery] = useState('');
   const [sortColumn, setSortColumn] = useState(null);
@@ -75,7 +107,7 @@ export default function DataTableAdvanced({
   }
 
   return (
-    <div className={`w-full max-w-full rounded-[20px] border border-slate-200/70 bg-white/95 p-4 shadow-sm sm:p-5 ${className}`}>
+    <div className={`w-full max-w-full rounded-[20px] border border-slate-200/70 bg-white/95 p-4 shadow-sm sm:p-5 ${className}`} style={{ marginLeft: 10, marginRight: 10 }}>
       {!hideHeader && (
         <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-col gap-2">
@@ -128,29 +160,68 @@ export default function DataTableAdvanced({
         <EmptyState title="No matching records" description="Try a different search term or change the filters." />
       ) : (
         <div className="overflow-x-auto rounded-[20px] border border-slate-200/70">
-          <table ref={tableRef} className="w-full table-fixed text-left text-sm text-slate-900">
+          <table ref={tableRef} className="w-full table-auto text-left text-sm text-slate-900">
             <thead className="bg-[#1e3a5f] text-white">
               <tr>
-                {columns.map((column) => (
-                  <th key={column.key} className="min-w-[140px] px-4 py-3 font-semibold uppercase tracking-[0.18em] text-white text-left">
-                    <button type="button" className="inline-flex items-center gap-2" onClick={() => toggleSort(column.key)}>
-                      <span>{column.label}</span>
-                      {sortColumn === column.key ? (
-                        sortDirection === 'asc' ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />
-                      ) : null}
-                    </button>
-                  </th>
-                ))}
+                {columns.map((column) => {
+                  const key = String(column.key || '').toLowerCase();
+                  const width = getColumnMinWidth(column);
+                  const colWidth = width && String(width).endsWith('px') ? width : undefined;
+                  // ensure action columns get fixed pixel width
+                  const isAction = ['action', 'actions', 'options'].includes(key);
+                  return (
+                    <th
+                      key={column.key}
+                      className={`px-4 py-3 font-semibold uppercase tracking-[0.18em] text-white text-left ${isAction ? 'action-header' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
+                      style={{ minWidth: width !== 'auto' ? width : undefined, width: colWidth }}
+                    >
+                      <button type="button" className="inline-flex items-center gap-2" onClick={() => toggleSort(column.key)}>
+                        <span>{column.label}</span>
+                        {sortColumn === column.key ? (
+                          sortDirection === 'asc' ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />
+                        ) : null}
+                      </button>
+                    </th>
+                  );
+                })}
               </tr>
             </thead>
             <tbody>
               {paginatedRows.map((row, index) => (
                 <tr key={`row-${index}`} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
-                  {columns.map((column) => (
-                  <td key={`${index}-${column.key}`} className="break-words px-4 py-3 align-top text-slate-700">
-                      {column.render ? column.render(row[column.key], row) : row[column.key] ?? ''}
-                    </td>
-                  ))}
+                    {columns.map((column) => {
+                    const key = String(column.key || '').toLowerCase();
+                    const width = getColumnMinWidth(column);
+                    const isAction = ['action', 'actions', 'options'].includes(key);
+                    const content = column.render ? column.render(row[column.key], row) : row[column.key] ?? '';
+                    // Render default edit/delete buttons when this is an action column and no custom render provided
+                    if (isAction && !column.render && (onEdit || onDelete)) {
+                      return (
+                        <td key={`${index}-${column.key}`} className={`break-words px-4 py-3 align-top text-slate-700 action-cell ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`} style={{ minWidth: width !== 'auto' ? width : undefined, whiteSpace: 'nowrap' }}>
+                          <div className="min-w-0 flex items-center justify-center gap-2">
+                            <button type="button" onClick={() => onEdit(row)} className="rounded-2xl bg-sky-500 px-3 py-1 text-xs font-semibold text-white">Edit</button>
+                            <button type="button" onClick={() => onDelete(row)} className="rounded-2xl bg-rose-500 px-3 py-1 text-xs font-semibold text-white">Delete</button>
+                          </div>
+                        </td>
+                      );
+                    }
+
+                    return (
+                      <td
+                        key={`${index}-${column.key}`}
+                        className={`break-words px-4 py-3 align-top text-slate-700 ${isAction ? 'action-cell' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
+                        style={{ minWidth: width !== 'auto' ? width : undefined, whiteSpace: isAction ? 'nowrap' : undefined }}
+                      >
+                        <div className="min-w-0 flex items-center justify-center gap-2">
+                          {typeof content === 'string' || typeof content === 'number' || typeof content === 'boolean' ? (
+                            <span className="truncate block">{content}</span>
+                          ) : (
+                            content
+                          )}
+                        </div>
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>

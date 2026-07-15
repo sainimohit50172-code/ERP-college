@@ -293,8 +293,8 @@ export default function LeadsPage() {
         )}
 
         <div className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
-          <div className="overflow-hidden">
-            <table className="w-full table-fixed text-sm">
+          <div className="overflow-x-auto">
+            <table className="w-full table-fixed text-sm min-w-[980px]">
               <colgroup>
                 <col className="w-[11%]" />
                 <col className="w-[13%]" />
@@ -308,7 +308,7 @@ export default function LeadsPage() {
               </colgroup>
               <thead className="bg-[#1e3a5f] text-white">
                 <tr>
-                  <th className="whitespace-nowrap px-2 py-3 text-left font-semibold uppercase tracking-[0.18em]">Action</th>
+                  <th className="whitespace-nowrap px-2 py-3 text-left font-semibold uppercase tracking-[0.18em] action-header">Action</th>
                   <th className="whitespace-nowrap px-2 py-3 text-left font-semibold uppercase tracking-[0.18em]">Tag</th>
                   <th className="whitespace-nowrap px-2 py-3 text-left font-semibold uppercase tracking-[0.18em]">Application Number</th>
                   <th className="whitespace-nowrap px-2 py-3 text-left font-semibold uppercase tracking-[0.18em]">Date</th>
@@ -322,7 +322,7 @@ export default function LeadsPage() {
               <tbody className="divide-y divide-slate-200 text-[13px] text-slate-700">
                 {rows.map((row, index) => (
                   <tr key={row.id} className={`${index % 2 === 0 ? 'bg-white' : 'bg-slate-50'} border-l-4 border-red-500`}>
-                    <td className="px-2 py-3 align-top">
+                    <td className="px-2 py-3 align-top action-cell">
                       <div className="inline-flex items-center gap-2">
                         <button className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-700 transition hover:bg-slate-200">
                           <Settings size={14} />

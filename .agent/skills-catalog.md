@@ -1,6 +1,6 @@
 # AI Agent Skills — Full Catalog
 
-> Auto-generated. Total: **1948 skills** across **114 categories**.
+> Auto-generated. Total: **1958 skills** across **114 categories**.
 > When asked "what skill should I use?", browse this file and suggest the most relevant skill IDs.
 > Install a skill: `Ctrl+Shift+/` → search for the skill ID → press Enter.
 
@@ -843,6 +843,7 @@ market, solution, financials, and strategy
 - **monte-carlo-validation-notebook**: Generates SQL validation notebooks for dbt PR changes with before/after comparison queries. _(risk: safe)_
 - **postgres-readonly-queries**: Execute safe read-only SQL queries against PostgreSQL databases with multi-connection support and defense-in-depth write protection. _(risk: safe)_
 - **sql-sentinel**: Audit SQL for the cost & performance anti-patterns that burn warehouse credits. Scores warehouse health 0-100 and outputs a prioritized cost-reduction plan for BigQuery, Snowflake, Redshift, and Postgres. _(risk: critical)_
+- **warehouse**: Plan and review read-only data warehouse analysis with explicit scope, privacy, provenance, and validation checks. _(risk: critical)_
 
 ## data-ai
 
@@ -1102,6 +1103,7 @@ api docs, reference,... _(risk: unknown)_
 - **jq**: Expert jq usage for JSON querying, filtering, transformation, and pipeline integration. Practical patterns for real shell workflows. _(risk: safe)_
 - **logic-lens**: AI-powered Claude Code skill that performs deep code review using formal logic and reasoning frameworks to detect bugs, anti-patterns, and security risks beyond what linters catch. _(risk: safe)_
 - **lore**: Markdown project memory for AI agents. Use for decisions, architecture, conventions, monorepo scopes, `.lore/`, or `lore` commands; not native `/init`/`/compact` or generic init/compress/audit/query. _(risk: safe)_
+- **ontoly-software-graph**: Use Ontoly's deterministic Software Graph, MCP server, and agent skills for architecture review, request tracing, impact analysis, and dependency analysis. _(risk: critical)_
 - **performance-optimization**: Optimizes application performance. Use when performance requirements exist, when you suspect performance regressions, or when Core Web Vitals or load times need improvement. Use when profiling reveals bottlenecks that need fixing. _(risk: unknown)_
 - **prototype**: Build a throwaway prototype to flesh out a design — a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route. _(risk: safe)_
 - **push-skill-to-github**: Commit and push skill changes to the configured skills repository after review and validation. _(risk: critical)_
@@ -1696,6 +1698,7 @@ add data to Google Sheets, find a spreadsheet, check sheet...
  _(risk: unknown)_
 - **referral-program**: When the user wants to create, optimize, or analyze a referral program, affiliate program, or word-of-mouth strategy. Also use when the user mentions 'referral,' 'affiliate,' 'ambassador,' 'word of... _(risk: unknown)_
 - **xlsx-official**: Comprehensive spreadsheet creation, editing, and analysis with support for formulas, formatting, data analysis, and visualization. When Claude needs to work with spreadsheets (.xlsx, .xlsm, .csv, .... _(risk: unknown)_
+- **pptx-deck-creation**: Create editable, production-ready PPTX decks with narrative planning, explicit layout specs, asset guidance, and quality checks. _(risk: critical)_
 
 ## operations
 
@@ -1807,6 +1810,7 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 ## project-management
 
 - **progressive-estimation**: Estimate AI-assisted and hybrid human+agent development work with research-backed PERT statistics and calibration feedback loops _(risk: safe)_
+- **feature-tracking**: Maintain durable feature-level memory across AI coding sessions with lightweight Markdown tracks for status, source-of-truth docs, decisions, risks, and changes. _(risk: critical)_
 - **to-issues**: Break a plan, spec, or PRD into independently-grabbable issues on the project issue tracker using tracer-bullet vertical slices. _(risk: safe)_
 - **to-prd**: Turn the current conversation into a PRD and publish it to the project issue tracker — no interview, just synthesis of what you've already discussed. _(risk: safe)_
 
@@ -2084,6 +2088,7 @@ calculations
 - **smartui-skill**: Generates SmartUI visual regression test configurations for screenshot comparison on TestMu AI cloud. Framework-agnostic — works with Playwright, Selenium, Cypress, Puppeteer. Use when user mentions "SmartUI", "visual regression", "screenshot comparison", "visual testing". Triggers on:... _(risk: unknown)_
 - **tdd-workflows**: Use when working with tdd workflows tdd cycle (Alias for tdd-workflows-tdd-cycle) _(risk: unknown)_
 - **test-framework-migration-skill**: Migrates and converts test automation scripts between Selenium, Playwright, Puppeteer, and Cypress. Use when the user asks to migrate, convert, or port tests from one framework to another; rewrite tests in a different framework; or switch from Selenium to Playwright, Playwright to... _(risk: unknown)_
+- **test-guard**: Review generated or changed test code against universal testing rules before it ships or is presented for approval. _(risk: critical)_
 
 ## tool-quality
 
@@ -2124,6 +2129,8 @@ calculations
 - **changelog-updates**: Create release notes and product updates that developers actually read and care about. This skill covers changelog formatting, versioning communication, breaking change announcements, deprecation notices, and building anticipation for new features. Trigger phrases: "changelog",... _(risk: unknown)_
 - **churn-prevention**: Reduce voluntary and involuntary churn with cancel flows, save offers, dunning, win-back tactics, and retention strategy. Use when users are cancelling, failed payments are rising, or subscription retention needs improvement. _(risk: unknown)_
 - **ci-cd-and-automation**: Automates CI/CD pipeline setup. Use when setting up or modifying build and deployment pipelines. Use when you need to automate quality gates, configure test runners in CI, or establish deployment strategies. _(risk: unknown)_
+- **clean-code-guard**: Review generated or changed production code with Clean Code, SOLID, DRY, KISS, YAGNI, and LLM-specific failure-mode checks. _(risk: critical)_
+- **cloudflare-security-audit**: Audit authorized codebases for exploitable vulnerabilities using scoped reconnaissance, adversarial review, validation, and structured reporting. _(risk: offensive)_
 - **co-marketing**: When the user wants to find co-marketing partners, plan joint campaigns, or brainstorm partnership opportunities. Use when the user says 'co-marketing,' 'partner marketing,' 'joint campaign,' 'who should we partner with,' 'integration marketing,' 'cross-promotion,' 'collaborate with... _(risk: unknown)_
 - **cold-email**: Write B2B cold emails and follow-up sequences that earn replies. Use when creating outbound prospecting emails, SDR outreach, personalized opening lines, subject lines, CTAs, and multi-touch follow-up sequences. _(risk: unknown)_
 - **competitor-profiling**: When the user wants to research, profile, or analyze competitors from their URLs. Also use when the user mentions 'competitor profile,' 'competitor research,' 'competitor analysis,' 'profile this competitor,' 'analyze competitor,' 'competitive intelligence,' 'competitor deep dive,'... _(risk: unknown)_
@@ -2148,6 +2155,7 @@ calculations
 - **developer-sandbox**: Design and build interactive playgrounds that let developers experience your product without commitment. This skill covers playground architecture, pre-populated examples, embedding strategies, gating decisions, and converting playground users to signups. Trigger phrases: "developer... _(risk: unknown)_
 - **doc2math**: Convert narrative technical documents into grounded Mathematical Problem Specifications with variables, constraints, objectives, and uncertainty. _(risk: safe)_
 - **docs-as-marketing**: Transform documentation into a powerful marketing channel that attracts, converts, and retains developers. This skill covers creating documentation that ranks in search, converts visitors into users, and accelerates adoption through exceptional information architecture and... _(risk: unknown)_
+- **docs-guard**: Review generated or changed documentation before it ships, including READMEs, API references, docstrings, changelogs, tutorials, and documentation sites. _(risk: critical)_
 - **doubt-driven-development**: Subjects every non-trivial decision to a fresh-context adversarial review before it stands. Use when correctness matters more than speed, when working in unfamiliar code, when stakes are high (production, security-sensitive logic, irreversible operations), or any time a confident... _(risk: unknown)_
 - **eas-update-insights**: Check the health of published EAS Updates: crash rates, install/launch counts, unique users, payload size, and the split between embedded and OTA users per channel. Use when the user asks how an update is performing, whether a rollout is healthy, how many users are on the embedded... _(risk: unknown)_
 - **efficient-web-research**: Protocol for token-efficient web research. Use when accessing URLs, GitHub repos, or running search queries. Prevents full-page fetching waste. _(risk: safe)_
@@ -2318,6 +2326,8 @@ calculations
 - **windows-shell-reliability**: Reliable command execution on Windows: paths, encoding, and common binary pitfalls. _(risk: safe)_
 - **wjttc-builder**: PLAN and GENERATE WJTTC (Championship-Grade) test suites for any project. Analyzes the codebase, classifies components across the WJTTC five tiers (Brake · Engine · Aero · Tyre · Pit), writes a tiered test plan, and scaffolds executable test files. This is the BUILDER — it plans and... _(risk: unknown)_
 - **wjttc-tester**: F1-inspired test EXECUTOR + reporter. Runs a test plan, finds and reproduces bugs, audits suite signal integrity, then files a WJTTC report (Brake/Engine/Aero/Tyre/Pit) with a tier verdict. Use when you need to test code, validate functionality, reproduce a failure, or produce a test... _(risk: unknown)_
+- **woo-guard**: Review generated or changed WooCommerce extensions, payment and shipping integrations, checkout customizations, and order or product logic. _(risk: critical)_
+- **wp-guard**: Review generated or changed WordPress plugins, themes, and blocks for security, internationalization, performance, and API correctness. _(risk: offensive)_
 - **xvary-stock-research**: Thesis-driven equity analysis from public SEC EDGAR and market data; /analyze, /score, /compare workflows with bundled Python tools (Claude Code, Cursor, Codex). _(risk: safe)_
 - **yield-intelligence**: Passive income portfolio analysis — activate when user asks about dividend yields, Treasury rates, REIT income, monthly passive income goals, or portfolio yield optimization. Scans 4 asset classes, ranks by risk-adjusted return, and builds allocations targeting a specific monthly income. _(risk: safe)_
 

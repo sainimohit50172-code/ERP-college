@@ -13,9 +13,13 @@ import {
   Building2,
 } from 'lucide-react';
 import { useResourceList } from '../hooks/useResourceHooks';
+import StudentOverviewDashboard from '../components/student/StudentOverviewDashboard.jsx';
+import FeeDashboard from '../components/finance/FeeDashboard.jsx';
+import AdmissionDashboard from '../components/admission/AdmissionDashboard.jsx';
 
 export default function DashboardPage() {
   const navigate = useNavigate();
+  const [activeDashboardTab, setActiveDashboardTab] = useState('Quick Links');
 
   // Live clock
   const [now, setNow] = useState(new Date());
@@ -85,58 +89,91 @@ export default function DashboardPage() {
 
         <div className="sticky top-16 z-20 mt-3 rounded-2xl border border-slate-200/70 bg-white shadow-sm">
           <div className="flex gap-2 overflow-x-auto px-2 py-2 sm:px-3">
-            {['Quick Links','Student Overview','Fee','Admission','Attendance','Examination','Human Resource','Library','My Profile'].map((t, i) => (
-              <button key={t} className={`whitespace-nowrap rounded-full px-3 py-2 text-[13px] font-medium ${i===0 ? 'border border-emerald-500 bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}>
+            {[
+              'Quick Links',
+              'Student Overview',
+              'Fee',
+              'Admission',
+              'Attendance',
+              'Examination',
+              'Human Resource',
+              'Library',
+              'My Profile',
+              'HOD Dashboard',
+              'Mess Management',
+            ].map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setActiveDashboardTab(t)}
+                className={`whitespace-nowrap rounded-full px-3 py-2 text-[13px] font-medium transition-colors ${
+                  activeDashboardTab === t
+                    ? 'border border-emerald-500 bg-emerald-50 text-emerald-700'
+                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                }`}
+              >
                 {t.replace("'", '’')}
               </button>
             ))}
           </div>
         </div>
 
-        <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
-          {kpis.map((k) => (
-            <div key={k.id} className="flex items-center gap-3 rounded-2xl p-4 text-white shadow-lg" style={{ background: k.bg }}>
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/20">
-                <k.icon className="h-6 w-6" />
+        <div className="mt-4">
+          {activeDashboardTab === 'Quick Links' && (
+            <>
+              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
+                {kpis.map((k) => (
+                  <div key={k.id} className="flex items-center gap-3 rounded-2xl p-4 text-white shadow-lg" style={{ background: k.bg }}>
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/20">
+                      <k.icon className="h-6 w-6" />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-xl font-bold">{k.value}</div>
+                      <div className="text-[11px] uppercase tracking-[0.2em] text-white/90">{k.label}</div>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="min-w-0">
-                <div className="text-xl font-bold">{k.value}</div>
-                <div className="text-[11px] uppercase tracking-[0.2em] text-white/90">{k.label}</div>
+
+              <div className="mt-4 grid gap-4 xl:grid-cols-2">
+                <div className="flex min-h-0 flex-col rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm sm:p-5">
+                  <div>
+                    <div className="text-lg font-semibold text-slate-900">Favorites</div>
+                    <div className="mt-1 text-sm text-slate-500">Quick access to common tasks</div>
+                  </div>
+                  <div className="mt-4 grid flex-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                    {quickActions.map((a) => (
+                      <button key={a.id} type="button" onClick={() => navigate(a.to)} className="flex min-h-[92px] flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white px-3 py-3 text-center transition hover:-translate-y-0.5 hover:shadow-sm">
+                        <Star className="h-5 w-5" style={{ color: a.color }} />
+                        <div className="mt-2 text-[11px] font-semibold" style={{ color: a.color }}>{a.label}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex min-h-0 flex-col rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm sm:p-5">
+                  <div>
+                    <div className="text-lg font-semibold text-slate-900">Reports</div>
+                    <div className="mt-1 text-sm text-slate-500">Team and finance dashboards</div>
+                  </div>
+                  <div className="mt-4 grid flex-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {reportCards.map((card) => (
+                      <button key={card.id} type="button" onClick={() => navigate('/reports')} className="flex min-h-[92px] flex-col items-center justify-center rounded-2xl bg-slate-900 px-3 py-3 text-center text-white transition hover:-translate-y-0.5 hover:bg-slate-800">
+                        <card.icon className="h-5 w-5" />
+                        <div className="mt-2 text-[12px] font-semibold">{card.label}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-4 grid gap-4 xl:grid-cols-2">
-          <div className="flex min-h-0 flex-col rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm sm:p-5">
-            <div>
-              <div className="text-lg font-semibold text-slate-900">Favorites</div>
-              <div className="mt-1 text-sm text-slate-500">Quick access to common tasks</div>
-            </div>
-            <div className="mt-4 grid flex-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {quickActions.map((a) => (
-                <button key={a.id} type="button" onClick={() => navigate(a.to)} className="flex min-h-[92px] flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white px-3 py-3 text-center transition hover:-translate-y-0.5 hover:shadow-sm">
-                  <Star className="h-5 w-5" style={{ color: a.color }} />
-                  <div className="mt-2 text-[11px] font-semibold" style={{ color: a.color }}>{a.label}</div>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex min-h-0 flex-col rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm sm:p-5">
-            <div>
-              <div className="text-lg font-semibold text-slate-900">Reports</div>
-              <div className="mt-1 text-sm text-slate-500">Team and finance dashboards</div>
-            </div>
-            <div className="mt-4 grid flex-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {reportCards.map((card) => (
-                <button key={card.id} type="button" onClick={() => navigate('/reports')} className="flex min-h-[92px] flex-col items-center justify-center rounded-2xl bg-slate-900 px-3 py-3 text-center text-white transition hover:-translate-y-0.5 hover:bg-slate-800">
-                  <card.icon className="h-5 w-5" />
-                  <div className="mt-2 text-[12px] font-semibold">{card.label}</div>
-                </button>
-              ))}
-            </div>
-          </div>
+            </>
+          )}
+          
+          {activeDashboardTab === 'Student Overview' && <StudentOverviewDashboard />}
+          
+          {activeDashboardTab === 'Fee' && <FeeDashboard />}
+          
+          {activeDashboardTab === 'Admission' && <AdmissionDashboard />}
         </div>
       </div>
     </div>

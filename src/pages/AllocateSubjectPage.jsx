@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import ViewButton from '../components/ui/ViewButton.jsx';
 import Breadcrumb from '../components/ui/Breadcrumb.jsx';
 import DataTableAdvanced from '../components/ui/DataTableAdvanced.jsx';
 
@@ -83,9 +84,12 @@ export default function AllocateSubjectPage() {
     {
       key: 'action', label: 'Action', render: (_, row) => (
         <div className="flex gap-2">
-          <button title="Edit Allocation" className="h-9 rounded-2xl bg-white border px-3 text-sm">Edit</button>
-          <button title="Remove Allocation" className="h-9 rounded-2xl bg-white border px-3 text-sm">Remove</button>
-          <button title="View Details" className="h-9 rounded-2xl bg-white border px-3 text-sm">View</button>
+          <button type="button" title="Edit Allocation" className="h-9 rounded-2xl bg-white border px-3 text-sm">Edit</button>
+          <button type="button" title="Remove Allocation" className="h-9 rounded-2xl bg-white border px-3 text-sm">Remove</button>
+          <ViewButton
+            title="View details"
+            ariaLabel="View details"
+          />
         </div>
       ),
     },

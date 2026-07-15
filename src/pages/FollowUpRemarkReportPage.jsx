@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { Download, Filter, Plus, X, Trash2, Eye } from 'lucide-react';
+import { Download, Filter, Plus, X, Trash2 } from 'lucide-react';
 
 const INITIAL_DATA = [];
 
@@ -189,8 +189,8 @@ export default function FollowUpRemarkReportPage() {
       </div>
 
       <div className="overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-200">
-        <div className="w-full">
-          <table className="w-full text-[13px] text-slate-700" style={{ tableLayout: 'fixed' }}>
+        <div className="w-full overflow-x-auto">
+          <table className="w-full min-w-[1100px] text-[13px] text-slate-700" style={{ tableLayout: 'fixed' }}>
             <colgroup>
               <col style={{ width: '4%' }} />
               <col style={{ width: '11%' }} />
@@ -225,7 +225,7 @@ export default function FollowUpRemarkReportPage() {
                 <th className="whitespace-nowrap px-2 py-1.5 text-left text-[11px] font-semibold uppercase tracking-[0.14em] border-r border-slate-700">Remarks</th>
                 <th className="whitespace-nowrap px-2 py-1.5 text-left text-[11px] font-semibold uppercase tracking-[0.14em] border-r border-slate-700">Status</th>
                 <th className="whitespace-nowrap px-2 py-1.5 text-left text-[11px] font-semibold uppercase tracking-[0.14em] border-r border-slate-700">Date</th>
-                <th className="whitespace-nowrap px-2 py-1.5 text-left text-[11px] font-semibold uppercase tracking-[0.14em]">Action</th>
+                <th className="whitespace-nowrap px-2 py-1.5 text-left text-[11px] font-semibold uppercase tracking-[0.14em] action-header">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -250,7 +250,7 @@ export default function FollowUpRemarkReportPage() {
                         </span>
                       </td>
                       <td className="px-2 py-1 align-top text-slate-700 border-r border-slate-200 text-[12px]">{app.history[0].date}</td>
-                      <td className="px-2 py-1 align-top text-slate-700">
+                      <td className="px-2 py-1 align-top text-slate-700 action-cell">
                         <div className="flex items-center gap-1">
                           <button
                             type="button"

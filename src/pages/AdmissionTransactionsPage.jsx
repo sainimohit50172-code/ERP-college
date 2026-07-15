@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Download, Filter, Plus, Eye, Trash2, X } from 'lucide-react';
+import { Download, Filter, Plus, Trash2, X } from 'lucide-react';
+import ViewButton from '../components/ui/ViewButton.jsx';
 
 const today = new Date().toISOString().slice(0, 10);
 
@@ -347,14 +348,11 @@ export default function AdmissionTransactionsPage() {
                       <td className="px-3 py-3 text-slate-700">{tx.transactionDate}</td>
                       <td className="px-3 py-3">
                         <div className="flex gap-2">
-                          <button
-                            type="button"
-                            onClick={() => handleViewTransaction(tx)}
-                            className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-700 transition hover:bg-slate-200"
+                          <ViewButton
                             title="View transaction"
-                          >
-                            <Eye size={16} />
-                          </button>
+                            ariaLabel="View transaction"
+                            onClick={() => handleViewTransaction(tx)}
+                          />
                           <button
                             type="button"
                             onClick={() => handleDeleteTransaction(tx.transactionId)}

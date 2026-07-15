@@ -16,7 +16,6 @@ import {
   FaFileImport,
   FaPlus,
   FaTrash,
-  FaEye,
 } from 'react-icons/fa';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
 import WithPermission from '../components/auth/WithPermission.jsx';
@@ -336,14 +335,12 @@ export default function EmployeeManagementPage() {
                 <StatusBadge key={`${employee.id}-status`} status={employee.status} />,
                 <div key={`${employee.id}-actions`} className="flex items-center gap-2">
                   <WithPermission moduleKey="employees" action="view">
-                    <button
-                      type="button"
+                    <ViewButton
+                      title="View employee"
+                      ariaLabel="View employee"
+                      className="h-8 w-8 rounded-full bg-slate-800/80 text-slate-200 hover:bg-slate-700"
                       onClick={() => navigate(`/employees/${employee.id}`)}
-                      aria-label="View"
-                      className="h-8 w-8 flex items-center justify-center rounded-full bg-slate-800/80 text-slate-200 hover:bg-slate-700"
-                    >
-                      <FaEye />
-                    </button>
+                    />
                   </WithPermission>
                   <WithPermission moduleKey="employees" action="edit">
                     <button

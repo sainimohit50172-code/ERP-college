@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
-import { Eye, Plus, Download, Filter, X } from 'lucide-react';
+import { Plus, Download, Filter, X } from 'lucide-react';
+import ViewButton from '../components/ui/ViewButton.jsx';
 
 const collegeOptions = [
   'Roorkee College of Smart Computing',
@@ -452,13 +453,12 @@ export default function FollowUpsPage() {
                     </div>
                   </td>
                   <td className="px-2 py-3 align-top text-slate-900">
-                    <button
-                      type="button"
+                    <ViewButton
+                      title="View follow-up"
+                      ariaLabel="View follow-up"
+                      className="rounded-2xl bg-slate-100 text-slate-700 hover:bg-slate-200"
                       onClick={() => openViewModal(row)}
-                      className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 transition hover:bg-slate-200"
-                    >
-                      <Eye size={16} />
-                    </button>
+                    />
                   </td>
                 </tr>
               ))}

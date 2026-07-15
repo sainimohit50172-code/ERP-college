@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Filter, X, Eye } from 'lucide-react';
+import { Filter, X } from 'lucide-react';
 
 const today = new Date().toISOString().slice(0, 10);
 
