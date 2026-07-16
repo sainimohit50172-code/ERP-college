@@ -178,20 +178,27 @@ class VisitorResponse(VisitorBase):
 class ComplaintBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
-    student_id: int
-    complaint: str = Field(min_length=1, max_length=1000)
-    status: str = Field(default="open", max_length=20)
-    complaint_date: date
+    lodged_by_type: str = Field(default="Employee", max_length=20)
+    lodged_by_id: int = Field(default=0, ge=0)
+    category: Optional[str] = None
+    subject: str = Field(min_length=1, max_length=255)
+    description: Optional[str] = None
+    status: str = Field(default="Open", max_length=20)
 
 
 class ComplaintCreate(ComplaintBase):
     pass
 
 
-class ComplaintUpdate(ComplaintBase):
-    student_id: Optional[int] = None
-    complaint: Optional[str] = Field(default=None, min_length=1, max_length=1000)
-    complaint_date: Optional[date] = None
+class ComplaintUpdate(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    lodged_by_type: Optional[str] = Field(default=None, max_length=20)
+    lodged_by_id: Optional[int] = Field(default=None, ge=0)
+    category: Optional[str] = None
+    subject: Optional[str] = Field(default=None, min_length=1, max_length=255)
+    description: Optional[str] = None
+    status: Optional[str] = Field(default=None, max_length=20)
 
 
 class ComplaintDetail(ComplaintBase):

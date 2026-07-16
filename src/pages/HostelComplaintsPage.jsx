@@ -1,7 +1,21 @@
 import GenericCrudPage from '../components/ui/GenericCrudPage.jsx';
 
-const fields = [{"name": "studentId", "label": "Student ID"}, {"name": "subject", "label": "Subject"}, {"name": "status", "label": "Status", "type": "select", "options": [{"value": "Open", "label": "Open"}, {"value": "In Progress", "label": "In Progress"}, {"value": "Resolved", "label": "Resolved"}]}];
-const columns = [{"key": "studentId", "label": "Student ID"}, {"key": "subject", "label": "Subject"}, {"key": "status", "label": "Status"}];
+const fields = [
+  { name: 'subject', label: 'Subject' },
+  { name: 'category', label: 'Category' },
+  { name: 'description', label: 'Description', type: 'textarea' },
+  { name: 'status', label: 'Status', type: 'select', options: [
+      { value: 'Open', label: 'Open' },
+      { value: 'InProgress', label: 'In Progress' },
+      { value: 'Resolved', label: 'Resolved' },
+      { value: 'Closed', label: 'Closed' },
+    ] },
+];
+const columns = [
+  { key: 'subject', label: 'Subject' },
+  { key: 'category', label: 'Category' },
+  { key: 'status', label: 'Status' },
+];
 
 export default function HostelComplaintsPage() {
   return (
@@ -10,7 +24,7 @@ export default function HostelComplaintsPage() {
       subtitle="Capture and track hostel complaints and issue resolution."
       resource="hostelComplaints"
       itemLabel="complaint"
-      initialValues={{"studentId": "", "subject": "", "status": "Open"}}
+      initialValues={{ category: 'General', subject: '', description: '', status: 'Open' }}
       fields={fields}
       columns={columns}
     />

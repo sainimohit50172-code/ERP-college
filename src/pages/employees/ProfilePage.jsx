@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { CalendarDays, Clock3, Edit2, FileText, Hash, Mail, MapPin, Phone } from 'lucide-react';
+import { CalendarDays, Clock3, Edit2, FileText, Hash, Mail, MapPin, Phone, Ticket } from 'lucide-react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import api from '../../api/axios.js';
@@ -27,10 +27,12 @@ export default function ProfilePage() {
   const { auth } = useAuth();
   const [activeTab, setActiveTab] = useState('personal');
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isTicketOpen, setIsTicketOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
   const [leaveStats, setLeaveStats] = useState({ approved: 0, pending: 0, total: 0 });
   const [editForm, setEditForm] = useState({ firstName: '', lastName: '', phone: '', email: '', location: '', bloodGroup: '' });
+  const [ticketForm, setTicketForm] = useState({ subject: '', category: 'General', description: '' });
 
   useEffect(() => {
     let isMounted = true;
@@ -203,6 +205,33 @@ export default function ProfilePage() {
     }
   };
 
+  const handleTicketSubmit = async (event) => {
+    event.preventDefault();
+    if (!ticketForm.subject.trim()) {
+      toast.error('Please provide a ticket subject.');
+      return;
+    }
+
+    const lodgedById = auth?.user?.employeeId || auth?.user?.employee_id || auth?.user?.id || 0;
+    const ticketPayload = {
+      lodged_by_type: 'Employee',
+      lodged_by_id: Number(lodgedById),
+      category: ticketForm.category || 'General',
+      subject: ticketForm.subject.trim(),
+      description: ticketForm.description.trim() || null,
+      status: 'Open',
+    };
+
+    try {
+      await api.post('/api/v1/hostel-complaints/', ticketPayload);
+      toast.success('Ticket raised successfully');
+      setTicketForm({ subject: '', category: 'General', description: '' });
+      setIsTicketOpen(false);
+    } catch {
+      toast.error('Unable to raise ticket. Please try again.');
+    }
+  };
+
   const documentCards = [
     { title: 'Aadhar Card', status: 'Uploaded' },
     { title: 'PAN Card', status: 'Uploaded' },
@@ -221,20 +250,30 @@ export default function ProfilePage() {
   return (
     <div className="min-h-[calc(100vh-88px)] w-full max-w-full overflow-x-hidden overflow-y-auto bg-white px-[10px] py-4 -mx-3 sm:-mx-4 lg:-mx-6">
       <ToastContainer position="top-right" autoClose={2500} />
-      <div className="mb-3 flex h-11 items-center justify-between">
-        <div className="flex items-center gap-2 text-sm">
-          <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">My Profile</span>
-          <span className="text-slate-400">/</span>
-          <span className="text-[13px] font-semibold text-slate-600">Profile</span>
-        </div>
-        <button
-          type="button"
-          onClick={() => setIsEditOpen(true)}
-          className="inline-flex items-center gap-2 rounded-lg bg-[linear-gradient(135deg,_#1e3a5f,_#0d3b2e)] px-4 py-2 text-[13px] font-semibold text-white transition duration-200 hover:brightness-110"
-        >
-          <Edit2 size={14} />
-          Edit Profile
-        </button>
+<div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-2 text-sm">
+            <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">My Profile</span>
+            <span className="text-slate-400">/</span>
+            <span className="text-[13px] font-semibold text-slate-600">Profile</span>
+          </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setIsTicketOpen(true)}
+              className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-[13px] font-semibold text-slate-700 transition duration-200 hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
+            >
+              <Ticket size={14} />
+              Raise Ticket
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsEditOpen(true)}
+              className="inline-flex items-center gap-2 rounded-lg bg-[linear-gradient(135deg,_#1e3a5f,_#0d3b2e)] px-4 py-2 text-[13px] font-semibold text-white transition duration-200 hover:brightness-110"
+            >
+              <Edit2 size={14} />
+              Edit Profile
+            </button>
+          </div>
       </div>
 
       <div className="responsive-profile-shell min-h-0">
@@ -475,6 +514,106 @@ export default function ProfilePage() {
             <label className="block text-sm sm:col-span-2">
               <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Blood Group</span>
               <input value={editForm.bloodGroup} onChange={(event) => setEditForm((current) => ({ ...current, bloodGroup: event.target.value }))} className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0" />
+            </label>
+          </div>
+        </form>
+      </Modal>
+
+      <Modal
+        title="Raise Ticket"
+        isOpen={isTicketOpen}
+        onClose={() => setIsTicketOpen(false)}
+        footer={
+          <>
+            <button type="button" onClick={() => setIsTicketOpen(false)} className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-50">
+              Cancel
+            </button>
+            <button type="submit" form="ticket-form" className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white transition hover:bg-slate-800">
+              Submit Ticket
+            </button>
+          </>
+        }
+      >
+        <form id="ticket-form" onSubmit={handleTicketSubmit} className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label className="block text-sm">
+              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Subject</span>
+              <input
+                value={ticketForm.subject}
+                onChange={(event) => setTicketForm((current) => ({ ...current, subject: event.target.value }))}
+                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0"
+                placeholder="Issue subject"
+                required
+              />
+            </label>
+            <label className="block text-sm">
+              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Category</span>
+              <input
+                value={ticketForm.category}
+                onChange={(event) => setTicketForm((current) => ({ ...current, category: event.target.value }))}
+                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0"
+                placeholder="General"
+              />
+            </label>
+            <label className="block text-sm sm:col-span-2">
+              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Description</span>
+              <textarea
+                value={ticketForm.description}
+                onChange={(event) => setTicketForm((current) => ({ ...current, description: event.target.value }))}
+                rows={5}
+                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none"
+                placeholder="Describe the issue in detail"
+              />
+            </label>
+          </div>
+        </form>
+      </Modal>
+
+      <Modal
+        title="Raise Ticket"
+        isOpen={isTicketOpen}
+        onClose={() => setIsTicketOpen(false)}
+        footer={
+          <>
+            <button type="button" onClick={() => setIsTicketOpen(false)} className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-50">
+              Cancel
+            </button>
+            <button type="submit" form="ticket-form" className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white transition hover:bg-slate-800">
+              Submit Ticket
+            </button>
+          </>
+        }
+      >
+        <form id="ticket-form" onSubmit={handleTicketSubmit} className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label className="block text-sm">
+              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Subject</span>
+              <input
+                value={ticketForm.subject}
+                onChange={(event) => setTicketForm((current) => ({ ...current, subject: event.target.value }))}
+                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0"
+                placeholder="What's the issue?"
+                required
+              />
+            </label>
+            <label className="block text-sm">
+              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Category</span>
+              <input
+                value={ticketForm.category}
+                onChange={(event) => setTicketForm((current) => ({ ...current, category: event.target.value }))}
+                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0"
+                placeholder="General"
+              />
+            </label>
+            <label className="block text-sm sm:col-span-2">
+              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Description</span>
+              <textarea
+                value={ticketForm.description}
+                onChange={(event) => setTicketForm((current) => ({ ...current, description: event.target.value }))}
+                rows={5}
+                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none"
+                placeholder="Describe the ticket or issue in detail"
+              />
             </label>
           </div>
         </form>
