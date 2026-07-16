@@ -24,7 +24,7 @@ export default function AttendancePage() {
             {attendanceModules.map((module) => {
               const Icon = module.icon;
               return (
-                <Link key={module.title} to={module.to} className="group rounded-[24px] border border-white/10 bg-slate-950/70 p-4 transition hover:border-sky-400 hover:bg-slate-900/90">
+                <Link key={module.title} to={module.to} className="group rounded-[24px] border border-white/10 bg-slate-950/70 p-4 transition hover:-translate-y-0.5 hover:shadow-lg hover:border-sky-400 hover:bg-slate-900/90 cursor-pointer">
                   <div className={`inline-flex h-10 w-10 items-center justify-center rounded-2xl ${module.color}`}>
                     <Icon className="h-4 w-4" />
                   </div>

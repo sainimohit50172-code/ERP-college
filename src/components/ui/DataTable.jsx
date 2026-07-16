@@ -105,7 +105,7 @@ function getSortedRows(rows, columns, sortKey, direction) {
   });
 }
 
-export default function DataTable({ columns, rows, loading = false, placeholder = 'Search...', initialPageSize = 10, hideHeader = false, onEdit = () => {}, onDelete = () => {} }) {
+export default function DataTable({ columns, rows, loading = false, placeholder = 'Search...', initialPageSize = 10, hideHeader = false, headerClassName = '', tableMaxHeight, onEdit = () => {}, onDelete = () => {}, onRowClick = null }) {
   const columnsDefinition = useMemo(() => normalizeColumns(columns), [columns]);
   const [query, setQuery] = useState('');
   const [sortKey, setSortKey] = useState(null);
@@ -134,6 +134,8 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
     const startIndex = (currentPage - 1) * pageSize;
     return sortedRows.slice(startIndex, startIndex + pageSize);
   }, [currentPage, pageSize, sortedRows]);
+
+  const headerClasses = `sticky top-0 border-b-2 border-slate-300 ${headerClassName || 'bg-slate-100 text-slate-700'}`;
 
   const csvContent = useMemo(() => {
     const header = columnsDefinition.map((column) => column.label);
@@ -220,7 +222,10 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
       {paginatedRows.length === 0 ? (
         <EmptyState title="No matching records" description="Try adjusting your search query or changing the page size." />
       ) : (
-        <div className="rounded-[20px] border border-slate-200/70 overflow-x-auto">
+        <div
+          className="rounded-[20px] border border-slate-200/70 overflow-x-auto"
+          style={tableMaxHeight ? { maxHeight: tableMaxHeight, overflowY: 'auto', overflowX: 'auto' } : undefined}
+        >
           <table className="w-full table-auto border-collapse text-xs text-slate-900">
             <colgroup>
               {columnsDefinition.map((column) => {
@@ -230,7 +235,7 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
                 return <col key={column.key} style={{ minWidth: minW !== 'auto' ? minW : undefined, width: widthStyle }} />;
               })}
             </colgroup>
-            <thead className="bg-slate-100 text-slate-700 sticky top-0 border-b-2 border-slate-300">
+            <thead className={headerClasses}>
               <tr>
                 {columnsDefinition.map((column) => {
                   const isAction = ['action', 'actions', 'options'].includes(column.key.toLowerCase());
@@ -238,7 +243,7 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
                   return (
                     <th
                       key={column.key}
-                      className={`whitespace-nowrap break-words px-4 py-3 font-semibold uppercase tracking-wider text-slate-700 text-center align-middle border-r border-slate-200 ${isAction ? 'action-header' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
+                      className={`whitespace-nowrap break-words px-4 py-3 font-semibold uppercase tracking-wider text-center align-middle border-r border-slate-200 ${isAction ? 'action-header' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
                       style={{ minWidth: width !== 'auto' ? width : undefined }}
                     >
                       <button
@@ -259,7 +264,11 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
             </thead>
             <tbody>
               {paginatedRows.map((row, rowIndex) => (
-                <tr key={`row-${rowIndex}`} className={`${rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50'} hover:bg-blue-100 transition-colors border-b border-slate-200`}>
+                <tr
+                  key={`row-${rowIndex}`}
+                  onClick={() => onRowClick && onRowClick(row)}
+                  className={`${rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50'} hover:bg-blue-100 transition-colors border-b border-slate-200 ${onRowClick ? 'cursor-pointer' : ''}`}
+                >
                     {columnsDefinition.map((column, columnIndex) => {
                     const cellValue = getCellValue(row, column, columnIndex);
                     const rendered = column.render ? column.render(cellValue, row) : cellValue;

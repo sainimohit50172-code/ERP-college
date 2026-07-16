@@ -1,6 +1,6 @@
 # AI Agent Skills — Full Catalog
 
-> Auto-generated. Total: **1958 skills** across **114 categories**.
+> Auto-generated. Total: **1962 skills** across **114 categories**.
 > When asked "what skill should I use?", browse this file and suggest the most relevant skill IDs.
 > Install a skill: `Ctrl+Shift+/` → search for the skill ID → press Enter.
 
@@ -8,6 +8,7 @@
 
 - **codex-fable5**: Apply Fable-inspired discipline to Codex work: inspect first, track goals and findings, ground conclusions in evidence, verify before completion, and adapt Claude/Fable prompt guidance without identity or provider claims. _(risk: critical)_
 - **dispatch**: Delegate tasks to OpenAI Codex CLI and Google Antigravity CLI from Claude Code with topic-aware sessions _(risk: critical)_
+- **ditto**: Use when a user asks to mine or update a private, evidence-backed work profile from local Claude Code, Codex, Copilot CLI, or OpenCode sessions. _(risk: critical)_
 - **fable-safe-prompt**: Rewrite allowed prompts to reduce false-positive safety triggers without bypassing policy or changing intent. _(risk: safe)_
 - **zipai-optimizer**: Ultra-dense token optimizer skill for prompt caching, log pruning, AST-based inspection, and minified JSON payloads. _(risk: safe)_
 
@@ -841,6 +842,7 @@ market, solution, financials, and strategy
 - **monte-carlo-prevent**: Surfaces Monte Carlo data observability context (table health, alerts, lineage, blast radius) before SQL/dbt edits. _(risk: safe)_
 - **monte-carlo-push-ingestion**: Expert guide for pushing metadata, lineage, and query logs to Monte Carlo from any data warehouse. _(risk: safe)_
 - **monte-carlo-validation-notebook**: Generates SQL validation notebooks for dbt PR changes with before/after comparison queries. _(risk: safe)_
+- **optim-agent**: Guide agent-driven parameter optimization for configurable systems with measurable objectives. Use for HPO, inference tuning, simulations, or RL/control experiments. _(risk: safe)_
 - **postgres-readonly-queries**: Execute safe read-only SQL queries against PostgreSQL databases with multi-connection support and defense-in-depth write protection. _(risk: safe)_
 - **sql-sentinel**: Audit SQL for the cost & performance anti-patterns that burn warehouse credits. Scores warehouse health 0-100 and outputs a prioritized cost-reduction plan for BigQuery, Snowflake, Redshift, and Postgres. _(risk: critical)_
 - **warehouse**: Plan and review read-only data warehouse analysis with explicit scope, privacy, provenance, and validation checks. _(risk: critical)_
@@ -1140,6 +1142,7 @@ api docs, reference,... _(risk: unknown)_
 - **monte-carlo-analyze-root-cause**: Investigate data incidents and find root causes using Monte Carlo's observability data. Guides the agent through systematic investigation: alert lookup, lineage tracing, ETL checks, query analysis, and data profiling. Activates when a user asks about data issues, incidents, alerts, or... _(risk: unknown)_
 - **observability-and-instrumentation**: Instruments code so production behavior is visible and diagnosable. Use when adding logging, metrics, tracing, or alerting. Use when shipping any feature that runs in production and you need evidence it works. Use when production issues are reported but you can't tell what happened... _(risk: unknown)_
 - **shipping-and-launch**: Prepares production launches. Use when preparing to deploy to production. Use when you need a pre-launch checklist, when setting up monitoring, when planning a staged rollout, or when you need a rollback strategy. _(risk: unknown)_
+- **sshepherd**: Zero-knowledge SSH ops CLI — server health checks, docker/systemd control, log tailing, Postgres introspection, and declarative deploys, without ever exposing credentials to the agent. _(risk: critical)_
 - **vibecode-production-qa-validator**: 13-phase production QA for fullstack Next.js apps: build verification, SEO tags, OG images, favicon, route regression, API auth, page speed, lazy load, vulnerability scan, UI/UX cards, error boundaries, database, secure rendering, and cleanup. _(risk: safe)_
 
 ## document-processing
@@ -1781,6 +1784,7 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 ## productivity
 
 - **interview-coach**: Full job search coaching system — JD decoding, resume, storybank, mock interviews, transcript analysis, comp negotiation. 23 commands, persistent state. _(risk: safe)_
+- **anywrite**: Compiled CLI covering all 52 endpoints of the Anytype local API — objects, properties, tags, search, chat, files — one binary, no MCP server needed. _(risk: critical)_
 - **ask-matt**: Ask which skill or flow fits your situation. A router over the user-invoked skills in this repo. _(risk: safe)_
 - **brain-to-docs**: Interview the user to turn project vision and decisions into README and ADR documentation. _(risk: critical)_
 - **codex-profiles**: Use codex-profiles to run Codex CLI or Codex Desktop with isolated CODEX_HOME profiles for separate accounts, projects, and local state. _(risk: critical)_

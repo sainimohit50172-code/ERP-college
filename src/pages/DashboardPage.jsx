@@ -16,8 +16,15 @@ import { useResourceList } from '../hooks/useResourceHooks';
 import StudentOverviewDashboard from '../components/student/StudentOverviewDashboard.jsx';
 import FeeDashboard from '../components/finance/FeeDashboard.jsx';
 import AdmissionDashboard from '../components/admission/AdmissionDashboard.jsx';
+import AttendanceDashboard from '../components/dashboard/AttendanceDashboard.jsx';
+import ExaminationDashboard from '../components/dashboard/ExaminationDashboard.jsx';
+import HumanResourceDashboard from '../components/dashboard/HumanResourceDashboard.jsx';
+import HODDashboard from '../components/dashboard/HODDashboard.jsx';
+import LibraryDashboard from '../components/dashboard/LibraryDashboard.jsx';
+import MessManagementDashboard from '../components/dashboard/MessManagementDashboard.jsx';
+import ProfilePage from '../pages/employees/ProfilePage.jsx';
 
-export default function DashboardPage() {
+export default function DashboardPage () {
   const navigate = useNavigate();
   const [activeDashboardTab, setActiveDashboardTab] = useState('Quick Links');
 
@@ -143,7 +150,7 @@ export default function DashboardPage() {
                   </div>
                   <div className="mt-4 grid flex-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                     {quickActions.map((a) => (
-                      <button key={a.id} type="button" onClick={() => navigate(a.to)} className="flex min-h-[92px] flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white px-3 py-3 text-center transition hover:-translate-y-0.5 hover:shadow-sm">
+                      <button key={a.id} type="button" onClick={() => navigate(a.to)} className="flex min-h-[92px] flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white px-3 py-3 text-center transition hover:-translate-y-0.5 hover:shadow-lg cursor-pointer">
                         <Star className="h-5 w-5" style={{ color: a.color }} />
                         <div className="mt-2 text-[11px] font-semibold" style={{ color: a.color }}>{a.label}</div>
                       </button>
@@ -158,7 +165,7 @@ export default function DashboardPage() {
                   </div>
                   <div className="mt-4 grid flex-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     {reportCards.map((card) => (
-                      <button key={card.id} type="button" onClick={() => navigate('/reports')} className="flex min-h-[92px] flex-col items-center justify-center rounded-2xl bg-slate-900 px-3 py-3 text-center text-white transition hover:-translate-y-0.5 hover:bg-slate-800">
+                      <button key={card.id} type="button" onClick={() => navigate('/reports')} className="flex min-h-[92px] flex-col items-center justify-center rounded-2xl bg-slate-900 px-3 py-3 text-center text-white transition hover:-translate-y-0.5 hover:shadow-lg hover:bg-slate-800 cursor-pointer">
                         <card.icon className="h-5 w-5" />
                         <div className="mt-2 text-[12px] font-semibold">{card.label}</div>
                       </button>
@@ -174,6 +181,15 @@ export default function DashboardPage() {
           {activeDashboardTab === 'Fee' && <FeeDashboard />}
           
           {activeDashboardTab === 'Admission' && <AdmissionDashboard />}
+          
+          {activeDashboardTab === 'Attendance' && <AttendanceDashboard />}
+          
+          {activeDashboardTab === 'Examination' && <ExaminationDashboard />}
+          {activeDashboardTab === 'Human Resource' && <HumanResourceDashboard />}
+          {activeDashboardTab === 'Library' && <LibraryDashboard />}
+          {activeDashboardTab === 'My Profile' && <ProfilePage />}
+          {activeDashboardTab === 'HOD Dashboard' && <HODDashboard />}
+          {activeDashboardTab === 'Mess Management' && <MessManagementDashboard />}
         </div>
       </div>
     </div>

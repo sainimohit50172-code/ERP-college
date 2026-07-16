@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+﻿import { useEffect, useMemo, useState } from 'react';
 import { CalendarDays, Clock3, Edit2, FileText, Hash, Mail, MapPin, Phone } from 'lucide-react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -30,7 +30,7 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
   const [leaveStats, setLeaveStats] = useState({ approved: 0, pending: 0, total: 0 });
-  const [editForm, setEditForm] = useState({ firstName: '', lastName: '', phone: '', email: '', location: '', bloodGroup: '' });
+  const [editForm, setEditForm] = useState({ name: '', phone: '', email: '', location: '', bloodGroup: '' });
 
   useEffect(() => {
     let isMounted = true;
@@ -106,13 +106,10 @@ export default function ProfilePage() {
         const pending = relevantLeaves.filter((item) => ['submitted', 'pending', 'manager review', 'hr review'].includes(String(item.status || '').toLowerCase())).length;
 
         if (!isMounted) return;
-        const [firstName = '', ...lastNameParts] = String(normalizedProfile.name).trim().split(' ');
-        const lastName = lastNameParts.join(' ');
         setProfile(normalizedProfile);
         setLeaveStats({ approved, pending, total: relevantLeaves.length });
         setEditForm({
-          firstName,
-          lastName,
+          name: normalizedProfile.name,
           phone: normalizedProfile.phone,
           email: normalizedProfile.email,
           location: normalizedProfile.location,
@@ -142,12 +139,9 @@ export default function ProfilePage() {
           experienceYears: 5,
           rating: 'A+',
         };
-        const [firstName = '', ...lastNameParts] = String(fallbackProfile.name).trim().split(' ');
-        const lastName = lastNameParts.join(' ');
         setProfile(fallbackProfile);
         setEditForm({
-          firstName,
-          lastName,
+          name: fallbackProfile.name,
           phone: fallbackProfile.phone,
           email: fallbackProfile.email,
           location: fallbackProfile.location,
@@ -178,24 +172,12 @@ export default function ProfilePage() {
       return;
     }
 
-    const first_name = editForm.firstName?.trim() || profile.name?.split(' ')[0] || 'Employee';
-    const last_name = editForm.lastName?.trim() || profile.name?.split(' ').slice(1).join(' ') || null;
-
     try {
       await api.put(`/api/v1/employees/${profile.id}`, {
-        employee_code: profile.employeeCode || profile.employee_code || `EMP-${String(profile.id).padStart(3, '0')}`,
-        first_name,
-        last_name,
-        email: editForm.email || profile.email,
-        phone: editForm.phone || profile.phone,
-        designation: profile.designation,
-        department: profile.department,
-        status: profile.employeeStatus || 'Active',
+        ...profile,
+        ...editForm,
       });
-      setProfile((current) => {
-        const updatedName = [first_name, last_name].filter(Boolean).join(' ');
-        return current ? { ...current, name: updatedName || current.name, email: editForm.email, phone: editForm.phone, location: editForm.location, bloodGroup: editForm.bloodGroup } : current;
-      });
+      setProfile((current) => (current ? { ...current, ...editForm } : current));
       toast.success('Profile updated successfully');
       setIsEditOpen(false);
     } catch {
@@ -213,7 +195,7 @@ export default function ProfilePage() {
   if (loading || !profile) {
     return (
       <div className="flex h-[calc(100vh-88px)] items-center justify-center overflow-hidden rounded-[20px] border border-slate-200 bg-white p-6 text-slate-600 shadow-sm">
-        Loading your profile…
+        Loading your profileΓÇª
       </div>
     );
   }
@@ -280,7 +262,7 @@ export default function ProfilePage() {
 
           <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
             {quickStats.map((stat) => (
-              <div key={stat.label} className="rounded-lg border border-slate-200 bg-slate-50 p-2 text-center transition duration-200 hover:border-slate-300 hover:shadow-sm">
+              <div key={stat.label} className="rounded-lg border border-slate-200 bg-slate-50 p-2 text-center">
                 <div className="text-[16px] font-bold" style={{ color: stat.color }}>{stat.value}</div>
                 <div className="mt-1 text-[10px] uppercase tracking-[0.08em] text-slate-400">{stat.label}</div>
               </div>
@@ -315,11 +297,9 @@ export default function ProfilePage() {
                   { label: 'Blood Group', value: profile.bloodGroup },
                   { label: 'Emergency Contact', value: profile.emergencyContact },
                 ].map((item) => (
-                  <div key={item.label} className="rounded-[18px] bg-transparent p-px transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:bg-gradient-to-r hover:from-cyan-400 hover:via-violet-500 hover:to-pink-500">
-                    <div className="rounded-[17px] border border-slate-200 bg-white p-3 transition duration-300 hover:border-b-4 hover:border-slate-300">
-                      <div className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-400">{item.label}</div>
-                      <div className="mt-2 text-[13px] font-semibold text-slate-800">{item.value}</div>
-                    </div>
+                  <div key={item.label} className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+                    <div className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-400">{item.label}</div>
+                    <div className="mt-2 text-[13px] font-semibold text-slate-800">{item.value}</div>
                   </div>
                 ))}
               </div>
@@ -337,11 +317,9 @@ export default function ProfilePage() {
                   { label: 'Shift Timing', value: profile.shiftTiming },
                   { label: 'Employee Status', value: profile.employeeStatus },
                 ].map((item) => (
-                  <div key={item.label} className="rounded-[18px] bg-transparent p-px transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:bg-gradient-to-r hover:from-cyan-400 hover:via-violet-500 hover:to-pink-500">
-                    <div className="rounded-[17px] border border-slate-200 bg-white p-3 transition duration-300 hover:border-b-4 hover:border-slate-300">
-                      <div className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-400">{item.label}</div>
-                      <div className="mt-2 text-[13px] font-semibold text-slate-800">{item.value}</div>
-                    </div>
+                  <div key={item.label} className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+                    <div className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-400">{item.label}</div>
+                    <div className="mt-2 text-[13px] font-semibold text-slate-800">{item.value}</div>
                   </div>
                 ))}
               </div>
@@ -350,18 +328,16 @@ export default function ProfilePage() {
             {activeTab === 'documents' && (
               <div className="responsive-card-grid h-full gap-3">
                 {documentCards.map((doc) => (
-                  <div key={doc.title} className="rounded-[18px] bg-gradient-to-r from-cyan-400 via-violet-500 to-pink-500 p-[1px] transition duration-300 hover:shadow-lg">
-                    <div className="rounded-[17px] border border-dashed border-slate-300 bg-slate-50 p-3 hover:border-transparent">
-                      <div className="flex items-center gap-2">
-                        <FileText size={18} className="text-slate-400" />
-                        <div className="text-[12px] font-semibold text-slate-700">{doc.title}</div>
-                      </div>
-                      <div className="mt-4 flex items-center justify-between">
-                        <span className="text-[11px] text-slate-400">{doc.status}</span>
-                        <button type="button" className="rounded-md border border-slate-200 bg-white px-2 py-1 text-[11px] font-semibold text-slate-600 transition hover:bg-slate-100">
-                          {doc.status === 'Uploaded' ? 'View' : 'Upload'}
-                        </button>
-                      </div>
+                  <div key={doc.title} className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-3">
+                    <div className="flex items-center gap-2">
+                      <FileText size={18} className="text-slate-400" />
+                      <div className="text-[12px] font-semibold text-slate-700">{doc.title}</div>
+                    </div>
+                    <div className="mt-4 flex items-center justify-between">
+                      <span className="text-[11px] text-slate-400">{doc.status}</span>
+                      <button type="button" className="rounded-md border border-slate-200 bg-white px-2 py-1 text-[11px] font-semibold text-slate-600 transition hover:bg-slate-100">
+                        {doc.status === 'Uploaded' ? 'View' : 'Upload'}
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -453,12 +429,8 @@ export default function ProfilePage() {
         <form id="profile-edit-form" onSubmit={handleSave} className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="block text-sm">
-              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">First Name</span>
-              <input value={editForm.firstName} onChange={(event) => setEditForm((current) => ({ ...current, firstName: event.target.value }))} className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0" />
-            </label>
-            <label className="block text-sm">
-              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Last Name</span>
-              <input value={editForm.lastName} onChange={(event) => setEditForm((current) => ({ ...current, lastName: event.target.value }))} className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0" />
+              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Name</span>
+              <input value={editForm.name} onChange={(event) => setEditForm((current) => ({ ...current, name: event.target.value }))} className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0" />
             </label>
             <label className="block text-sm">
               <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Phone</span>

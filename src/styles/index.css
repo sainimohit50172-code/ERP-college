@@ -183,6 +183,28 @@ button, input, textarea, select {
 .bg-primary-navy-dark { background-color: var(--primary-navy-dark); }
 .border-primary-navy { border-color: var(--primary-navy); }
 
+/* Shared ERP card interaction utilities */
+.erp-card,
+.erp-card-dark,
+.erp-card-action {
+  @apply rounded-[24px] border border-slate-200/70 bg-white/95 p-4 shadow-sm transition-transform duration-200 ease-out;
+}
+.erp-card:hover,
+.erp-card-dark:hover,
+.erp-card-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
+}
+.erp-card {
+  @apply cursor-pointer;
+}
+.erp-card-dark {
+  @apply border-white/10 bg-slate-950/80 text-white;
+}
+.erp-card-action {
+  @apply cursor-pointer bg-slate-50;
+}
+
 /* Card tokens for modules */
 .card-students { background-color: #E7FFF2; color: var(--heading-color); }
 .card-teachers { background-color: #DDEEFF; color: var(--heading-color); }
