@@ -1,6 +1,6 @@
 # AI Agent Skills — Full Catalog
 
-> Auto-generated. Total: **1962 skills** across **114 categories**.
+> Auto-generated. Total: **1965 skills** across **115 categories**.
 > When asked "what skill should I use?", browse this file and suggest the most relevant skill IDs.
 > Install a skill: `Ctrl+Shift+/` → search for the skill ID → press Enter.
 
@@ -934,6 +934,10 @@ market, solution, financials, and strategy
 - **drizzle-migration-conflict**: Diagnose, repair, and prevent Drizzle Kit migration conflicts involving generated SQL, snapshots, journals, merge queues, and team workflows. _(risk: critical)_
 - **weaviate**: Search, query, inspect, create, and import data into Weaviate vector database collections using official scripts and references. _(risk: critical)_
 
+## debugging
+
+- **diagnose-android-overheating**: Use when diagnosing Android overheating, idle heat, thermal throttling, charging or radio heat, or abnormal battery drain with read-only ADB evidence and approval gates. _(risk: critical)_
+
 ## design
 
 - **core-components**: Core component library and design system patterns. Use when building UI, using design tokens, or working with the component library. _(risk: unknown)_
@@ -1537,6 +1541,8 @@ pageflip, 组件设计, 组件模式 _(risk: unknown)_
 ## marketing
 
 - **content-creator**: Create SEO-optimized marketing content with consistent brand voice. Includes brand voice analyzer, SEO optimizer, content frameworks, and social media templates. Use when writing blog posts, creati... _(risk: unknown)_
+- **ad-campaign-analyzer**: Analyze cross-channel campaign data, quantify uncertainty, and propose evidence-labeled budget tests without overstating causality. _(risk: critical)_
+- **competitor-ad-intelligence**: Research public competitor ads, analyze creative patterns and landing pages, and produce an evidence-labeled strategic teardown. _(risk: critical)_
 - **competitor-analysis**: Research competitors with Browserbase discovery, enrichment lanes, screenshots, matrices, and HTML reports. _(risk: safe)_
 - **linkedin-content-generator**: AI-powered LinkedIn content suite: generate posts, carousels, newsletters, and 30-day calendars with niche-specific SEO rules and a reinforcement-learning personal memory system. _(risk: safe)_
 - **linkedin-post-writer**: Draft LinkedIn posts from 16 tested hook formulas mapped to engagement goals (comments, reposts, likes, saves), with 2026 algorithm formatting rules and an AI-tell scrub pass before publishing.
@@ -2262,7 +2268,7 @@ calculations
 - **puppeteer-skill**: Generates Puppeteer scripts for browser automation, scraping, and PDF generation. Triggers on: "Puppeteer", "headless Chrome", "page.goto", "scrape", "PDF generation". _(risk: unknown)_
 - **re-create**: Completely delete and rewrite a file or module from scratch when structural rot makes patching impossible. _(risk: critical)_
 - **redis-cli**: Redis command-line interface (redis-cli) reference and usage guide. Use this skill whenever the user mentions redis-cli, Redis CLI, or any task involving querying, inspecting, debugging, or managing Redis from the command line. Triggers on key/value reads and writes, SCAN or keyspace... _(risk: unknown)_
-- **repo-maintainer**: Championship-grade repository maintenance. Audits for test artifacts, dependency issues, CI/CD health, documentation sync, and FAF alignment. Generates prioritized cleanup plans. Use when repos need deep cleaning or ongoing maintenance. _(risk: unknown)_
+- **repo-maintainer**: Audit and repair repository hygiene across artifacts, dependencies, CI, docs, Git state, and code-quality signals. Use for repository maintenance, cleanup, health checks, or pre-release hardening. _(risk: critical)_
 - **resolving-merge-conflicts**: Use when you need to resolve an in-progress git merge/rebase conflict. _(risk: unknown)_
 - **review-and-simplify-changes**: Review a git diff or explicit file scope for reuse, code quality, efficiency, clarity, and standards issues, then optionally apply safe Codex-driven fixes. Use when the user asks to "simplify code", "review changed code", "check for code reuse", "review code quality", "review... _(risk: unknown)_
 - **review-swarm**: Parallel read-only multi-agent review of a current git diff or explicit file scope to find behavioral regressions, security or privacy risks, performance or reliability issues, and contract or test coverage gaps. Use when the user asks for a review swarm, parallel review, diff review,... _(risk: unknown)_

@@ -172,8 +172,8 @@ button, input, textarea, select {
 /* Button system */
 .btn { @apply inline-flex items-center justify-center gap-2 rounded-2xl px-3 py-2 text-sm font-medium transition-transform; }
 .btn:focus { outline: 2px solid rgba(16,185,129,0.12); outline-offset: 2px; }
-.btn-primary { background-color: var(--primary-navy); color: white; box-shadow: 0 8px 24px rgba(30,58,95,0.14); }
-.btn-primary:hover { transform: scale(1.04); background-color: var(--primary-navy-dark); }
+.btn-primary { background-color: #16a34a; color: white; box-shadow: 0 8px 24px rgba(22,163,74,0.14); }
+.btn-primary:hover { transform: scale(1.04); background-color: #13803d; }
 .btn-secondary { background-color: white; border: 1px solid rgba(15,23,42,0.06); color: var(--heading-color); }
 .btn-danger { background-color: #ef4444; color: white; }
 .btn-warning { background-color: #f59e0b; color: white; }
@@ -218,6 +218,90 @@ button, input, textarea, select {
 
 /* DataTable header sticky */
 .data-table { overflow: hidden; border-radius: 1rem; }
+
+/* Compact tables for ERP pages */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.72rem;
+  table-layout: fixed;
+}
+
+table th,
+table td {
+  padding: 0.3rem 0.4rem !important;
+  line-height: 1.2;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+table th {
+  text-align: center !important;
+  font-size: 0.68rem !important;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  white-space: normal !important;
+  background-color: #16a34a !important;
+  color: white !important;
+}
+
+table td {
+  font-size: 0.72rem !important;
+  white-space: nowrap !important;
+}
+
+/* Override Tailwind emerald utilities for primary action buttons to use #16a34a */
+.bg-emerald-500, .bg-emerald-600, .bg-emerald-700 {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+}
+.text-emerald-700, .text-emerald-600 {
+  color: #0f5132 !important;
+}
+
+/* Ensure hover utility variants that switch to emerald-500/700 follow the same color */
+.hover\:bg-emerald-500:hover, .hover\:bg-emerald-600:hover, .hover\:bg-emerald-700:hover {
+  background-color: #13803d !important;
+}
+
+table th span,
+table td span {
+  display: block;
+}
+
+/* Compact ERP data tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.75rem;
+  table-layout: auto;
+}
+
+table th,
+table td {
+  padding: 0.35rem 0.45rem !important;
+  line-height: 1.2;
+  min-width: 0 !important;
+}
+
+table th {
+  text-align: center !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: normal;
+}
+
+table td {
+  font-size: 0.75rem !important;
+  white-space: normal;
+}
+
+table th span,
+table td span {
+  display: block;
+}
 .data-table-header { position: sticky; top: 0; z-index: 10; }
 .overflow-x-auto { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .overflow-x-auto table {

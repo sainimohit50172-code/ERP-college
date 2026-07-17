@@ -21,28 +21,28 @@ function getColumnMinWidth(column) {
   const key = String(column.key || '').toLowerCase();
   const widthMap = {
     checkbox: '40px',
-    sno: '60px',
-    photo: '70px',
-    name: '180px',
-    'rollnumber': '140px',
-    rollno: '140px',
-    'universityrollnumber': '170px',
-    'universityrollno': '170px',
-    fathername: '180px',
-    mothername: '180px',
-    dob: '130px',
-    gender: '100px',
-    mobile: '140px',
-    phone: '140px',
-    email: '240px',
-    college: '220px',
-    course: '180px',
-    semester: '100px',
-    section: '100px',
-    status: '120px',
-    action: '180px',
-    actions: '180px',
-    options: '180px',
+    sno: '50px',
+    photo: '60px',
+    name: '140px',
+    'rollnumber': '120px',
+    rollno: '120px',
+    'universityrollnumber': '150px',
+    'universityrollno': '150px',
+    fathername: '160px',
+    mothername: '160px',
+    dob: '120px',
+    gender: '90px',
+    mobile: '120px',
+    phone: '120px',
+    email: '200px',
+    college: '180px',
+    course: '140px',
+    semester: '90px',
+    section: '90px',
+    status: '110px',
+    action: '140px',
+    actions: '140px',
+    options: '140px',
   };
   return widthMap[key] || 'auto';
 }
@@ -107,12 +107,12 @@ export default function DataTableAdvanced({
   }
 
   return (
-    <div className={`w-full max-w-full rounded-[20px] border border-slate-200/70 bg-white/95 p-4 shadow-sm sm:p-5 ${className}`} style={{ marginLeft: 10, marginRight: 10 }}>
+    <div className={`w-full max-w-full rounded-[20px] border border-slate-200/70 bg-white/95 p-3 shadow-sm sm:p-4 ${className}`} style={{ marginLeft: 10, marginRight: 10 }}>
       {!hideHeader && (
-        <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-col gap-2">
-            <h3 className="text-lg font-semibold text-slate-950">Data table</h3>
-            <p className="text-sm text-slate-500">Search, sort, page and export your data with one flexible table.</p>
+        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-1">
+            <h3 className="text-sm font-semibold text-slate-950">Data table</h3>
+            <p className="text-xs text-slate-500">Search, sort, page and export your data.</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <button type="button" onClick={handlePrint} className="btn btn-secondary inline-flex items-center gap-2">
@@ -160,7 +160,7 @@ export default function DataTableAdvanced({
         <EmptyState title="No matching records" description="Try a different search term or change the filters." />
       ) : (
         <div className="overflow-x-auto rounded-[20px] border border-slate-200/70">
-          <table ref={tableRef} className="w-full table-auto text-left text-sm text-slate-900">
+          <table ref={tableRef} className="w-full table-auto text-left text-[11px] text-slate-900">
             <thead className="bg-[#1e3a5f] text-white">
               <tr>
                 {columns.map((column) => {
@@ -172,7 +172,7 @@ export default function DataTableAdvanced({
                   return (
                     <th
                       key={column.key}
-                      className={`px-4 py-3 font-semibold uppercase tracking-[0.18em] text-white text-left ${isAction ? 'action-header' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
+                      className={`px-2 py-2 font-semibold uppercase tracking-[0.18em] text-white text-center ${isAction ? 'action-header' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
                       style={{ minWidth: width !== 'auto' ? width : undefined, width: colWidth }}
                     >
                       <button type="button" className="inline-flex items-center gap-2" onClick={() => toggleSort(column.key)}>
@@ -197,7 +197,7 @@ export default function DataTableAdvanced({
                     // Render default edit/delete buttons when this is an action column and no custom render provided
                     if (isAction && !column.render && (onEdit || onDelete)) {
                       return (
-                        <td key={`${index}-${column.key}`} className={`break-words px-4 py-3 align-top text-slate-700 action-cell ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`} style={{ minWidth: width !== 'auto' ? width : undefined, whiteSpace: 'nowrap' }}>
+                        <td key={`${index}-${column.key}`} className={`break-words px-2 py-2 align-top text-slate-700 action-cell ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`} style={{ minWidth: width !== 'auto' ? width : undefined, whiteSpace: 'nowrap' }}>
                           <div className="min-w-0 flex items-center justify-center gap-2">
                             <button type="button" onClick={() => onEdit(row)} className="rounded-2xl bg-sky-500 px-3 py-1 text-xs font-semibold text-white">Edit</button>
                             <button type="button" onClick={() => onDelete(row)} className="rounded-2xl bg-rose-500 px-3 py-1 text-xs font-semibold text-white">Delete</button>
@@ -209,7 +209,7 @@ export default function DataTableAdvanced({
                     return (
                       <td
                         key={`${index}-${column.key}`}
-                        className={`break-words px-4 py-3 align-top text-slate-700 ${isAction ? 'action-cell' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
+                        className={`break-words px-2 py-2 align-top text-slate-700 ${isAction ? 'action-cell' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
                         style={{ minWidth: width !== 'auto' ? width : undefined, whiteSpace: isAction ? 'nowrap' : undefined }}
                       >
                         <div className="min-w-0 flex items-center justify-center gap-2">

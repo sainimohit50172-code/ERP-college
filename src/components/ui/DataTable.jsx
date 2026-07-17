@@ -36,28 +36,28 @@ function getColumnMinWidth(column) {
   const key = String(column.key || '').toLowerCase();
   const widthMap = {
     checkbox: '40px',
-    sno: '60px',
-    photo: '70px',
-    name: '180px',
-    'rollnumber': '140px',
-    rollno: '140px',
-    'universityrollnumber': '170px',
-    'universityrollno': '170px',
-    fathername: '180px',
-    mothername: '180px',
-    dob: '130px',
-    gender: '100px',
-    mobile: '140px',
-    phone: '140px',
-    email: '240px',
-    college: '220px',
-    course: '180px',
-    semester: '100px',
-    section: '100px',
-    status: '120px',
-    action: '180px',
-    actions: '180px',
-    options: '180px',
+    sno: '40px',
+    photo: '50px',
+    name: '120px',
+    'rollnumber': '90px',
+    rollno: '90px',
+    'universityrollnumber': '120px',
+    'universityrollno': '120px',
+    fathername: '120px',
+    mothername: '120px',
+    dob: '100px',
+    gender: '80px',
+    mobile: '110px',
+    phone: '110px',
+    email: '160px',
+    college: '140px',
+    course: '110px',
+    semester: '80px',
+    section: '80px',
+    status: '90px',
+    action: '120px',
+    actions: '120px',
+    options: '120px',
   };
   return column.minWidth || widthMap[key] || 'auto';
 }
@@ -105,7 +105,7 @@ function getSortedRows(rows, columns, sortKey, direction) {
   });
 }
 
-export default function DataTable({ columns, rows, loading = false, placeholder = 'Search...', initialPageSize = 10, hideHeader = false, headerClassName = '', tableMaxHeight, onEdit = () => {}, onDelete = () => {}, onRowClick = null }) {
+export default function DataTable({ columns, rows, loading = false, placeholder = 'Search...', initialPageSize = 10, hideHeader = false, headerClassName = '', tableMaxHeight, tableId, onEdit = () => {}, onDelete = () => {}, onRowClick = null }) {
   const columnsDefinition = useMemo(() => normalizeColumns(columns), [columns]);
   const [query, setQuery] = useState('');
   const [sortKey, setSortKey] = useState(null);
@@ -165,7 +165,7 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
   };
 
   return (
-    <div className="relative rounded-[20px] border border-slate-200/70 bg-white/95 p-4 shadow-sm text-xs" style={{ marginLeft: 10, marginRight: 10 }}>
+    <div className="relative rounded-[20px] border border-slate-200/70 bg-white/95 p-4 shadow-sm text-xs">
       {/* Only show loading on initial load, not on pagination */}
       {loading && rows?.length === 0 && (
         <LoadingOverlay loading={true} message="Loading table data..." />
@@ -223,10 +223,10 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
         <EmptyState title="No matching records" description="Try adjusting your search query or changing the page size." />
       ) : (
         <div
-          className="rounded-[20px] border border-slate-200/70 overflow-x-auto"
-          style={tableMaxHeight ? { maxHeight: tableMaxHeight, overflowY: 'auto', overflowX: 'auto' } : undefined}
+          className="rounded-[20px] border border-slate-200/70 overflow-hidden"
+          style={tableMaxHeight ? { maxHeight: tableMaxHeight, overflowY: 'auto' } : undefined}
         >
-          <table className="w-full table-auto border-collapse text-xs text-slate-900">
+          <table id={tableId} className="w-full table-fixed border-separate text-[10px] text-slate-900" style={{ borderSpacing: '1px 0' }}>
             <colgroup>
               {columnsDefinition.map((column) => {
                 const minW = getColumnMinWidth(column);
@@ -243,7 +243,7 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
                   return (
                     <th
                       key={column.key}
-                      className={`whitespace-nowrap break-words px-4 py-3 font-semibold uppercase tracking-wider text-center align-middle border-r border-slate-200 ${isAction ? 'action-header' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
+                      className={`whitespace-nowrap break-words px-[4px] py-[5px] font-semibold uppercase tracking-[0.02em] text-center align-middle border-r border-slate-200 ${isAction ? 'action-header' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
                       style={{ minWidth: width !== 'auto' ? width : undefined }}
                     >
                       <button
@@ -294,7 +294,7 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
                       return (
                         <td
                           key={`${rowIndex}-${column.key}`}
-                          className={`px-4 py-3 align-middle border-r border-slate-200 text-slate-700 overflow-hidden text-center action-cell ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
+                          className={`px-2 py-2 align-middle border-r border-slate-200 text-slate-700 overflow-hidden text-left action-cell ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
                           style={{ whiteSpace: 'nowrap', minWidth: width !== 'auto' ? width : undefined }}
                         >
                           <div className="min-w-0 flex items-center justify-center gap-2">
@@ -308,14 +308,14 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
                     return (
                       <td
                         key={`${rowIndex}-${column.key}`}
-                        className={`px-4 py-3 align-middle border-r border-slate-200 text-slate-700 overflow-hidden text-center ${isAction ? 'action-cell' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
+                        className={`px-2 py-2 align-middle border-r border-slate-200 text-slate-700 text-[11px] overflow-hidden text-left ${isAction ? 'action-cell' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
                         style={{
                           wordWrap: 'break-word',
                           whiteSpace: column.key === 'photo' ? 'nowrap' : 'normal',
                           minWidth: width !== 'auto' ? width : undefined,
                         }}
                       >
-                        <div className="min-w-0 flex items-center justify-center gap-2">
+                        <div className="min-w-0 flex items-center justify-center gap-1">
                           {typeof finalContent === 'string' || typeof finalContent === 'number' || typeof finalContent === 'boolean' ? (
                             <span className="truncate">{finalContent}</span>
                           ) : (

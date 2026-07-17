@@ -316,6 +316,7 @@ export default function Topbar({ onToggleSidebar }) {
                         onClick={() => {
                           navigate(action.route);
                           setQuickActionsOpen(false);
+                          setActiveDropdown(null);
                         }}
                         className="group rounded-[10px] border border-[#e2e8f0] bg-white p-4 text-left transition hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
                       >

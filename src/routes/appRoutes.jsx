@@ -10,6 +10,7 @@ import LoginPage from '../pages/LoginPage.jsx';
 import NotFoundPage from '../pages/NotFoundPage.jsx';
 import SecurityGuardAttendancePage from '../pages/SecurityGuardAttendancePage.jsx';
 import SettingsPage from '../pages/SettingsPage.jsx';
+import InstituteSetupPage from '../pages/InstituteSetupPage.jsx';
 import StudentAttendancePage from '../pages/StudentAttendancePage.jsx';
 import StudentListPage from '../pages/StudentListPage.jsx';
 import TeacherAttendancePage from '../pages/TeacherAttendancePage.jsx';
@@ -86,6 +87,8 @@ export const routes = [
   { path: '/leads', element: LeadsPage },
   { path: '/admissions/follow-ups', element: FollowUpsPage },
   { path: '/settings', element: SettingsPage },
+  { path: '/settings/institute', element: InstituteSetupPage },
+  { path: '/institute-setup', element: InstituteSetupPage },
   { path: '/auth/login', element: LoginPage },
   { path: '*', element: NotFoundPage },
 ];

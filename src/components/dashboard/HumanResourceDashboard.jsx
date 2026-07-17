@@ -68,6 +68,7 @@ const attendanceRows = Array.from({ length: 8 }).map((_, i) => ({
 export default function HumanResourceDashboard() {
   const [selectedType, setSelectedType] = useState(null);
   const [selectedDept, setSelectedDept] = useState(null);
+  const [selectedAttendanceStatus, setSelectedAttendanceStatus] = useState('PUNCH IN');
 
   const totalEmployees = useMemo(() => EMPLOYEE_TYPES.reduce((s, e) => s + e.count, 0), []);
 
@@ -79,6 +80,75 @@ export default function HumanResourceDashboard() {
   };
 
   const pieData = DEPARTMENTS.map((d) => ({ name: d.name, value: d.count, color: d.color }));
+
+  const filteredAttendanceRows = useMemo(() => {
+    if (selectedAttendanceStatus === 'PUNCH IN') {
+      return attendanceRows.filter((row) => row.status === 'PUNCH IN');
+    }
+    if (selectedAttendanceStatus === 'NO PUNCH') {
+      return attendanceRows.filter((row) => row.status === 'NO PUNCH');
+    }
+    return attendanceRows;
+  }, [selectedAttendanceStatus]);
+
+  const exportAttendanceCsv = () => {
+    const header = ['Employee Name', 'Employee Id', 'Department', 'Designation', 'Employee Type', 'Status', 'In Time', 'Out Time'];
+    const rows = filteredAttendanceRows.map((row) => [
+      row.name,
+      row.id,
+      row.department,
+      row.designation,
+      row.type,
+      row.status,
+      row.inTime,
+      row.outTime,
+    ]);
+    const csvContent = [header, ...rows]
+      .map((r) => r.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+      .join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.setAttribute('download', 'employee-attendance.csv');
+    anchor.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const printAttendance = () => {
+    const tableHtml = document.getElementById('todays-attendance-table')?.outerHTML;
+    if (!tableHtml) {
+      window.print();
+      return;
+    }
+
+    const printWindow = window.open('', '_blank', 'width=900,height=700');
+    if (!printWindow) return;
+
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Today's Employee Attendance</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 20px; color: #0f172a; }
+            table { width: 100%; border-collapse: collapse; }
+            th, td { border: 1px solid #cbd5e1; padding: 8px 10px; text-align: left; }
+            th { background: #111827; color: #ffffff; }
+            tbody tr:nth-child(even) { background: #f8fafc; }
+          </style>
+        </head>
+        <body>
+          <h1>Today's Employee Attendance</h1>
+          ${tableHtml}
+        </body>
+      </html>
+    `);
+
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+  };
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[linear-gradient(135deg,#f8fafc_0%,#eef2ff_45%,#f0fdf4_100%)] p-0">
@@ -288,8 +358,35 @@ export default function HumanResourceDashboard() {
 
           <div className="mt-4 grid gap-4 lg:grid-cols-[1.5fr_0.85fr]">
             <div id="todays-attendance">
-              <div className="mb-4 flex items-center justify-between">
-                <h3 className="text-lg font-semibold">Today's Employee Attendance</h3>
+              <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold">Today's Employee Attendance</h3>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <label className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Select</label>
+                  <select
+                    value={selectedAttendanceStatus}
+                    onChange={(event) => setSelectedAttendanceStatus(event.target.value)}
+                    className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-800 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
+                  >
+                    <option value="PUNCH IN">PUNCH IN</option>
+                    <option value="NO PUNCH">NO PUNCH</option>
+                  </select>
+                  <button
+                    type="button"
+                    onClick={exportAttendanceCsv}
+                    className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-700 transition hover:bg-slate-200"
+                  >
+                    CSV
+                  </button>
+                  <button
+                    type="button"
+                    onClick={printAttendance}
+                    className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-700 transition hover:bg-slate-200"
+                  >
+                    Print
+                  </button>
+                </div>
               </div>
               <DataTable
                 columns={[
@@ -302,10 +399,12 @@ export default function HumanResourceDashboard() {
                   { label: 'In Time', key: 'inTime' },
                   { label: 'Out Time', key: 'outTime' },
                 ]}
-                rows={attendanceRows}
+                rows={filteredAttendanceRows}
                 initialPageSize={8}
                 headerClassName="bg-slate-900 text-white"
                 tableMaxHeight="420px"
+                hideHeader
+                tableId="todays-attendance-table"
               />
             </div>
 

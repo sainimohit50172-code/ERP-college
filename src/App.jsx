@@ -18,6 +18,10 @@ import FollowUpRemarkReportPage from './pages/FollowUpRemarkReportPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import SettingsPage from './pages/SettingsPage.jsx';
+import InstituteSetupPage from './pages/InstituteSetupPage.jsx';
+import InstituteSetupPage2 from './pages/InstituteSetupPage2.jsx';
+import InstituteProfilePage from './pages/InstituteProfilePage.jsx';
+import AcademicSessionListPage from './pages/AcademicSessionListPage.jsx';
 import StudentListPage from './pages/StudentListPage.jsx';
 import StudentCollegeWisePage from './pages/StudentCollegeWisePage.jsx';
 import StudentCertificatesPage from './pages/StudentCertificatesPage.jsx';
@@ -430,6 +434,11 @@ function App() {
               <Route path="lesson/management" element={<ProtectedRoute moduleKey="lms"><PlaceholderPage title="Lesson Management" /></ProtectedRoute>} />
               <Route path="lesson/subject-wise-report" element={<ProtectedRoute moduleKey="lms"><PlaceholderPage title="Subject Wise Report" /></ProtectedRoute>} />
               <Route path="settings" element={<ProtectedRoute moduleKey="settings"><SettingsPage /></ProtectedRoute>} />
+              <Route path="settings/institute" element={<ProtectedRoute moduleKey="settings"><InstituteSetupPage /></ProtectedRoute>} />
+              <Route path="institute-setup" element={<ProtectedRoute moduleKey="settings"><InstituteSetupPage /></ProtectedRoute>} />
+              <Route path="settings/institute/profile" element={<ProtectedRoute moduleKey="settings"><InstituteProfilePage /></ProtectedRoute>} />
+              <Route path="settings/institute/sessions" element={<ProtectedRoute moduleKey="settings"><AcademicSessionListPage /></ProtectedRoute>} />
+              <Route path="settings/institute/page-2" element={<ProtectedRoute moduleKey="settings"><InstituteSetupPage2 /></ProtectedRoute>} />
               <Route path="users/preferences" element={<ProtectedRoute moduleKey="settings"><UsersPreferencesPage /></ProtectedRoute>} />
               <Route path="change-password" element={<ChangePasswordPage />} />
               <Route path="permissions" element={<ProtectedRoute moduleKey="permissionMatrix"><PermissionMatrixPage /></ProtectedRoute>} />

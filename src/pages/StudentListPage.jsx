@@ -513,8 +513,8 @@ export default function StudentListPage() {
 
   return (
     <>
-      <div className="min-h-screen bg-[#f5f6fa] text-slate-900">
-      <div className="w-full max-w-full px-4 pb-10 pt-6 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-[#f5f6fa] text-slate-900 overflow-x-hidden">
+      <div className="w-full max-w-full px-[10px] pb-10 pt-6">
         <div className="mb-6 flex flex-col gap-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="space-y-3">
@@ -689,65 +689,65 @@ export default function StudentListPage() {
               </div>
             )}
 
-            <div className="mt-6 overflow-x-auto rounded-[24px] border border-slate-200 bg-white">
-              <table className="min-w-full divide-y divide-slate-200 text-sm text-slate-900">
+            <div className="mt-6 overflow-hidden rounded-[24px] border border-slate-200 bg-white">
+              <table className="w-full table-fixed divide-y divide-slate-200 text-[11px] text-slate-900">
                 <thead className="bg-[#1e3a5f] text-white">
                   <tr>
-                    <th className="px-4 py-3 text-left font-semibold uppercase tracking-[0.18em]">
+                    <th className="w-[40px] px-2 py-2 text-left font-semibold uppercase tracking-[0.18em] text-[10px] whitespace-nowrap">
                       <input type="checkbox" checked={students.length > 0 && students.every((student) => selectedIds.includes(student.id))} onChange={toggleAll} className="h-4 w-4 rounded border-slate-300 text-sky-600" />
                     </th>
-                    <th className="px-4 py-3 text-left font-semibold uppercase tracking-[0.18em]">Photo</th>
-                    <th className="px-4 py-3 text-left font-semibold uppercase tracking-[0.18em]">Name</th>
-                    <th className="px-4 py-3 text-left font-semibold uppercase tracking-[0.18em]">Roll Number</th>
-                    <th className="px-4 py-3 text-left font-semibold uppercase tracking-[0.18em]">University Roll No.</th>
-                    <th className="px-4 py-3 text-left font-semibold uppercase tracking-[0.18em]">Parents Details</th>
-                    <th className="px-4 py-3 text-left font-semibold uppercase tracking-[0.18em]">Mobile No</th>
-                    <th className="px-4 py-3 text-left font-semibold uppercase tracking-[0.18em]">College / Course-Section</th>
-                    <th className="px-4 py-3 text-left font-semibold uppercase tracking-[0.18em]">Semester</th>
-                    <th className="px-4 py-3 text-left font-semibold uppercase tracking-[0.18em]">Status</th>
-                    <th className="px-4 py-3 text-left font-semibold uppercase tracking-[0.18em]">Action</th>
+                    <th className="w-[45px] px-2 py-2 text-left font-semibold uppercase tracking-[0.18em] text-[10px] whitespace-nowrap">Photo</th>
+                    <th className="w-[18%] px-2 py-2 text-left font-semibold uppercase tracking-[0.18em] text-[10px] whitespace-nowrap">Name</th>
+                    <th className="w-[8%] px-2 py-2 text-left font-semibold uppercase tracking-[0.18em] text-[10px] whitespace-nowrap">Roll Number</th>
+                    <th className="w-[10%] px-2 py-2 text-left font-semibold uppercase tracking-[0.18em] text-[10px] whitespace-nowrap">University Roll No.</th>
+                    <th className="w-[12%] px-2 py-2 text-left font-semibold uppercase tracking-[0.18em] text-[10px] whitespace-nowrap">Parents Details</th>
+                    <th className="w-[8%] px-2 py-2 text-left font-semibold uppercase tracking-[0.18em] text-[10px] whitespace-nowrap">Mobile No</th>
+                    <th className="w-[18%] px-2 py-2 text-left font-semibold uppercase tracking-[0.18em] text-[10px] whitespace-nowrap">College / Course-Section</th>
+                    <th className="w-[6%] px-2 py-2 text-left font-semibold uppercase tracking-[0.18em] text-[10px] whitespace-nowrap">Semester</th>
+                    <th className="w-[6%] px-2 py-2 text-left font-semibold uppercase tracking-[0.18em] text-[10px] whitespace-nowrap">Status</th>
+                    <th className="w-[9%] px-2 py-2 text-left font-semibold uppercase tracking-[0.18em] text-[10px] whitespace-nowrap">Action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200 bg-white">
                   {studentsRows.length === 0 ? (
                     <tr>
-                      <td colSpan="11" className="px-4 py-10 text-center text-sm text-slate-500">No students found. Try widening your search or filters.</td>
+                      <td colSpan="11" className="px-2 py-10 text-center text-[11px] text-slate-500">No students found. Try widening your search or filters.</td>
                     </tr>
                   ) : (
                     studentsRows.map((row) => (
                       <tr key={row.id} className="hover:bg-slate-50">
-                        <td className="px-4 py-3">
+                        <td className="px-2 py-2 align-top whitespace-nowrap text-[11px]">
                           <input type="checkbox" checked={selectedIds.includes(row.id)} onChange={() => toggleSelection(row.id)} className="h-4 w-4 rounded border-slate-300 text-sky-600" />
                         </td>
-                        <td className="px-4 py-3">
+                        <td className="px-2 py-2 align-top whitespace-nowrap text-[11px]">
                           {row.photo ? (
-                            <img src={row.photo} alt={row.name} className="h-10 w-10 rounded-full object-cover" />
+                            <img src={row.photo} alt={row.name} className="h-8 w-8 rounded-full object-cover" />
                           ) : (
-                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 text-xs font-semibold uppercase text-slate-600">No</div>
+                            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-[10px] font-semibold uppercase text-slate-600">No</div>
                           )}
                         </td>
-                        <td className="px-4 py-3">
+                        <td className="px-2 py-2 align-top whitespace-nowrap text-[11px]">
                           <button type="button" onClick={() => openStudent(row.student)} className="text-left text-slate-900 hover:text-sky-600">
-                            <div className="font-semibold">{row.name || '—'}</div>
-                            <div className="text-xs text-slate-500">{row.student.email || 'No email'}</div>
+                            <div className="max-w-[150px] truncate font-semibold">{row.name || '—'}</div>
+                            <div className="max-w-[170px] truncate text-[10px] text-slate-500">{row.student.email || 'No email'}</div>
                           </button>
                         </td>
-                        <td className="px-4 py-3">{row.rollNumber || '—'}</td>
-                        <td className="px-4 py-3">{row.universityRollNumber || '—'}</td>
-                        <td className="px-4 py-3">{row.parentsDetails || '—'}</td>
-                        <td className="px-4 py-3">{row.mobile || '—'}</td>
-                        <td className="px-4 py-3">{row.collegeCourse || '—'}</td>
-                        <td className="px-4 py-3">{row.semester || '—'}</td>
-                        <td className="px-4 py-3"><StatusBadge status={row.status} /></td>
-                        <td className="px-4 py-3">
+                        <td className="px-2 py-2 align-top whitespace-nowrap text-[11px]">{row.rollNumber || '—'}</td>
+                        <td className="px-2 py-2 align-top whitespace-nowrap text-[11px]">{row.universityRollNumber || '—'}</td>
+                        <td className="px-2 py-2 align-top whitespace-nowrap text-[11px] max-w-[150px] truncate">{row.parentsDetails || '—'}</td>
+                        <td className="px-2 py-2 align-top whitespace-nowrap text-[11px]">{row.mobile || '—'}</td>
+                        <td className="px-2 py-2 align-top whitespace-nowrap text-[11px] max-w-[170px] truncate">{row.collegeCourse || '—'}</td>
+                        <td className="px-2 py-2 align-top whitespace-nowrap text-[11px]">{row.semester || '—'}</td>
+                        <td className="px-2 py-2 align-top whitespace-nowrap text-[11px]"><StatusBadge status={row.status} /></td>
+                        <td className="px-2 py-2 align-top whitespace-nowrap text-[11px]">
                           <div className="flex flex-wrap gap-2">
                             <WithPermission moduleKey="students" action="edit">
-                              <button type="button" onClick={() => openEditForm(row.student)} className="rounded-2xl bg-slate-800 px-3 py-2 text-xs font-semibold text-white transition hover:bg-slate-700">
+                              <button type="button" onClick={() => openEditForm(row.student)} className="rounded-2xl bg-slate-800 px-2 py-1 text-[10px] font-semibold text-white transition hover:bg-slate-700">
                                 <FaEdit className="mr-1 inline-block" /> Edit
                               </button>
                             </WithPermission>
                             <WithPermission moduleKey="students" action="delete">
-                              <button type="button" onClick={() => handleDelete(row.student)} className="rounded-2xl bg-rose-500/10 px-3 py-2 text-xs font-semibold text-rose-700 transition hover:bg-rose-500/20">
+                              <button type="button" onClick={() => handleDelete(row.student)} className="rounded-2xl bg-rose-500/10 px-2 py-1 text-[10px] font-semibold text-rose-700 transition hover:bg-rose-500/20">
                                 <FaTrash className="mr-1 inline-block" /> Delete
                               </button>
                             </WithPermission>

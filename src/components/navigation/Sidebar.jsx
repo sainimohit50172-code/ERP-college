@@ -1,4 +1,4 @@
-import { useLocation, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import {
   Home,
@@ -57,6 +57,7 @@ const MENU_ITEMS = [
 ];
 
 export default function Sidebar({ isOpen, onClose }) {
+  const [, setDropdownTop] = useState(0);
   const [showEmployeePortal, setShowEmployeePortal] = useState(false);
   const [showAdmissionDropdown, setShowAdmissionDropdown] = useState(false);
   const [showStudentDropdown, setShowStudentDropdown] = useState(false);
@@ -95,7 +96,6 @@ export default function Sidebar({ isOpen, onClose }) {
   const communicationRef = useRef(null);
   const transportRef = useRef(null);
   const hostelRef = useRef(null);
-  const [dropdownTop, setDropdownTop] = useState(0);
 
   const EMPLOYEE_PORTAL_ITEMS = [
     { id: 'profile', label: 'Profile', to: '/employees/profile' },
@@ -111,11 +111,6 @@ export default function Sidebar({ isOpen, onClose }) {
   ];
 
   const handleEmployeePortalClick = () => {
-    if (employeePortalRef.current) {
-      const rect = employeePortalRef.current.getBoundingClientRect();
-      const topPosition = Math.max(rect.top, 56);
-      setDropdownTop(topPosition);
-    }
     setShowAdmissionDropdown(false);
     setShowStudentDropdown(false);
     setShowEmployeePortal((prev) => !prev);
@@ -902,7 +897,30 @@ export default function Sidebar({ isOpen, onClose }) {
 
   useEffect(() => {
     const isStudentSectionRoute = location.pathname === '/students' || location.pathname.startsWith('/students/');
+    const isInstituteSetupRoute = location.pathname === '/settings/institute' || location.pathname === '/institute-setup' || location.pathname.startsWith('/settings/institute/');
     setShowStudentDropdown(isStudentSectionRoute);
+
+    if (isInstituteSetupRoute) {
+      setShowEmployeePortal(false);
+      setShowAdmissionDropdown(false);
+      setShowStudentDropdown(false);
+      setShowFeeDropdown(false);
+      setShowAttendanceDropdown(false);
+      setShowExaminationDropdown(false);
+      setShowCOEDropdown(false);
+      setShowFeedbackDropdown(false);
+      setShowUniversityDropdown(false);
+      setShowLessonDropdown(false);
+      setShowHRMDropdown(false);
+      setShowLibraryDropdown(false);
+      setShowFrontDeskDropdown(false);
+      setShowCommunicationDropdown(false);
+      setShowTransportDropdown(false);
+      setShowHostelDropdown(false);
+      setShowAdvancedDropdown(false);
+      setShowAnalyticsDropdown(false);
+      setShowBulkOperationsDropdown(false);
+    }
   }, [location.pathname]);
 
   // Close on escape for mobile
@@ -915,6 +933,7 @@ export default function Sidebar({ isOpen, onClose }) {
   }, [isOpen, onClose]);
 
   const items = useMemo(() => MENU_ITEMS, []);
+  const isInstituteSetupRoute = location.pathname === '/settings/institute' || location.pathname === '/institute-setup' || location.pathname.startsWith('/settings/institute/');
 
   const handleNavItemMouseEnter = (e) => {
     if (e.currentTarget.dataset.active === 'true') return;
@@ -949,10 +968,11 @@ export default function Sidebar({ isOpen, onClose }) {
   };
 
   const isStudentMenuItemActive = (to) => Boolean(to && (location.pathname === to || location.pathname.startsWith(`${to}/`)));
+  const isSidebarLinkActive = (to) => !isInstituteSetupRoute && Boolean(to && (location.pathname === to || location.pathname.startsWith(`${to}/`)));
 
   const renderLink = (item) => {
     const Icon = item.icon;
-    const isActive = item.to && (location.pathname === item.to || location.pathname.startsWith(`${item.to}/`));
+    const isActive = isSidebarLinkActive(item.to);
     const navItemStyle = {
       height: 44,
       color: isActive ? '#ffffff' : '#86efac',

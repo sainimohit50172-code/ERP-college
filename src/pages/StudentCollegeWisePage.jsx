@@ -409,8 +409,8 @@ export default function StudentCollegeWisePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f6fa] text-slate-900">
-      <div className="w-full max-w-full px-4 pb-10 pt-6 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#f5f6fa] text-slate-900 overflow-x-hidden">
+      <div className="w-full max-w-full px-[10px] pb-10 pt-6">
         <div className="flex flex-col gap-2">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
