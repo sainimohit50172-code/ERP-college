@@ -173,7 +173,7 @@ button, input, textarea, select {
 .btn { @apply inline-flex items-center justify-center gap-2 rounded-2xl px-3 py-2 text-sm font-medium transition-transform; }
 .btn:focus { outline: 2px solid rgba(16,185,129,0.12); outline-offset: 2px; }
 .btn-primary { background-color: #16a34a; color: white; box-shadow: 0 8px 24px rgba(22,163,74,0.14); }
-.btn-primary:hover { transform: scale(1.04); background-color: #13803d; }
+.btn-primary:hover { transform: scale(1.04); background-color: #15803d; }
 .btn-secondary { background-color: white; border: 1px solid rgba(15,23,42,0.06); color: var(--heading-color); }
 .btn-danger { background-color: #ef4444; color: white; }
 .btn-warning { background-color: #f59e0b; color: white; }
@@ -260,9 +260,181 @@ table td {
   color: #0f5132 !important;
 }
 
-/* Ensure hover utility variants that switch to emerald-500/700 follow the same color */
-.hover\:bg-emerald-500:hover, .hover\:bg-emerald-600:hover, .hover\:bg-emerald-700:hover {
-  background-color: #13803d !important;
+/* Target only button-like primary filled actions to standardize sizing and interactions */
+button.btn-primary,
+button.bg-emerald-500,
+button.bg-emerald-600,
+button.bg-emerald-700,
+input[type="button"].bg-emerald-500,
+input[type="button"].bg-emerald-600,
+input[type="button"].bg-emerald-700,
+.btn.btn-primary {
+  background-color: #16a34a !important;
+  border: 1px solid #16a34a !important;
+  color: #ffffff !important;
+  border-radius: 10px !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  height: 44px !important;
+  padding: 0 20px !important;
+  cursor: pointer !important;
+  transition: all 0.25s ease !important;
+}
+
+button.btn-primary:hover,
+button.bg-emerald-500:hover,
+button.bg-emerald-600:hover,
+button.bg-emerald-700:hover,
+input[type="button"].bg-emerald-500:hover,
+input[type="button"].bg-emerald-600:hover,
+input[type="button"].bg-emerald-700:hover,
+.btn.btn-primary:hover {
+  background-color: #15803d !important;
+  border-color: #15803d !important;
+  box-shadow: 0 8px 20px rgba(22,163,74,0.25) !important;
+}
+
+button.btn-primary:active,
+button.bg-emerald-500:active,
+button.bg-emerald-600:active,
+button.bg-emerald-700:active,
+input[type="button"].bg-emerald-500:active,
+input[type="button"].bg-emerald-600:active,
+input[type="button"].bg-emerald-700:active,
+.btn.btn-primary:active {
+  background-color: #166534 !important;
+  border-color: #166534 !important;
+}
+
+button.btn-primary:focus,
+button.bg-emerald-500:focus,
+button.bg-emerald-600:focus,
+button.bg-emerald-700:focus,
+input[type="button"].bg-emerald-500:focus,
+input[type="button"].bg-emerald-600:focus,
+input[type="button"].bg-emerald-700:focus,
+.btn.btn-primary:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 4px rgba(22,163,74,0.35) !important;
+}
+
+button[disabled].btn-primary,
+button[disabled].bg-emerald-500,
+button[disabled].bg-emerald-600,
+button[disabled].bg-emerald-700,
+input[disabled][type="button"].bg-emerald-500,
+input[disabled][type="button"].bg-emerald-600,
+input[disabled][type="button"].bg-emerald-700,
+.btn.btn-primary[disabled],
+.btn-primary[disabled] {
+  background-color: #bbf7d0 !important;
+  color: #4b5563 !important;
+  border-color: #bbf7d0 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+}
+
+/*
+  Ensure any button/link/input that currently uses navy/blue utility classes
+  is visually converted to the new primary green without changing non-button
+  elements like cards or headers. This uses attribute selectors to only match
+  elements whose class list contains the blue utility.
+*/
+button[class*="bg-[#1e3a5f]"],
+button[class*="bg-#1e3a5f"],
+button[class*="bg-primary-navy"],
+button[class*="bg-slate-900"],
+button[class*="bg-slate-800"],
+button[class*="bg-slate-950"],
+a[class*="bg-[#1e3a5f]"],
+a[class*="bg-#1e3a5f"],
+a[class*="bg-primary-navy"],
+a[class*="bg-slate-900"],
+a[class*="bg-slate-800"],
+a[class*="bg-slate-950"],
+input[type="button"][class*="bg-[#1e3a5f]"],
+input[type="button"][class*="bg-#1e3a5f"],
+input[type="button"][class*="bg-primary-navy"],
+input[type="button"][class*="bg-slate-900"],
+input[type="button"][class*="bg-slate-800"],
+input[type="button"][class*="bg-slate-950"] {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+button[class*="bg-[#1e3a5f]"]:hover,
+button[class*="bg-#1e3a5f"]:hover,
+button[class*="bg-primary-navy"]:hover,
+button[class*="bg-slate-900"]:hover,
+button[class*="bg-slate-800"]:hover,
+button[class*="bg-slate-950"]:hover,
+a[class*="bg-[#1e3a5f]"]:hover,
+a[class*="bg-#1e3a5f"]:hover,
+a[class*="bg-primary-navy"]:hover,
+a[class*="bg-slate-900"]:hover,
+a[class*="bg-slate-800"]:hover,
+a[class*="bg-slate-950"]:hover,
+input[type="button"][class*="bg-[#1e3a5f]"]:hover,
+input[type="button"][class*="bg-#1e3a5f"]:hover,
+input[type="button"][class*="bg-primary-navy"]:hover,
+input[type="button"][class*="bg-slate-900"]:hover,
+input[type="button"][class*="bg-slate-800"]:hover,
+input[type="button"][class*="bg-slate-950"]:hover {
+  background-color: #15803d !important;
+  border-color: #15803d !important;
+  box-shadow: 0 8px 20px rgba(22,163,74,0.25) !important;
+}
+
+button[class*="bg-[#1e3a5f]"]:active,
+button[class*="bg-#1e3a5f"]:active,
+button[class*="bg-primary-navy"]:active,
+button[class*="bg-slate-900"]:active,
+button[class*="bg-slate-800"]:active,
+button[class*="bg-slate-950"]:active,
+input[type="button"][class*="bg-[#1e3a5f]"]:active,
+input[type="button"][class*="bg-#1e3a5f"]:active,
+input[type="button"][class*="bg-primary-navy"]:active,
+input[type="button"][class*="bg-slate-900"]:active,
+input[type="button"][class*="bg-slate-800"]:active,
+input[type="button"][class*="bg-slate-950"]:active {
+  background-color: #166534 !important;
+  border-color: #166534 !important;
+}
+
+button[class*="bg-[#1e3a5f]"]:focus,
+button[class*="bg-#1e3a5f"]:focus,
+button[class*="bg-primary-navy"]:focus,
+button[class*="bg-slate-900"]:focus,
+button[class*="bg-slate-800"]:focus,
+button[class*="bg-slate-950"]:focus,
+input[type="button"][class*="bg-[#1e3a5f]"]:focus,
+input[type="button"][class*="bg-#1e3a5f"]:focus,
+input[type="button"][class*="bg-primary-navy"]:focus,
+input[type="button"][class*="bg-slate-900"]:focus,
+input[type="button"][class*="bg-slate-800"]:focus,
+input[type="button"][class*="bg-slate-950"]:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 4px rgba(22,163,74,0.35) !important;
+}
+
+button[disabled][class*="bg-[#1e3a5f]"],
+button[disabled][class*="bg-#1e3a5f"],
+button[disabled][class*="bg-primary-navy"],
+button[disabled][class*="bg-slate-900"],
+button[disabled][class*="bg-slate-800"],
+button[disabled][class*="bg-slate-950"],
+input[disabled][type="button"][class*="bg-[#1e3a5f]"],
+input[disabled][type="button"][class*="bg-#1e3a5f"],
+input[disabled][type="button"][class*="bg-primary-navy"],
+input[disabled][type="button"][class*="bg-slate-900"],
+input[disabled][type="button"][class*="bg-slate-800"],
+input[disabled][type="button"][class*="bg-slate-950"] {
+  background-color: #bbf7d0 !important;
+  color: #4b5563 !important;
+  border-color: #bbf7d0 !important;
+  cursor: not-allowed !important;
 }
 
 table th span,

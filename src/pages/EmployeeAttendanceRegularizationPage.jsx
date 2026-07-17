@@ -7,6 +7,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import Modal from '../components/ui/Modal.jsx';
+import ViewButton from '../components/ui/ViewButton.jsx';
 
 const tabItems = [
   { id: 'myData', label: 'My Data' },
