@@ -91,7 +91,7 @@ export default function UpdateRollNumberPage() {
   };
 
   return (
-    <div className="px-[10px] mt-[10px]">
+    <div className="mt-[10px]">
       <div className="space-y-4">
         <div className="rounded-3xl border border-slate-200 bg-white p-4">
           <h1 className="text-2xl font-semibold">Update Roll Number</h1>

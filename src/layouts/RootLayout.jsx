@@ -17,8 +17,8 @@ export default function RootLayout() {
       <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="relative min-h-screen w-full overflow-x-hidden transition-all duration-200 md:ml-[200px] md:w-[calc(100%-200px)] bg-[#f5f6fa]">
         <Topbar onToggleSidebar={() => setSidebarOpen((s) => !s)} />
-        <main className="min-h-screen overflow-x-hidden bg-[#f5f6fa] px-[10px] pb-6 pt-20">
-          <div className="w-full min-w-0">
+        <main className="min-h-screen overflow-x-hidden bg-[#f5f6fa] pb-10 pt-20">
+          <div className="erp-content-wrapper">
             <ErrorBoundary>
               <Outlet />
             </ErrorBoundary>

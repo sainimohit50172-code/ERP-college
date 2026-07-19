@@ -514,7 +514,7 @@ export default function StudentListPage() {
   return (
     <>
       <div className="min-h-screen bg-[#f5f6fa] text-slate-900 overflow-x-hidden">
-      <div className="w-full max-w-full px-[10px] pb-10 pt-6">
+      <div className="w-full max-w-full pb-10 pt-6">
         <div className="mb-6 flex flex-col gap-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="space-y-3">
@@ -690,7 +690,7 @@ export default function StudentListPage() {
             )}
 
             <div className="mt-6 overflow-hidden rounded-[24px] border border-slate-200 bg-white">
-              <table className="w-full table-fixed divide-y divide-slate-200 text-[11px] text-slate-900">
+              <table className="student-list-table w-full table-fixed divide-y divide-slate-200 text-[11px] text-slate-900">
                 <thead className="bg-[#1e3a5f] text-white">
                   <tr>
                     <th className="w-[40px] px-2 py-2 text-left font-semibold uppercase tracking-[0.18em] text-[10px] whitespace-nowrap">

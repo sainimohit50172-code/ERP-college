@@ -13,6 +13,7 @@ from app.api.v1.examinations.router import router as examinations_router
 from app.api.v1.fees.router import router as fees_router
 from app.api.v1.finance.router import router as finance_router
 from app.api.v1.hostel.router import router as hostel_router
+from app.api.v1.helpdesk.router import router as helpdesk_router
 from app.api.v1.inventory.router import router as inventory_router
 from app.api.v1.library.router import router as library_router
 from app.api.v1.notifications.router import router as notifications_router
@@ -70,6 +71,7 @@ routers = [
     fees_router,
     finance_router,
     hostel_router,
+    helpdesk_router,
     inventory_router,
     library_router,
     notifications_router,

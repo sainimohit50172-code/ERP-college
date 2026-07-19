@@ -1,0 +1,553 @@
+﻿diff --git a/src/components/ui/DataTable.jsx b/src/components/ui/DataTable.jsx
+index d8abf28..f0e1889 100644
+--- a/src/components/ui/DataTable.jsx
++++ b/src/components/ui/DataTable.jsx
+@@ -226,11 +226,10 @@ export default function DataTable({ columns, rows, loading = false, placeholder
+           className="rounded-[20px] border border-slate-200/70 overflow-hidden"
+           style={tableMaxHeight ? { maxHeight: tableMaxHeight, overflowY: 'auto' } : undefined}
+         >
+-          <table id={tableId} className="w-full table-fixed border-separate text-[10px] text-slate-900" style={{ borderSpacing: '1px 0' }}>
++          <table id={tableId} data-erp-table className="w-full erp-data-table table-fixed text-[10px] text-slate-900">
+             <colgroup>
+               {columnsDefinition.map((column) => {
+                 const minW = getColumnMinWidth(column);
+-                // Use explicit pixel width when we have a px-based min width (ensures action/buttons visible)
+                 const widthStyle = minW && minW.endsWith('px') ? minW : undefined;
+                 return <col key={column.key} style={{ minWidth: minW !== 'auto' ? minW : undefined, width: widthStyle }} />;
+               })}
+@@ -266,8 +265,9 @@ export default function DataTable({ columns, rows, loading = false, placeholder
+               {paginatedRows.map((row, rowIndex) => (
+                 <tr
+                   key={`row-${rowIndex}`}
++                  data-erp-row
+                   onClick={() => onRowClick && onRowClick(row)}
+-                  className={`${rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50'} hover:bg-blue-100 transition-colors border-b border-slate-200 ${onRowClick ? 'cursor-pointer' : ''}`}
++                  className={`${rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50'} erp-data-row transition-transform duration-250 ease-in-out ${onRowClick ? 'cursor-pointer' : ''}`}
+                 >
+                     {columnsDefinition.map((column, columnIndex) => {
+                     const cellValue = getCellValue(row, column, columnIndex);
+diff --git a/src/components/ui/DataTableAdvanced.jsx b/src/components/ui/DataTableAdvanced.jsx
+index 0fb2cc5..f6faf94 100644
+--- a/src/components/ui/DataTableAdvanced.jsx
++++ b/src/components/ui/DataTableAdvanced.jsx
+@@ -160,7 +160,7 @@ export default function DataTableAdvanced({
+         <EmptyState title="No matching records" description="Try a different search term or change the filters." />
+       ) : (
+         <div className="overflow-x-auto rounded-[20px] border border-slate-200/70">
+-          <table ref={tableRef} className="w-full table-auto text-left text-[11px] text-slate-900">
++          <table ref={tableRef} data-erp-table className="w-full erp-data-table table-auto text-left text-[11px] text-slate-900">
+             <thead className="bg-[#1e3a5f] text-white">
+               <tr>
+                 {columns.map((column) => {
+@@ -188,7 +188,7 @@ export default function DataTableAdvanced({
+             </thead>
+             <tbody>
+               {paginatedRows.map((row, index) => (
+-                <tr key={`row-${index}`} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
++                <tr key={`row-${index}`} data-erp-row className={`${index % 2 === 0 ? 'bg-white' : 'bg-slate-50'} erp-data-row transition-transform duration-250 ease-in-out`}>
+                     {columns.map((column) => {
+                     const key = String(column.key || '').toLowerCase();
+                     const width = getColumnMinWidth(column);
+diff --git a/src/pages/UpdateRollNumberPage.jsx b/src/pages/UpdateRollNumberPage.jsx
+index 5293018..7a9c8f0 100644
+--- a/src/pages/UpdateRollNumberPage.jsx
++++ b/src/pages/UpdateRollNumberPage.jsx
+@@ -92,6 +92,53 @@ export default function UpdateRollNumberPage() {
+ 
+   return (
+     <div className="px-[10px] mt-[10px]">
++      <style>{`
++        .update-roll-number-table table {
++          width: 100% !important;
++          table-layout: auto !important;
++          border-collapse: collapse !important;
++        }
++
++        .update-roll-number-table table thead {
++          display: table-header-group !important;
++          background-color: #16a34a !important;
++        }
++
++        .update-roll-number-table table tbody {
++          display: table-row-group !important;
++        }
++
++        .update-roll-number-table table tr {
++          display: table-row !important;
++        }
++
++        .update-roll-number-table table th,
++        .update-roll-number-table table td {
++          display: table-cell !important;
++          vertical-align: middle !important;
++        }
++
++        .update-roll-number-table table thead th {
++          color: #ffffff !important;
++          font-weight: 700 !important;
++          font-size: 13px !important;
++          letter-spacing: 0.5px !important;
++          text-transform: uppercase !important;
++          height: 48px !important;
++          min-height: 48px !important;
++          padding: 14px 16px !important;
++          background-color: #16a34a !important;
++          white-space: nowrap !important;
++        }
++
++        .update-roll-number-table table thead th:first-child {
++          border-top-left-radius: 16px !important;
++        }
++
++        .update-roll-number-table table thead th:last-child {
++          border-top-right-radius: 16px !important;
++        }
++      `}</style>
+       <div className="space-y-4">
+         <div className="rounded-3xl border border-slate-200 bg-white p-4">
+           <h1 className="text-2xl font-semibold">Update Roll Number</h1>
+@@ -99,6 +146,7 @@ export default function UpdateRollNumberPage() {
+         </div>
+ 
+         <DataTableAdvanced
++          className="update-roll-number-table"
+           columns={columns}
+           rows={rows}
+           loading={isLoading}
+diff --git a/src/styles/index.css b/src/styles/index.css
+index fa45de9..fdcd758 100644
+--- a/src/styles/index.css
++++ b/src/styles/index.css
+@@ -191,7 +191,8 @@ button, input, textarea, select {
+ }
+ .erp-card:hover,
+ .erp-card-dark:hover,
+-.erp-card-action:hover {
++.erp-card-action:hover,
++.hover-gradient-border:hover {
+   transform: translateY(-2px);
+   box-shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
+ }
+@@ -205,6 +206,143 @@ button, input, textarea, select {
+   @apply cursor-pointer bg-slate-50;
+ }
+ 
++/* Global ERP hover treatment for cards, panels, buttons, and form blocks across all pages */
++:where(button, a, label, div, section, article, aside, header, main, nav, form, input, textarea, select)
++  [class*='rounded-']:not(.data-table *):not(table *):not(.no-hover-erp):hover,
++:where(button, a, label, div, section, article, aside, header, main, nav, form, input, textarea, select)
++  [class*='rounded-[']:not(.data-table *):not(table *):not(.no-hover-erp):hover,
++:where(button, a, label, div, section, article, aside, header, main, nav, form, input, textarea, select)
++  [class*='border']:not(.data-table *):not(table *):not(.no-hover-erp):hover,
++:where(button, a, label, div, section, article, aside, header, main, nav, form, input, textarea, select)
++  [class*='shadow']:not(.data-table *):not(table *):not(.no-hover-erp):hover {
++  transform: translateY(-1px);
++  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12) !important;
++  border-color: rgba(22, 163, 74, 0.35) !important;
++  border-image-source: linear-gradient(135deg, rgba(22,163,74,0.85), rgba(34,197,94,0.75), rgba(14,165,233,0.45)) !important;
++  border-image-slice: 1 !important;
++  border-width: 1px !important;
++  border-style: solid !important;
++}
++
++/* ERP green theme overrides for buffer boxes and non-brand blue accents */
++.bg-sky-50,
++.bg-sky-100,
++.bg-sky-200,
++.bg-sky-300,
++.bg-blue-50,
++.bg-blue-100,
++.bg-blue-200,
++.bg-blue-300,
++.bg-cyan-50,
++.bg-cyan-100,
++.bg-cyan-200,
++.bg-fuchsia-50,
++.bg-fuchsia-100,
++.bg-amber-50,
++.bg-amber-100,
++.bg-rose-50,
++.bg-rose-100,
++.bg-yellow-50,
++.bg-yellow-100,
++.bg-purple-50,
++.bg-purple-100,
++.bg-indigo-50,
++.bg-indigo-100,
++.bg-lime-50,
++.bg-lime-100,
++.bg-violet-50,
++.bg-violet-100 {
++  background-color: #dcfce7 !important;
++}
++.text-sky-600,
++.text-sky-700,
++.text-sky-800,
++.text-blue-600,
++.text-blue-700,
++.text-blue-800,
++.text-cyan-600,
++.text-cyan-700,
++.text-fuchsia-600,
++.text-amber-600,
++.text-rose-600,
++.text-yellow-600,
++.text-purple-600,
++.text-indigo-600,
++.text-lime-600,
++.text-violet-600 {
++  color: #14532d !important;
++}
++.border-sky-200,
++.border-sky-300,
++.border-blue-200,
++.border-blue-300,
++.border-cyan-200,
++.border-fuchsia-200,
++.border-amber-200,
++.border-rose-200,
++.border-yellow-200,
++.border-purple-200,
++.border-indigo-200,
++.border-lime-200,
++.border-violet-200 {
++  border-color: #86efac !important;
++}
++
++.hover-gradient-border {
++  transition: all 0.2s ease;
++  border: 1px solid rgba(16, 185, 129, 0.25);
++}
++
++.hover-gradient-border:hover,
++.rounded[class*="border"]:hover,
++.rounded[class*="border-"]:hover,
++button.rounded[class*="border"]:hover,
++button.rounded[class*="border-"]:hover,
++div.rounded[class*="border"]:hover,
++section.rounded[class*="border"]:hover,
++article.rounded[class*="border"]:hover,
++aside.rounded[class*="border"]:hover,
++header.rounded[class*="border"]:hover,
++main.rounded[class*="border"]:hover,
++input.rounded[class*="border"]:hover,
++textarea.rounded[class*="border"]:hover {
++  border-color: transparent !important;
++  border-image-source: linear-gradient(135deg, #16a34a, #22c55e, #0ea5e9, #c084fc) !important;
++  border-image-slice: 1 !important;
++  border-width: 1px !important;
++  border-style: solid !important;
++}
++
++/* Apply the ERP hover gradient + lift to most rounded bordered elements across the app
++   Exclude data tables (selectors below override inside .data-table) */
++.rounded[class*="border"]:hover,
++button.rounded[class*="border"]:hover,
++input.rounded[class*="border"]:hover,
++textarea.rounded[class*="border"]:hover,
++div.rounded[class*="border"]:hover,
++section.rounded[class*="border"]:hover,
++article.rounded[class*="border"]:hover {
++  border-color: transparent !important;
++  border-image-source: linear-gradient(135deg, #16a34a, #22c55e, #0ea5e9, #c084fc) !important;
++  border-image-slice: 1 !important;
++  border-width: 1px !important;
++  border-style: solid !important;
++  transform: translateY(-3px);
++  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.18) !important;
++}
++
++/* Remove hover effects inside data tables to avoid visual noise */
++.data-table .rounded[class*="border"]:hover,
++.data-table button.rounded[class*="border"]:hover,
++.data-table input.rounded[class*="border"]:hover,
++.data-table textarea.rounded[class*="border"]:hover,
++.data-table div.rounded[class*="border"]:hover {
++  border-image-source: none !important;
++  box-shadow: none !important;
++  transform: none !important;
++  border-color: rgba(15,23,42,0.06) !important;
++}
++
+ /* Card tokens for modules */
+ .card-students { background-color: #E7FFF2; color: var(--heading-color); }
+ .card-teachers { background-color: #DDEEFF; color: var(--heading-color); }
+@@ -220,16 +358,28 @@ button, input, textarea, select {
+ .data-table { overflow: hidden; border-radius: 1rem; }
+ 
+ /* Compact tables for ERP pages */
++.erp-data-table,
++.overflow-x-auto > table,
++.data-table table,
++table[data-erp-table],
++.overflow-x-auto table {
++  width: auto;
++  min-width: 100%;
++  border-collapse: collapse !important;
++  border-spacing: 0 !important;
++  table-layout: auto;
++}
++
+ table {
+   width: 100%;
+   border-collapse: collapse;
+   font-size: 0.72rem;
+-  table-layout: fixed;
++  table-layout: auto;
+ }
+ 
+ table th,
+ table td {
+-  padding: 0.3rem 0.4rem !important;
++  padding: 0.35rem 0.45rem !important;
+   line-height: 1.2;
+   min-width: 0 !important;
+   overflow: hidden !important;
+@@ -237,18 +387,43 @@ table td {
+ }
+ 
+ table th {
+-  text-align: center !important;
+-  font-size: 0.68rem !important;
+-  letter-spacing: 0.09em;
+-  text-transform: uppercase;
+-  white-space: normal !important;
++  text-align: left !important;
++  font-size: 13px !important;
++  letter-spacing: 0.6px !important;
++  text-transform: uppercase !important;
++  white-space: nowrap !important;
+   background-color: #16a34a !important;
+   color: white !important;
++  font-weight: 700 !important;
++  height: 48px !important;
++  min-height: 48px !important;
++  padding: 14px 16px !important;
++  vertical-align: middle !important;
++  border-bottom: 2px solid rgba(255, 255, 255, 0.16) !important;
++}
++
++table th:first-child {
++  padding-left: 16px !important;
++}
++
++table th:last-child {
++  padding-right: 16px !important;
+ }
+ 
+ table td {
+   font-size: 0.72rem !important;
+-  white-space: nowrap !important;
++  white-space: normal !important;
++}
++
++table thead th {
++  position: sticky;
++  top: 0;
++  z-index: 3;
++  background-clip: padding-box;
++}
++
++table thead {
++  background: transparent;
+ }
+ 
+ /* Override Tailwind emerald utilities for primary action buttons to use #16a34a */
+@@ -442,75 +617,120 @@ table td span {
+   display: block;
+ }
+ 
+-/* Compact ERP data tables */
+-table {
++/* Compact shared ERP data tables */
++.erp-data-table,
++table[data-erp-table] {
+   width: 100%;
+-  border-collapse: collapse;
+-  font-size: 0.75rem;
+-  table-layout: auto;
++  border-collapse: collapse !important;
++  border-spacing: 0 !important;
+ }
+ 
+-table th,
+-table td {
++.erp-data-table th,
++.erp-data-table td,
++table[data-erp-table] th,
++table[data-erp-table] td {
+   padding: 0.35rem 0.45rem !important;
+   line-height: 1.2;
+   min-width: 0 !important;
++  overflow: hidden !important;
++  text-overflow: ellipsis !important;
+ }
+ 
+-table th {
+-  text-align: center !important;
++.erp-data-table th,
++table[data-erp-table] th {
++  text-align: left !important;
+   font-size: 0.72rem !important;
+   letter-spacing: 0.08em;
+   text-transform: uppercase;
+   white-space: normal;
++  background-color: inherit !important;
++  color: inherit !important;
++  font-weight: 700 !important;
+ }
+ 
+-table td {
++.erp-data-table td,
++table[data-erp-table] td {
+   font-size: 0.75rem !important;
+-  white-space: normal;
++  white-space: normal !important;
+ }
+ 
+-table th span,
+-table td span {
+-  display: block;
++.erp-data-table th:first-child,
++table[data-erp-table] th:first-child {
++  padding-left: 0.9rem !important;
++}
++
++.erp-data-table th:last-child,
++table[data-erp-table] th:last-child {
++  padding-right: 0.9rem !important;
++}
++
++/* Ensure sticky shared ERP data table headers stay visible and preserve row layout */
++.erp-data-table thead th,
++table[data-erp-table] thead th {
++  position: sticky;
++  top: 0;
++  z-index: 10;
++  background-clip: padding-box;
++}
++
++.erp-data-table thead,
++table[data-erp-table] thead {
++  background: transparent;
++}
++
++/* Premium ERP data table row hover enhancement */
++table[data-erp-table] tbody tr.erp-data-row {
++  transition: transform 0.22s ease, background-color 0.22s ease, box-shadow 0.22s ease;
++  will-change: transform, background-color, box-shadow;
++}
++table[data-erp-table] tbody tr.erp-data-row:hover {
++  transform: translateY(-1px);
++  background: linear-gradient(90deg, rgba(22,163,74,0.08), rgba(16,185,129,0.06));
++  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
++}
++table[data-erp-table] tbody tr.erp-data-row:hover td {
++  background: transparent;
++}
++table[data-erp-table] tbody tr.erp-data-row td {
++  transition: background-color 0.22s ease;
+ }
+-.data-table-header { position: sticky; top: 0; z-index: 10; }
++
+ .overflow-x-auto { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+-.overflow-x-auto table {
++.overflow-x-auto table[data-erp-table] {
+   width: 100%;
+   min-width: 100%;
+   border-collapse: collapse;
+ }
+-.overflow-x-auto table th,
+-.overflow-x-auto table td {
++.overflow-x-auto table[data-erp-table] th,
++.overflow-x-auto table[data-erp-table] td {
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+ }
+-.overflow-x-auto table th.action-header,
+-.overflow-x-auto table td.action-cell {
++.overflow-x-auto table[data-erp-table] th.action-header,
++.overflow-x-auto table[data-erp-table] td.action-cell {
+   min-width: 180px;
+ }
+-.overflow-x-auto table td.action-cell > div { display: flex; align-items: center; justify-content: center; gap: 8px; }
+-.overflow-x-auto table td.action-cell button { white-space: nowrap; }
+-.overflow-x-auto table th.photo-cell,
+-.overflow-x-auto table td.photo-cell {
++.overflow-x-auto table[data-erp-table] td.action-cell > div { display: flex; align-items: center; justify-content: center; gap: 8px; }
++.overflow-x-auto table[data-erp-table] td.action-cell button { white-space: nowrap; }
++.overflow-x-auto table[data-erp-table] th.photo-cell,
++.overflow-x-auto table[data-erp-table] td.photo-cell {
+   min-width: 70px;
+ }
+-.overflow-x-auto table th.name-cell,
+-.overflow-x-auto table td.name-cell {
++.overflow-x-auto table[data-erp-table] th.name-cell,
++.overflow-x-auto table[data-erp-table] td.name-cell {
+   min-width: 180px;
+ }
+-.overflow-x-auto table th.email-cell,
+-.overflow-x-auto table td.email-cell {
++.overflow-x-auto table[data-erp-table] th.email-cell,
++.overflow-x-auto table[data-erp-table] td.email-cell {
+   min-width: 240px;
+ }
+-.overflow-x-auto table th.college-cell,
+-.overflow-x-auto table td.college-cell {
++.overflow-x-auto table[data-erp-table] th.college-cell,
++.overflow-x-auto table[data-erp-table] td.college-cell {
+   min-width: 220px;
+ }
+-.overflow-x-auto table th.university-roll-cell,
+-.overflow-x-auto table td.university-roll-cell {
++.overflow-x-auto table[data-erp-table] th.university-roll-cell,
++.overflow-x-auto table[data-erp-table] td.university-roll-cell {
+   min-width: 170px;
+ }
+ .overflow-x-auto table th.status-cell,
+@@ -634,6 +854,44 @@ table td {
+   vertical-align: middle;
+ }
+ 
++/* Global ERP shared data table row hover effect */
++table[data-erp-table] tbody tr {
++  position: relative;
++  transition: transform 250ms ease, box-shadow 250ms ease;
++}
++
++table[data-erp-table] tbody tr:hover {
++  z-index: 1;
++  transform: translateY(-2px);
++}
++
++table[data-erp-table] tbody tr:hover,
++table[data-erp-table] tbody tr:hover td,
++table[data-erp-table] tbody tr:hover th {
++  background-color: transparent !important;
++}
++
++table[data-erp-table] tbody tr::before {
++  content: '';
++  position: absolute;
++  inset: 0;
++  pointer-events: none;
++  border: 2px solid transparent;
++  border-radius: 0.75rem;
++  background: linear-gradient(transparent, transparent) padding-box, linear-gradient(90deg, #16a34a, #22c55e, #0ea5e9, #c084fc, #a855f7) border-box;
++  background-origin: padding-box, border-box;
++  background-clip: padding-box, border-box;
++  opacity: 0;
++  transition: opacity 250ms ease, transform 250ms ease;
++  z-index: -1;
++}
++
++table[data-erp-table] tbody tr:hover::before {
++  opacity: 1;
++  transform: scale(1.01);
++  box-shadow: 0 10px 24px rgba(22, 163, 74, 0.14);
++}
++
+ /* Ensure action column never shrinks and buttons remain visible */
+ table th.action-header,
+ table td.action-cell {

@@ -28,7 +28,7 @@ export default function FeedbackSummaryReportPage() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-slate-900">
-      <div className="mx-auto max-w-[1240px] px-4 py-8">
+      <div className="w-full max-w-none py-8 box-border">
         <div className="space-y-4">
           <div className="text-sm uppercase tracking-[0.28em] text-slate-500">
             Dashboard &gt; Institute Setup &gt; Feedback From Student
@@ -38,7 +38,7 @@ export default function FeedbackSummaryReportPage() {
           </h1>
         </div>
 
-        <div className="mt-8 rounded-[1rem] border border-[#E2E8F0] bg-white p-6 shadow-sm">
+        <div className="mt-8 w-full max-w-none rounded-[1rem] border border-[#E2E8F0] bg-white p-6 shadow-sm">
           <div className="grid gap-6 lg:grid-cols-4">
             <div className="space-y-2">
               <label className="block text-xs uppercase tracking-[0.3em] text-slate-500">Select Session</label>
@@ -163,7 +163,7 @@ export default function FeedbackSummaryReportPage() {
           </div>
         </div>
 
-        <div className="mt-8 rounded-[1rem] border border-[#E2E8F0] bg-white p-10 shadow-sm">
+        <div className="mt-8 rounded-[1rem] border border-[#E2E8F0] bg-white p-10 shadow-sm w-full">
           {showResults ? (
             <div className="overflow-x-auto">
               <table className="min-w-full table-auto divide-y divide-slate-200 text-sm">

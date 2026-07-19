@@ -20,7 +20,7 @@ export default function IndividualFacultyReportPage() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-slate-900">
-      <div className="mx-auto max-w-[1240px] px-4 py-8">
+      <div className="mx-auto max-w-[1240px] py-8">
         <div className="space-y-4">
           <div className="text-sm uppercase tracking-[0.28em] text-slate-500">Dashboard &gt; Individual Faculty Report</div>
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">

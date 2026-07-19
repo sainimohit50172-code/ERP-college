@@ -28,6 +28,7 @@ import {
   UsersRound,
 } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import HaridwarLogo from '../../assets/haridwar-logo.svg';
 
 const MENU_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', to: '/', icon: Home },
@@ -1451,12 +1452,12 @@ export default function Sidebar({ isOpen, onClose }) {
       >
         <div style={{ height: 64 }} className="flex items-center px-3">
           <div className="flex w-full items-center">
-            <div style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Home style={{ width: 22, height: 22, color: '#86efac' }} />
+            <div style={{ width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <img src={HaridwarLogo} alt="Haridwar University" style={{ width: 36, height: 36 }} />
             </div>
             <div style={{ marginLeft: 10 }}>
-              <p className="text-[11px] uppercase tracking-[0.28em]" style={{ color: '#94a3b8' }}>ENTERPRISE</p>
-              <h2 className="text-[15px] font-semibold" style={{ color: '#ffffff' }}>College ERP</h2>
+              <p className="text-[11px] uppercase tracking-[0.28em]" style={{ color: '#94a3b8' }}>HARIDWAR</p>
+              <h2 className="text-[15px] font-semibold" style={{ color: '#ffffff' }}>UNIVERSITY</h2>
             </div>
           </div>
         </div>
@@ -3560,11 +3561,11 @@ export default function Sidebar({ isOpen, onClose }) {
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-3xl bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-400/20">
-                <Home className="h-5 w-5" />
+                <img src={HaridwarLogo} alt="Haridwar University" style={{ width: 36, height: 36 }} />
               </div>
               <div>
-                <p className="text-sm uppercase tracking-[0.28em] text-emerald-200/80">Enterprise</p>
-                <h2 className="text-lg font-semibold text-slate-50">College ERP</h2>
+                <p className="text-sm uppercase tracking-[0.28em] text-emerald-200/80">HARIDWAR</p>
+                <h2 className="text-lg font-semibold text-slate-50">UNIVERSITY</h2>
               </div>
             </div>
             <button onClick={onClose} className="rounded-2xl border border-white/10 px-3 py-2 text-sm text-slate-200">Close</button>

@@ -97,7 +97,7 @@ export default function LeadsPage() {
 
   return (
     <div className="min-h-screen bg-[#f5f6fa] text-slate-900">
-      <div className="w-full max-w-full px-4 pb-10 pt-6 sm:px-6 lg:px-8">
+      <div className="w-full max-w-full pb-10 pt-6">
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-2">
             <div className="text-sm uppercase tracking-[0.28em] text-slate-500">

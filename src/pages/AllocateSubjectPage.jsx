@@ -96,7 +96,7 @@ export default function AllocateSubjectPage() {
   ], []);
 
   return (
-    <div className="min-h-screen bg-[#F5F7FB] -mx-3 sm:-mx-4 lg:-mx-6 px-[10px] py-6 text-slate-900">
+    <div className="min-h-screen bg-[#F5F7FB] py-6 text-slate-900">
       <div className="space-y-6 w-full max-w-full">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
           <div className="space-y-3">

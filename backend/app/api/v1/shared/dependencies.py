@@ -43,7 +43,12 @@ from app.services.procurement.service import ProcurementService
 from app.services.students.service import StudentService
 from app.services.transport.service import TransportService
 from app.services.academic.service import AcademicService
+from app.services.helpdesk.service import TicketService, TicketAttachmentService
 from app.services.teachers.service import TeacherService
+from app.repositories.mysql.helpdesk import (
+    MySQLTicketAttachmentRepository,
+    MySQLTicketRepository,
+)
 
 
 def get_admission_repository(db=Depends(get_db)):
@@ -430,3 +435,24 @@ def get_academic_service(
 
 def get_auth_service(repo=Depends(get_auth_repository)):
     return AuthService(repo)
+
+
+def get_helpdesk_ticket_repository(db=Depends(get_db)):
+    return MySQLTicketRepository(db)
+
+
+def get_helpdesk_ticket_attachment_repository(db=Depends(get_db)):
+    return MySQLTicketAttachmentRepository(db)
+
+
+def get_helpdesk_ticket_service(
+    ticket_repo=Depends(get_helpdesk_ticket_repository),
+    attachment_repo=Depends(get_helpdesk_ticket_attachment_repository),
+):
+    return TicketService(ticket_repo, attachment_repo)
+
+
+def get_helpdesk_ticket_attachment_service(
+    attachment_repo=Depends(get_helpdesk_ticket_attachment_repository),
+):
+    return TicketAttachmentService(attachment_repo)

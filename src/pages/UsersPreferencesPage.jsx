@@ -7,14 +7,14 @@ const sessions = ['2026-2027', '2025-2026', '2024-2025'];
 const landingPages = ['Dashboard', 'Employee Portal', 'Fee', 'Attendance'];
 
 const actionItems = [
-  { id: 'student-list', label: 'Student List', color: 'text-sky-600 bg-sky-100', favoriteColor: '#0ea5e9' },
-  { id: 'collect-fee', label: 'Collect Fee', color: 'text-emerald-600 bg-emerald-100', favoriteColor: '#16a34a' },
-  { id: 'fee-summary-college-wise', label: 'Fee Summary - College Wise', color: 'text-fuchsia-600 bg-fuchsia-100', favoriteColor: '#c026d3' },
-  { id: 'notice', label: 'Notice', color: 'text-amber-600 bg-amber-100', favoriteColor: '#d97706' },
-  { id: 'student-attendance', label: 'Student Attendance', color: 'text-sky-600 bg-sky-100', favoriteColor: '#0ea5e9' },
-  { id: 'college-wise-summary', label: 'College Wise Summary - All Subject', color: 'text-emerald-600 bg-emerald-100', favoriteColor: '#16a34a' },
-  { id: 'employee', label: 'Employee', color: 'text-fuchsia-600 bg-fuchsia-100', favoriteColor: '#c026d3' },
-  { id: 'books', label: 'Books', color: 'text-amber-600 bg-amber-100', favoriteColor: '#d97706' },
+  { id: 'student-list', label: 'Student List', color: 'text-emerald-700 bg-emerald-50', favoriteColor: '#16a34a' },
+  { id: 'collect-fee', label: 'Collect Fee', color: 'text-emerald-700 bg-emerald-50', favoriteColor: '#16a34a' },
+  { id: 'fee-summary-college-wise', label: 'Fee Summary - College Wise', color: 'text-emerald-700 bg-emerald-50', favoriteColor: '#16a34a' },
+  { id: 'notice', label: 'Notice', color: 'text-emerald-700 bg-emerald-50', favoriteColor: '#16a34a' },
+  { id: 'student-attendance', label: 'Student Attendance', color: 'text-emerald-700 bg-emerald-50', favoriteColor: '#16a34a' },
+  { id: 'college-wise-summary', label: 'College Wise Summary - All Subject', color: 'text-emerald-700 bg-emerald-50', favoriteColor: '#16a34a' },
+  { id: 'employee', label: 'Employee', color: 'text-emerald-700 bg-emerald-50', favoriteColor: '#16a34a' },
+  { id: 'books', label: 'Books', color: 'text-emerald-700 bg-emerald-50', favoriteColor: '#16a34a' },
 ];
 
 const reportItems = [
@@ -118,15 +118,15 @@ export default function UsersPreferencesPage() {
                   key={item.id}
                   type="button"
                   onClick={() => toggleFavorite(item.id)}
-                  className="group flex flex-col items-start rounded-2xl bg-[#F8FAFC] p-4 text-left transition hover:bg-slate-100"
+                  className="group flex flex-col items-start rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-left transition hover:bg-emerald-100 hover-gradient-border"
                 >
                   <div
-                    className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-2xl"
-                    style={{ color: isFavorite ? item.favoriteColor : '#64748b', backgroundColor: isFavorite ? `${item.favoriteColor}20` : '#e2e8f0' }}
+                    className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700"
+                    style={{ color: isFavorite ? item.favoriteColor : '#14532d', backgroundColor: isFavorite ? `${item.favoriteColor}20` : '#d1fae5' }}
                   >
                     <Star size={18} fill={isFavorite ? 'currentColor' : 'none'} />
                   </div>
-                  <span className={`text-sm font-semibold ${isFavorite ? item.color.replace('bg-', 'text-') : 'text-slate-700'}`}>{item.label}</span>
+                  <span className={`text-sm font-semibold ${isFavorite ? 'text-emerald-700' : 'text-slate-700'}`}>{item.label}</span>
                 </button>
               );
             })}
@@ -146,8 +146,8 @@ export default function UsersPreferencesPage() {
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {filteredReports.map((report) => (
-              <div key={report.id} className="flex h-full flex-col rounded-2xl bg-[#1E293B] p-5 text-white transition hover:bg-slate-950">
-                <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 text-white">
+              <div key={report.id} className="flex h-full flex-col rounded-2xl border border-emerald-200 bg-emerald-600 p-5 text-white transition hover:bg-emerald-700 hover-gradient-border">
+                <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/20 text-white">
                   <FileText size={18} />
                 </div>
                 <div className="text-sm font-semibold break-words whitespace-normal">{report.label}</div>

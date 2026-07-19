@@ -93,7 +93,7 @@ export default function EmployeeAttendanceRegularizationPage() {
   };
 
   return (
-    <div className="h-[calc(100vh-88px)] overflow-hidden bg-[#F8FAFC] px-6 py-6 font-sans">
+    <div className="h-[calc(100vh-88px)] overflow-hidden bg-[#F8FAFC] py-6 font-sans">
       <div className="flex h-full flex-col overflow-hidden">
         <div className="flex items-start justify-between gap-4">
           <div>

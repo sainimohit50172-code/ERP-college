@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function UnauthorizedPage() {
   return (
-    <div className="grid min-h-[70vh] place-items-center px-4 py-10">
+    <div className="erp-content-wrapper grid min-h-[70vh] place-items-center py-10">
       <div className="max-w-xl rounded-[32px] border border-rose-200/40 bg-white px-10 py-14 text-center shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
         <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-rose-50 text-rose-600">
           <ShieldAlert className="h-10 w-10" />

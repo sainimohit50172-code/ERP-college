@@ -261,9 +261,9 @@ export default function AssignUniversityRollPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F5F7FB] -mx-3 sm:-mx-4 lg:-mx-6 px-[10px] py-6 text-slate-900">
+    <div className="min-h-screen bg-[#F5F7FB] py-6 text-slate-900">
       <div className="space-y-6 w-full max-w-full">
-        <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+        <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between pr-[10px]">
           <div className="space-y-3">
             <Breadcrumb items={[{ to: '/', label: 'Dashboard' }, { label: 'Assign University Roll No.' }]} />
             <div className="flex flex-wrap items-center gap-3">
@@ -275,7 +275,7 @@ export default function AssignUniversityRollPage() {
             <button
               type="button"
               onClick={handleOpenFilters}
-              className="h-11 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300"
+              className="mr-5 h-11 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300"
             >
               Filter
             </button>
@@ -289,7 +289,7 @@ export default function AssignUniversityRollPage() {
           </div>
         </div>
 
-        <div className="rounded-[24px] bg-white p-5 shadow-sm ring-1 ring-slate-200">
+        <div className="rounded-[24px] bg-white p-5 shadow-sm ring-1 ring-slate-200 w-full">
           <div className="grid gap-4 lg:grid-cols-[1fr_1fr_1fr]">
             <div>
               <label className="mb-2 block text-sm font-semibold text-slate-700">Search students</label>
@@ -324,14 +324,16 @@ export default function AssignUniversityRollPage() {
           </div>
         </div>
 
-        <DataTableAdvanced
-          columns={columns}
-          rows={rows}
-          loading={isLoading}
-          placeholder="Search rows by student, admission number, or roll number"
-          initialPageSize={pageSize}
-          className="mt-2"
-        />
+        <div className="mt-2">
+          <DataTableAdvanced
+            columns={columns}
+            rows={rows}
+            loading={isLoading}
+            placeholder="Search rows by student, admission number, or roll number"
+            initialPageSize={pageSize}
+            className="mt-2"
+          />
+        </div>
       </div>
 
       <Modal

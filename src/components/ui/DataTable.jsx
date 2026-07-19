@@ -226,8 +226,9 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
           className="rounded-[20px] border border-slate-200/70 overflow-hidden"
           style={tableMaxHeight ? { maxHeight: tableMaxHeight, overflowY: 'auto' } : undefined}
         >
-          <table id={tableId} className="w-full table-fixed border-separate text-[10px] text-slate-900" style={{ borderSpacing: '1px 0' }}>
-            <colgroup>
+          <div className="w-full overflow-x-auto">
+            <table id={tableId} className="min-w-full table-auto border-separate text-[10px] text-slate-900" style={{ borderSpacing: '1px 0' }}>
+              <colgroup>
               {columnsDefinition.map((column) => {
                 const minW = getColumnMinWidth(column);
                 // Use explicit pixel width when we have a px-based min width (ensures action/buttons visible)
@@ -330,6 +331,7 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
             </tbody>
           </table>
         </div>
+      </div>
       )}
 
       <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

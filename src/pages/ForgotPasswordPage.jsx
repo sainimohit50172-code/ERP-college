@@ -9,7 +9,7 @@ export default function ForgotPasswordPage() {
   const onSubmit = () => setSubmitted(true);
 
   return (
-    <div className="grid min-h-[70vh] place-items-center px-4 py-10">
+    <div className="grid min-h-[70vh] place-items-center py-10">
       <div className="w-full max-w-2xl rounded-[32px] border border-slate-200/80 bg-white p-10 shadow-[0_35px_80px_rgba(15,23,42,0.08)]">
         <div className="flex items-center gap-3 text-slate-700">
           <ShieldCheck className="h-7 w-7 text-emerald-600" />

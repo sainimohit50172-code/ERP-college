@@ -23,6 +23,14 @@ function formatValue(value, fallback = 'Not provided') {
   return value;
 }
 
+function normalizeContactValue(value) {
+  const normalized = String(value || '').trim();
+  if (!normalized || normalized.toLowerCase() === 'not provided') {
+    return null;
+  }
+  return normalized;
+}
+
 export default function ProfilePage() {
   const { auth } = useAuth();
   const [activeTab, setActiveTab] = useState('personal');
@@ -32,7 +40,7 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState(null);
   const [leaveStats, setLeaveStats] = useState({ approved: 0, pending: 0, total: 0 });
   const [editForm, setEditForm] = useState({ firstName: '', lastName: '', phone: '', email: '', location: '', bloodGroup: '' });
-  const [ticketForm, setTicketForm] = useState({ subject: '', category: 'General', description: '' });
+  const [ticketForm, setTicketForm] = useState({ subject: '', category: 'General', priority: 'Medium', impact: '', description: '' });
 
   useEffect(() => {
     let isMounted = true;
@@ -184,24 +192,39 @@ export default function ProfilePage() {
     const last_name = editForm.lastName?.trim() || profile.name?.split(' ').slice(1).join(' ') || null;
 
     try {
-      await api.put(`/api/v1/employees/${profile.id}`, {
+      const payload = {
         employee_code: profile.employeeCode || profile.employee_code || `EMP-${String(profile.id).padStart(3, '0')}`,
         first_name,
         last_name,
-        email: editForm.email || profile.email,
-        phone: editForm.phone || profile.phone,
         designation: profile.designation,
         department: profile.department,
         status: profile.employeeStatus || 'Active',
-      });
+      };
+
+      // Convert empty strings to null so Pydantic Optional fields validate correctly
+      payload.email = editForm.email?.trim() ? editForm.email.trim() : null;
+      payload.phone = editForm.phone?.trim() ? editForm.phone.trim() : null;
+
+      await api.put(`/api/v1/employees/${profile.id}`, payload);
       setProfile((current) => {
         const updatedName = [first_name, last_name].filter(Boolean).join(' ');
         return current ? { ...current, name: updatedName || current.name, email: editForm.email, phone: editForm.phone, location: editForm.location, bloodGroup: editForm.bloodGroup } : current;
       });
       toast.success('Profile updated successfully');
       setIsEditOpen(false);
-    } catch {
-      toast.error('Unable to update profile. Please try again.');
+    } catch (err) {
+      // Prefer server-provided message and validation details when available
+      const serverMsg = err?.response?.data?.message;
+      const validation = err?.response?.data?.data;
+      if (serverMsg) {
+        const details = Array.isArray(validation) ? validation.map((e) => e.msg || JSON.stringify(e)).join('; ') : (validation ? JSON.stringify(validation) : '');
+        toast.error(details ? `${serverMsg}: ${details}` : serverMsg);
+      } else {
+        toast.error(err?.message || 'Unable to update profile. Please try again.');
+      }
+      // keep full error in console for debugging
+      // eslint-disable-next-line no-console
+      console.error('Profile update error:', err);
     }
   };
 
@@ -216,16 +239,20 @@ export default function ProfilePage() {
     const ticketPayload = {
       lodged_by_type: 'Employee',
       lodged_by_id: Number(lodgedById),
-      category: ticketForm.category || 'General',
+      requester_email: normalizeContactValue(profile?.email),
+      requester_phone: normalizeContactValue(profile?.phone),
+      category: ticketForm.category?.trim() || 'General',
+      priority: ticketForm.priority || 'Medium',
+      impact: ticketForm.impact?.trim() || null,
       subject: ticketForm.subject.trim(),
       description: ticketForm.description.trim() || null,
       status: 'Open',
     };
 
     try {
-      await api.post('/api/v1/hostel-complaints/', ticketPayload);
+      await api.post('/api/v1/helpdesk/tickets/', ticketPayload);
       toast.success('Ticket raised successfully');
-      setTicketForm({ subject: '', category: 'General', description: '' });
+      setTicketForm({ subject: '', category: 'General', priority: 'Medium', impact: '', description: '' });
       setIsTicketOpen(false);
     } catch {
       toast.error('Unable to raise ticket. Please try again.');
@@ -248,7 +275,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-88px)] w-full max-w-full overflow-x-hidden overflow-y-auto bg-white px-[10px] py-4 -mx-3 sm:-mx-4 lg:-mx-6">
+    <div className="mx-[10px] min-h-[calc(100vh-88px)] w-auto max-w-none overflow-x-hidden overflow-y-auto bg-white px-[10px] py-4 sm:px-[10px] lg:px-[10px]">
       <ToastContainer position="top-right" autoClose={2500} />
 <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2 text-sm">
@@ -555,54 +582,26 @@ export default function ProfilePage() {
                 placeholder="General"
               />
             </label>
-            <label className="block text-sm sm:col-span-2">
-              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Description</span>
-              <textarea
-                value={ticketForm.description}
-                onChange={(event) => setTicketForm((current) => ({ ...current, description: event.target.value }))}
-                rows={5}
-                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none"
-                placeholder="Describe the issue in detail"
-              />
-            </label>
-          </div>
-        </form>
-      </Modal>
-
-      <Modal
-        title="Raise Ticket"
-        isOpen={isTicketOpen}
-        onClose={() => setIsTicketOpen(false)}
-        footer={
-          <>
-            <button type="button" onClick={() => setIsTicketOpen(false)} className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-50">
-              Cancel
-            </button>
-            <button type="submit" form="ticket-form" className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white transition hover:bg-slate-800">
-              Submit Ticket
-            </button>
-          </>
-        }
-      >
-        <form id="ticket-form" onSubmit={handleTicketSubmit} className="space-y-4">
-          <div className="grid gap-4 sm:grid-cols-2">
             <label className="block text-sm">
-              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Subject</span>
-              <input
-                value={ticketForm.subject}
-                onChange={(event) => setTicketForm((current) => ({ ...current, subject: event.target.value }))}
+              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Priority</span>
+              <select
+                value={ticketForm.priority}
+                onChange={(event) => setTicketForm((current) => ({ ...current, priority: event.target.value }))}
                 className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0"
-                placeholder="What's the issue?"
-                required
-              />
+              >
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Critical">Critical</option>
+              </select>
             </label>
             <label className="block text-sm">
-              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Category</span>
+              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Impact</span>
               <input
-                value={ticketForm.category}
-                onChange={(event) => setTicketForm((current) => ({ ...current, category: event.target.value }))}
+                value={ticketForm.impact}
+                onChange={(event) => setTicketForm((current) => ({ ...current, impact: event.target.value }))}
                 className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0"
-                placeholder="General"
+                placeholder="Impact summary"
               />
             </label>
             <label className="block text-sm sm:col-span-2">
@@ -612,7 +611,7 @@ export default function ProfilePage() {
                 onChange={(event) => setTicketForm((current) => ({ ...current, description: event.target.value }))}
                 rows={5}
                 className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none"
-                placeholder="Describe the ticket or issue in detail"
+                placeholder="Describe the issue in detail"
               />
             </label>
           </div>

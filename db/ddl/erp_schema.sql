@@ -504,6 +504,44 @@ CREATE TABLE IF NOT EXISTS `complaints` (
   KEY `idx_complaints_status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4_COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS `helpdesk_tickets` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ticket_number` VARCHAR(64) NOT NULL,
+  `lodged_by_type` ENUM('Student','Employee','Visitor','Other') NOT NULL DEFAULT 'Employee',
+  `lodged_by_id` BIGINT UNSIGNED NOT NULL,
+  `requester_email` VARCHAR(320) DEFAULT NULL,
+  `requester_phone` VARCHAR(64) DEFAULT NULL,
+  `category` VARCHAR(128) DEFAULT NULL,
+  `priority` ENUM('Low','Medium','High','Critical') NOT NULL DEFAULT 'Medium',
+  `impact` VARCHAR(128) DEFAULT NULL,
+  `subject` VARCHAR(255) NOT NULL,
+  `description` TEXT DEFAULT NULL,
+  `status` ENUM('Open','InProgress','Resolved','Closed') NOT NULL DEFAULT 'Open',
+  `assigned_to_type` VARCHAR(64) DEFAULT NULL,
+  `assigned_to_id` BIGINT UNSIGNED DEFAULT NULL,
+  `created_at` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  `updated_at` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ux_helpdesk_tickets_number` (`ticket_number`),
+  KEY `idx_helpdesk_tickets_status` (`status`),
+  KEY `idx_helpdesk_tickets_priority` (`priority`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4_COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `helpdesk_ticket_attachments` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ticket_id` BIGINT UNSIGNED DEFAULT NULL,
+  `filename` VARCHAR(255) NOT NULL,
+  `url` VARCHAR(512) NOT NULL,
+  `content_type` VARCHAR(128) DEFAULT NULL,
+  `size` BIGINT UNSIGNED DEFAULT NULL,
+  `uploaded_by_type` VARCHAR(20) DEFAULT NULL,
+  `uploaded_by_id` BIGINT UNSIGNED DEFAULT NULL,
+  `created_at` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  PRIMARY KEY (`id`),
+  KEY `idx_helpdesk_ticket_attachments_ticket` (`ticket_id`),
+  CONSTRAINT `fk_helpdesk_ticket_attachments_ticket` FOREIGN KEY (`ticket_id`) REFERENCES `helpdesk_tickets` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4_COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS `visitors` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,

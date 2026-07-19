@@ -361,8 +361,15 @@ export default function Topbar({ onToggleSidebar }) {
               setExportOpen(false);
               setQuickActionsOpen(false);
               setProfileMenuOpen(false);
+              setMobileNavOpen(false);
+              setNotificationsOpen(false);
+              if (typeof onToggleSidebar === 'function') {
+                onToggleSidebar();
+              }
+              navigate('/employees/helpdesk', { replace: false });
             }}
-            className="inline-flex h-[38px] items-center gap-2 rounded-[8px] border border-emerald-700 bg-[#14532D] px-[18px] text-[13px] font-medium text-white shadow-sm transition hover:bg-[#166534]"
+            className="relative z-50 inline-flex h-[38px] items-center gap-2 rounded-[8px] border border-emerald-700 bg-[#14532D] px-[18px] text-[13px] font-medium text-white shadow-sm transition hover:bg-[#166534]"
+            aria-label="Open raise ticket page"
           >
             <Ticket className="h-4 w-4" />
             <span>Raise Ticket</span>

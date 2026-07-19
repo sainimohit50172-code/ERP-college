@@ -200,41 +200,47 @@ def build_crud_router(
             # not resolved
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Related {related_class.__name__} not found for {key}: {value}")
 
-        async def _call_service_method(method_name: str) -> None:
+        async def _call_service_method(method_name: str):
             method = getattr(service, method_name)
             method_signature = inspect.signature(method)
             if any(param.kind == inspect.Parameter.VAR_KEYWORD for param in method_signature.parameters.values()):
-                await method(**payload_data)
-                return
+                return await method(**payload_data)
             filtered_payload = {
                 key: value
                 for key, value in payload_data.items()
                 if key in method_signature.parameters
             }
-            await method(**filtered_payload)
+            return await method(**filtered_payload)
 
+        service_result = None
         if hasattr(service, "enroll_student"):
-            await _call_service_method("enroll_student")
+            service_result = await _call_service_method("enroll_student")
         elif hasattr(service, "create_application"):
-            await _call_service_method("create_application")
+            service_result = await _call_service_method("create_application")
         elif hasattr(service, "join_employee"):
-            await _call_service_method("join_employee")
+            service_result = await _call_service_method("join_employee")
         elif hasattr(service, "create_invoice"):
-            await _call_service_method("create_invoice")
+            service_result = await _call_service_method("create_invoice")
         elif hasattr(service, "post_entry"):
-            await _call_service_method("post_entry")
+            service_result = await _call_service_method("post_entry")
         elif hasattr(service, "allocate_room"):
-            await _call_service_method("allocate_room")
+            service_result = await _call_service_method("allocate_room")
         elif hasattr(service, "validate_stock"):
-            await _call_service_method("validate_stock")
+            service_result = await _call_service_method("validate_stock")
         elif hasattr(service, "issue_book"):
-            await _call_service_method("issue_book")
+            service_result = await _call_service_method("issue_book")
         elif hasattr(service, "dispatch"):
-            await _call_service_method("dispatch")
+            service_result = await _call_service_method("dispatch")
         elif hasattr(service, "create_request"):
-            await _call_service_method("create_request")
+            service_result = await _call_service_method("create_request")
         elif hasattr(service, "allocate_vehicle"):
-            await _call_service_method("allocate_vehicle")
+            service_result = await _call_service_method("allocate_vehicle")
+
+        if isinstance(service_result, dict):
+            payload_data = service_result
+        elif isinstance(service_result, model_class):
+            created = await repository.create(service_result)
+            return APIResponse(data=detail_schema.model_validate(_orm_to_dict_for_schema(created, detail_schema)), message="Created")
 
         # Build payload mapping: convert relationship display values to fk columns
         filtered_payload = {}

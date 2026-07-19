@@ -67,7 +67,7 @@ export default function SalarySlipPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-88px)] overflow-hidden bg-[#F8FAFC] px-6 py-6 font-sans">
+    <div className="min-h-[calc(100vh-88px)] overflow-hidden bg-[#F8FAFC] py-6 font-sans">
       <div className="space-y-4">
         <div className="space-y-1 text-sm uppercase tracking-[0.2em] text-slate-500">
           <Breadcrumb items={[

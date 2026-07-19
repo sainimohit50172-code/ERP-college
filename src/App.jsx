@@ -39,6 +39,7 @@ import OrganizationManagementPage from './pages/OrganizationManagementPage.jsx';
 import HRDocumentsPage from './pages/HRDocumentsPage.jsx';
 import EmployeeProfilePage from './pages/EmployeeProfilePage.jsx';
 import ProfilePage from './pages/employees/ProfilePage.jsx';
+import HelpdeskRaiseTicketPage from './pages/HelpdeskRaiseTicketPage.jsx';
 import LeaveManagementPage from './pages/LeaveManagementPage.jsx';
 import MyLeavesPage from './pages/MyLeavesPage.jsx';
 import PayrollManagementPage from './pages/PayrollManagementPage.jsx';
@@ -209,6 +210,7 @@ function App() {
               <Route path="teachers/:teacherId" element={<ProtectedRoute moduleKey="teachers"><TeacherProfilePage /></ProtectedRoute>} />
               <Route path="employees" element={<ProtectedRoute moduleKey="employees"><EmployeeManagementPage /></ProtectedRoute>} />
               <Route path="employees/profile" element={<ProtectedRoute moduleKey="employees"><ProfilePage /></ProtectedRoute>} />
+              <Route path="employees/helpdesk" element={<ProtectedRoute moduleKey="employees"><HelpdeskRaiseTicketPage /></ProtectedRoute>} />
               <Route path="employees/user-preference" element={<ProtectedRoute moduleKey="employees"><UsersPreferencesPage /></ProtectedRoute>} />
               <Route path="employees/announcement" element={<ProtectedRoute moduleKey="employees"><EmployeeAnnouncementPage /></ProtectedRoute>} />
               <Route path="employees/webopac" element={<ProtectedRoute moduleKey="library"><LibraryWebOpacPage /></ProtectedRoute>} />

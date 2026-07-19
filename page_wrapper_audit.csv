@@ -1,0 +1,157 @@
+file,wrapper
+AcademicCalendarPage.jsx,space-y-6
+AcademicSessionListPage.jsx,space-y-6
+AccountsPage.jsx,<NO MATCH>
+AdmissionCounsellingPage.jsx,<NO MATCH>
+AdmissionsPage.jsx,space-y-6
+AdmissionSummaryReportPage.jsx,min-h-screen bg-slate-50 px-4 py-6 text-slate-900 sm:px-6 lg:px-8
+AdmissionTransactionsPage.jsx,min-h-screen bg-[#f5f6fa] text-slate-900
+AllocateSubjectPage.jsx,min-h-screen bg-[#F5F7FB] px-[10px] py-6 text-slate-900
+AlumniPage.jsx,<NO MATCH>
+AnalyticsPage.jsx,<NO MATCH>
+ApplicationsPage.jsx,min-h-screen bg-[#f5f6fa] text-slate-900
+AssetAssignmentsPage.jsx,<NO MATCH>
+AssetCategoriesPage.jsx,<NO MATCH>
+AssetsPage.jsx,<NO MATCH>
+AssignmentsPage.jsx,space-y-6
+AssignUniversityRollPage.jsx,min-h-screen bg-[#F5F7FB] py-6 text-slate-900
+AttendancePage.jsx,space-y-6
+AuditLogPage.jsx,space-y-6 rounded-3xl border border-slate-200/80 bg-white p-8 shadow-sm
+CampaignsPage.jsx,<NO MATCH>
+ChangePasswordPage.jsx,grid min-h-[70vh] place-items-center px-4 py-10
+ClassroomManagementPage.jsx,space-y-6
+ComingSoonPage.jsx,flex min-h-full flex-col items-center justify-center gap-6 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 p-8 text-center
+CounsellingPage.jsx,<NO MATCH>
+CourseManagementPage.jsx,space-y-6
+DailyCollectionReportPage.jsx,min-h-screen bg-slate-50 px-4 py-6 text-slate-900 sm:px-6 lg:px-8
+DashboardPage.jsx,min-h-screen w-full overflow-x-hidden bg-[linear-gradient(135deg;#f0fdf4_0%;#f8fafc_40%;#f0f9ff_100%)] p-0
+DepartmentManagementPage.jsx,space-y-6
+DesignationManagementPage.jsx,space-y-6
+EmployeeAnnouncementPage.jsx,min-h-[calc(100vh-88px)] bg-[#F8FAFC] p-6 text-slate-900
+EmployeeAttendancePage.jsx,<NO MATCH>
+EmployeeAttendanceRegularizationPage.jsx,h-[calc(100vh-88px)] overflow-hidden bg-[#F8FAFC] px-6 py-6 font-sans
+EmployeeManagementPage.jsx,space-y-6
+EmployeeProfilePage.jsx,space-y-3 p-2 sm:space-y-6 sm:p-4 lg:p-6 md:space-y-5 md:p-5
+EnquiriesPage.jsx,<NO MATCH>
+ExaminationAttendancePage.jsx,p-6 space-y-6
+ExaminationDashboardPage.jsx,p-6 space-y-6
+ExaminationPage.jsx,space-y-6
+ExaminationReportsPage.jsx,p-6 space-y-6
+ExpensesPage.jsx,<NO MATCH>
+FeeCollectionPage.jsx,<NO MATCH>
+FeedbackSummaryReportPage.jsx,min-h-screen bg-[#F8FAFC] text-slate-900
+FeeManagementPage.jsx,space-y-6
+FinanceAccountingPage.jsx,space-y-6
+FollowUpRemarkReportPage.jsx,min-h-screen bg-slate-50 px-4 py-6 text-slate-900 sm:px-6 lg:px-8
+FollowUpsPage.jsx,min-h-screen bg-slate-50 px-4 py-6 text-slate-900 sm:px-6 lg:px-8
+ForgotPasswordPage.jsx,grid min-h-[70vh] place-items-center px-4 py-10
+GatePassPage.jsx,<NO MATCH>
+GoodsReceiptsPage.jsx,<NO MATCH>
+GradeCardPage.jsx,space-y-8
+HelpdeskRaiseTicketPage.jsx,min-h-screen bg-slate-50 py-24
+HostelAllocationsPage.jsx,<NO MATCH>
+HostelComplaintsPage.jsx,<NO MATCH>
+HostelFeesPage.jsx,<NO MATCH>
+HostelMaintenancePage.jsx,<NO MATCH>
+HostelManagementPage.jsx,space-y-8
+HostelRoomsPage.jsx,<NO MATCH>
+HostelVisitorsPage.jsx,<NO MATCH>
+HostelWardensPage.jsx,<NO MATCH>
+HRDocumentsPage.jsx,space-y-6
+IncidentsPage.jsx,<NO MATCH>
+IncomePage.jsx,<NO MATCH>
+IndividualFacultyReportPage.jsx,min-h-screen bg-[#F8FAFC] text-slate-900
+InstituteProfilePage.jsx,min-h-[calc(100vh-7rem)] p-2.5
+InstituteSetupPage.jsx,min-h-[calc(100vh-7rem)] overflow-hidden rounded-[24px] border border-slate-200/80 bg-[linear-gradient(135deg;#f8fafc_0%;#ffffff_55%;#f8fafc_100%)] p-2.5 shadow-[0_18px_45px_rgba(15;23;42;0.06)] sm:p-3 lg:p-4
+InstituteSetupPage2.jsx,min-h-[calc(100vh-7rem)] overflow-hidden rounded-[24px] border border-slate-200/80 bg-[linear-gradient(135deg;#f8fafc_0%;#ffffff_55%;#f8fafc_100%)] p-2.5 shadow-[0_18px_45px_rgba(15;23;42;0.06)] sm:p-3 lg:p-4
+InternalMarksPage.jsx,space-y-6
+InventoryPage.jsx,space-y-8
+InvigilatorAssignmentPage.jsx,p-6 space-y-6
+LeadsPage.jsx,min-h-screen bg-[#f5f6fa] text-slate-900
+LeaveManagementPage.jsx,space-y-6
+LectureAttendancePage.jsx,space-y-8
+LectureNotesPage.jsx,space-y-6
+LectureSchedulingPage.jsx,space-y-6
+LibraryBooksPage.jsx,<NO MATCH>
+LibraryCategoriesPage.jsx,<NO MATCH>
+LibraryDamagesPage.jsx,<NO MATCH>
+LibraryFinesPage.jsx,<NO MATCH>
+LibraryIssuedBooksPage.jsx,min-h-[calc(100vh-88px)] bg-[#F8FAFC] p-6 font-sans text-slate-900
+LibraryIssuesPage.jsx,<NO MATCH>
+LibraryLostPage.jsx,<NO MATCH>
+LibraryManagementPage.jsx,space-y-8
+LibraryMembersPage.jsx,<NO MATCH>
+LibraryRenewalsPage.jsx,<NO MATCH>
+LibraryReservationsPage.jsx,<NO MATCH>
+LibraryReturnsPage.jsx,<NO MATCH>
+LibraryWebOpacPage.jsx,min-h-screen bg-[#F8FAFC] text-slate-900 max-w-full
+LMSCoursesPage.jsx,<NO MATCH>
+LMSPage.jsx,rounded-[18px] border border-white/10 bg-slate-900/80 p-5 shadow-sm backdrop-blur-xl
+LoginPage.jsx,login-page-wrapper
+MarketingPage.jsx,<NO MATCH>
+MyLeavesPage.jsx,h-screen overflow-hidden bg-slate-100 p-4 text-slate-900
+NotFoundPage.jsx,mx-auto flex max-w-4xl flex-col items-center justify-center gap-6 px-4 py-24 text-center text-slate-200
+NotificationsPage.jsx,space-y-4 rounded-[28px] border border-slate-200/80 bg-white p-5 shadow-sm sm:p-7
+OnlineTestsPage.jsx,<NO MATCH>
+OrganizationManagementPage.jsx,space-y-6
+ParentsPage.jsx,<NO MATCH>
+PaymentsPage.jsx,<NO MATCH>
+PayrollManagementPage.jsx,space-y-6
+PermissionMatrixPage.jsx,space-y-6 rounded-3xl border border-slate-200/80 bg-white p-8 shadow-sm
+PlaceholderPage.jsx,p-6
+PracticalMarksPage.jsx,space-y-6
+PurchaseOrdersPage.jsx,<NO MATCH>
+QuestionBankPage.jsx,space-y-6
+ReceiptsPage.jsx,<NO MATCH>
+ResetPasswordPage.jsx,grid min-h-[70vh] place-items-center px-4 py-10
+ResultProcessingPage.jsx,space-y-6
+SalarySlipPage.jsx,min-h-[calc(100vh-88px)] overflow-hidden bg-[#F8FAFC] px-6 py-6 font-sans
+ScholarshipsPage.jsx,<NO MATCH>
+SeatingPlanPage.jsx,p-6 space-y-6
+SectionManagementPage.jsx,space-y-6
+SecurityGuardAttendancePage.jsx,<NO MATCH>
+SecurityPage.jsx,space-y-8
+SecurityVisitorsPage.jsx,<NO MATCH>
+SemesterManagementPage.jsx,space-y-6
+SettingsPage.jsx,rounded-[28px] border border-slate-200/80 bg-white p-5 shadow-sm sm:p-7
+StockPage.jsx,<NO MATCH>
+StudentAttendancePage.jsx,<NO MATCH>
+StudentCertificatesPage.jsx,min-h-screen bg-[#F5F7FB] px-[10px] py-6 text-slate-900
+StudentCollegeWisePage.jsx,min-h-screen bg-[#f5f6fa] text-slate-900 overflow-x-hidden
+StudentFeedbackPage.jsx,relative
+StudentListPage.jsx,<NO MATCH>
+StudentManagementPage.jsx,<NO MATCH>
+StudentOverviewPage.jsx,<NO MATCH>
+StudentProfilePage.jsx,responsive-card-grid gap-4
+StudentPromotionPage.jsx,space-y-8
+StudentSessionManagementPage.jsx,min-h-screen bg-[#f5f6fa]
+StudyMaterialPage.jsx,<NO MATCH>
+SubjectAssignmentPage.jsx,space-y-8
+SubjectCombinationReportPage.jsx,min-h-screen bg-slate-50 px-4 py-6 text-slate-900 sm:px-6 lg:px-8
+SubjectManagementPage.jsx,space-y-6
+SyllabusUploadPage.jsx,space-y-8
+TeacherAttendancePage.jsx,<NO MATCH>
+TeacherCourseAssignmentPage.jsx,space-y-8
+TeacherManagementPage.jsx,space-y-6
+TeacherProfilePage.jsx,space-y-4 p-3 sm:space-y-6 sm:p-4 lg:p-6
+TeacherSemesterAssignmentPage.jsx,space-y-8
+TeacherSubjectAssignmentPage.jsx,space-y-8
+TeacherWorkloadManagementPage.jsx,space-y-8
+TimetableGeneratorPage.jsx,space-y-8
+TimetableManagementPage.jsx,space-y-6
+TranscriptPage.jsx,space-y-8
+TransportConductorsPage.jsx,<NO MATCH>
+TransportDriversPage.jsx,<NO MATCH>
+TransportEmployeeAssignmentsPage.jsx,<NO MATCH>
+TransportFuelPage.jsx,<NO MATCH>
+TransportMaintenancePage.jsx,<NO MATCH>
+TransportManagementPage.jsx,space-y-8
+TransportRoutesPage.jsx,<NO MATCH>
+TransportStopsPage.jsx,<NO MATCH>
+TransportStudentAssignmentsPage.jsx,<NO MATCH>
+TransportVehiclesPage.jsx,<NO MATCH>
+UnauthorizedPage.jsx,grid min-h-[70vh] place-items-center px-4 py-10
+UpdateRollNumberPage.jsx,px-[10px] mt-[10px]
+UsersPreferencesPage.jsx,min-h-[calc(100vh-88px)] bg-[#F8FAFC] p-6 font-sans text-slate-900
+VendorsPage.jsx,<NO MATCH>
+VideoLecturesPage.jsx,<NO MATCH>

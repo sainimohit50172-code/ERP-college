@@ -40,6 +40,7 @@ from app.models.finance.models import (
     Receipt,
 )
 from app.models.hostel.models import Bed, Complaint, Hostel, HostelAllocation, Room, Visitor
+from app.models.helpdesk.models import Ticket, TicketAttachment
 from app.models.inventory.models import AssetRegister, InventoryItem, Stock, StockMovement, Warehouse
 from app.models.library.models import BookCopy, BookIssue, Fine, LibraryItem, Reservation
 from app.models.notifications.models import Notification
@@ -84,6 +85,8 @@ __all__ = [
     "Hostel",
     "HostelAllocation",
     "InventoryItem",
+    "Ticket",
+    "TicketAttachment",
     "JournalEntry",
     "JournalLine",
     "LedgerAccount",
@@ -121,5 +124,7 @@ __all__ = [
     "VehicleAssignment",
     "Supplier",
     "Visitor",
+    "Ticket",
+    "TicketAttachment",
     "Warehouse",
 ]

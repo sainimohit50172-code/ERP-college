@@ -552,7 +552,7 @@ export default function StudentSessionManagementPage() {
 
   return (
     <div className="min-h-screen bg-[#f5f6fa]">
-      <div className="w-full max-w-full px-[10px] pb-10 pt-6">
+      <div className="w-full max-w-full pb-10 pt-6">
         {/* Header */}
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div className="space-y-3">

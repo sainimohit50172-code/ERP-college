@@ -1,6 +1,6 @@
 # AI Agent Skills — Full Catalog
 
-> Auto-generated. Total: **1965 skills** across **115 categories**.
+> Auto-generated. Total: **1968 skills** across **115 categories**.
 > When asked "what skill should I use?", browse this file and suggest the most relevant skill IDs.
 > Install a skill: `Ctrl+Shift+/` → search for the skill ID → press Enter.
 
@@ -833,6 +833,7 @@ market, solution, financials, and strategy
 - **interactive-portfolio**: Expert in building portfolios that actually land jobs and clients - not just showing work, but creating memorable experiences. Covers developer portfolios, designer portfolios, creative portfolios,... _(risk: unknown)_
 - **scroll-experience**: Expert in building immersive scroll-driven experiences - parallax storytelling, scroll animations, interactive narratives, and cinematic web experiences. Like NY Times interactives, Apple product p... _(risk: unknown)_
 - **article-illustrations**: Generate hand-drawn 16:9 article illustrations with the Grav character IP, sparse annotations, and absurd but clear visual metaphors. _(risk: safe)_
+- **modellix**: Integrate Modellix unified API/CLI for async AI image and video generation (model run --wait, task download). _(risk: critical)_
 
 ## data
 
@@ -1338,6 +1339,7 @@ makepad 着色器, makepad shader 语法, makepad 绘制 _(risk: unknown)_
 - **vr-ar**: VR/AR development principles. Comfort, interaction, performance requirements. _(risk: unknown)_
 - **web-games**: Web browser game development principles. Framework selection, WebGPU, optimization, PWA. _(risk: unknown)_
 - **unity-ai-game-creator**: Transform raw game ideas into complete Unity projects with AI-powered asset generation, scene blueprints, music/SFX prompts, and step-by-step development procedures using Unity 6+ and modern AI tools. _(risk: safe)_
+- **engine-selection**: Selects game engines and frameworks by platform, genre, and architecture (full canvas shell vs hybrid DOM shell + guest viewport). Covers Phaser, PixiJS, Kaplay, Canvas/WebGL, Three.js, Babylon.js, Godot, Unity, Ink, Twine. Use when choosing a stack or comparing runtimes before implementation. _(risk: safe)_
 
 ## general
 
@@ -2340,6 +2342,7 @@ calculations
 - **wp-guard**: Review generated or changed WordPress plugins, themes, and blocks for security, internationalization, performance, and API correctness. _(risk: offensive)_
 - **xvary-stock-research**: Thesis-driven equity analysis from public SEC EDGAR and market data; /analyze, /score, /compare workflows with bundled Python tools (Claude Code, Cursor, Codex). _(risk: safe)_
 - **yield-intelligence**: Passive income portfolio analysis — activate when user asks about dividend yields, Treasury rates, REIT income, monthly passive income goals, or portfolio yield optimization. Scans 4 asset classes, ranks by risk-adjusted return, and builds allocations targeting a specific monthly income. _(risk: safe)_
+- **antigravity-maintainer-batch-release**: Run protected AAS maintainer sweeps, PR merge batches, canonical sync, Core preview checks, and scripted releases. Use for repository maintenance, main alignment, CLI/MCP/Workbench changes, or release work; not ordinary contribution tasks. _(risk: critical)_
 
 ## video
 
