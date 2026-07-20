@@ -97,7 +97,7 @@ export default function UsersPreferencesPage() {
             <button
               type="button"
               onClick={handleSave}
-              className="inline-flex items-center justify-center rounded-lg bg-[#1E293B] px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+              className="inline-flex items-center justify-center rounded-lg bg-[#1E293B] px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 hover-gradient-border"
             >
               Save
             </button>

@@ -18,7 +18,7 @@ export default function NotificationsPage() {
           <h1 className="mt-2 text-2xl font-semibold text-slate-950">Notifications</h1>
           <p className="mt-2 text-sm text-slate-500">Track the latest academic, attendance, and finance alerts in one place.</p>
         </div>
-        <button type="button" onClick={markAllNotificationsAsRead} className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+        <button type="button" onClick={markAllNotificationsAsRead} className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover-gradient-border">
           <BellRing className="h-4 w-4" /> Mark all read
         </button>
       </div>

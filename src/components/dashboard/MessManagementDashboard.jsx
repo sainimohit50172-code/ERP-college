@@ -23,7 +23,7 @@ export default function MessManagementDashboard() {
             <h1 className="text-2xl font-semibold">Mess Dashboard</h1>
             <p className="mt-1 text-sm text-slate-600">Overview of daily meal operations and activity.</p>
           </div>
-          <button type="button" className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+          <button type="button" className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md hover-gradient-border">
             <RefreshCw className="h-4 w-4" /> Refresh
           </button>
         </div>
@@ -40,7 +40,7 @@ export default function MessManagementDashboard() {
             onClick={() => window.alert(`${item.title} clicked`)}
           >
             <div className="rounded-[19px] bg-white p-5 shadow-sm transition duration-200 hover:bg-slate-50">
-              <div className="flex items-start justify-between gap-3">
+              <div className="flex items-start justify-between gap-3 hover-gradient-border">
                 <div>
                   <p className="text-xs uppercase tracking-[0.24em] text-slate-500">{item.title}</p>
                   <p className="mt-4 text-3xl font-semibold text-slate-900">{item.value}</p>
@@ -57,12 +57,12 @@ export default function MessManagementDashboard() {
       <div className="mt-4 grid gap-4 xl:grid-cols-2">
         <div className="p-[1px] rounded-[22px]" style={{ background: 'linear-gradient(90deg,#38bdf8,#818cf8,#f472b6)' }}>
           <div className="rounded-[21px] bg-white p-6 shadow-sm">
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center justify-between gap-4 hover-gradient-border">
               <div>
                 <h2 className="text-xl font-semibold text-slate-900">Today's Meal Distribution</h2>
                 <p className="mt-1 text-sm text-slate-500">Live tracking for morning and evening meals.</p>
               </div>
-              <button type="button" className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md" onClick={() => window.alert('View meal details clicked')}>
+              <button type="button" className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md hover-gradient-border" onClick={() => window.alert('View meal details clicked')}>
                 View details
                 <ChevronRight className="h-4 w-4" />
               </button>
@@ -85,7 +85,7 @@ export default function MessManagementDashboard() {
 
         <div className="p-[1px] rounded-[22px]" style={{ background: 'linear-gradient(90deg,#f97316,#e879f9,#10b981)' }}>
           <div className="rounded-[21px] bg-white p-6 shadow-sm">
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center justify-between gap-4 hover-gradient-border">
               <div>
                 <h2 className="text-xl font-semibold text-slate-900">Recent Activity</h2>
                 <p className="mt-1 text-sm text-slate-500">Latest mess operations and approvals.</p>
@@ -102,7 +102,7 @@ export default function MessManagementDashboard() {
                   className="w-full rounded-[18px] border border-slate-200/80 bg-slate-50 p-4 text-left shadow-sm transition hover:border-slate-300 hover:bg-white"
                   onClick={() => window.alert(`${item.title} clicked`)}
                 >
-                  <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center justify-between gap-3 hover-gradient-border">
                     <div>
                       <p className="font-medium text-slate-900">{item.title}</p>
                       <p className="mt-1 text-sm text-slate-500">{item.subtitle}</p>

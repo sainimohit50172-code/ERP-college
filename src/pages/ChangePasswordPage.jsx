@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Lock, Key } from 'lucide-react';
+import { Lock, Key, Eye, EyeOff } from 'lucide-react';
 
 export default function ChangePasswordPage() {
   const [success, setSuccess] = useState(false);
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const password = watch('newPassword', '');
 
@@ -33,11 +35,14 @@ export default function ChangePasswordPage() {
               <div className="flex items-center gap-3 rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 focus-within:border-emerald-400">
                 <Key className="h-4 w-4 text-slate-400" />
                 <input
-                  type="password"
+                  type={showOldPassword ? 'text' : 'password'}
                   placeholder="Old password"
                   {...register('oldPassword', { required: 'Old password is required' })}
-                  className="w-full bg-transparent text-slate-900 outline-none"
+                  className="w-full bg-transparent text-slate-900 outline-none hover-gradient-border"
                 />
+                <button type="button" onClick={() => setShowOldPassword((prev) => !prev)} className="text-slate-400 hover:text-slate-700" aria-label={showOldPassword ? 'Hide old password' : 'Show old password'}>
+                  {showOldPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
               </div>
               {errors.oldPassword && <p className="mt-2 text-sm text-rose-500">{errors.oldPassword.message}</p>}
             </div>
@@ -46,11 +51,14 @@ export default function ChangePasswordPage() {
               <div className="flex items-center gap-3 rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 focus-within:border-emerald-400">
                 <Lock className="h-4 w-4 text-slate-400" />
                 <input
-                  type="password"
+                  type={showNewPassword ? 'text' : 'password'}
                   placeholder="New password"
                   {...register('newPassword', { required: 'New password is required', minLength: { value: 8, message: 'Minimum 8 characters' } })}
-                  className="w-full bg-transparent text-slate-900 outline-none"
+                  className="w-full bg-transparent text-slate-900 outline-none hover-gradient-border"
                 />
+                <button type="button" onClick={() => setShowNewPassword((prev) => !prev)} className="text-slate-400 hover:text-slate-700" aria-label={showNewPassword ? 'Hide new password' : 'Show new password'}>
+                  {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
               </div>
               {errors.newPassword && <p className="mt-2 text-sm text-rose-500">{errors.newPassword.message}</p>}
             </div>
@@ -62,7 +70,7 @@ export default function ChangePasswordPage() {
                 </div>
               </div>
             </div>
-            <button type="submit" className="inline-flex w-full items-center justify-center gap-2 rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500">
+            <button type="submit" className="inline-flex w-full items-center justify-center gap-2 rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border">
               Change password
             </button>
           </form>

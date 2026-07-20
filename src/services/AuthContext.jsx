@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getAuthState, saveAuthState, clearAuthState, loginApi, refreshTokenApi } from './authService.js';
+import { getAuthState, saveAuthState, clearAuthState, loginApi, refreshTokenApi, registerApi } from './authService.js';
 import { getPermissionsForRole } from './rbac.js';
 import { recordAuditEvent } from './auditService.js';
 
@@ -38,15 +38,20 @@ export function AuthProvider({ children }) {
   const authValue = useMemo(() => ({
     auth,
     login: async (payload, remember = false) => {
-      const response = await loginApi(payload).catch(() => null);
-      const user = response?.user || {
-        id: `${payload.username}-${Date.now()}`,
-        name: payload.username,
-        email: `${payload.username}@example.com`,
-        role: payload.role || 'Super Admin',
+      const response = await loginApi(payload);
+      const data = response?.data || response || null;
+      const errorMessage = response?.error?.message || response?.error?.responseData?.detail || response?.error || null;
+      const user = data?.user || {
+        id: payload?.id || `${payload?.username || payload?.email || 'user'}-${Date.now()}`,
+        name: payload?.username || payload?.email || 'User',
+        email: payload?.email || `${payload?.username || 'user'}@example.com`,
+        role: payload?.role || 'Admin',
       };
-      const token = response?.token || 'fake-jwt-token';
-      const refreshToken = response?.refreshToken || 'fake-refresh-token';
+      const token = data?.access_token || data?.token || null;
+      const refreshToken = data?.refresh_token || data?.refreshToken || null;
+      if (!token) {
+        throw new Error(errorMessage || 'Unable to sign in right now');
+      }
       const permissions = getPermissionsForRole(user.role);
       const nextAuth = {
         isAuthenticated: true,
@@ -62,14 +67,35 @@ export function AuthProvider({ children }) {
       setRememberMe(remember);
       saveAuthState(nextAuth);
       localStorage.setItem('access_token', token);
-      localStorage.setItem('refresh_token', refreshToken);
+      if (refreshToken) localStorage.setItem('refresh_token', refreshToken);
       recordAuditEvent({
         action: 'Login',
         moduleKey: 'dashboard',
-        description: `User ${user.name} logged in as ${user.role}`,
-        user: { id: user.id, name: user.name, role: user.role },
+        description: `User ${user.name || user.username || user.email} logged in as ${user.role}`,
+        user: { id: user.id, name: user.name || user.username || user.email, role: user.role },
       });
       navigate('/', { replace: true });
+      return nextAuth;
+    },
+    register: async (payload, remember = false) => {
+      const registrationResponse = await registerApi(payload);
+      const registrationData = registrationResponse?.data || registrationResponse || null;
+      const registrationErrorMessage = registrationResponse?.error?.message || registrationResponse?.error?.responseData?.detail || registrationResponse?.error || null;
+      const registeredUser = registrationData?.user || registrationData?.data?.user || null;
+      if (!registeredUser) {
+        throw new Error(registrationErrorMessage || 'Unable to complete registration');
+      }
+      const nextAuth = {
+        isAuthenticated: false,
+        user: null,
+        role: null,
+        permissions: {},
+        token: null,
+        refreshToken: null,
+      };
+      setAuth(nextAuth);
+      setRememberMe(remember);
+      clearAuthState();
       return nextAuth;
     },
     logout: () => {

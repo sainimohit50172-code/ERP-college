@@ -18,7 +18,7 @@ function useDebounce(value, delay = 300) {
 function normalizeColumns(columns) {
   return columns.map((column, index) => {
     if (typeof column === 'string') {
-      return { label: column, key: String(index), sortable: false };
+      return { label: column, key: String(index), sortable: false, align: 'left' };
     }
 
     return {
@@ -27,7 +27,7 @@ function normalizeColumns(columns) {
       sortable: column.sortable !== false,
       render: column.render,
       minWidth: column.minWidth,
-      align: column.align || 'center',
+      align: column.align || 'left',
     };
   });
 }
@@ -39,10 +39,10 @@ function getColumnMinWidth(column) {
     sno: '40px',
     photo: '50px',
     name: '120px',
-    'rollnumber': '90px',
+    rollnumber: '90px',
     rollno: '90px',
-    'universityrollnumber': '120px',
-    'universityrollno': '120px',
+    universityrollnumber: '120px',
+    universityrollno: '120px',
     fathername: '120px',
     mothername: '120px',
     dob: '100px',
@@ -52,6 +52,7 @@ function getColumnMinWidth(column) {
     email: '160px',
     college: '140px',
     course: '110px',
+    coursesection: '140px',
     semester: '80px',
     section: '80px',
     status: '90px',
@@ -177,7 +178,7 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
             <p className="mt-1 text-xs text-slate-500">Search, sort, paginate, export, and print your records.</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <button type="button" onClick={downloadCsv} className="btn btn-secondary inline-flex items-center gap-2">
+            <button type="button" onClick={downloadCsv} className="btn btn-secondary inline-flex items-center gap-2 hover-gradient-border">
               <Download className="h-4 w-4" /> CSV
             </button>
             <button type="button" onClick={() => window.print()} className="btn btn-secondary inline-flex items-center gap-2">
@@ -223,15 +224,14 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
         <EmptyState title="No matching records" description="Try adjusting your search query or changing the page size." />
       ) : (
         <div
-          className="rounded-[20px] border border-slate-200/70 overflow-hidden"
+          className="rounded-[20px] border border-slate-200/70 overflow-hidden no-hover-border"
           style={tableMaxHeight ? { maxHeight: tableMaxHeight, overflowY: 'auto' } : undefined}
         >
           <div className="w-full overflow-x-auto">
-            <table id={tableId} className="min-w-full table-auto border-separate text-[10px] text-slate-900" style={{ borderSpacing: '1px 0' }}>
+            <table id={tableId} className="min-w-full border-separate text-[10px] text-slate-900" style={{ borderSpacing: '1px 0', tableLayout: 'fixed' }}>
               <colgroup>
               {columnsDefinition.map((column) => {
                 const minW = getColumnMinWidth(column);
-                // Use explicit pixel width when we have a px-based min width (ensures action/buttons visible)
                 const widthStyle = minW && minW.endsWith('px') ? minW : undefined;
                 return <col key={column.key} style={{ minWidth: minW !== 'auto' ? minW : undefined, width: widthStyle }} />;
               })}
@@ -241,11 +241,13 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
                 {columnsDefinition.map((column) => {
                   const isAction = ['action', 'actions', 'options'].includes(column.key.toLowerCase());
                   const width = getColumnMinWidth(column);
+                  const textAlign = column.align === 'right' ? 'right' : column.align === 'left' ? 'left' : 'center';
+                  const widthStyle = width && width.endsWith('px') ? width : undefined;
                   return (
                     <th
                       key={column.key}
-                      className={`whitespace-nowrap break-words px-[4px] py-[5px] font-semibold uppercase tracking-[0.02em] text-center align-middle border-r border-slate-200 ${isAction ? 'action-header' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
-                      style={{ minWidth: width !== 'auto' ? width : undefined }}
+                      className={`whitespace-nowrap break-words px-[4px] py-[5px] font-semibold uppercase tracking-[0.02em] align-middle border-r border-slate-200 ${isAction ? 'action-header' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''} ${textAlign === 'left' ? 'text-left' : textAlign === 'right' ? 'text-right' : 'text-center'}`}
+                      style={{ minWidth: width !== 'auto' ? width : undefined, width: widthStyle, textAlign }}
                     >
                       <button
                         type="button"
@@ -289,14 +291,16 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
                     
                     const isAction = ['action', 'actions', 'options'].includes(column.key.toLowerCase());
                     const width = getColumnMinWidth(column);
+                    const textAlign = column.align === 'right' ? 'right' : column.align === 'left' ? 'left' : 'center';
+                    const widthStyle = width && width.endsWith('px') ? width : undefined;
                     // If the column is action and a custom renderer wasn't provided,
                     // render default Edit/Delete buttons wired to props.
                     if (isAction && !column.render && (onEdit || onDelete)) {
                       return (
                         <td
                           key={`${rowIndex}-${column.key}`}
-                          className={`px-2 py-2 align-middle border-r border-slate-200 text-slate-700 overflow-hidden text-left action-cell ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
-                          style={{ whiteSpace: 'nowrap', minWidth: width !== 'auto' ? width : undefined }}
+                          className={`px-3 py-3 align-middle border-r border-slate-200 text-slate-700 overflow-hidden action-cell ${column.key ? String(column.key).toLowerCase() + '-cell' : ''} ${textAlign === 'left' ? 'text-left' : textAlign === 'right' ? 'text-right' : 'text-center'}`}
+                          style={{ whiteSpace: 'nowrap', minWidth: width !== 'auto' ? width : undefined, width: widthStyle, textAlign }}
                         >
                           <div className="min-w-0 flex items-center justify-center gap-2">
                             <button type="button" onClick={() => onEdit(row)} className="rounded-2xl bg-sky-500 px-3 py-1 text-xs font-semibold text-white">Edit</button>
@@ -309,11 +313,13 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
                     return (
                       <td
                         key={`${rowIndex}-${column.key}`}
-                        className={`px-2 py-2 align-middle border-r border-slate-200 text-slate-700 text-[11px] overflow-hidden text-left ${isAction ? 'action-cell' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
+                        className={`px-3 py-3 align-middle border-r border-slate-200 text-slate-700 text-[11px] overflow-hidden ${isAction ? 'action-cell' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''} ${textAlign === 'left' ? 'text-left' : textAlign === 'right' ? 'text-right' : 'text-center'}`}
                         style={{
                           wordWrap: 'break-word',
                           whiteSpace: column.key === 'photo' ? 'nowrap' : 'normal',
                           minWidth: width !== 'auto' ? width : undefined,
+                          width: widthStyle,
+                          textAlign,
                         }}
                       >
                         <div className="min-w-0 flex items-center justify-center gap-1">

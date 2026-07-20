@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import Optional
 
-from app.models.auth import AuthSession, PasswordReset, User
+from app.models.auth import AuthSession, MobileOTP, PasswordReset, User
 from app.repositories.interfaces.base import BaseRepository
 
 
@@ -21,6 +21,22 @@ class AuthRepository(BaseRepository[User], ABC):
 
     @abstractmethod
     async def authenticate(self, email: str, password: str) -> Optional[User]:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def create_user(self, payload: dict) -> User:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def assign_role(self, user_id: int, role_name: str) -> bool:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def update_login_state(self, user_id: int, failed_attempts: int, locked_until: Optional[datetime]) -> bool:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def get_login_state(self, user_id: int) -> dict:
         raise NotImplementedError
 
     @abstractmethod
@@ -59,6 +75,28 @@ class AuthRepository(BaseRepository[User], ABC):
 
     @abstractmethod
     async def revoke_user_refresh_sessions(self, user_id: int) -> int:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def create_mobile_otp(
+        self,
+        mobile_number: str,
+        otp_code: str,
+        expires_at: datetime,
+        meta: Optional[dict] = None,
+    ) -> MobileOTP:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def get_latest_mobile_otp(self, mobile_number: str) -> Optional[MobileOTP]:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def mark_mobile_otp_verified(self, otp_id: str) -> bool:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def mark_mobile_otp_used(self, otp_id: str) -> bool:
         raise NotImplementedError
 
     @abstractmethod

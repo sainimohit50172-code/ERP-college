@@ -266,7 +266,7 @@ export default function StudentProfilePage() {
           <button
             type="button"
             onClick={handleStatusUpdate}
-            className="inline-flex items-center justify-center rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-slate-700"
+            className="inline-flex items-center justify-center rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 hover-gradient-border"
           >
             Save Workflow Update
           </button>

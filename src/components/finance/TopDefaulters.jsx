@@ -125,7 +125,7 @@ export default function TopDefaulters() {
       {defaulters.map((defaulter) => (
         <div
           key={defaulter.id}
-          className="flex items-start gap-3 rounded-[16px] border border-slate-200 bg-white p-4 hover:shadow-md transition-all hover:scale-102 cursor-pointer"
+          className="flex items-start gap-3 rounded-[16px] border border-slate-200 bg-white p-4 hover:shadow-md transition-all hover:scale-102 cursor-pointer hover-gradient-border"
         >
           <img
             src={defaulter.image}

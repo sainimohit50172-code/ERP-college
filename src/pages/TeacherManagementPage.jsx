@@ -385,19 +385,19 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
         action={
           <div className="flex flex-wrap items-center gap-2">
             {perms.canExport('teachers') && (
-              <Button type="button" onClick={handleExport} variant="secondary" className="inline-flex items-center gap-2 px-3 py-2 text-xs"><FaDownload /> Export roster</Button>
+              <Button type="button" onClick={handleExport} variant="secondary" className="inline-flex items-center gap-2 px-3 py-2 text-xs hover-gradient-border"><FaDownload /> Export roster</Button>
             )}
             {perms.canImport('teachers') && (
               <Button type="button" onClick={() => importInputRef.current?.click()} variant="secondary" className="inline-flex items-center gap-2 px-3 py-2 text-xs"><FaFileImport /> Import CSV</Button>
             )}
             {perms.canCreate('teachers') && (
-              <Button type="button" onClick={openNewTeacherModal} variant="primary" className="inline-flex items-center gap-2 px-3 py-2 text-xs"><FaPlus /> Add teacher</Button>
+              <Button type="button" onClick={openNewTeacherModal} variant="primary" className="inline-flex items-center gap-2 px-3 py-2 text-xs hover-gradient-border"><FaPlus /> Add teacher</Button>
             )}
           </div>
         }
       />
 
-      <input ref={importInputRef} type="file" accept=".csv" className="hidden" onChange={handleFileChange} />
+      <input ref={importInputRef} type="file" accept=".csv" className="hidden hover-gradient-border" onChange={handleFileChange} />
 
       <div className="grid gap-4">
         <div className="grid gap-3 md:grid-cols-3">
@@ -485,7 +485,7 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
                   <button
                     type="button"
                     onClick={handleExportAssignments}
-                    className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700"
+                    className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700 hover-gradient-border"
                   >
                     <FaDownload /> Export assignments
                   </button>
@@ -547,7 +547,7 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
                   <button
                     type="button"
                     onClick={handleExportSchedule}
-                    className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700"
+                    className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-700 hover-gradient-border"
                   >
                     <FaDownload /> Export schedule
                   </button>
@@ -617,7 +617,7 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
             <input
               type="text"
               {...register('name', { required: 'Name is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
               placeholder="Enter faculty name"
             />
             {errors.name && <p className="mt-1 text-sm text-rose-400">{errors.name.message}</p>}
@@ -629,7 +629,7 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
                 required: 'Email is required',
                 pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Enter a valid email' },
               })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
               placeholder="faculty@example.edu"
             />
             {errors.email && <p className="mt-1 text-sm text-rose-400">{errors.email.message}</p>}
@@ -637,7 +637,7 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
           <FormField label="Department">
             <select
               {...register('department', { required: 'Department is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             >
               {departments.length > 0 ? (
                 departments.map((department) => (
@@ -659,7 +659,7 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
             <input
               type="text"
               {...register('subjects', { required: 'Subjects are required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
               placeholder="Example: Data Structures, Algorithms"
             />
             {errors.subjects && <p className="mt-1 text-sm text-rose-400">{errors.subjects.message}</p>}
@@ -671,7 +671,7 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
                 required: 'Experience is required',
                 min: { value: 1, message: 'Minimum 1 year' },
               })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
               placeholder="Years of teaching experience"
             />
             {errors.experience && <p className="mt-1 text-sm text-rose-400">{errors.experience.message}</p>}
@@ -679,7 +679,7 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
           <FormField label="Shift">
             <select
               {...register('shift', { required: 'Shift selection is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             >
               <option value="Morning">Morning</option>
               <option value="Afternoon">Afternoon</option>
@@ -690,7 +690,7 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
           <FormField label="Status">
             <select
               {...register('status', { required: 'Status is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             >
               <option value="Active">Active</option>
               <option value="Pending">Pending</option>
@@ -705,7 +705,7 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
                 required: 'Salary is required',
                 min: { value: 1000, message: 'Minimum salary 1000' },
               })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
               placeholder="Salary in USD"
             />
             {errors.salary && <p className="mt-1 text-sm text-rose-400">{errors.salary.message}</p>}
@@ -718,14 +718,14 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
         isOpen={isAssignmentModalOpen}
         onClose={() => setIsAssignmentModalOpen(false)}
         footer={
-          <Button type="button" onClick={handleSubmitAssignment(handleAssignmentSubmit)} isLoading={isAssignmentSubmitting} variant="primary">Save assignment</Button>
+          <Button type="button" onClick={handleSubmitAssignment(handleAssignmentSubmit)} isLoading={isAssignmentSubmitting} variant="primary" >Save assignment</Button>
         }
       >
         <form className="grid gap-5 lg:grid-cols-2">
           <FormField label="Teacher name">
             <select
               {...registerAssignment('teacher', { required: 'Teacher is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             >
               <option value="">Select teacher</option>
               {teachers.map((teacher) => (
@@ -737,7 +737,7 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
           <FormField label="Course">
             <select
               {...registerAssignment('course', { required: 'Course is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             >
               <option value="">Select course</option>
               {courses.map((course) => (
@@ -750,7 +750,7 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
             <input
               type="text"
               {...registerAssignment('semester', { required: 'Semester is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
               placeholder="Semester 1"
             />
             {assignmentErrors.semester && <p className="mt-1 text-sm text-rose-400">{assignmentErrors.semester.message}</p>}
@@ -759,21 +759,21 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
             <input
               type="number"
               {...registerAssignment('subjects')}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             />
           </FormField>
           <FormField label="Total credits">
             <input
               type="number"
               {...registerAssignment('credits')}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             />
           </FormField>
           <FormField label="Prerequisite">
             <input
               type="text"
               {...registerAssignment('prerequisite')}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
               placeholder="None"
             />
           </FormField>
@@ -781,13 +781,13 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
             <input
               type="number"
               {...registerAssignment('yearsTeaching')}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             />
           </FormField>
           <FormField label="Status">
             <select
               {...registerAssignment('status')}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             >
               <option value="Active">Active</option>
               <option value="Pending">Pending</option>
@@ -802,14 +802,14 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
         isOpen={isLectureModalOpen}
         onClose={() => setIsLectureModalOpen(false)}
         footer={
-          <Button type="button" onClick={handleSubmitLecture(handleLectureSubmit)} isLoading={isLectureSubmitting} variant="primary">Save lecture</Button>
+          <Button type="button" onClick={handleSubmitLecture(handleLectureSubmit)} isLoading={isLectureSubmitting} variant="primary" >Save lecture</Button>
         }
       >
         <form className="grid gap-5 lg:grid-cols-2">
           <FormField label="Subject">
             <select
               {...registerLecture('subject', { required: 'Subject is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             >
               <option value="">Select subject</option>
               {subjects.map((subject) => (
@@ -821,7 +821,7 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
           <FormField label="Teacher">
             <select
               {...registerLecture('teacher', { required: 'Teacher is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             >
               <option value="">Select teacher</option>
               {teachers.map((teacher) => (
@@ -833,7 +833,7 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
           <FormField label="Course">
             <select
               {...registerLecture('course', { required: 'Course is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             >
               <option value="">Select course</option>
               {courses.map((course) => (
@@ -845,7 +845,7 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
           <FormField label="Section">
             <select
               {...registerLecture('section', { required: 'Section is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             >
               <option value="">Select section</option>
               {sections.map((section) => (
@@ -858,7 +858,7 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
             <input
               type="date"
               {...registerLecture('date', { required: 'Date is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             />
             {lectureErrors.date && <p className="mt-1 text-sm text-rose-400">{lectureErrors.date.message}</p>}
           </FormField>
@@ -866,7 +866,7 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
             <input
               type="text"
               {...registerLecture('time', { required: 'Time is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
               placeholder="09:00 - 10:30"
             />
             {lectureErrors.time && <p className="mt-1 text-sm text-rose-400">{lectureErrors.time.message}</p>}
@@ -875,7 +875,7 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
             <input
               type="text"
               {...registerLecture('room', { required: 'Room is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
               placeholder="A-101"
             />
             {lectureErrors.room && <p className="mt-1 text-sm text-rose-400">{lectureErrors.room.message}</p>}
@@ -883,7 +883,7 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
           <FormField label="Type">
             <select
               {...registerLecture('type', { required: 'Type is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             >
               <option value="Theory">Theory</option>
               <option value="Practical">Practical</option>
@@ -894,7 +894,7 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
           <FormField label="Status">
             <select
               {...registerLecture('status', { required: 'Status is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             >
               <option value="Scheduled">Scheduled</option>
               <option value="Completed">Completed</option>

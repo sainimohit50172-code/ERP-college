@@ -84,7 +84,7 @@ export default function TeacherCourseAssignmentPage() {
             <p className="text-sm text-slate-400">Manage teacher assignments to courses with subject, credit and prerequisite details.</p>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <button className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700"><FaFileDownload /> Export</button>
+            <button className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700 hover-gradient-border"><FaFileDownload /> Export</button>
             <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"><FaPlus /> New assignment</button>
           </div>
         </div>
@@ -109,22 +109,22 @@ export default function TeacherCourseAssignmentPage() {
         <div className="mt-6"><TablePagination page={page} pageCount={pageCount} onPageChange={setPage} /></div>
       </div>
 
-      <Modal title="Create teacher course assignment" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<button onClick={handleSubmit(onSubmit)} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">Assign teacher</button>}>
+      <Modal title="Create teacher course assignment" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<button onClick={handleSubmit(onSubmit)} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 hover-gradient-border">Assign teacher</button>}>
         <form className="grid gap-5 lg:grid-cols-2">
-          <FormField label="Teacher name"><select {...register('teacher', { required: 'Teacher name is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+          <FormField label="Teacher name"><select {...register('teacher', { required: 'Teacher name is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border">
               <option value="">Select teacher</option>
               {teachers.map((teacher) => (<option key={teacher.id} value={teacher.name}>{teacher.name}</option>))}
             </select>{errors.teacher && <p className="mt-1 text-sm text-rose-400">{errors.teacher.message}</p>}</FormField>
-          <FormField label="Course"><select {...register('course', { required: 'Course is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+          <FormField label="Course"><select {...register('course', { required: 'Course is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border">
               <option value="">Select course</option>
               {courses.map((course) => (<option key={course.id} value={course.code}>{course.title}</option>))}
             </select>{errors.course && <p className="mt-1 text-sm text-rose-400">{errors.course.message}</p>}</FormField>
-          <FormField label="Semester"><input type="text" {...register('semester', { required: 'Semester is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="5" />{errors.semester && <p className="mt-1 text-sm text-rose-400">{errors.semester.message}</p>}</FormField>
-          <FormField label="Number of subjects"><input type="number" {...register('subjects')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="2" /></FormField>
-          <FormField label="Total credits"><input type="number" {...register('credits')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="8" /></FormField>
-          <FormField label="Prerequisite"><input type="text" {...register('prerequisite')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="None" /></FormField>
-          <FormField label="Years of teaching experience"><input type="number" {...register('yearsTeaching')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="5" /></FormField>
-          <FormField label="Status"><select {...register('status')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"><option value="Active">Active</option><option value="Inactive">Inactive</option><option value="On Leave">On Leave</option></select></FormField>
+          <FormField label="Semester"><input type="text" {...register('semester', { required: 'Semester is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="5" />{errors.semester && <p className="mt-1 text-sm text-rose-400">{errors.semester.message}</p>}</FormField>
+          <FormField label="Number of subjects"><input type="number" {...register('subjects')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="2" /></FormField>
+          <FormField label="Total credits"><input type="number" {...register('credits')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="8" /></FormField>
+          <FormField label="Prerequisite"><input type="text" {...register('prerequisite')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="None" /></FormField>
+          <FormField label="Years of teaching experience"><input type="number" {...register('yearsTeaching')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="5" /></FormField>
+          <FormField label="Status"><select {...register('status')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"><option value="Active">Active</option><option value="Inactive">Inactive</option><option value="On Leave">On Leave</option></select></FormField>
         </form>
       </Modal>
     </div>

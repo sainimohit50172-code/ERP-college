@@ -2,6 +2,7 @@ import asyncio
 
 import pytest
 
+from app.schemas.auth.schemas import RegisterRequest
 from app.services.auth.service import AuthService, AuthServiceError
 from app.services.students.service import StudentService, StudentServiceError
 from app.services.attendance.service import AttendanceService, AttendanceServiceError
@@ -10,6 +11,9 @@ from app.services.attendance.service import AttendanceService, AttendanceService
 class DummyAuthRepository:
     def __init__(self, user=None):
         self.user = user
+        self.created_user = None
+        self.assigned_roles = []
+        self.auth_state = {"failed_attempts": 0, "locked_until": None}
 
     async def get_by_email(self, email):
         return self.user if self.user and self.user.email == email else None
@@ -21,6 +25,21 @@ class DummyAuthRepository:
         if self.user and self.user.email == email and password == "secret":
             return self.user
         return None
+
+    async def create_user(self, payload):
+        self.created_user = payload
+        return payload
+
+    async def assign_role(self, user_id, role_name):
+        self.assigned_roles.append(role_name)
+        return True
+
+    async def update_login_state(self, user_id, failed_attempts, locked_until):
+        self.auth_state = {"failed_attempts": failed_attempts, "locked_until": locked_until}
+        return True
+
+    async def get_login_state(self, user_id):
+        return self.auth_state
 
     async def change_password(self, user_id, new_password):
         return True
@@ -188,3 +207,46 @@ def test_attendance_service_returns_summary_dto():
 
     assert result.present == 1
     assert result.absent == 0
+
+
+def test_register_user_hashes_password_and_assigns_role():
+    service = AuthService(DummyAuthRepository())
+
+    result = asyncio.run(
+        service.register_user(
+            email="new.user@example.com",
+            username="new.user",
+            password="StrongPass123!",
+            full_name="New User",
+            role_name="Admin",
+        )
+    )
+
+    assert result["user"]["email"] == "new.user@example.com"
+    assert result["user"]["role"] == "Admin"
+    assert result["user"]["hashed_password"] != "StrongPass123!"
+    assert "Admin" in service._auth_repository.assigned_roles
+
+
+def test_register_user_accepts_simple_passwords_for_ui_flow():
+    service = AuthService(DummyAuthRepository())
+
+    result = asyncio.run(
+        service.register_user(
+            email="ui.user@example.com",
+            username="ui.user",
+            password="Simple123",
+            full_name="UI User",
+            role_name="Admin",
+        )
+    )
+
+    assert result["user"]["email"] == "ui.user@example.com"
+    assert result["user"]["role"] == "Admin"
+
+
+def test_register_request_accepts_camel_case_aliases():
+    payload = RegisterRequest(fullName="Demo User", username="demo", email="demo@example.com", password="Simple123", role="Admin")
+
+    assert payload.full_name == "Demo User"
+    assert payload.role_name == "Admin"

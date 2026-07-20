@@ -143,14 +143,14 @@ export default function DashboardPage () {
               </div>
 
               <div className="mt-4 grid gap-4 xl:grid-cols-2">
-                <div className="flex min-h-0 flex-col rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm sm:p-5">
+                <div className="no-hover-border flex min-h-0 flex-col rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm sm:p-5">
                   <div>
                     <div className="text-lg font-semibold text-slate-900">Favorites</div>
                     <div className="mt-1 text-sm text-slate-500">Quick access to common tasks</div>
                   </div>
                   <div className="mt-4 grid flex-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                     {quickActions.map((a) => (
-                      <button key={a.id} type="button" onClick={() => navigate(a.to)} className="flex min-h-[92px] flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white px-3 py-3 text-center transition hover:-translate-y-0.5 hover:shadow-lg cursor-pointer">
+                      <button key={a.id} type="button" onClick={() => navigate(a.to)} className="hover-gradient-border flex min-h-[92px] flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white px-3 py-3 text-center transition hover:-translate-y-0.5 hover:shadow-lg cursor-pointer">
                         <Star className="h-5 w-5" style={{ color: a.color }} />
                         <div className="mt-2 text-[11px] font-semibold" style={{ color: a.color }}>{a.label}</div>
                       </button>
@@ -158,14 +158,14 @@ export default function DashboardPage () {
                   </div>
                 </div>
 
-                <div className="flex min-h-0 flex-col rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm sm:p-5">
+                <div className="no-hover-border flex min-h-0 flex-col rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm sm:p-5">
                   <div>
                     <div className="text-lg font-semibold text-slate-900">Reports</div>
                     <div className="mt-1 text-sm text-slate-500">Team and finance dashboards</div>
                   </div>
                   <div className="mt-4 grid flex-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     {reportCards.map((card) => (
-                      <button key={card.id} type="button" onClick={() => navigate('/reports')} className="flex min-h-[92px] flex-col items-center justify-center rounded-2xl bg-slate-900 px-3 py-3 text-center text-white transition hover:-translate-y-0.5 hover:shadow-lg hover:bg-slate-800 cursor-pointer">
+                      <button key={card.id} type="button" onClick={() => navigate('/reports')} className="hover-gradient-border flex min-h-[92px] flex-col items-center justify-center rounded-2xl bg-slate-900 px-3 py-3 text-center text-white transition hover:-translate-y-0.5 hover:shadow-lg hover:bg-slate-800 cursor-pointer">
                         <card.icon className="h-5 w-5" />
                         <div className="mt-2 text-[12px] font-semibold">{card.label}</div>
                       </button>

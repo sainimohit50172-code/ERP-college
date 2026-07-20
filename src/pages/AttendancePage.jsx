@@ -14,7 +14,7 @@ export default function AttendancePage() {
     <div className="space-y-6">
       <SectionHeader title="Attendance hub" subtitle="Unified hub for all attendance, scheduling and roster tracking." />
       <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+        <div className="no-hover-border rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
           <div className="grid gap-3 md:grid-cols-3">
             <InfoCard title="Total attendance logs" value="5,832" />
             <InfoCard title="Late records" value="132" />
@@ -24,7 +24,7 @@ export default function AttendancePage() {
             {attendanceModules.map((module) => {
               const Icon = module.icon;
               return (
-                <Link key={module.title} to={module.to} className="group rounded-[24px] border border-white/10 bg-slate-950/70 p-4 transition hover:-translate-y-0.5 hover:shadow-lg hover:border-sky-400 hover:bg-slate-900/90 cursor-pointer">
+                <Link key={module.title} to={module.to} className="group hover-gradient-border rounded-[24px] border border-white/10 bg-slate-950/70 p-4 transition hover:-translate-y-0.5 hover:shadow-lg hover:border-sky-400 hover:bg-slate-900/90 cursor-pointer">
                   <div className={`inline-flex h-10 w-10 items-center justify-center rounded-2xl ${module.color}`}>
                     <Icon className="h-4 w-4" />
                   </div>

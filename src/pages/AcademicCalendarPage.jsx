@@ -52,15 +52,15 @@ export default function AcademicCalendarPage() {
     <div className="space-y-6">
       <SectionHeader title="Academic calendar" subtitle="Manage academic year events, holidays, exams and important dates." />
       <div className="grid gap-3 md:grid-cols-3">
-        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+        <div className="hover-gradient-border rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
           <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Total events</p>
           <p className="mt-3 text-2xl font-semibold text-white">{totalEvents}</p>
         </div>
-        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+        <div className="hover-gradient-border rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
           <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Examinations</p>
           <p className="mt-3 text-2xl font-semibold text-white">{examinations}</p>
         </div>
-        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+        <div className="hover-gradient-border rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
           <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Holidays</p>
           <p className="mt-3 text-2xl font-semibold text-white">{holidays}</p>
         </div>
@@ -72,7 +72,7 @@ export default function AcademicCalendarPage() {
             <p className="text-sm text-slate-400">View and manage academic calendar events including sessions, exams and holidays.</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-              <Button className="inline-flex items-center gap-2 px-3 py-2 text-sm" variant="secondary"><FaDownload /> Export</Button>
+              <Button className="inline-flex items-center gap-2 px-3 py-2 text-sm hover-gradient-border" variant="secondary"><FaDownload /> Export</Button>
               <Button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 px-3 py-2 text-sm" variant="primary"><FaPlus /> Add event</Button>
           </div>
         </div>
@@ -91,13 +91,13 @@ export default function AcademicCalendarPage() {
         </div>
         <div className="mt-4"><TablePagination page={page} pageCount={pageCount} onPageChange={setPage} /></div>
       </div>
-      <Modal title="Add calendar event" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<Button onClick={handleSubmit(onSubmit)} variant="primary">Save event</Button>}>
+      <Modal title="Add calendar event" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<Button onClick={handleSubmit(onSubmit)} variant="primary" >Save event</Button>}>
         <form className="grid gap-5 lg:grid-cols-2">
-          <FormField label="Event name"><input type="text" {...register('event', { required: 'Event name is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Semester 5 Classes Begin" />{errors.event && <p className="mt-1 text-sm text-rose-400">{errors.event.message}</p>}</FormField>
-          <FormField label="Event type"><select {...register('eventType', { required: 'Event type is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"><option value="Session Start">Session Start</option><option value="Holiday">Holiday</option><option value="Examination">Examination</option><option value="Assessment">Assessment</option></select>{errors.eventType && <p className="mt-1 text-sm text-rose-400">{errors.eventType.message}</p>}</FormField>
-          <FormField label="Start date"><input type="date" {...register('startDate', { required: 'Start date is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />{errors.startDate && <p className="mt-1 text-sm text-rose-400">{errors.startDate.message}</p>}</FormField>
-          <FormField label="End date"><input type="date" {...register('endDate', { required: 'End date is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />{errors.endDate && <p className="mt-1 text-sm text-rose-400">{errors.endDate.message}</p>}</FormField>
-          <FormField label="Status"><select {...register('status', { required: 'Status is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"><option value="Scheduled">Scheduled</option><option value="Ongoing">Ongoing</option><option value="Completed">Completed</option><option value="Cancelled">Cancelled</option></select>{errors.status && <p className="mt-1 text-sm text-rose-400">{errors.status.message}</p>}</FormField>
+          <FormField label="Event name"><input type="text" {...register('event', { required: 'Event name is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="Semester 5 Classes Begin" />{errors.event && <p className="mt-1 text-sm text-rose-400">{errors.event.message}</p>}</FormField>
+          <FormField label="Event type"><select {...register('eventType', { required: 'Event type is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"><option value="Session Start">Session Start</option><option value="Holiday">Holiday</option><option value="Examination">Examination</option><option value="Assessment">Assessment</option></select>{errors.eventType && <p className="mt-1 text-sm text-rose-400">{errors.eventType.message}</p>}</FormField>
+          <FormField label="Start date"><input type="date" {...register('startDate', { required: 'Start date is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />{errors.startDate && <p className="mt-1 text-sm text-rose-400">{errors.startDate.message}</p>}</FormField>
+          <FormField label="End date"><input type="date" {...register('endDate', { required: 'End date is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />{errors.endDate && <p className="mt-1 text-sm text-rose-400">{errors.endDate.message}</p>}</FormField>
+          <FormField label="Status"><select {...register('status', { required: 'Status is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"><option value="Scheduled">Scheduled</option><option value="Ongoing">Ongoing</option><option value="Completed">Completed</option><option value="Cancelled">Cancelled</option></select>{errors.status && <p className="mt-1 text-sm text-rose-400">{errors.status.message}</p>}</FormField>
         </form>
       </Modal>
     </div>

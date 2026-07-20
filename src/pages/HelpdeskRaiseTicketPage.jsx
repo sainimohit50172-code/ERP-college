@@ -74,7 +74,7 @@ export default function HelpdeskRaiseTicketPage() {
 
     try {
       setIsSubmitting(true);
-      await api.post('/api/v1/helpdesk/tickets/', payload);
+      await api.post('/helpdesk/tickets/', payload);
       toast.success('ERP ticket raised successfully.');
       setForm({
         subject: '',
@@ -99,7 +99,7 @@ export default function HelpdeskRaiseTicketPage() {
   return (
     <div className="min-h-screen bg-slate-50 py-24">
       <div className="mx-auto w-full max-w-6xl">
-        <div className="overflow-hidden rounded-[32px] border border-orange-200 bg-white shadow-xl">
+        <div className="no-hover-border overflow-hidden rounded-[32px] border border-orange-200 bg-white shadow-xl">
           <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-8 py-8 text-white sm:px-10">
             <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
               <div className="max-w-3xl">
@@ -128,7 +128,7 @@ export default function HelpdeskRaiseTicketPage() {
                     Fill in the details below so our support team can address your ERP request accurately.
                   </p>
                 </div>
-                <div className="rounded-3xl bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm">
+                <div className="hover-gradient-border rounded-3xl bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm">
                   <span className="text-slate-400">Ticket priority</span>
                   <p className="mt-1 text-base text-slate-900">{form.priority}</p>
                 </div>
@@ -311,7 +311,7 @@ export default function HelpdeskRaiseTicketPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="inline-flex items-center justify-center rounded-3xl bg-orange-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-orange-400"
+                  className="inline-flex items-center justify-center rounded-3xl bg-orange-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-orange-400 hover-gradient-border"
                 >
                   {isSubmitting ? 'Submitting…' : 'Submit ERP Ticket'}
                 </button>

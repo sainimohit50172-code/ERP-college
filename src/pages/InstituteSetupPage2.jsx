@@ -53,8 +53,8 @@ export default function InstituteSetupPage2() {
   const cards = useMemo(() => setupCards, []);
 
   return (
-    <div className="min-h-[calc(100vh-7rem)] overflow-hidden rounded-[24px] border border-slate-200/80 bg-[linear-gradient(135deg,#f8fafc_0%,#ffffff_55%,#f8fafc_100%)] p-2.5 shadow-[0_18px_45px_rgba(15,23,42,0.06)] sm:p-3 lg:p-4">
-      <div className="flex h-full flex-col rounded-[22px] border border-slate-200/70 bg-white/90 p-3 shadow-inner sm:p-4 lg:p-5">
+    <div className="no-hover-border min-h-[calc(100vh-7rem)] overflow-hidden rounded-[24px] border border-slate-200/80 bg-[linear-gradient(135deg,#f8fafc_0%,#ffffff_55%,#f8fafc_100%)] p-2.5 shadow-[0_18px_45px_rgba(15,23,42,0.06)] sm:p-3 lg:p-4">
+      <div className="no-hover-border flex h-full flex-col rounded-[22px] border border-slate-200/70 bg-white/90 p-3 shadow-inner sm:p-4 lg:p-5">
         <div className="mb-4 flex flex-col gap-3 border-b border-slate-200/80 pb-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-600">Institute setup</p>
@@ -78,7 +78,7 @@ export default function InstituteSetupPage2() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.18, delay: index * 0.03 }}
                 whileHover={{ y: -6, scale: 1.01, boxShadow: '0 20px 40px rgba(15, 23, 42, 0.12)' }}
-                className="group flex h-[220px] flex-col items-center justify-center rounded-[18px] border border-slate-200 bg-white p-5 text-center shadow-[0_10px_30px_rgba(15,23,42,0.05)] transition-all duration-200 hover:border-emerald-300 hover:shadow-[0_18px_40px_rgba(15,23,42,0.1)]"
+                className="group hover-gradient-border flex h-[220px] flex-col items-center justify-center rounded-[18px] border border-slate-200 bg-white p-5 text-center shadow-[0_10px_30px_rgba(15,23,42,0.05)] transition-all duration-200 hover:border-emerald-300 hover:shadow-[0_18px_40px_rgba(15,23,42,0.1)]"
               >
                 <div className="mb-4 flex h-[62px] w-[62px] items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-emerald-600 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:border-emerald-200 group-hover:bg-emerald-50 group-hover:text-emerald-700">
                   <Icon className="h-[34px] w-[34px]" />

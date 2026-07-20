@@ -161,7 +161,7 @@ export default function FollowUpRemarkReportPage() {
           <button
             type="button"
             onClick={downloadCsv}
-            className="inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+            className="inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 hover-gradient-border"
           >
             <Download size={16} /> Export To Excel
           </button>
@@ -546,7 +546,7 @@ export default function FollowUpRemarkReportPage() {
               <button
                 type="button"
                 onClick={handleAddRemark}
-                className="rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800"
+                className="rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 hover-gradient-border"
               >
                 Add Remark
               </button>

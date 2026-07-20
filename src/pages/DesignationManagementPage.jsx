@@ -165,7 +165,7 @@ export default function DesignationManagementPage() {
             <button
               type="button"
               onClick={handleExport}
-              className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700"
+              className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700 hover-gradient-border"
             >
               <FaDownload /> Export
             </button>
@@ -179,14 +179,14 @@ export default function DesignationManagementPage() {
             <button
               type="button"
               onClick={openNewDesignationModal}
-              className="inline-flex items-center gap-2 rounded-3xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
+              className="inline-flex items-center gap-2 rounded-3xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 hover-gradient-border"
             >
               <FaPlus /> Add designation
             </button>
           </div>
         }
       />
-      <input ref={importInputRef} type="file" accept=".csv" className="hidden" onChange={handleFileChange} />
+      <input ref={importInputRef} type="file" accept=".csv" className="hidden hover-gradient-border" onChange={handleFileChange} />
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(280px,0.3fr)]">
         <div className="grid gap-4">
           <div className="grid gap-3 md:grid-cols-3">
@@ -279,7 +279,7 @@ export default function DesignationManagementPage() {
             type="button"
             onClick={handleSubmit(onSubmit)}
             disabled={isSubmitting}
-            className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60 hover-gradient-border"
           >
             {isEditMode ? 'Update designation' : 'Save designation'}
           </button>
@@ -290,7 +290,7 @@ export default function DesignationManagementPage() {
             <input
               type="text"
               {...register('code', { required: 'Code is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
               placeholder="HR-01"
             />
             {errors.code && <p className="mt-1 text-sm text-rose-400">{errors.code.message}</p>}
@@ -299,7 +299,7 @@ export default function DesignationManagementPage() {
             <input
               type="text"
               {...register('title', { required: 'Title is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
               placeholder="HR Coordinator"
             />
             {errors.title && <p className="mt-1 text-sm text-rose-400">{errors.title.message}</p>}
@@ -308,7 +308,7 @@ export default function DesignationManagementPage() {
             <input
               type="number"
               {...register('level', { required: 'Level is required', min: { value: 1, message: 'Minimum level 1' } })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
               placeholder="1"
             />
             {errors.level && <p className="mt-1 text-sm text-rose-400">{errors.level.message}</p>}
@@ -316,7 +316,7 @@ export default function DesignationManagementPage() {
           <FormField label="Status">
             <select
               {...register('status', { required: 'Status is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
             >
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>

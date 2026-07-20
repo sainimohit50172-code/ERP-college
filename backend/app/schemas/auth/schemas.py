@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
+from pydantic import AliasChoices, BaseModel, ConfigDict, EmailStr, Field, field_validator
 
 
 class LoginRequest(BaseModel):
@@ -29,6 +29,16 @@ class LoginRequest(BaseModel):
         return value
 
 
+class UserSummary(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    email: EmailStr
+    username: Optional[str] = None
+    full_name: Optional[str] = None
+    role: Optional[str] = None
+
+
 class LoginResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -36,6 +46,23 @@ class LoginResponse(BaseModel):
     refresh_token: str
     token_type: str = "bearer"
     expires_in: int = Field(default=3600, ge=1)
+    user: Optional[UserSummary] = None
+
+
+class RegisterRequest(BaseModel):
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
+
+    email: EmailStr
+    username: str = Field(min_length=3, max_length=50)
+    password: str = Field(min_length=8)
+    full_name: Optional[str] = Field(default=None, validation_alias=AliasChoices("full_name", "fullName"))
+    role_name: Optional[str] = Field(default=None, validation_alias=AliasChoices("role_name", "role"))
+
+
+class RegisterResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    user: UserSummary
 
 
 class RefreshTokenRequest(BaseModel):
@@ -91,6 +118,31 @@ class PasswordResetRequest(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     email: EmailStr
+
+
+class MobileOtpSendRequest(BaseModel):
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
+
+    full_name: Optional[str] = Field(default=None, validation_alias=AliasChoices("full_name", "fullName"))
+    username: str = Field(min_length=3, max_length=50)
+    email: EmailStr
+    mobile_number: str = Field(min_length=10, max_length=10)
+    role_name: Optional[str] = Field(default=None, validation_alias=AliasChoices("role_name", "role"))
+
+
+class MobileOtpVerifyRequest(BaseModel):
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
+
+    mobile_number: str = Field(min_length=10, max_length=10, validation_alias=AliasChoices("mobile_number", "mobile"))
+    otp_code: str = Field(min_length=6, max_length=6, validation_alias=AliasChoices("otp_code", "otp"))
+
+
+class MobileRegistrationCompleteRequest(BaseModel):
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
+
+    mobile_number: str = Field(min_length=10, max_length=10, validation_alias=AliasChoices("mobile_number", "mobile"))
+    password: str = Field(min_length=6)
+    confirm_password: str = Field(default=..., min_length=6, validation_alias=AliasChoices("confirm_password", "confirmPassword"))
 
 
 class UserBase(BaseModel):

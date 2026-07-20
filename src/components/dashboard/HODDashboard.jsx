@@ -53,12 +53,12 @@ export default function HODDashboard() {
   return (
     <div className="min-h-[calc(100vh-120px)] overflow-x-hidden bg-transparent p-2">
       <div className="m-2 rounded-[22px] border border-slate-200/70 bg-white p-4 shadow-sm">
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between hover-gradient-border">
           <div>
             <h1 className="text-2xl font-semibold">HOD Dashboard</h1>
             <div className="mt-1 text-sm text-slate-600">Overview and quick actions</div>
           </div>
-          <div className="inline-flex items-center gap-3">
+          <div className="inline-flex items-center gap-3 hover-gradient-border">
             <div className="rounded-full bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700">Academic Session 2026-27 Odd</div>
             <button type="button" onClick={() => setRefreshTick((t) => t + 1)} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm">
               <RefreshCw className="h-4 w-4" /> Refresh
@@ -71,7 +71,7 @@ export default function HODDashboard() {
           <div className="space-y-4">
             <div className="p-[1px] rounded-[18px]" style={{ background: 'linear-gradient(90deg,#f97316 0%,#3b82f6 33%,#7c3aed 66%,#10b981 100%)' }}>
               <div className="rounded-[17px] bg-white p-4 shadow-sm">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between hover-gradient-border">
                   <h3 className="text-base font-semibold">Employee Statistics <span className="text-xs font-normal text-slate-500">(Employee Type Wise)</span></h3>
                   <button type="button" onClick={() => setRefreshTick((t) => t + 1)} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700">
                     <RefreshCw className="h-4 w-4" />
@@ -82,7 +82,7 @@ export default function HODDashboard() {
                   <button onClick={() => setEmpModal({ type: 'headcount' })} className="w-full rounded-2xl bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 text-left hover:shadow-md transition">
                     <div className="text-sm text-slate-600">Employee Headcount</div>
                     <div className="mt-2 text-2xl font-bold">Total : {totalEmployees}</div>
-                    <div className="mt-3 flex items-center gap-6 text-sm text-slate-700">
+                    <div className="mt-3 flex items-center gap-6 text-sm text-slate-700 hover-gradient-border">
                       <div>Male: -</div>
                       <div>Female: -</div>
                       <div>Others: -</div>
@@ -92,7 +92,7 @@ export default function HODDashboard() {
                   <button onClick={() => setJoiningModalOpen(true)} className="w-full rounded-2xl bg-gradient-to-br from-teal-50 to-teal-100 p-4 text-left hover:shadow-md transition">
                     <div className="text-sm text-slate-600">New Joinings</div>
                     <div className="mt-2 text-2xl font-bold">Today's Joining</div>
-                    <div className="mt-3 flex items-center gap-6 text-sm text-slate-700">
+                    <div className="mt-3 flex items-center gap-6 text-sm text-slate-700 hover-gradient-border">
                       <div>Male: -</div>
                       <div>Female: -</div>
                       <div>Others: -</div>
@@ -120,7 +120,7 @@ export default function HODDashboard() {
                         <div className="text-xs text-slate-500">{b.date}</div>
                       </div>
                       <div>
-                        <button className="rounded-full bg-emerald-50 px-3 py-1 text-emerald-700 text-sm">Birthday</button>
+                        <button className="rounded-full bg-emerald-50 px-3 py-1 text-emerald-700 text-sm hover-gradient-border">Birthday</button>
                       </div>
                     </div>
                   ))
@@ -132,7 +132,7 @@ export default function HODDashboard() {
           <div className="p-[1px] rounded-[22px]" style={{ background: 'linear-gradient(90deg,#06b6d4 0%,#3b82f6 33%,#7c3aed 66%,#f97316 100%)' }}>
             <div className="rounded-[21px] bg-white p-4 shadow-sm">
               <h3 className="text-base font-semibold">Yesterday's Attendance</h3>
-              <div className="mt-4 flex items-center justify-center p-6">
+              <div className="mt-4 flex items-center justify-center p-6 hover-gradient-border">
                 <div className="text-center">
                   <div className="text-3xl font-bold">Present: 0</div>
                   <div className="mt-1 text-sm text-slate-500">Absent: 0 • Late: 0 • Half Day: 0</div>
@@ -170,7 +170,7 @@ export default function HODDashboard() {
             </div>
           </button>
 
-          <button className="p-[1px] rounded-[18px]" style={{ background: 'linear-gradient(90deg,#ec4899,#f97316,#10b981)' }}>
+          <button className="p-[1px] rounded-[18px] hover-gradient-border" style={{ background: 'linear-gradient(90deg,#ec4899,#f97316,#10b981)' }}>
             <div className="rounded-[17px] bg-white p-4 shadow-sm hover:-translate-y-1 transition">
               <div className="text-sm text-slate-600">OD Count</div>
               <div className="mt-2 text-xl font-bold">Total : 0</div>
@@ -203,12 +203,12 @@ export default function HODDashboard() {
           </div>
 
           <div id="todays-attendance">
-            <div className="mb-4 flex items-center justify-between">
+            <div className="mb-4 flex items-center justify-between hover-gradient-border">
               <h3 className="text-lg font-semibold">Today's Employee Attendance</h3>
-              <div className="flex items-center gap-2">
-                <input placeholder="Search..." className="rounded-3xl border border-slate-200/80 bg-slate-50 px-3 py-1 text-xs" />
-                <button className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700"><Download className="h-4 w-4"/> Export</button>
-                <button className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700"><Filter className="h-4 w-4"/> Filter</button>
+              <div className="flex items-center gap-2 hover-gradient-border">
+                <input placeholder="Search..." className="rounded-3xl border border-slate-200/80 bg-slate-50 px-3 py-1 text-xs hover-gradient-border" />
+                <button className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700 hover-gradient-border"><Download className="h-4 w-4"/> Export</button>
+                <button className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700 hover-gradient-border"><Filter className="h-4 w-4"/> Filter</button>
               </div>
             </div>
 

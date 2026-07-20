@@ -89,10 +89,10 @@ export default function GradeCardPage() {
                   <p className="text-sm text-slate-400">Roll No: {selectedCard.rollNo} • Semester {selectedCard.semester}</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
-                  <button onClick={handleRecalculate} disabled={isRecalculating} className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:bg-slate-700">
+                  <button onClick={handleRecalculate} disabled={isRecalculating} className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:bg-slate-700 hover-gradient-border">
                     {isRecalculating ? 'Recalculating...' : 'Recalculate GPA'}
                   </button>
-                  <button className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700">
+                  <button className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700 hover-gradient-border">
                     <FaDownload /> Download
                   </button>
                 </div>

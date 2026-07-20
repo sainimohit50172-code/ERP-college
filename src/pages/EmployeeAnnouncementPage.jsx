@@ -153,7 +153,7 @@ export default function EmployeeAnnouncementPage() {
             <button
               type="button"
               onClick={handleExport}
-              className="inline-flex items-center gap-2 rounded-lg bg-[#1E293B] px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-900"
+              className="inline-flex items-center gap-2 rounded-lg bg-[#1E293B] px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-900 hover-gradient-border"
             >
               <Download size={16} />
               Excel
@@ -320,7 +320,7 @@ export default function EmployeeAnnouncementPage() {
                           className="h-9 w-9 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200"
                         />
                         {record.sentBy === 'Admin' && (
-                          <button type="button" className="inline-flex items-center gap-1 text-slate-600 transition hover:text-slate-900">
+                          <button type="button" className="inline-flex items-center gap-1 text-slate-600 transition hover:text-slate-900 hover-gradient-border">
                             <Edit2 size={16} />
                             <span className="hidden sm:inline">Edit</span>
                           </button>
@@ -392,11 +392,11 @@ export default function EmployeeAnnouncementPage() {
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                   <label className="text-[11px] uppercase tracking-[0.28em] text-slate-500">Title</label>
-                  <input name="title" required className="w-full rounded-xl border border-[#E2E8F0] bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none" />
+                  <input name="title" required className="w-full rounded-xl border border-[#E2E8F0] bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[11px] uppercase tracking-[0.28em] text-slate-500">Department</label>
-                  <select name="department" required className="w-full rounded-xl border border-[#E2E8F0] bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none">
+                  <select name="department" required className="w-full rounded-xl border border-[#E2E8F0] bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border">
                     <option value="">Select Department</option>
                     {departments.map((department) => (
                       <option key={department} value={department}>{department}</option>
@@ -407,7 +407,7 @@ export default function EmployeeAnnouncementPage() {
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                   <label className="text-[11px] uppercase tracking-[0.28em] text-slate-500">Designation</label>
-                  <select name="designation" required className="w-full rounded-xl border border-[#E2E8F0] bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none">
+                  <select name="designation" required className="w-full rounded-xl border border-[#E2E8F0] bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border">
                     <option value="">Select Designation</option>
                     {designations.map((designation) => (
                       <option key={designation} value={designation}>{designation}</option>
@@ -416,7 +416,7 @@ export default function EmployeeAnnouncementPage() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-[11px] uppercase tracking-[0.28em] text-slate-500">Employee Type</label>
-                  <select name="employeeType" required className="w-full rounded-xl border border-[#E2E8F0] bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none">
+                  <select name="employeeType" required className="w-full rounded-xl border border-[#E2E8F0] bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border">
                     {employeeTypes.map((type) => (
                       <option key={type} value={type}>{type}</option>
                     ))}
@@ -426,7 +426,7 @@ export default function EmployeeAnnouncementPage() {
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                   <label className="text-[11px] uppercase tracking-[0.28em] text-slate-500">Notification Type</label>
-                  <select name="notificationType" required className="w-full rounded-xl border border-[#E2E8F0] bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none">
+                  <select name="notificationType" required className="w-full rounded-xl border border-[#E2E8F0] bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border">
                     <option value="">Select Notification Type</option>
                     {notificationTypes.map((type) => (
                       <option key={type} value={type}>{type}</option>
@@ -435,18 +435,18 @@ export default function EmployeeAnnouncementPage() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-[11px] uppercase tracking-[0.28em] text-slate-500">Date</label>
-                  <input name="date" type="date" required className="w-full rounded-xl border border-[#E2E8F0] bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none" />
+                  <input name="date" type="date" required className="w-full rounded-xl border border-[#E2E8F0] bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                 </div>
               </div>
               <div className="space-y-2">
                 <label className="text-[11px] uppercase tracking-[0.28em] text-slate-500">Message / Description</label>
-                <textarea name="message" rows="4" className="w-full rounded-xl border border-[#E2E8F0] bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none" />
+                <textarea name="message" rows="4" className="w-full rounded-xl border border-[#E2E8F0] bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
               </div>
               <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:justify-end">
                 <button type="button" onClick={() => setShowModal(false)} className="rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
                   Cancel
                 </button>
-                <button type="submit" className="rounded-lg bg-[#1E293B] px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-900">
+                <button type="submit" className="rounded-lg bg-[#1E293B] px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-900 hover-gradient-border">
                   Publish
                 </button>
               </div>

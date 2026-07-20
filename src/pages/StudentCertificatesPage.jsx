@@ -3,6 +3,7 @@ import { Filter, Printer } from 'lucide-react';
 import Breadcrumb from '../components/ui/Breadcrumb.jsx';
 import Button from '../components/ui/Button.jsx';
 import Modal from '../components/ui/Modal.jsx';
+import CircleAvatar from '../components/ui/CircleAvatar.jsx';
 
 const studentRecords = [
   {
@@ -326,7 +327,7 @@ export default function StudentCertificatesPage() {
             <Button
               type="button"
               variant="secondary"
-              className="rounded-2xl px-4 py-2"
+              className="rounded-2xl px-4 py-2 hover-gradient-border"
               onClick={openFilterModal}
             >
               <Filter className="h-4 w-4" />
@@ -335,7 +336,7 @@ export default function StudentCertificatesPage() {
             <Button
               type="button"
               variant="secondary"
-              className="rounded-2xl px-4 py-2"
+              className="rounded-2xl px-4 py-2 hover-gradient-border"
               onClick={handlePrint}
             >
               <Printer className="h-4 w-4" />
@@ -383,7 +384,7 @@ export default function StudentCertificatesPage() {
             </div>
           </div>
           <div className="mt-4 flex flex-wrap items-center gap-3">
-            <Button type="button" variant="secondary" className="rounded-2xl px-4 py-2" onClick={handleResetFilters}>
+            <Button type="button" variant="secondary" className="rounded-2xl px-4 py-2 hover-gradient-border" onClick={handleResetFilters}>
               Reset Filters
             </Button>
             <p className="text-sm text-slate-600">{filteredRecords.length} record{filteredRecords.length === 1 ? '' : 's'} found</p>
@@ -396,10 +397,10 @@ export default function StudentCertificatesPage() {
           onClose={handleCancelFilter}
           footer={
             <>
-              <Button type="button" variant="secondary" className="rounded-2xl px-4 py-2" onClick={handleCancelFilter}>
+              <Button type="button" variant="secondary" className="rounded-2xl px-4 py-2 hover-gradient-border" onClick={handleCancelFilter}>
                 Cancel
               </Button>
-              <Button type="button" variant="primary" className="rounded-2xl px-4 py-2" onClick={handleApplyFilter}>
+              <Button type="button" variant="primary" className="rounded-2xl px-4 py-2 hover-gradient-border" onClick={handleApplyFilter}>
                 Go →
               </Button>
             </>
@@ -426,7 +427,7 @@ export default function StudentCertificatesPage() {
                   size={4}
                   value={draftFilters.semester}
                   onChange={handleSemesterChange}
-                  className="w-full min-h-[150px] rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
+                  className="w-full min-h-[150px] rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200 hover-gradient-border"
                 >
                   {semesterOptions.map((option) => (
                     <option key={option.value} value={option.value}>{option.label}</option>
@@ -586,7 +587,7 @@ export default function StudentCertificatesPage() {
                     <td className="px-4 py-4 font-medium text-slate-900">{index + 1}</td>
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-3">
-                        <img src={record.photoUrl} alt={record.name} className="h-10 w-10 rounded-full object-cover" />
+                        <CircleAvatar src={record.photoUrl} alt={record.name} name={record.name} sizeClass="h-10 w-10" />
                         <span className="font-medium text-slate-900">{record.name}</span>
                       </div>
                     </td>
@@ -599,7 +600,7 @@ export default function StudentCertificatesPage() {
                     <td className="px-4 py-4">
                       <button
                         type="button"
-                        className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 transition hover:bg-slate-200"
+                        className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 transition hover:bg-slate-200 hover-gradient-border"
                         aria-label={`Print certificate for ${record.name}`}
                       >
                         <Printer className="h-4 w-4" />

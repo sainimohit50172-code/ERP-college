@@ -68,7 +68,7 @@ export default function AcademicSessionListPage() {
               <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-500">Session overview</p>
               <h2 className="mt-2 text-2xl font-semibold text-slate-900">3 academic sessions</h2>
             </div>
-            <button type="button" className="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-500">
+            <button type="button" className="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border">
               <Plus className="h-4 w-4" /> Add session
             </button>
           </div>

@@ -135,22 +135,22 @@ export default function ApplicationsPage() {
           >
             <Plus size={16} /> Add Application Data
           </button>
-          <button className="inline-flex items-center gap-2 rounded-xl bg-[#1e3a5f] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900">
+          <button className="inline-flex items-center gap-2 rounded-xl bg-[#1e3a5f] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900 hover-gradient-border">
             <Printer size={16} /> Print
           </button>
-          <button className="inline-flex items-center gap-2 rounded-xl bg-[#1e3a5f] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900">
+          <button className="inline-flex items-center gap-2 rounded-xl bg-[#1e3a5f] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900 hover-gradient-border">
             <Plus size={16} /> Generate Report
           </button>
-          <button className="inline-flex items-center gap-2 rounded-xl bg-[#1e3a5f] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900">
+          <button className="inline-flex items-center gap-2 rounded-xl bg-[#1e3a5f] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900 hover-gradient-border">
             <Share size={16} /> Upload Excel
           </button>
-          <button className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+          <button className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover-gradient-border">
             <FileText size={16} /> Filter
           </button>
-          <button className="inline-flex items-center gap-2 rounded-xl bg-[#1e3a5f] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900">
+          <button className="inline-flex items-center gap-2 rounded-xl bg-[#1e3a5f] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900 hover-gradient-border">
             <RefreshCw size={16} /> Refresh
           </button>
-          <button className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+          <button className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover-gradient-border">
             <HelpCircle size={16} /> Need Help
           </button>
         </div>
@@ -201,7 +201,7 @@ export default function ApplicationsPage() {
             <div className="flex-1 text-center text-lg font-semibold uppercase tracking-[0.24em] text-slate-950">
               Admission Application Report
             </div>
-            <button className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
+            <button className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover-gradient-border">
               <Pencil size={16} /> Edit
             </button>
           </div>
@@ -242,18 +242,18 @@ export default function ApplicationsPage() {
                   >
                     <td className="whitespace-nowrap px-2 py-3 font-medium text-slate-900">{row.id}</td>
                     <td className="whitespace-nowrap px-2 py-3 text-slate-700 action-cell">
-                      <button className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-slate-100 text-slate-700 transition hover:bg-slate-200">
+                      <button className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-slate-100 text-slate-700 transition hover:bg-slate-200 hover-gradient-border">
                         <Settings size={14} />
                       </button>
                     </td>
                     <td className="whitespace-nowrap px-2 py-3 text-slate-700">{row.stage}</td>
                     <td className="whitespace-nowrap px-2 py-3 text-slate-900">
-                      <a href="#" className="block truncate font-semibold text-sky-600 hover:text-sky-700">
+                      <a href="#" className="block truncate font-semibold text-sky-600 hover:text-sky-700 hover-gradient-border">
                         {row.formNo}
                       </a>
                     </td>
                     <td className="px-2 py-3 text-slate-900">
-                      <a href="#" className="block truncate font-semibold text-sky-600 hover:text-sky-700">
+                      <a href="#" className="block truncate font-semibold text-sky-600 hover:text-sky-700 hover-gradient-border">
                         {row.student}
                       </a>
                     </td>
@@ -269,7 +269,7 @@ export default function ApplicationsPage() {
           <div className="mt-4 flex flex-col gap-3 rounded-3xl border border-slate-200 bg-white px-4 py-3 shadow-sm sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-2 text-sm text-slate-700">
               <span className="font-semibold">Items Per Page:</span>
-              <select className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-[#1e3a5f] focus:ring-2 focus:ring-[#1e3a5f]/10">
+              <select className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-[#1e3a5f] focus:ring-2 focus:ring-[#1e3a5f]/10 hover-gradient-border">
                 <option>10</option>
                 <option>20</option>
                 <option>50</option>
@@ -278,10 +278,10 @@ export default function ApplicationsPage() {
             <div className="flex items-center justify-between gap-3 text-sm text-slate-700 sm:justify-end">
               <div>1 - 10 of 2369</div>
               <div className="inline-flex items-center gap-2">
-                <button className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-300 bg-white text-slate-700 transition hover:bg-slate-100">
+                <button className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-300 bg-white text-slate-700 transition hover:bg-slate-100 hover-gradient-border">
                   &lt;
                 </button>
-                <button className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-300 bg-white text-slate-700 transition hover:bg-slate-100">
+                <button className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-300 bg-white text-slate-700 transition hover:bg-slate-100 hover-gradient-border">
                   &gt;
                 </button>
               </div>
@@ -513,7 +513,7 @@ export default function ApplicationsPage() {
                 <div className="sticky bottom-0 bg-gradient-to-t from-[#eef2f7] via-[#eef2f7] to-transparent px-6 py-4">
                   <button
                     type="button"
-                    className="w-full rounded-[8px] bg-[#1e3a5f] px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-900"
+                    className="w-full rounded-[8px] bg-[#1e3a5f] px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-900 hover-gradient-border"
                     onClick={() => setIsModalOpen(false)}
                   >
                     Save

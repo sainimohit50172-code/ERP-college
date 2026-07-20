@@ -6,7 +6,7 @@ export default function PanelCard({ title, items }) {
           <h3 className="text-lg font-semibold text-slate-950">{title}</h3>
           <p className="mt-1 text-sm text-slate-500">Live overview and recent updates.</p>
         </div>
-        <button className="inline-flex items-center justify-center rounded-2xl bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100">
+        <button className="hover-gradient-border inline-flex items-center justify-center rounded-2xl bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100" style={{ '--hover-gradient-radius': '16px' }}>
           View
         </button>
       </div>

@@ -25,8 +25,8 @@ export default function RecentTransactions() {
           className="flex items-center justify-between gap-3 rounded-[16px] border border-slate-200 bg-slate-50/80 p-3 hover:bg-slate-100/80 transition-colors"
         >
           <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+            <div className="flex items-center gap-2 hover-gradient-border">
+              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0 hover-gradient-border">
                 {transaction.name[0]}
               </div>
               <div className="min-w-0">

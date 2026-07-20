@@ -934,7 +934,7 @@ export default function SecurityPage() {
             subtitle="Manage guard profiles, shifts, and campus assignments."
             action={(
               <div className="flex flex-wrap items-center gap-3">
-                <button onClick={openNewGuardModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500">
+                <button onClick={openNewGuardModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border">
                   <Plus className="h-4 w-4" /> New guard
                 </button>
                 <button onClick={() => handleExport(exportGuard, 'guards-report.xlsx')} className="inline-flex items-center gap-2 rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
@@ -1065,7 +1065,7 @@ export default function SecurityPage() {
             subtitle="Register visitor entries, exits, and ID validation."
             action={(
               <div className="flex flex-wrap items-center gap-3">
-                <button onClick={openNewVisitorModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500">
+                <button onClick={openNewVisitorModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border">
                   <Plus className="h-4 w-4" /> New visitor
                 </button>
                 <button onClick={() => handleExport(exportVisitors, 'visitor-report.xlsx')} className="inline-flex items-center gap-2 rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
@@ -1124,7 +1124,7 @@ export default function SecurityPage() {
             subtitle="Control student, employee, and parent pass requests with approval workflows."
             action={(
               <div className="flex flex-wrap items-center gap-3">
-                <button onClick={openNewGatePassModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500">
+                <button onClick={openNewGatePassModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border">
                   <Plus className="h-4 w-4" /> New pass
                 </button>
                 <button onClick={() => handleExport(exportGatePasses, 'gate-passes-report.xlsx')} className="inline-flex items-center gap-2 rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
@@ -1189,7 +1189,7 @@ export default function SecurityPage() {
             subtitle="Track campus vehicle entry, exit and parking assignments."
             action={(
               <div className="flex flex-wrap items-center gap-3">
-                <button onClick={openNewVehicleModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500">
+                <button onClick={openNewVehicleModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border">
                   <Plus className="h-4 w-4" /> Vehicle entry
                 </button>
                 <button onClick={() => handleExport(exportVehicles, 'vehicle-report.xlsx')} className="inline-flex items-center gap-2 rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
@@ -1248,7 +1248,7 @@ export default function SecurityPage() {
             subtitle="Log campus incidents, assign guards and drive resolution."
             action={(
               <div className="flex flex-wrap items-center gap-3">
-                <button onClick={openNewIncidentModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500">
+                <button onClick={openNewIncidentModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border">
                   <Plus className="h-4 w-4" /> Report incident
                 </button>
                 <button onClick={() => handleExport(exportIncidents, 'incident-report.xlsx')} className="inline-flex items-center gap-2 rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
@@ -1351,7 +1351,7 @@ export default function SecurityPage() {
             type="button"
             onClick={handleSubmitGuard(handleGuardSubmit)}
             disabled={isGuardSubmitting}
-            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-60 hover-gradient-border"
           >
             {isEditGuard ? 'Save changes' : 'Create guard'}
           </button>
@@ -1362,7 +1362,7 @@ export default function SecurityPage() {
             <input
               type="text"
               {...registerGuard('guardId')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
               placeholder="Auto-generated if left blank"
             />
           </FormField>
@@ -1370,7 +1370,7 @@ export default function SecurityPage() {
             <input
               type="text"
               {...registerGuard('name', { required: true })}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
             {guardErrors.name && <p className="text-sm text-rose-600">Name is required.</p>}
           </FormField>
@@ -1378,7 +1378,7 @@ export default function SecurityPage() {
             <input
               type="tel"
               {...registerGuard('mobile', { required: true })}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
             {guardErrors.mobile && <p className="text-sm text-rose-600">Mobile is required.</p>}
           </FormField>
@@ -1386,13 +1386,13 @@ export default function SecurityPage() {
             <input
               type="email"
               {...registerGuard('email')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Shift">
             <select
               {...registerGuard('shift')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             >
               <option>Day</option>
               <option>Night</option>
@@ -1403,34 +1403,34 @@ export default function SecurityPage() {
             <input
               type="text"
               {...registerGuard('dutyArea')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Joining date">
             <input
               type="date"
               {...registerGuard('joiningDate')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Salary">
             <input
               type="text"
               {...registerGuard('salary')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Emergency contact">
             <input
               type="text"
               {...registerGuard('emergencyContact')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Status">
             <select
               {...registerGuard('status')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             >
               <option>Active</option>
               <option>On Duty</option>
@@ -1461,7 +1461,7 @@ export default function SecurityPage() {
           <button
             type="button"
             onClick={handleSubmitAttendance(handleAttendanceSubmitInternal)}
-            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
+            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border"
           >
             Save attendance
           </button>
@@ -1471,7 +1471,7 @@ export default function SecurityPage() {
           <FormField label="Guard">
             <select
               {...registerAttendance('guardId', { required: true })}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             >
               <option value="">Select guard</option>
               {guards.map((guard) => (
@@ -1483,13 +1483,13 @@ export default function SecurityPage() {
             <input
               type="date"
               {...registerAttendance('date')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Shift">
             <select
               {...registerAttendance('shift')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             >
               <option>Day</option>
               <option>Night</option>
@@ -1498,7 +1498,7 @@ export default function SecurityPage() {
           <FormField label="Status">
             <select
               {...registerAttendance('status')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             >
               <option>Present</option>
               <option>Absent</option>
@@ -1510,14 +1510,14 @@ export default function SecurityPage() {
             <input
               type="time"
               {...registerAttendance('lateEntry')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Overtime">
             <input
               type="time"
               {...registerAttendance('overtime')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
         </div>
@@ -1531,7 +1531,7 @@ export default function SecurityPage() {
           <button
             type="button"
             onClick={handleSubmitVisitor(handleVisitorSubmit)}
-            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
+            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border"
           >
             {isEditVisitor ? 'Update visitor' : 'Create visitor'}
           </button>
@@ -1542,7 +1542,7 @@ export default function SecurityPage() {
             <input
               type="text"
               {...registerVisitor('visitorId')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
               placeholder="Auto-generated if blank"
             />
           </FormField>
@@ -1550,7 +1550,7 @@ export default function SecurityPage() {
             <input
               type="text"
               {...registerVisitor('name', { required: true })}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
             {visitorErrors.name && <p className="text-sm text-rose-600">Name is required.</p>}
           </FormField>
@@ -1558,48 +1558,48 @@ export default function SecurityPage() {
             <input
               type="tel"
               {...registerVisitor('mobile')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Purpose">
             <input
               type="text"
               {...registerVisitor('purpose')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Meeting person">
             <input
               type="text"
               {...registerVisitor('meetingPerson')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Department">
             <input
               type="text"
               {...registerVisitor('department')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Entry time">
             <input
               type="datetime-local"
               {...registerVisitor('entryTime')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Vehicle number">
             <input
               type="text"
               {...registerVisitor('vehicleNumber')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Status">
             <select
               {...registerVisitor('status')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             >
               <option>Inside</option>
               <option>Exited</option>
@@ -1628,7 +1628,7 @@ export default function SecurityPage() {
           <button
             type="button"
             onClick={handleSubmitGatePass(handleGatePassSubmit)}
-            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
+            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border"
           >
             {isEditGatePass ? 'Save pass' : 'Create pass'}
           </button>
@@ -1639,14 +1639,14 @@ export default function SecurityPage() {
             <input
               type="text"
               {...registerGatePass('passNumber')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
               placeholder="Auto-generated if blank"
             />
           </FormField>
           <FormField label="Applicant type">
             <select
               {...registerGatePass('applicantType')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             >
               <option>Student</option>
               <option>Employee</option>
@@ -1657,7 +1657,7 @@ export default function SecurityPage() {
             <input
               type="text"
               {...registerGatePass('applicantName', { required: true })}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
             {gatePassErrors.applicantName && <p className="text-sm text-rose-600">Applicant name is required.</p>}
           </FormField>
@@ -1665,13 +1665,13 @@ export default function SecurityPage() {
             <input
               type="text"
               {...registerGatePass('reason')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Category">
             <select
               {...registerGatePass('category')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             >
               <option>Official Duty</option>
               <option>Personal Leave</option>
@@ -1682,7 +1682,7 @@ export default function SecurityPage() {
           <FormField label="Approval stage">
             <select
               {...registerGatePass('approvalStage')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             >
               <option>Teacher Approval</option>
               <option>HOD Approval</option>
@@ -1694,27 +1694,27 @@ export default function SecurityPage() {
             <input
               type="date"
               {...registerGatePass('date')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Time">
             <input
               type="time"
               {...registerGatePass('time')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Expected return">
             <input
               type="datetime-local"
               {...registerGatePass('expectedReturn')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Return status">
             <select
               {...registerGatePass('returnStatus')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             >
               <option>Outside</option>
               <option>Returned</option>
@@ -1723,7 +1723,7 @@ export default function SecurityPage() {
           <FormField label="Status">
             <select
               {...registerGatePass('status')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             >
               <option>Pending</option>
               <option>Approved</option>
@@ -1742,7 +1742,7 @@ export default function SecurityPage() {
           <button
             type="button"
             onClick={handleSubmitVehicle(handleVehicleSubmit)}
-            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
+            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border"
           >
             {isEditVehicle ? 'Update vehicle' : 'Create entry'}
           </button>
@@ -1753,14 +1753,14 @@ export default function SecurityPage() {
             <input
               type="text"
               {...registerVehicle('vehicleId')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
               placeholder="Auto-generated if blank"
             />
           </FormField>
           <FormField label="Owner type">
             <select
               {...registerVehicle('ownerType')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             >
               <option>Student</option>
               <option>Employee</option>
@@ -1771,34 +1771,34 @@ export default function SecurityPage() {
             <input
               type="text"
               {...registerVehicle('ownerName')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Vehicle number">
             <input
               type="text"
               {...registerVehicle('vehicleNumber')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Parking slot">
             <input
               type="text"
               {...registerVehicle('parkingSlot')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Entry time">
             <input
               type="datetime-local"
               {...registerVehicle('entryTime')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Status">
             <select
               {...registerVehicle('status')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             >
               <option>Parked</option>
               <option>Exited</option>
@@ -1815,7 +1815,7 @@ export default function SecurityPage() {
           <button
             type="button"
             onClick={handleSubmitIncident(handleIncidentSubmit)}
-            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
+            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border"
           >
             {isEditIncident ? 'Update incident' : 'Report incident'}
           </button>
@@ -1826,7 +1826,7 @@ export default function SecurityPage() {
             <input
               type="text"
               {...registerIncident('incidentId')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
               placeholder="Auto-generated if blank"
             />
           </FormField>
@@ -1834,14 +1834,14 @@ export default function SecurityPage() {
             <input
               type="text"
               {...registerIncident('title', { required: true })}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
             {incidentErrors.title && <p className="text-sm text-rose-600">Title is required.</p>}
           </FormField>
           <FormField label="Category">
             <select
               {...registerIncident('category')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             >
               <option>Security</option>
               <option>Health</option>
@@ -1852,7 +1852,7 @@ export default function SecurityPage() {
           <FormField label="Priority">
             <select
               {...registerIncident('priority')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             >
               <option>Low</option>
               <option>Medium</option>
@@ -1863,7 +1863,7 @@ export default function SecurityPage() {
           <FormField label="Assigned guard">
             <select
               {...registerIncident('assignedGuard')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             >
               <option value="">Unassigned</option>
               {guards.map((guard) => (
@@ -1874,7 +1874,7 @@ export default function SecurityPage() {
           <FormField label="Status">
             <select
               {...registerIncident('status')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             >
               <option>Open</option>
               <option>In Progress</option>
@@ -1886,21 +1886,21 @@ export default function SecurityPage() {
             <textarea
               rows="4"
               {...registerIncident('description')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Resolution notes">
             <textarea
               rows="4"
               {...registerIncident('resolution')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Timeline">
             <input
               type="text"
               {...registerIncident('timeline')}
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border"
             />
           </FormField>
           <FormField label="Attach photos">

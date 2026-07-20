@@ -52,7 +52,7 @@ function SeatingPlanPage() {
         <form onSubmit={addPlan} className="mt-4 grid gap-4 sm:grid-cols-2">
           <label className="block">
             <span className="text-sm text-slate-600">Exam</span>
-            <select name="examId" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none">
+            <select name="examId" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none hover-gradient-border">
               <option value="">Select exam</option>
               {examOptions.map((option) => (
                 <option key={option.value} value={option.value}>{option.label}</option>
@@ -61,7 +61,7 @@ function SeatingPlanPage() {
           </label>
           <label className="block">
             <span className="text-sm text-slate-600">Room</span>
-            <select name="roomId" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none">
+            <select name="roomId" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none hover-gradient-border">
               <option value="">Select room</option>
               {roomOptions.map((option) => (
                 <option key={option.value} value={option.value}>{option.label}</option>
@@ -70,13 +70,13 @@ function SeatingPlanPage() {
           </label>
           <label className="block">
             <span className="text-sm text-slate-600">Benches</span>
-            <input name="benches" type="number" min="1" defaultValue="5" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none" />
+            <input name="benches" type="number" min="1" defaultValue="5" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none hover-gradient-border" />
           </label>
           <label className="block">
             <span className="text-sm text-slate-600">Seats per Bench</span>
-            <input name="seatsPerBench" type="number" min="1" defaultValue="4" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none" />
+            <input name="seatsPerBench" type="number" min="1" defaultValue="4" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none hover-gradient-border" />
           </label>
-          <button type="submit" className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white hover:bg-blue-700 sm:col-span-2">
+          <button type="submit" className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white hover:bg-blue-700 sm:col-span-2 hover-gradient-border">
             Save Seating Plan
           </button>
         </form>

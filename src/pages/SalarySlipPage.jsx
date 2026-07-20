@@ -95,7 +95,7 @@ export default function SalarySlipPage() {
                 <button
                   type="button"
                   onClick={handleGo}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#0F2E29] text-white transition hover:brightness-110"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#0F2E29] text-white transition hover:brightness-110 hover-gradient-border"
                   aria-label="Search"
                 >
                   <Search size={16} />
@@ -146,7 +146,7 @@ export default function SalarySlipPage() {
               <button
                 type="button"
                 onClick={handleGo}
-                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#1E293B] px-4 text-sm font-semibold text-white transition hover:bg-slate-800"
+                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#1E293B] px-4 text-sm font-semibold text-white transition hover:bg-slate-800 hover-gradient-border"
               >
                 Go
                 <ArrowRight size={16} />
@@ -221,7 +221,7 @@ export default function SalarySlipPage() {
                             className="h-10 w-10 rounded-lg border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100"
                             onClick={() => handleViewSlip(record)}
                           />
-                          <button type="button" className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-700 transition hover:bg-slate-100">
+                          <button type="button" className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-700 transition hover:bg-slate-100 hover-gradient-border">
                             <Download size={16} />
                           </button>
                         </div>

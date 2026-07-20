@@ -267,7 +267,7 @@ export default function LibraryManagementPage() {
           <button
             type="button"
             onClick={handleSubmit(onSubmit)}
-            className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"
+            className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 hover-gradient-border"
           >
             Save book
           </button>
@@ -275,42 +275,42 @@ export default function LibraryManagementPage() {
       >
         <form className="grid gap-5 lg:grid-cols-2">
           <FormField label="Title">
-            <input type="text" {...register('title', { required: 'Title is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Advanced Database Systems" />
+            <input type="text" {...register('title', { required: 'Title is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="Advanced Database Systems" />
             {errors.title && <p className="mt-1 text-sm text-rose-400">{errors.title.message}</p>}
           </FormField>
           <FormField label="Author">
-            <input type="text" {...register('author', { required: 'Author is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Dr. Neha Verma" />
+            <input type="text" {...register('author', { required: 'Author is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="Dr. Neha Verma" />
             {errors.author && <p className="mt-1 text-sm text-rose-400">{errors.author.message}</p>}
           </FormField>
           <FormField label="ISBN">
-            <input type="text" {...register('isbn')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="978-1-4028-9462-6" />
+            <input type="text" {...register('isbn')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="978-1-4028-9462-6" />
           </FormField>
           <FormField label="Barcode">
-            <input type="text" {...register('barcode')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="LIB-1001" />
+            <input type="text" {...register('barcode')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="LIB-1001" />
           </FormField>
           <FormField label="Accession number">
-            <input type="text" {...register('accessionNumber')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="ACC-001" />
+            <input type="text" {...register('accessionNumber')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="ACC-001" />
           </FormField>
           <FormField label="Publisher">
-            <input type="text" {...register('publisher')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Pearson" />
+            <input type="text" {...register('publisher')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="Pearson" />
           </FormField>
           <FormField label="Category">
-            <input type="text" {...register('category')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Computer Science" />
+            <input type="text" {...register('category')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="Computer Science" />
           </FormField>
           <FormField label="Copies">
-            <input type="number" min="1" {...register('copies')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+            <input type="number" min="1" {...register('copies')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
           </FormField>
           <FormField label="Available copies">
-            <input type="number" min="0" {...register('availableCopies')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+            <input type="number" min="0" {...register('availableCopies')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
           </FormField>
           <FormField label="Lost copies">
-            <input type="number" min="0" {...register('lostCopies')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+            <input type="number" min="0" {...register('lostCopies')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
           </FormField>
           <FormField label="Damaged copies">
-            <input type="number" min="0" {...register('damagedCopies')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+            <input type="number" min="0" {...register('damagedCopies')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
           </FormField>
           <FormField label="Status">
-            <select {...register('status')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+            <select {...register('status')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border">
               <option value="Available">Available</option>
               <option value="Issued">Issued</option>
               <option value="Reserved">Reserved</option>
@@ -320,14 +320,14 @@ export default function LibraryManagementPage() {
             </select>
           </FormField>
           <FormField label="Borrower">
-            <select {...register('borrowerId')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+            <select {...register('borrowerId')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border">
               <option value="">None</option>
               {students.map((student) => <option key={`student-${student.id}`} value={`student-${student.id}`}>{student.name} (Student)</option>)}
               {teachers.map((teacher) => <option key={`teacher-${teacher.id}`} value={`teacher-${teacher.id}`}>{teacher.name} (Staff)</option>)}
             </select>
           </FormField>
           <FormField label="Due date">
-            <input type="date" {...register('dueDate')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+            <input type="date" {...register('dueDate')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
           </FormField>
         </form>
       </Modal>
@@ -337,17 +337,17 @@ export default function LibraryManagementPage() {
         isOpen={isIssueModalOpen}
         onClose={() => setIsIssueModalOpen(false)}
         footer={
-          <button type="button" onClick={handleSubmit(onIssueSubmit)} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">
+          <button type="button" onClick={handleSubmit(onIssueSubmit)} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 hover-gradient-border">
             Issue book
           </button>
         }
       >
         <form className="grid gap-5">
           <FormField label="Member ID">
-            <input type="text" {...register('memberId', { required: 'Member ID is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="STU-1001" />
+            <input type="text" {...register('memberId', { required: 'Member ID is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="STU-1001" />
           </FormField>
           <FormField label="Due date">
-            <input type="date" {...register('dueDate')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+            <input type="date" {...register('dueDate')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
           </FormField>
         </form>
       </Modal>

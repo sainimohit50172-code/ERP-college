@@ -24,10 +24,10 @@ function getColumnMinWidth(column) {
     sno: '50px',
     photo: '60px',
     name: '140px',
-    'rollnumber': '120px',
+    rollnumber: '120px',
     rollno: '120px',
-    'universityrollnumber': '150px',
-    'universityrollno': '150px',
+    universityrollnumber: '150px',
+    universityrollno: '150px',
     fathername: '160px',
     mothername: '160px',
     dob: '120px',
@@ -37,6 +37,7 @@ function getColumnMinWidth(column) {
     email: '200px',
     college: '180px',
     course: '140px',
+    coursesection: '140px',
     semester: '90px',
     section: '90px',
     status: '110px',
@@ -115,7 +116,7 @@ export default function DataTableAdvanced({
             <p className="text-xs text-slate-500">Search, sort, page and export your data.</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <button type="button" onClick={handlePrint} className="btn btn-secondary inline-flex items-center gap-2">
+            <button type="button" onClick={handlePrint} className="btn btn-secondary inline-flex items-center gap-2 hover-gradient-border">
               <Printer className="h-4 w-4" /> Print
             </button>
             <CSVLink data={csvData} filename="table-export.csv" className="btn btn-secondary inline-flex items-center gap-2">
@@ -159,23 +160,30 @@ export default function DataTableAdvanced({
       {paginatedRows.length === 0 ? (
         <EmptyState title="No matching records" description="Try a different search term or change the filters." />
       ) : (
-        <div className="overflow-x-auto rounded-[20px] border border-slate-200/70">
-          <table ref={tableRef} className="w-full table-auto text-left text-[11px] text-slate-900">
+        <div className="overflow-x-auto rounded-[20px] border border-slate-200/70 no-hover-border">
+          <table ref={tableRef} className="w-full text-left text-[11px] text-slate-900" style={{ tableLayout: 'fixed' }}>
+            <colgroup>
+              {columns.map((column) => {
+                const width = getColumnMinWidth(column);
+                const colWidth = width && String(width).endsWith('px') ? width : undefined;
+                return <col key={column.key} style={{ minWidth: width !== 'auto' ? width : undefined, width: colWidth }} />;
+              })}
+            </colgroup>
             <thead className="bg-[#1e3a5f] text-white">
               <tr>
                 {columns.map((column) => {
                   const key = String(column.key || '').toLowerCase();
                   const width = getColumnMinWidth(column);
                   const colWidth = width && String(width).endsWith('px') ? width : undefined;
-                  // ensure action columns get fixed pixel width
                   const isAction = ['action', 'actions', 'options'].includes(key);
+                  const textAlign = isAction ? 'center' : column.align === 'right' ? 'right' : 'left';
                   return (
                     <th
                       key={column.key}
-                      className={`px-2 py-2 font-semibold uppercase tracking-[0.18em] text-white text-center ${isAction ? 'action-header' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
-                      style={{ minWidth: width !== 'auto' ? width : undefined, width: colWidth }}
+                      className={`px-4 py-3 font-semibold uppercase tracking-[0.18em] text-white ${isAction ? 'action-header' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''} ${textAlign === 'left' ? 'text-left' : textAlign === 'right' ? 'text-right' : 'text-center'}`}
+                      style={{ minWidth: width !== 'auto' ? width : undefined, width: colWidth, textAlign }}
                     >
-                      <button type="button" className="inline-flex items-center gap-2" onClick={() => toggleSort(column.key)}>
+                      <button type="button" className="inline-flex items-center gap-2 hover-gradient-border" onClick={() => toggleSort(column.key)}>
                         <span>{column.label}</span>
                         {sortColumn === column.key ? (
                           sortDirection === 'asc' ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />
@@ -193,11 +201,12 @@ export default function DataTableAdvanced({
                     const key = String(column.key || '').toLowerCase();
                     const width = getColumnMinWidth(column);
                     const isAction = ['action', 'actions', 'options'].includes(key);
+                    const textAlign = isAction ? 'center' : column.align === 'right' ? 'right' : 'left';
                     const content = column.render ? column.render(row[column.key], row) : row[column.key] ?? '';
                     // Render default edit/delete buttons when this is an action column and no custom render provided
                     if (isAction && !column.render && (onEdit || onDelete)) {
                       return (
-                        <td key={`${index}-${column.key}`} className={`break-words px-2 py-2 align-top text-slate-700 action-cell ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`} style={{ minWidth: width !== 'auto' ? width : undefined, whiteSpace: 'nowrap' }}>
+                        <td key={`${index}-${column.key}`} className={`break-words px-3 py-3 align-top text-slate-700 action-cell ${column.key ? String(column.key).toLowerCase() + '-cell' : ''} ${textAlign === 'left' ? 'text-left' : textAlign === 'right' ? 'text-right' : 'text-center'}`} style={{ minWidth: width !== 'auto' ? width : undefined, width: width && width.endsWith('px') ? width : undefined, whiteSpace: 'nowrap', textAlign }}>
                           <div className="min-w-0 flex items-center justify-center gap-2">
                             <button type="button" onClick={() => onEdit(row)} className="rounded-2xl bg-sky-500 px-3 py-1 text-xs font-semibold text-white">Edit</button>
                             <button type="button" onClick={() => onDelete(row)} className="rounded-2xl bg-rose-500 px-3 py-1 text-xs font-semibold text-white">Delete</button>
@@ -209,8 +218,8 @@ export default function DataTableAdvanced({
                     return (
                       <td
                         key={`${index}-${column.key}`}
-                        className={`break-words px-2 py-2 align-top text-slate-700 ${isAction ? 'action-cell' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''}`}
-                        style={{ minWidth: width !== 'auto' ? width : undefined, whiteSpace: isAction ? 'nowrap' : undefined }}
+                        className={`break-words px-3 py-3 align-top text-slate-700 ${isAction ? 'action-cell' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''} ${textAlign === 'left' ? 'text-left' : textAlign === 'right' ? 'text-right' : 'text-center'}`}
+                        style={{ minWidth: width !== 'auto' ? width : undefined, width: width && width.endsWith('px') ? width : undefined, whiteSpace: isAction ? 'nowrap' : undefined, textAlign }}
                       >
                         <div className="min-w-0 flex items-center justify-center gap-2">
                           {typeof content === 'string' || typeof content === 'number' || typeof content === 'boolean' ? (

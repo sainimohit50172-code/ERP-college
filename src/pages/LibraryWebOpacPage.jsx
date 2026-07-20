@@ -59,7 +59,7 @@ export default function LibraryWebOpacPage() {
           </div>
 
           <div className="flex justify-end">
-            <button className="inline-flex items-center gap-2 rounded-lg bg-[#1E293B] px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-900">
+            <button className="inline-flex items-center gap-2 rounded-lg bg-[#1E293B] px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-900 hover-gradient-border">
               Student Login
             </button>
           </div>
@@ -111,7 +111,7 @@ export default function LibraryWebOpacPage() {
                 />
                 <button
                   type="button"
-                  className="inline-flex items-center gap-2 rounded-lg bg-[#1E293B] px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-900"
+                  className="inline-flex items-center gap-2 rounded-lg bg-[#1E293B] px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-900 hover-gradient-border"
                 >
                   Go
                   <ArrowRight size={16} />

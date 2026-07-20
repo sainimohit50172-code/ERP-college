@@ -33,15 +33,15 @@ export default function NotificationDropdown({ open, onClose }) {
 
   return (
     <div ref={panelRef} className="absolute right-0 top-full z-50 mt-3 w-full max-w-sm rounded-[22px] border border-slate-200/80 bg-white shadow-soft">
-      <div className="flex items-center justify-between gap-3 border-b border-slate-200/70 px-4 py-3">
-        <div className="flex items-center gap-2 text-slate-900">
+      <div className="flex items-center justify-between gap-3 border-b border-slate-200/70 px-4 py-3 hover-gradient-border">
+        <div className="flex items-center gap-2 text-slate-900 hover-gradient-border">
           <Bell className="h-5 w-5 text-emerald-600" />
           <div>
             <p className="text-sm font-semibold">Notifications</p>
             <p className="text-xs text-slate-500">{unreadCount} unread</p>
           </div>
         </div>
-        <button type="button" onClick={markAllNotificationsAsRead} className="text-sm font-semibold text-emerald-600 transition hover:text-emerald-700">
+        <button type="button" onClick={markAllNotificationsAsRead} className="text-sm font-semibold text-emerald-600 transition hover:text-emerald-700 hover-gradient-border">
           Mark all read
         </button>
       </div>
@@ -59,7 +59,7 @@ export default function NotificationDropdown({ open, onClose }) {
               }}
               className={`w-full rounded-3xl border px-4 py-3 text-left transition ${notification.read ? 'border-slate-200 bg-slate-50 text-slate-700' : 'border-emerald-100 bg-emerald-50 text-slate-900 shadow-sm'}`}
             >
-              <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center justify-between gap-2 hover-gradient-border">
                 <p className="text-sm font-semibold">{notification.title}</p>
                 {!notification.read ? <CheckCircle2 className="h-4 w-4 text-emerald-600" /> : null}
               </div>

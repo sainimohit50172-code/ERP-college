@@ -53,7 +53,7 @@ export default function ProfilePage() {
         const [profileResult, leaveResult] = await Promise.allSettled([
           (async () => {
             try {
-              const meResponse = await api.get('/api/v1/employees/me/');
+              const meResponse = await api.get('/auth/me');
               const payload = meResponse?.data?.data || meResponse?.data?.item || meResponse?.data?.employee || meResponse?.data;
               if (payload) return payload;
             } catch {
@@ -64,10 +64,10 @@ export default function ProfilePage() {
               throw new Error('No employee id');
             }
 
-            const detailResponse = await api.get(`/api/v1/employees/${employeeId}`);
+            const detailResponse = await api.get(`/employees/${employeeId}`);
             return detailResponse?.data?.data || detailResponse?.data?.item || detailResponse?.data?.employee || detailResponse?.data;
           })(),
-          api.get('/api/v1/leave-requests/').catch(() => ({ data: [] })),
+          api.get('/leave-requests/').catch(() => ({ data: [] })),
         ]);
 
         const profilePayload = profileResult.status === 'fulfilled' ? profileResult.value : null;
@@ -205,7 +205,7 @@ export default function ProfilePage() {
       payload.email = editForm.email?.trim() ? editForm.email.trim() : null;
       payload.phone = editForm.phone?.trim() ? editForm.phone.trim() : null;
 
-      await api.put(`/api/v1/employees/${profile.id}`, payload);
+      await api.put(`/employees/${profile.id}`, payload);
       setProfile((current) => {
         const updatedName = [first_name, last_name].filter(Boolean).join(' ');
         return current ? { ...current, name: updatedName || current.name, email: editForm.email, phone: editForm.phone, location: editForm.location, bloodGroup: editForm.bloodGroup } : current;
@@ -250,7 +250,7 @@ export default function ProfilePage() {
     };
 
     try {
-      await api.post('/api/v1/helpdesk/tickets/', ticketPayload);
+      await api.post('/helpdesk/tickets/', ticketPayload);
       toast.success('Ticket raised successfully');
       setTicketForm({ subject: '', category: 'General', priority: 'Medium', impact: '', description: '' });
       setIsTicketOpen(false);
@@ -424,7 +424,7 @@ export default function ProfilePage() {
                       </div>
                       <div className="mt-4 flex items-center justify-between">
                         <span className="text-[11px] text-slate-400">{doc.status}</span>
-                        <button type="button" className="rounded-md border border-slate-200 bg-white px-2 py-1 text-[11px] font-semibold text-slate-600 transition hover:bg-slate-100">
+                        <button type="button" className="rounded-md border border-slate-200 bg-white px-2 py-1 text-[11px] font-semibold text-slate-600 transition hover:bg-slate-100 hover-gradient-border">
                           {doc.status === 'Uploaded' ? 'View' : 'Upload'}
                         </button>
                       </div>
@@ -510,7 +510,7 @@ export default function ProfilePage() {
             <button type="button" onClick={() => setIsEditOpen(false)} className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-50">
               Cancel
             </button>
-            <button type="submit" form="profile-edit-form" className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white transition hover:bg-slate-800">
+            <button type="submit" form="profile-edit-form" className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 hover-gradient-border">
               Save Changes
             </button>
           </>
@@ -555,7 +555,7 @@ export default function ProfilePage() {
             <button type="button" onClick={() => setIsTicketOpen(false)} className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-50">
               Cancel
             </button>
-            <button type="submit" form="ticket-form" className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white transition hover:bg-slate-800">
+            <button type="submit" form="ticket-form" className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 hover-gradient-border">
               Submit Ticket
             </button>
           </>

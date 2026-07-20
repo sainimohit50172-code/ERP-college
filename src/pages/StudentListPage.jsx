@@ -8,6 +8,7 @@ import Breadcrumb from '../components/ui/Breadcrumb.jsx';
 import TablePagination from '../components/tables/TablePagination.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
 import WithPermission from '../components/auth/WithPermission.jsx';
+import CircleAvatar from '../components/ui/CircleAvatar.jsx';
 
 const defaultFormValues = {
   admissionNo: '',
@@ -542,10 +543,10 @@ export default function StudentListPage() {
                 </button>
                 {showActionMenu && (
                   <div className="absolute right-0 mt-2 w-44 rounded-md border bg-white p-2 shadow-lg">
-                    <button type="button" onClick={handleSetStudentDataFormat} className="w-full text-left px-2 py-2 text-sm hover:bg-slate-50">Set Student Data Format</button>
-                    <button type="button" onClick={handleSyncStudentsToODPay} className="w-full text-left px-2 py-2 text-sm hover:bg-slate-50">Sync Students to OD Pay</button>
+                    <button type="button" onClick={handleSetStudentDataFormat} className="w-full text-left px-2 py-2 text-sm hover:bg-slate-50 hover-gradient-border">Set Student Data Format</button>
+                    <button type="button" onClick={handleSyncStudentsToODPay} className="w-full text-left px-2 py-2 text-sm hover:bg-slate-50 hover-gradient-border">Sync Students to OD Pay</button>
                     <div className="border-t my-1" />
-                    <button type="button" onClick={handleExportCsv} className="w-full text-left px-2 py-2 text-sm hover:bg-slate-50">Export CSV</button>
+                    <button type="button" onClick={handleExportCsv} className="w-full text-left px-2 py-2 text-sm hover:bg-slate-50 hover-gradient-border">Export CSV</button>
                     <button type="button" onClick={() => { setSelectedIds([]); setShowActionMenu(false); }} className="w-full text-left px-2 py-2 text-sm text-rose-600 hover:bg-slate-50">Clear Selection</button>
                   </div>
                 )}
@@ -683,8 +684,8 @@ export default function StudentListPage() {
                   </div>
                 </div>
                 <div className="mt-6 flex justify-end gap-3">
-                  <button type="button" onClick={handleCancelFilters} className="rounded-2xl border border-slate-300 bg-white px-4 py-2 text-sm text-slate-700">Cancel</button>
-                  <button type="button" onClick={handleApplyFilters} className="rounded-2xl bg-[#1e3a5f] px-4 py-2 text-sm font-semibold text-white">Go →</button>
+                  <button type="button" onClick={handleCancelFilters} className="rounded-2xl border border-slate-300 bg-white px-4 py-2 text-sm text-slate-700 hover-gradient-border">Cancel</button>
+                  <button type="button" onClick={handleApplyFilters} className="rounded-2xl bg-[#1e3a5f] px-4 py-2 text-sm font-semibold text-white hover-gradient-border">Go →</button>
                 </div>
               </div>
             )}
@@ -720,11 +721,7 @@ export default function StudentListPage() {
                           <input type="checkbox" checked={selectedIds.includes(row.id)} onChange={() => toggleSelection(row.id)} className="h-4 w-4 rounded border-slate-300 text-sky-600" />
                         </td>
                         <td className="px-2 py-2 align-top whitespace-nowrap text-[11px]">
-                          {row.photo ? (
-                            <img src={row.photo} alt={row.name} className="h-8 w-8 rounded-full object-cover" />
-                          ) : (
-                            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-[10px] font-semibold uppercase text-slate-600">No</div>
-                          )}
+                          <CircleAvatar src={row.photo} alt={row.name} name={row.name} sizeClass="h-8 w-8" />
                         </td>
                         <td className="px-2 py-2 align-top whitespace-nowrap text-[11px]">
                           <button type="button" onClick={() => openStudent(row.student)} className="text-left text-slate-900 hover:text-sky-600">
@@ -783,7 +780,7 @@ export default function StudentListPage() {
                 <p className="text-xs uppercase tracking-[0.24em] text-slate-500">{selectedStudent ? 'Edit student' : 'New student'}</p>
                 <h2 className="mt-1 text-2xl font-semibold text-slate-950">{selectedStudent ? 'Update student profile' : 'Admission form'}</h2>
               </div>
-              <button type="button" onClick={closeForm} className="inline-flex h-11 items-center justify-center rounded-2xl border border-slate-300 bg-slate-50 px-4 text-sm text-slate-700 transition hover:bg-slate-100">Close</button>
+              <button type="button" onClick={closeForm} className="inline-flex h-11 items-center justify-center rounded-2xl border border-slate-300 bg-slate-50 px-4 text-sm text-slate-700 transition hover:bg-slate-100 hover-gradient-border">Close</button>
             </div>
             <form onSubmit={handleSubmit(handleSubmitForm)} className="flex h-full flex-col overflow-hidden">
               <div className="flex-1 overflow-y-auto px-6 py-5">
@@ -796,35 +793,35 @@ export default function StudentListPage() {
                     <div className="grid gap-4 sm:grid-cols-2">
                       <label className="space-y-2 text-sm text-slate-700">
                         College
-                        <input type="text" {...register('collegeName')} placeholder="College name" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="text" {...register('collegeName')} placeholder="College name" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Course
-                        <input type="text" {...register('course')} placeholder="Course" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="text" {...register('course')} placeholder="Course" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Department
-                        <input type="text" {...register('department')} placeholder="Department" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="text" {...register('department')} placeholder="Department" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Semester
-                        <input type="text" {...register('semester')} placeholder="Semester" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="text" {...register('semester')} placeholder="Semester" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Section
-                        <input type="text" {...register('section')} placeholder="Section" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="text" {...register('section')} placeholder="Section" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Academic session
-                        <input type="text" {...register('academicSession')} placeholder="2025-26" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="text" {...register('academicSession')} placeholder="2025-26" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Admission date
-                        <input type="date" {...register('admissionDate')} className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="date" {...register('admissionDate')} className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         University Roll No.
-                        <input type="text" {...register('universityRollNo')} placeholder="University roll number" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="text" {...register('universityRollNo')} placeholder="University roll number" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                     </div>
                   </section>
@@ -836,25 +833,25 @@ export default function StudentListPage() {
                     <div className="grid gap-4 sm:grid-cols-2">
                       <label className="space-y-2 text-sm text-slate-700">
                         First name
-                        <input type="text" {...register('firstName', { required: 'First name is required' })} placeholder="First name" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="text" {...register('firstName', { required: 'First name is required' })} placeholder="First name" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                         {errors.firstName && <p className="text-xs text-rose-500">{errors.firstName.message}</p>}
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Last name
-                        <input type="text" {...register('lastName')} placeholder="Last name" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="text" {...register('lastName')} placeholder="Last name" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Admission number
-                        <input type="text" {...register('admissionNo', { required: 'Admission number is required' })} placeholder="Admission number" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="text" {...register('admissionNo', { required: 'Admission number is required' })} placeholder="Admission number" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                         {errors.admissionNo && <p className="text-xs text-rose-500">{errors.admissionNo.message}</p>}
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Date of birth
-                        <input type="date" {...register('dateOfBirth')} className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="date" {...register('dateOfBirth')} className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Gender
-                        <select {...register('gender')} className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none">
+                        <select {...register('gender')} className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border">
                           <option value="">Select gender</option>
                           <option value="M">Male</option>
                           <option value="F">Female</option>
@@ -863,7 +860,7 @@ export default function StudentListPage() {
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Status
-                        <select {...register('status')} className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none">
+                        <select {...register('status')} className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border">
                           <option value="Active">Active</option>
                           <option value="Alumni">Alumni</option>
                           <option value="Withdrawn">Withdrawn</option>
@@ -882,21 +879,21 @@ export default function StudentListPage() {
                     <div className="grid gap-4 sm:grid-cols-2">
                       <label className="space-y-2 text-sm text-slate-700">
                         Email
-                        <input type="email" {...register('email', { required: 'Email is required' })} placeholder="Email" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="email" {...register('email', { required: 'Email is required' })} placeholder="Email" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                         {errors.email && <p className="text-xs text-rose-500">{errors.email.message}</p>}
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Mobile
-                        <input type="tel" {...register('phone', { required: 'Phone is required' })} placeholder="Mobile" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="tel" {...register('phone', { required: 'Phone is required' })} placeholder="Mobile" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                         {errors.phone && <p className="text-xs text-rose-500">{errors.phone.message}</p>}
                       </label>
                       <label className="sm:col-span-2 space-y-2 text-sm text-slate-700">
                         Address
-                        <textarea {...register('address')} rows="3" placeholder="Address" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <textarea {...register('address')} rows="3" placeholder="Address" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="sm:col-span-2 space-y-2 text-sm text-slate-700">
                         Emergency contact
-                        <input type="text" {...register('emergencyContact')} placeholder="Emergency contact" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="text" {...register('emergencyContact')} placeholder="Emergency contact" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                     </div>
                   </section>
@@ -909,19 +906,19 @@ export default function StudentListPage() {
                     <div className="grid gap-4 sm:grid-cols-2">
                       <label className="space-y-2 text-sm text-slate-700">
                         Father name
-                        <input type="text" {...register('fatherName')} placeholder="Father name" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="text" {...register('fatherName')} placeholder="Father name" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Mother name
-                        <input type="text" {...register('motherName')} placeholder="Mother name" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="text" {...register('motherName')} placeholder="Mother name" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Guardian name
-                        <input type="text" {...register('guardianName')} placeholder="Guardian name" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="text" {...register('guardianName')} placeholder="Guardian name" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Relationship
-                        <select {...register('guardianRelationship')} className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none">
+                        <select {...register('guardianRelationship')} className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border">
                           <option value="Guardian">Guardian</option>
                           <option value="Father">Father</option>
                           <option value="Mother">Mother</option>
@@ -930,43 +927,43 @@ export default function StudentListPage() {
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Guardian phone
-                        <input type="tel" {...register('guardianMobile')} placeholder="Guardian phone" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="tel" {...register('guardianMobile')} placeholder="Guardian phone" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Guardian email
-                        <input type="email" {...register('guardianEmail')} placeholder="Guardian email" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="email" {...register('guardianEmail')} placeholder="Guardian email" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="sm:col-span-2 space-y-2 text-sm text-slate-700">
                         Guardian address
-                        <textarea {...register('guardianAddress')} rows="3" placeholder="Guardian address" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <textarea {...register('guardianAddress')} rows="3" placeholder="Guardian address" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Total fee
-                        <input type="number" {...register('totalFee')} step="0.01" min="0" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="number" {...register('totalFee')} step="0.01" min="0" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Scholarship
-                        <input type="number" {...register('scholarship')} step="0.01" min="0" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="number" {...register('scholarship')} step="0.01" min="0" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Fine
-                        <input type="number" {...register('fine')} step="0.01" min="0" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="number" {...register('fine')} step="0.01" min="0" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         Installments
-                        <input type="number" {...register('installments')} step="1" min="1" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="number" {...register('installments')} step="1" min="1" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         GPA
-                        <input type="text" {...register('gpa')} placeholder="GPA" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="text" {...register('gpa')} placeholder="GPA" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="space-y-2 text-sm text-slate-700">
                         CGPA
-                        <input type="text" {...register('cgpa')} placeholder="CGPA" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="text" {...register('cgpa')} placeholder="CGPA" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                       <label className="sm:col-span-2 space-y-2 text-sm text-slate-700">
                         Mentor
-                        <input type="text" {...register('mentor')} placeholder="Mentor" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none" />
+                        <input type="text" {...register('mentor')} placeholder="Mentor" className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none hover-gradient-border" />
                       </label>
                     </div>
                   </section>
@@ -974,8 +971,8 @@ export default function StudentListPage() {
               </div>
               <div className="border-t border-slate-200 bg-white px-6 py-4">
                 <div className="flex flex-wrap items-center justify-end gap-3">
-                  <button type="button" onClick={closeForm} className="rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-100">Cancel</button>
-                  <button type="submit" disabled={isSubmitting} className="rounded-2xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:opacity-60">{selectedStudent ? 'Save changes' : 'Create student'}</button>
+                  <button type="button" onClick={closeForm} className="rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-100 hover-gradient-border">Cancel</button>
+                  <button type="submit" disabled={isSubmitting} className="rounded-2xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:opacity-60 hover-gradient-border">{selectedStudent ? 'Save changes' : 'Create student'}</button>
                 </div>
               </div>
             </form>
@@ -1014,7 +1011,7 @@ export default function StudentListPage() {
                 <div className="mt-2 text-sm text-slate-500">Selected students: <strong>{selectedIds.length}</strong> — Selected fields: <strong>{selectedFormatFields.size}</strong></div>
                 <div className="mt-4 flex justify-end gap-3">
                   <button type="button" onClick={() => { setShowSetFormatModal(false); setSelectedFormatFields(new Set()); setFormatError(''); setFieldsError(''); }} className="rounded-2xl border border-slate-300 bg-white px-4 py-2 text-sm text-slate-700">Cancel</button>
-                  <button type="button" onClick={applySetFormat} className="rounded-2xl bg-[#1e3a5f] px-4 py-2 text-sm font-semibold text-white">Set Data →</button>
+                  <button type="button" onClick={applySetFormat} className="rounded-2xl bg-[#1e3a5f] px-4 py-2 text-sm font-semibold text-white hover-gradient-border">Set Data →</button>
                 </div>
               </div>
             </div>

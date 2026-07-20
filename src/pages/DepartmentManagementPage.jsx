@@ -71,7 +71,7 @@ export default function DepartmentManagementPage() {
                 <p className="text-sm text-slate-400">Manage departments, leadership, and academic program support.</p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                <button className="inline-flex items-center gap-2 rounded-2xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 transition hover:bg-slate-700">
+                <button className="inline-flex items-center gap-2 rounded-2xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 transition hover:bg-slate-700 hover-gradient-border">
                   <FaDownload /> Export
                 </button>
                 <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 rounded-2xl bg-sky-400 px-3 py-2 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">
@@ -115,30 +115,30 @@ export default function DepartmentManagementPage() {
           </div>
         </div>
       </div>
-      <Modal title="Add department" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<Button onClick={handleSubmit(onSubmit)} variant="primary">Save department</Button>}>
+      <Modal title="Add department" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<Button onClick={handleSubmit(onSubmit)} variant="primary" >Save department</Button>}>
         <form className="grid gap-5 lg:grid-cols-2">
           <FormField label="Department code">
-            <input type="text" {...register('code', { required: 'Code is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="CS" />
+            <input type="text" {...register('code', { required: 'Code is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="CS" />
             {errors.code && <p className="mt-1 text-sm text-rose-400">{errors.code.message}</p>}
           </FormField>
           <FormField label="Department name">
-            <input type="text" {...register('name', { required: 'Name is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Computer Science" />
+            <input type="text" {...register('name', { required: 'Name is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="Computer Science" />
             {errors.name && <p className="mt-1 text-sm text-rose-400">{errors.name.message}</p>}
           </FormField>
           <FormField label="Department head">
-            <input type="text" {...register('head', { required: 'Head is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Dr. Priya Menon" />
+            <input type="text" {...register('head', { required: 'Head is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="Dr. Priya Menon" />
             {errors.head && <p className="mt-1 text-sm text-rose-400">{errors.head.message}</p>}
           </FormField>
           <FormField label="Faculty count">
-            <input type="number" {...register('facultyCount', { required: 'Faculty count is required', min: { value: 1, message: 'Must be at least 1' } })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="18" />
+            <input type="number" {...register('facultyCount', { required: 'Faculty count is required', min: { value: 1, message: 'Must be at least 1' } })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="18" />
             {errors.facultyCount && <p className="mt-1 text-sm text-rose-400">{errors.facultyCount.message}</p>}
           </FormField>
           <FormField label="Active programs">
-            <input type="number" {...register('activePrograms', { required: 'Program count is required', min: { value: 1, message: 'Must be at least 1' } })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="4" />
+            <input type="number" {...register('activePrograms', { required: 'Program count is required', min: { value: 1, message: 'Must be at least 1' } })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="4" />
             {errors.activePrograms && <p className="mt-1 text-sm text-rose-400">{errors.activePrograms.message}</p>}
           </FormField>
           <FormField label="Status">
-            <select {...register('status', { required: 'Status is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+            <select {...register('status', { required: 'Status is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border">
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
             </select>

@@ -1,6 +1,6 @@
 
 export default function Button({ children, className = '', isLoading = false, disabled = false, onClick, type = 'button', variant = 'primary', ...props }) {
-  const base = 'btn h-10';
+  const base = 'btn hover-gradient-border h-10';
   const variantClass = {
     primary: 'btn-primary',
     secondary: 'btn-secondary',
@@ -13,7 +13,8 @@ export default function Button({ children, className = '', isLoading = false, di
       type={type}
       onClick={onClick}
       disabled={disabled || isLoading}
-      className={`${base} ${variantClass} ${className} ${isLoading ? 'loading' : ''}`}
+      className={`hover-gradient-border ${base} ${variantClass} ${className} ${isLoading ? 'loading' : ''}`}
+      style={{ '--hover-gradient-radius': '16px' }}
       {...props}
     >
       {isLoading ? (

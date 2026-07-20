@@ -296,7 +296,7 @@ export default function LeaveManagementPage() {
             <select value={requestStatusFilter} onChange={(event) => setRequestStatusFilter(event.target.value)} className="rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none">
               {requestStatuses.map((status) => <option key={status} value={status}>{status}</option>)}
             </select>
-            <button type="button" onClick={bulkApprove} className="rounded-3xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100">Bulk approve</button>
+            <button type="button" onClick={bulkApprove} className="rounded-3xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100 hover-gradient-border">Bulk approve</button>
           </div>
           <DataTable
             columns={[
@@ -411,7 +411,7 @@ export default function LeaveManagementPage() {
         </div>
       )}
 
-      <Modal title={editingPolicy ? 'Update leave policy' : 'Create leave policy'} isOpen={isPolicyModalOpen} onClose={() => { setIsPolicyModalOpen(false); resetPolicyForm(); }} footer={<button type="button" onClick={handlePolicySubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400">Save policy</button>}>
+      <Modal title={editingPolicy ? 'Update leave policy' : 'Create leave policy'} isOpen={isPolicyModalOpen} onClose={() => { setIsPolicyModalOpen(false); resetPolicyForm(); }} footer={<button type="button" onClick={handlePolicySubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 hover-gradient-border">Save policy</button>}>
         <form className="space-y-4" onSubmit={handlePolicySubmit}>
           <FormField label="Leave type">
             <input value={policyForm.leaveType} onChange={(event) => setPolicyForm((current) => ({ ...current, leaveType: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
@@ -433,7 +433,7 @@ export default function LeaveManagementPage() {
         </form>
       </Modal>
 
-      <Modal title={editingRequest ? 'Update leave request' : 'Apply leave'} isOpen={isRequestModalOpen} onClose={() => { setIsRequestModalOpen(false); resetRequestForm(); }} footer={<button type="button" onClick={handleRequestSubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400">Save request</button>}>
+      <Modal title={editingRequest ? 'Update leave request' : 'Apply leave'} isOpen={isRequestModalOpen} onClose={() => { setIsRequestModalOpen(false); resetRequestForm(); }} footer={<button type="button" onClick={handleRequestSubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 hover-gradient-border">Save request</button>}>
         <form className="space-y-4" onSubmit={handleRequestSubmit}>
           <FormField label="Employee name">
             <input value={requestForm.employeeName} onChange={(event) => setRequestForm((current) => ({ ...current, employeeName: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
@@ -463,7 +463,7 @@ export default function LeaveManagementPage() {
         </form>
       </Modal>
 
-      <Modal title={editingHoliday ? 'Update holiday' : 'Add holiday'} isOpen={isHolidayModalOpen} onClose={() => { setIsHolidayModalOpen(false); resetHolidayForm(); }} footer={<button type="button" onClick={handleHolidaySubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400">Save holiday</button>}>
+      <Modal title={editingHoliday ? 'Update holiday' : 'Add holiday'} isOpen={isHolidayModalOpen} onClose={() => { setIsHolidayModalOpen(false); resetHolidayForm(); }} footer={<button type="button" onClick={handleHolidaySubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 hover-gradient-border">Save holiday</button>}>
         <form className="space-y-4" onSubmit={handleHolidaySubmit}>
           <FormField label="Holiday title">
             <input value={holidayForm.title} onChange={(event) => setHolidayForm((current) => ({ ...current, title: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />

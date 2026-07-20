@@ -33,20 +33,22 @@ def _sqlite_db_path(url: str) -> str | None:
 def _ensure_sqlite_compatible_schema(db_path: str) -> None:
     if not os.path.exists(db_path):
         return
+    engine = create_engine(f"sqlite:///{db_path}", connect_args={"check_same_thread": False})
     try:
-        with create_engine(f"sqlite:///{db_path}", connect_args={"check_same_thread": False}).connect() as conn:
+        with engine.connect() as conn:
             rows = conn.execute(
                 text(
                     "SELECT name, sql FROM sqlite_master WHERE type='table' AND sql LIKE '%BIGINT NOT NULL%' AND sql LIKE '%PRIMARY KEY%'"
                 )
             ).fetchall()
             if rows:
+                logger.warning(
+                    "Detected incompatible SQLite schema in %s; removing the old database file and recreating it.",
+                    db_path,
+                )
                 try:
+                    engine.dispose()
                     os.remove(db_path)
-                    logger.warning(
-                        "Detected incompatible SQLite schema in %s; removed old database file and will recreate a fresh database.",
-                        db_path,
-                    )
                 except OSError as exc:
                     logger.warning(
                         "Detected incompatible SQLite schema in %s but could not remove file: %s. Continuing with current database.",
@@ -55,6 +57,8 @@ def _ensure_sqlite_compatible_schema(db_path: str) -> None:
                     )
     except OperationalError:
         pass
+    finally:
+        engine.dispose()
 
 
 def _create_engine(url: str):
@@ -99,13 +103,12 @@ def _create_engine(url: str):
 
 engine = _create_engine(settings.database_url)
 
-if settings.app_env.lower() == "development":
-    # Ensure all models are imported so SQLAlchemy metadata includes their tables.
-    try:
-        import app.models  # noqa: F401
-    except ImportError:
-        pass
-    Base.metadata.create_all(engine)
+# Ensure the schema exists before any repository uses the database.
+try:
+    import app.models  # noqa: F401
+except ImportError:
+    pass
+Base.metadata.create_all(engine)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, future=True)
 

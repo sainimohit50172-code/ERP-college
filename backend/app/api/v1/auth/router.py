@@ -11,9 +11,14 @@ from app.schemas.auth.schemas import (
     LoginRequest,
     LoginResponse,
     LogoutRequest,
+    MobileOtpSendRequest,
+    MobileOtpVerifyRequest,
+    MobileRegistrationCompleteRequest,
     PasswordResetRequest,
     RefreshTokenRequest,
     RefreshTokenResponse,
+    RegisterRequest,
+    RegisterResponse,
     ResetPasswordRequest,
 )
 from app.schemas.shared.base import APIResponse
@@ -57,6 +62,78 @@ async def login(payload: LoginRequest, request: Request, service: AuthService = 
     except AuthServiceError as exc:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(exc))
     return APIResponse(data=LoginResponse(**result), message="Authenticated")
+
+
+@router.post(
+    "/register",
+    response_model=APIResponse[RegisterResponse],
+    status_code=status.HTTP_201_CREATED,
+    summary="Register a new user",
+    description="Create a new account with a strong password and role assignment.",
+)
+async def register(payload: RegisterRequest, service: AuthService = Depends(get_auth_service)):
+    try:
+        result = await service.register_user(
+            email=str(payload.email),
+            username=payload.username,
+            password=payload.password,
+            full_name=payload.full_name,
+            role_name=payload.role_name or "Admin",
+        )
+    except AuthServiceError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
+    return APIResponse(data=RegisterResponse(**result), message="Account created")
+
+
+@router.post(
+    "/register/send-otp",
+    response_model=APIResponse[dict[str, object]],
+    status_code=status.HTTP_200_OK,
+    summary="Send OTP for mobile registration",
+    description="Send a temporary OTP for the mobile-based registration flow.",
+)
+async def send_mobile_otp(payload: MobileOtpSendRequest, service: AuthService = Depends(get_auth_service)):
+    try:
+        result = await service.send_mobile_otp(
+            full_name=payload.full_name,
+            username=payload.username,
+            email=str(payload.email),
+            mobile_number=payload.mobile_number,
+            role_name=payload.role_name or "Admin",
+        )
+    except AuthServiceError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
+    return APIResponse(data=result, message="OTP sent successfully")
+
+
+@router.post(
+    "/register/verify-otp",
+    response_model=APIResponse[dict[str, bool]],
+    status_code=status.HTTP_200_OK,
+    summary="Verify OTP for mobile registration",
+    description="Verify the OTP sent to the mobile number for registration.",
+)
+async def verify_mobile_otp(payload: MobileOtpVerifyRequest, service: AuthService = Depends(get_auth_service)):
+    try:
+        result = await service.verify_mobile_otp(payload.mobile_number, payload.otp_code)
+    except AuthServiceError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
+    return APIResponse(data=result, message="OTP verified successfully")
+
+
+@router.post(
+    "/register/complete",
+    response_model=APIResponse[RegisterResponse],
+    status_code=status.HTTP_201_CREATED,
+    summary="Complete mobile registration",
+    description="Create the user account after mobile OTP verification.",
+)
+async def complete_mobile_registration(payload: MobileRegistrationCompleteRequest, service: AuthService = Depends(get_auth_service)):
+    try:
+        result = await service.complete_mobile_registration(payload.mobile_number, payload.password, payload.confirm_password)
+    except AuthServiceError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
+    return APIResponse(data=RegisterResponse(**result), message="Account created")
 
 
 @router.post(

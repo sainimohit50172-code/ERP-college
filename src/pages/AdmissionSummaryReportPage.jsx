@@ -151,7 +151,7 @@ export default function AdmissionSummaryReportPage() {
           <button
             type="button"
             onClick={fetchAdmissions}
-            className="inline-flex items-center gap-2 rounded-2xl bg-white border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-slate-50"
+            className="inline-flex items-center gap-2 rounded-2xl bg-white border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-slate-50 hover-gradient-border"
           >
             <RefreshCw size={16} /> Refresh
           </button>

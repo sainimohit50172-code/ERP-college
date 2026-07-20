@@ -75,7 +75,7 @@ export default function ExaminationDashboard() {
       <div className="m-2.5 overflow-hidden rounded-[22px] border border-slate-200/80 bg-white/90 p-3 shadow-[0_22px_70px_-24px_rgba(2,8,23,0.35)] backdrop-blur sm:p-4 lg:p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">Examination</h1>
-          <div className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm">
+          <div className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover-gradient-border">
             Session 2026-27 Odd
           </div>
         </div>
@@ -87,7 +87,7 @@ export default function ExaminationDashboard() {
                 <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">Overall Range-Wise Percentage In Standard</p>
                 <h2 className="mt-2 text-2xl font-semibold text-slate-900">Exam range distribution</h2>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 hover-gradient-border">
                 <button
                   type="button"
                   onClick={() => setSection1Page((prev) => Math.max(prev - 1, 0))}
@@ -115,7 +115,7 @@ export default function ExaminationDashboard() {
                   onClick={() => handleRangeClick(item)}
                   className="group rounded-[18px] border border-slate-200 bg-slate-50 p-4 text-left transition duration-300 hover:-translate-y-0.5 hover:border-slate-300 hover:bg-white"
                 >
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 hover-gradient-border">
                     <span className="inline-flex h-4 w-4 rounded-full" style={{ backgroundColor: item.color }} />
                     <span className="text-sm font-semibold text-slate-900">{item.label}</span>
                   </div>
@@ -145,7 +145,7 @@ export default function ExaminationDashboard() {
                 <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">Range Wise Percentage In Subject Of Standard</p>
                 <h2 className="mt-2 text-2xl font-semibold text-slate-900">Subject performance chart</h2>
               </div>
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2 hover-gradient-border">
                 <button
                   type="button"
                   onClick={() => setShowSubjectDemo((prev) => !prev)}
@@ -155,13 +155,13 @@ export default function ExaminationDashboard() {
                 </button>
                 <button
                   type="button"
-                  className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700 transition duration-300 hover:-translate-y-0.5 hover:bg-white"
+                  className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700 transition duration-300 hover:-translate-y-0.5 hover:bg-white hover-gradient-border"
                 >
                   <ArrowLeft className="h-4 w-4" />
                 </button>
                 <button
                   type="button"
-                  className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700 transition duration-300 hover:-translate-y-0.5 hover:bg-white"
+                  className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700 transition duration-300 hover:-translate-y-0.5 hover:bg-white hover-gradient-border"
                 >
                   <ArrowRight className="h-4 w-4" />
                 </button>
@@ -186,7 +186,7 @@ export default function ExaminationDashboard() {
                 </div>
               ) : (
                 <div className="grid min-h-[320px] place-items-center rounded-[18px] border border-dashed border-slate-200 bg-slate-50 p-8 text-center">
-                  <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-700">
+                  <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 hover-gradient-border">
                     <CircleDashed className="h-6 w-6" />
                   </div>
                   <div className="mt-4 text-sm font-semibold text-slate-900">No data available</div>
@@ -205,7 +205,7 @@ export default function ExaminationDashboard() {
               <button
                 type="button"
                 onClick={handleRefresh}
-                className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition duration-300 hover:-translate-y-0.5 hover:bg-white"
+                className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition duration-300 hover:-translate-y-0.5 hover:bg-white hover-gradient-border"
               >
                 <RefreshCw className={`h-4 w-4 transition-transform ${refreshing ? 'animate-spin' : ''}`} />
                 Refresh
@@ -231,7 +231,7 @@ export default function ExaminationDashboard() {
       </div>
 
       {(selectedRange || selectedSemester) && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4 hover-gradient-border">
           <div className="w-full max-w-3xl overflow-hidden rounded-[28px] bg-white shadow-2xl">
             <div className="flex flex-col gap-3 border-b border-slate-200 bg-slate-50 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
@@ -252,7 +252,7 @@ export default function ExaminationDashboard() {
             <div className="grid gap-6 px-6 py-6 sm:grid-cols-[1.1fr_0.9fr]">
               <div className="space-y-4">
                 <div className="rounded-[22px] border border-slate-200 bg-slate-50 p-5 shadow-sm">
-                  <div className="flex items-center gap-3 text-slate-700">
+                  <div className="flex items-center gap-3 text-slate-700 hover-gradient-border">
                     <BarChart3 className="h-5 w-5" />
                     <span className="font-semibold">{selectedRange ? selectedRange.label : selectedSemester.standard}</span>
                   </div>
@@ -270,7 +270,7 @@ export default function ExaminationDashboard() {
               </div>
               <div className="space-y-4">
                 <div className="rounded-[22px] border border-slate-200 bg-white p-5 shadow-sm">
-                  <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center justify-between gap-3 hover-gradient-border">
                     <div>
                       <p className="text-sm font-semibold text-slate-500">Performance summary</p>
                       <p className="mt-2 text-lg font-semibold text-slate-900">{selectedRange ? selectedRange.title : `${selectedSemester.standard} overview`}</p>

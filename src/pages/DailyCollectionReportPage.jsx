@@ -128,7 +128,7 @@ export default function DailyCollectionReportPage() {
           <button
             type="button"
             onClick={openFilter}
-            className="inline-flex items-center gap-2 rounded-2xl bg-primary-navy px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-navy-dark"
+            className="inline-flex items-center gap-2 rounded-2xl bg-primary-navy px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-navy-dark hover-gradient-border"
           >
             <Filter size={16} /> Filter
           </button>
@@ -231,7 +231,7 @@ export default function DailyCollectionReportPage() {
               <button
                 type="button"
                 onClick={closeFilter}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 hover-gradient-border"
               >
                 <X size={18} />
               </button>
@@ -323,14 +323,14 @@ export default function DailyCollectionReportPage() {
               <button
                 type="button"
                 onClick={closeFilter}
-                className="rounded-2xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                className="rounded-2xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover-gradient-border"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={handleApplyFilter}
-                className="rounded-2xl bg-primary-navy px-6 py-3 text-sm font-semibold text-white hover:bg-primary-navy-dark"
+                className="rounded-2xl bg-primary-navy px-6 py-3 text-sm font-semibold text-white hover:bg-primary-navy-dark hover-gradient-border"
               >
                 Go →
               </button>

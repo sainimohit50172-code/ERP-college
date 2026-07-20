@@ -109,7 +109,7 @@ export default function GenericCrudPage({
           <button
             type="button"
             onClick={openCreate}
-            className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
+            className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border"
           >
             <Plus className="h-4 w-4" /> Add {itemLabel}
           </button>
@@ -133,7 +133,7 @@ export default function GenericCrudPage({
             <button type="button" onClick={() => { setShowModal(false); setEditItem(null); resetForm(); }} className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700">
               Cancel
             </button>
-            <button type="submit" form="generic-crud-form" className="rounded-2xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white">
+            <button type="submit" form="generic-crud-form" className="rounded-2xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover-gradient-border">
               Save {itemLabel}
             </button>
           </>
@@ -148,7 +148,7 @@ export default function GenericCrudPage({
                   name={field.name}
                   value={formValues[field.name] ?? ''}
                   onChange={handleChange}
-                  className="w-full rounded-2xl border border-slate-200/80 bg-slate-50 px-3 py-3 text-sm text-slate-900 outline-none"
+                  className="w-full rounded-2xl border border-slate-200/80 bg-slate-50 px-3 py-3 text-sm text-slate-900 outline-none hover-gradient-border"
                 >
                   {field.options?.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -162,7 +162,7 @@ export default function GenericCrudPage({
                   value={formValues[field.name] ?? ''}
                   onChange={handleChange}
                   rows={4}
-                  className="w-full rounded-2xl border border-slate-200/80 bg-slate-50 px-3 py-3 text-sm text-slate-900 outline-none"
+                  className="w-full rounded-2xl border border-slate-200/80 bg-slate-50 px-3 py-3 text-sm text-slate-900 outline-none hover-gradient-border"
                 />
               ) : (
                 <input
@@ -171,7 +171,7 @@ export default function GenericCrudPage({
                   value={formValues[field.name] ?? ''}
                   onChange={handleChange}
                   placeholder={field.placeholder || ''}
-                  className="w-full rounded-2xl border border-slate-200/80 bg-slate-50 px-3 py-3 text-sm text-slate-900 outline-none"
+                  className="w-full rounded-2xl border border-slate-200/80 bg-slate-50 px-3 py-3 text-sm text-slate-900 outline-none hover-gradient-border"
                 />
               )}
             </div>

@@ -89,7 +89,7 @@ export default function InstituteProfilePage() {
                   <span className="inline-block h-3 w-3 rounded-sm bg-white" />
                   <h2 className="text-2xl font-semibold text-white">HARIDWAR UNIVERSITY</h2>
                 </div>
-                <button type="button" onClick={handleLocationClick} className="mt-2 flex items-center gap-3 text-sm text-slate-100 transition hover:text-white/80 focus:outline-none focus:ring-2 focus:ring-white rounded-md">
+                <button type="button" onClick={handleLocationClick} className="mt-2 flex items-center gap-3 text-sm text-slate-100 transition hover:text-white/80 focus:outline-none focus:ring-2 focus:ring-white rounded-md hover-gradient-border">
                   <MapPin className="h-4 w-4 text-slate-100" />
                   <span>5th Km. Roorkee-Haridwar Canal Road, Roorkee, Uttarakhand - 247667</span>
                 </button>
@@ -100,12 +100,12 @@ export default function InstituteProfilePage() {
                 <div className="flex flex-col items-end gap-3">
                 <div className="flex items-center gap-2 text-sm text-white">
                   <span className="font-medium text-white">{instituteId}</span>
-                  <button onClick={handleCopy} className="inline-flex items-center gap-2 rounded-md border border-white bg-white/90 px-3 py-1 text-sm text-slate-800 transition hover:bg-white focus:outline-none focus:ring-2 focus:ring-white">
+                  <button onClick={handleCopy} className="inline-flex items-center gap-2 rounded-md border border-white bg-white/90 px-3 py-1 text-sm text-slate-800 transition hover:bg-white focus:outline-none focus:ring-2 focus:ring-white hover-gradient-border">
                     <Copy className="h-4 w-4" />
                     <span>{copied ? 'Copied' : 'Copy'}</span>
                   </button>
                 </div>
-                <button onClick={handleEditInstitute} className="inline-flex items-center gap-2 rounded-md bg-white px-4 py-2 text-sm font-semibold text-[#16a34a] transition hover:bg-[#f0fdfa] focus:outline-none focus:ring-2 focus:ring-white">
+                <button onClick={handleEditInstitute} className="inline-flex items-center gap-2 rounded-md bg-white px-4 py-2 text-sm font-semibold text-[#16a34a] transition hover:bg-[#f0fdfa] focus:outline-none focus:ring-2 focus:ring-white hover-gradient-border">
                   <Edit3 className="h-4 w-4" /> {isEditing ? 'Stop Editing' : 'Edit'}
                 </button>
               </div>
@@ -155,7 +155,7 @@ export default function InstituteProfilePage() {
             <span className="inline-block h-3 w-3 rounded-sm bg-[#16a34a]" />
             <h3 className="text-xl font-semibold text-slate-900">Institute Banners</h3>
           </div>
-          <button onClick={handleToggleBanners} className="inline-flex items-center gap-2 rounded-md bg-[#16a34a] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#15803d] focus:outline-none focus:ring-2 focus:ring-[#16a34a]/60">{showBanners ? 'Hide Banners' : 'Manage Banners'}</button>
+          <button onClick={handleToggleBanners} className="inline-flex items-center gap-2 rounded-md bg-[#16a34a] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#15803d] focus:outline-none focus:ring-2 focus:ring-[#16a34a]/60 hover-gradient-border">{showBanners ? 'Hide Banners' : 'Manage Banners'}</button>
         </div>
         <div className="border-dashed rounded-md border-2 border-slate-100 p-4">
           <div className="w-48 rounded-md overflow-hidden border border-slate-100 bg-white shadow-sm transition hover:shadow-md">
@@ -188,7 +188,7 @@ export default function InstituteProfilePage() {
                   <button onClick={() => handleVisitLink(value)} className="text-xs font-semibold text-[#16a34a] transition hover:text-[#14532d] focus:outline-none">Open</button>
                 </div>
                 <textarea
-                  className="mt-1 w-full rounded-md border border-slate-100 p-2 text-sm transition focus:border-[#16a34a] focus:ring-[#16a34a]/30"
+                  className="mt-1 w-full rounded-md border border-slate-100 p-2 text-sm transition focus:border-[#16a34a] focus:ring-[#16a34a]/30 hover-gradient-border"
                   rows={1}
                   value={value}
                   onChange={(e) => handleSocialChange(key, e.target.value)}
@@ -256,14 +256,14 @@ export default function InstituteProfilePage() {
           <div className="mb-3 flex gap-2">
             <input
               placeholder="New facility..."
-              className="flex-1 rounded-md border border-slate-100 p-2 text-sm transition focus:border-[#16a34a] focus:ring-[#16a34a]/30"
+              className="flex-1 rounded-md border border-slate-100 p-2 text-sm transition focus:border-[#16a34a] focus:ring-[#16a34a]/30 hover-gradient-border"
               value={newFacility}
               onChange={(e) => setNewFacility(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleFacilityAdd())}
             />
             <button
               onClick={handleFacilityAdd}
-              className="rounded-md bg-[#16a34a] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#15803d] focus:outline-none focus:ring-2 focus:ring-[#16a34a]/60"
+              className="rounded-md bg-[#16a34a] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#15803d] focus:outline-none focus:ring-2 focus:ring-[#16a34a]/60 hover-gradient-border"
             >
               Add
             </button>
@@ -288,7 +288,7 @@ export default function InstituteProfilePage() {
               <span className="inline-block h-3 w-3 rounded-sm bg-[#16a34a]" />
               <h3 className="text-xl font-semibold text-slate-900">Contact Persons</h3>
             </div>
-            <button onClick={handleAddContactPerson} className="inline-flex items-center gap-2 rounded-md bg-[#16a34a] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#15803d] focus:outline-none focus:ring-2 focus:ring-[#16a34a]/60"><Plus className="h-4 w-4" /> Add Contact Person</button>
+            <button onClick={handleAddContactPerson} className="inline-flex items-center gap-2 rounded-md bg-[#16a34a] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#15803d] focus:outline-none focus:ring-2 focus:ring-[#16a34a]/60 hover-gradient-border"><Plus className="h-4 w-4" /> Add Contact Person</button>
           </div>
           <div className="min-h-[160px] border border-dashed border-slate-100 rounded-md p-6">
             {contactPersons.length === 0 ? (

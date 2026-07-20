@@ -16,10 +16,10 @@ export default function SidebarMenuItem({ item, isExpanded, onToggle, onNavigate
       <div>
         <button
           type="button"
-          className="flex w-full cursor-pointer items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-medium text-slate-200 transition hover:bg-white/10"
+          className="flex w-full cursor-pointer items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-medium text-slate-200 transition hover:bg-white/10 hover-gradient-border"
           onClick={() => onToggle(item.id)}
         >
-          <span className="flex items-center gap-2">
+          <span className="flex items-center gap-2 hover-gradient-border">
             {Icon ? <Icon className="h-4 w-4" /> : null}
             <span>{item.label}</span>
           </span>
@@ -45,7 +45,7 @@ export default function SidebarMenuItem({ item, isExpanded, onToggle, onNavigate
 
   if (item.disabled) {
     return (
-      <div className="flex cursor-not-allowed items-center gap-2 rounded-xl px-3 py-2 text-sm text-slate-400">
+      <div className="flex cursor-not-allowed items-center gap-2 rounded-xl px-3 py-2 text-sm text-slate-400 hover-gradient-border">
         {Icon ? <Icon className="h-4 w-4" /> : null}
         <span>{item.label}</span>
       </div>

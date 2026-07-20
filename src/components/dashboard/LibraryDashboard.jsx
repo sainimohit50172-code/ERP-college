@@ -25,9 +25,9 @@ export default function LibraryDashboard() {
 
   return (
     <div style={{ margin: 10 }} className="min-h-[300px]">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between hover-gradient-border">
         <h1 className="text-2xl font-bold text-slate-900">Library</h1>
-        <div className="inline-flex items-center gap-3">
+        <div className="inline-flex items-center gap-3 hover-gradient-border">
           <div className="rounded-full bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700">Library Session 2026-27 Odd</div>
           <button type="button" onClick={() => setRefreshTick((t) => t + 1)} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm">
             <RefreshCw className="h-4 w-4" /> Refresh
@@ -39,7 +39,7 @@ export default function LibraryDashboard() {
       <div className="mt-4 grid gap-4 lg:grid-cols-3">
         <div className="p-[1px] rounded-[18px]" style={{ background: 'linear-gradient(90deg,#fef3c7,#fde68a,#fef08a)' }}>
           <div className="rounded-[17px] bg-white p-4 shadow-sm">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between hover-gradient-border">
               <h3 className="text-base font-semibold">Books Count</h3>
               <button onClick={() => setBooksModalOpen(true)} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700">View</button>
             </div>
@@ -53,7 +53,7 @@ export default function LibraryDashboard() {
                   <div className="mt-1 text-2xl font-bold">-</div>
                 </div>
                 <div className="ml-auto">
-                  <div className="inline-flex h-8 w-20 items-center justify-center rounded-md bg-yellow-200 text-amber-700">-</div>
+                  <div className="inline-flex h-8 w-20 items-center justify-center rounded-md bg-yellow-200 text-amber-700 hover-gradient-border">-</div>
                 </div>
               </button>
 
@@ -66,7 +66,7 @@ export default function LibraryDashboard() {
                   <div className="mt-1 text-2xl font-bold">-</div>
                 </div>
                 <div className="ml-auto">
-                  <div className="inline-flex h-8 w-20 items-center justify-center rounded-md bg-yellow-400 text-white">-</div>
+                  <div className="inline-flex h-8 w-20 items-center justify-center rounded-md bg-yellow-400 text-white hover-gradient-border">-</div>
                 </div>
               </div>
             </div>
@@ -75,7 +75,7 @@ export default function LibraryDashboard() {
 
         <div className="p-[1px] rounded-[18px]" style={{ background: 'linear-gradient(90deg,#e9d5ff,#c7b3ff)' }}>
           <div className="rounded-[17px] bg-white p-4 shadow-sm">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between hover-gradient-border">
               <h3 className="text-base font-semibold">Books Issued</h3>
               <button onClick={() => setRefreshTick((t) => t + 1)} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700">Refresh</button>
             </div>
@@ -89,7 +89,7 @@ export default function LibraryDashboard() {
                   <div className="mt-1 text-2xl font-bold">-</div>
                 </div>
                 <div className="ml-auto">
-                  <div className="inline-flex h-8 w-20 items-center justify-center rounded-md bg-violet-300 text-white">-</div>
+                  <div className="inline-flex h-8 w-20 items-center justify-center rounded-md bg-violet-300 text-white hover-gradient-border">-</div>
                 </div>
               </div>
 
@@ -102,7 +102,7 @@ export default function LibraryDashboard() {
                   <div className="mt-1 text-2xl font-bold">-</div>
                 </div>
                 <div className="ml-auto">
-                  <div className="inline-flex h-8 w-20 items-center justify-center rounded-md bg-violet-500 text-white">-</div>
+                  <div className="inline-flex h-8 w-20 items-center justify-center rounded-md bg-violet-500 text-white hover-gradient-border">-</div>
                 </div>
               </div>
             </div>
@@ -111,7 +111,7 @@ export default function LibraryDashboard() {
 
         <div className="p-[1px] rounded-[18px]" style={{ background: 'linear-gradient(90deg,#bbf7d0,#99f6e4)' }}>
           <div className="rounded-[17px] bg-white p-4 shadow-sm">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between hover-gradient-border">
               <h3 className="text-base font-semibold">Books Circulation</h3>
               <button onClick={() => setCirculationModalOpen(true)} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700">View</button>
             </div>
@@ -125,7 +125,7 @@ export default function LibraryDashboard() {
                   <div className="mt-1 text-2xl font-bold">-</div>
                 </div>
                 <div className="ml-auto">
-                  <div className="inline-flex h-8 w-20 items-center justify-center rounded-md bg-emerald-400 text-white">-</div>
+                  <div className="inline-flex h-8 w-20 items-center justify-center rounded-md bg-emerald-400 text-white hover-gradient-border">-</div>
                 </div>
               </div>
 
@@ -138,7 +138,7 @@ export default function LibraryDashboard() {
                   <div className="mt-1 text-2xl font-bold">-</div>
                 </div>
                 <div className="ml-auto">
-                  <div className="inline-flex h-8 w-20 items-center justify-center rounded-md bg-emerald-500 text-white">-</div>
+                  <div className="inline-flex h-8 w-20 items-center justify-center rounded-md bg-emerald-500 text-white hover-gradient-border">-</div>
                 </div>
               </div>
             </div>
@@ -189,10 +189,10 @@ export default function LibraryDashboard() {
       {/* Section 3: Charts and Users */}
       <div className="mt-6 grid gap-4 lg:grid-cols-2">
         <div className="rounded-[20px] border border-slate-200/70 bg-white p-4 shadow-sm">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between hover-gradient-border">
             <h3 className="text-lg font-semibold text-slate-900">Most Issued Books</h3>
-            <div className="flex items-center gap-2">
-              <button className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700"><Download className="h-4 w-4" /> PNG</button>
+            <div className="flex items-center gap-2 hover-gradient-border">
+              <button className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700 hover-gradient-border"><Download className="h-4 w-4" /> PNG</button>
               <button onClick={() => setRefreshTick((t) => t + 1)} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700">Refresh</button>
             </div>
           </div>

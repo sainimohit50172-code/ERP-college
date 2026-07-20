@@ -23,6 +23,7 @@ from app.api.v1.certificates.router import router as certificates_router
 from app.api.v1.transport.router import router as transport_router
 from app.api.v1.academic.router import router as academic_router
 from app.api.v1.teachers.router import router as teachers_router
+from app.api.v1.compat.router import router as compat_router
 from app.api.v1.shared.exceptions import register_exception_handlers
 
 import os
@@ -81,6 +82,7 @@ routers = [
     transport_router,
     academic_router,
     teachers_router,
+    compat_router,
 ]
 
 for router in routers:

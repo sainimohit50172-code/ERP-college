@@ -161,7 +161,7 @@ export default function OrganizationManagementPage() {
             <button
               type="button"
               onClick={handleExport}
-              className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700"
+              className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700 hover-gradient-border"
             >
               <FaDownload /> Export
             </button>
@@ -175,14 +175,14 @@ export default function OrganizationManagementPage() {
             <button
               type="button"
               onClick={openNewOrganizationModal}
-              className="inline-flex items-center gap-2 rounded-3xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
+              className="inline-flex items-center gap-2 rounded-3xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 hover-gradient-border"
             >
               <FaPlus /> Add organization
             </button>
           </div>
         }
       />
-      <input ref={importInputRef} type="file" accept=".csv" className="hidden" onChange={handleFileChange} />
+      <input ref={importInputRef} type="file" accept=".csv" className="hidden hover-gradient-border" onChange={handleFileChange} />
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(280px,0.3fr)]">
         <div className="grid gap-4">
           <div className="grid gap-3 md:grid-cols-3">
@@ -276,7 +276,7 @@ export default function OrganizationManagementPage() {
             type="button"
             onClick={handleSubmit(onSubmit)}
             disabled={isSubmitting}
-            className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60 hover-gradient-border"
           >
             {isEditMode ? 'Update unit' : 'Save unit'}
           </button>
@@ -287,7 +287,7 @@ export default function OrganizationManagementPage() {
             <input
               type="text"
               {...register('code', { required: 'Code is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
               placeholder="ORG-01"
             />
             {errors.code && <p className="mt-1 text-sm text-rose-400">{errors.code.message}</p>}
@@ -296,7 +296,7 @@ export default function OrganizationManagementPage() {
             <input
               type="text"
               {...register('name', { required: 'Name is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
               placeholder="Human Resources"
             />
             {errors.name && <p className="mt-1 text-sm text-rose-400">{errors.name.message}</p>}
@@ -305,7 +305,7 @@ export default function OrganizationManagementPage() {
             <input
               type="text"
               {...register('head', { required: 'Head is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
               placeholder="Ayesha Patel"
             />
             {errors.head && <p className="mt-1 text-sm text-rose-400">{errors.head.message}</p>}
@@ -314,7 +314,7 @@ export default function OrganizationManagementPage() {
             <input
               type="text"
               {...register('officeLocation', { required: 'Location is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
               placeholder="Main campus"
             />
             {errors.officeLocation && <p className="mt-1 text-sm text-rose-400">{errors.officeLocation.message}</p>}
@@ -322,7 +322,7 @@ export default function OrganizationManagementPage() {
           <FormField label="Status">
             <select
               {...register('status', { required: 'Status is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
             >
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>

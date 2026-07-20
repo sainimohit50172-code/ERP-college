@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import DataTableAdvanced from '../components/ui/DataTableAdvanced.jsx';
 import Modal from '../components/ui/Modal.jsx';
+import CircleAvatar from '../components/ui/CircleAvatar.jsx';
 import { useResourceList, useUpdateResource } from '../hooks/useResourceHooks';
 
 export default function UpdateRollNumberPage() {
@@ -33,7 +34,7 @@ export default function UpdateRollNumberPage() {
 
   const columns = [
     { key: 'sno', label: 'S.No' },
-    { key: 'photo', label: 'Student Photo', render: (val, row) => ((row.photo || row.photoUrl) ? <img src={row.photo || row.photoUrl} alt="photo" className="h-9 w-9 rounded-full object-cover" /> : <div className="h-9 w-9 rounded-full bg-slate-200" />) },
+    { key: 'photo', label: 'Student Photo', render: (val, row) => <CircleAvatar src={row.photo || row.photoUrl} alt={row.name || 'photo'} name={row.name || 'Student'} sizeClass="h-9 w-9" /> },
     { key: 'name', label: 'Student Name' },
     { key: 'rollNumber', label: 'Roll Number' },
     { key: 'universityRollNumber', label: 'University Roll Number' },
@@ -108,8 +109,8 @@ export default function UpdateRollNumberPage() {
 
         <Modal title="Update Roll Number" isOpen={isModalOpen} onClose={closeModal} footer={(
           <div>
-            <button type="button" onClick={closeModal} className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold mr-2">Cancel</button>
-            <button type="button" onClick={handleSubmit(onSave)} className="rounded-2xl bg-[#1e3a5f] px-4 py-2 text-sm font-semibold text-white">Save</button>
+            <button type="button" onClick={closeModal} className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold mr-2 hover-gradient-border">Cancel</button>
+            <button type="button" onClick={handleSubmit(onSave)} className="rounded-2xl bg-[#1e3a5f] px-4 py-2 text-sm font-semibold text-white hover-gradient-border">Save</button>
           </div>
         )}>
           {selectedStudent ? (
@@ -121,7 +122,7 @@ export default function UpdateRollNumberPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700">New Roll Number</label>
-                  <input type="text" {...register('newRoll')} className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900" />
+                  <input type="text" {...register('newRoll')} className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 hover-gradient-border" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700">Current University Roll Number</label>
@@ -129,7 +130,7 @@ export default function UpdateRollNumberPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700">New University Roll Number</label>
-                  <input type="text" {...register('newUniversityRoll')} className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900" />
+                  <input type="text" {...register('newUniversityRoll')} className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 hover-gradient-border" />
                 </div>
               </div>
             </form>

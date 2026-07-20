@@ -75,7 +75,7 @@ export default function SemesterManagementPage() {
                 <p className="text-sm text-slate-400">Configure academic sessions, course mappings and semester timelines.</p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                <button className="inline-flex items-center gap-2 rounded-2xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 transition hover:bg-slate-700">
+                <button className="inline-flex items-center gap-2 rounded-2xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 transition hover:bg-slate-700 hover-gradient-border">
                   <FaDownload /> Export
                 </button>
                 <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 rounded-2xl bg-sky-400 px-3 py-2 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">
@@ -123,18 +123,18 @@ export default function SemesterManagementPage() {
         </div>
       </div>
 
-      <Modal title="Add semester" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<button onClick={handleSubmit(onSubmit)} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">Save semester</button>}>
+      <Modal title="Add semester" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<button onClick={handleSubmit(onSubmit)} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 hover-gradient-border">Save semester</button>}>
         <form className="grid gap-5 lg:grid-cols-2">
           <FormField label="Semester code">
-            <input type="text" {...register('code', { required: 'Code is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="SEM-101" />
+            <input type="text" {...register('code', { required: 'Code is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="SEM-101" />
             {errors.code && <p className="mt-1 text-sm text-rose-400">{errors.code.message}</p>}
           </FormField>
           <FormField label="Semester title">
-            <input type="text" {...register('title', { required: 'Title is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Semester 1" />
+            <input type="text" {...register('title', { required: 'Title is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="Semester 1" />
             {errors.title && <p className="mt-1 text-sm text-rose-400">{errors.title.message}</p>}
           </FormField>
           <FormField label="Course">
-            <select {...register('course', { required: 'Course is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+            <select {...register('course', { required: 'Course is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border">
               <option value="BCA">BCA</option>
               <option value="MBA">MBA</option>
               <option value="BTech CSE">BTech CSE</option>
@@ -142,11 +142,11 @@ export default function SemesterManagementPage() {
             {errors.course && <p className="mt-1 text-sm text-rose-400">{errors.course.message}</p>}
           </FormField>
           <FormField label="Duration">
-            <input type="text" {...register('duration', { required: 'Duration is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Jun - Nov 2025" />
+            <input type="text" {...register('duration', { required: 'Duration is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="Jun - Nov 2025" />
             {errors.duration && <p className="mt-1 text-sm text-rose-400">{errors.duration.message}</p>}
           </FormField>
           <FormField label="Status">
-            <select {...register('status', { required: 'Status is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+            <select {...register('status', { required: 'Status is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border">
               <option value="Open">Open</option>
               <option value="Planned">Planned</option>
               <option value="Closed">Closed</option>

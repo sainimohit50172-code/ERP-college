@@ -13,7 +13,7 @@ export default function StudentOverviewCards({ title, stats = [], bgColor = 'bg-
   return (
     <div 
       onClick={handleCardClick}
-      className={`cursor-pointer rounded-[24px] ${bgColor} border ${borderColor} p-6 shadow-md relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105`}>
+      className={`hover-gradient-border cursor-pointer rounded-[24px] ${bgColor} border ${borderColor} p-6 shadow-md relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105`}>
       {/* Decorative element */}
       <div className="absolute top-4 right-4 opacity-10">
         <Users className="h-24 w-24" />

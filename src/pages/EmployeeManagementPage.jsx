@@ -254,7 +254,7 @@ export default function EmployeeManagementPage() {
             <button
               type="button"
               onClick={handleExport}
-              className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700"
+              className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700 hover-gradient-border"
             >
               <FaDownload /> Export payroll
             </button>
@@ -268,14 +268,14 @@ export default function EmployeeManagementPage() {
             <button
               type="button"
               onClick={openNewEmployeeModal}
-              className="inline-flex items-center gap-2 rounded-3xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
+              className="inline-flex items-center gap-2 rounded-3xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 hover-gradient-border"
             >
               <FaPlus /> Add employee
             </button>
           </div>
         }
       />
-      <input ref={importInputRef} type="file" accept=".csv" className="hidden" onChange={handleFileChange} />
+      <input ref={importInputRef} type="file" accept=".csv" className="hidden hover-gradient-border" onChange={handleFileChange} />
       <div className="grid gap-4">
         <div className="grid gap-3 md:grid-cols-4">
           <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
@@ -428,7 +428,7 @@ export default function EmployeeManagementPage() {
               <FormField label="Employee">
                 <select
                   {...registerAttendance('employeeId', { required: 'Employee selection is required' })}
-                  className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+                  className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
                 >
                   <option value="">Select employee</option>
                   {employees.map((employee) => (
@@ -441,14 +441,14 @@ export default function EmployeeManagementPage() {
                 <input
                   type="date"
                   {...registerAttendance('date', { required: 'Date is required' })}
-                  className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+                  className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
                 />
                 {attendanceErrors.date && <p className="mt-1 text-sm text-rose-400">{attendanceErrors.date.message}</p>}
               </FormField>
               <FormField label="Shift">
                 <select
                   {...registerAttendance('shift', { required: 'Shift selection is required' })}
-                  className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+                  className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
                 >
                   <option value="Day">Day</option>
                   <option value="Afternoon">Afternoon</option>
@@ -458,7 +458,7 @@ export default function EmployeeManagementPage() {
               <FormField label="Status">
                 <select
                   {...registerAttendance('status', { required: 'Status is required' })}
-                  className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+                  className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
                 >
                   <option value="Present">Present</option>
                   <option value="Absent">Absent</option>
@@ -467,7 +467,7 @@ export default function EmployeeManagementPage() {
               </FormField>
               <button
                 type="submit"
-                className="inline-flex w-full items-center justify-center rounded-3xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
+                className="inline-flex w-full items-center justify-center rounded-3xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 hover-gradient-border"
                 disabled={isSubmittingAttendance}
               >
                 Record attendance
@@ -485,7 +485,7 @@ export default function EmployeeManagementPage() {
             type="button"
             onClick={handleSubmit(onSubmit)}
             disabled={isSubmitting}
-            className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60 hover-gradient-border"
           >
             {isEditMode ? 'Update employee' : 'Save employee'}
           </button>
@@ -496,7 +496,7 @@ export default function EmployeeManagementPage() {
             <input
               type="text"
               {...register('name', { required: 'Name is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
               placeholder="Enter full name"
             />
             {errors.name && <p className="mt-1 text-sm text-rose-400">{errors.name.message}</p>}
@@ -508,7 +508,7 @@ export default function EmployeeManagementPage() {
                 required: 'Email is required',
                 pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Enter a valid email' },
               })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
               placeholder="employee@example.edu"
             />
             {errors.email && <p className="mt-1 text-sm text-rose-400">{errors.email.message}</p>}
@@ -516,7 +516,7 @@ export default function EmployeeManagementPage() {
           <FormField label="Department">
             <select
               {...register('department', { required: 'Department is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
             >
               {departments.length > 0 ? (
                 departments.map((department) => (
@@ -538,7 +538,7 @@ export default function EmployeeManagementPage() {
             <input
               type="text"
               {...register('designation', { required: 'Designation is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
               placeholder="e.g., HR Coordinator"
             />
             {errors.designation && <p className="mt-1 text-sm text-rose-400">{errors.designation.message}</p>}
@@ -546,7 +546,7 @@ export default function EmployeeManagementPage() {
           <FormField label="Shift">
             <select
               {...register('shift', { required: 'Shift selection is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
             >
               <option value="Day">Day</option>
               <option value="Afternoon">Afternoon</option>
@@ -557,7 +557,7 @@ export default function EmployeeManagementPage() {
           <FormField label="Status">
             <select
               {...register('status', { required: 'Status is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
             >
               <option value="Active">Active</option>
               <option value="On Leave">On Leave</option>
@@ -572,7 +572,7 @@ export default function EmployeeManagementPage() {
                 required: 'Salary is required',
                 min: { value: 1000, message: 'Minimum salary 1000' },
               })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
               placeholder="Salary in USD"
             />
             {errors.salary && <p className="mt-1 text-sm text-rose-400">{errors.salary.message}</p>}
@@ -581,7 +581,7 @@ export default function EmployeeManagementPage() {
             <input
               type="date"
               {...register('joinDate', { required: 'Joining date is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-emerald-400 hover-gradient-border"
             />
             {errors.joinDate && <p className="mt-1 text-sm text-rose-400">{errors.joinDate.message}</p>}
           </FormField>

@@ -9,6 +9,7 @@ import Breadcrumb from '../components/ui/Breadcrumb.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import TablePagination from '../components/tables/TablePagination.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
+import CircleAvatar from '../components/ui/CircleAvatar.jsx';
 
 // Demo data: 15 realistic Indian students
 const DEMO_STUDENTS = [
@@ -574,7 +575,7 @@ export default function StudentSessionManagementPage() {
             <button
               type="button"
               onClick={handleOpenFilterModal}
-              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50"
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 hover-gradient-border"
               title="Open filter options"
             >
               <Filter className="h-4 w-4" /> Filter
@@ -582,7 +583,7 @@ export default function StudentSessionManagementPage() {
             <button
               type="button"
               onClick={handlePromoteAll}
-              className="inline-flex items-center gap-2 rounded-xl bg-[#1e3a5f] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#1e3a5f] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900 hover-gradient-border"
               title="Promote all students to next session"
             >
               Promote All
@@ -719,14 +720,14 @@ export default function StudentSessionManagementPage() {
             <button
               type="button"
               onClick={handleCancelFilter}
-              className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+              className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover-gradient-border"
             >
               Cancel
             </button>
             <button
               type="button"
               onClick={handleApplyFilters}
-              className="rounded-xl bg-[#1e3a5f] px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-900"
+              className="rounded-xl bg-[#1e3a5f] px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-900 hover-gradient-border"
             >
               Apply
             </button>
@@ -871,7 +872,7 @@ export default function StudentSessionManagementPage() {
             <button
               type="button"
               onClick={handleConfirmPromoteAll}
-              className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700"
+              className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700 hover-gradient-border"
             >
               Promote
             </button>
@@ -962,7 +963,13 @@ export default function StudentSessionManagementPage() {
           <div className="grid gap-6 md:grid-cols-2">
             <div className="space-y-4 rounded-[18px] border border-slate-200 bg-slate-50 p-6">
               <div className="flex flex-col items-center gap-3 text-center">
-                <img src={selectedStudent.photo} alt={selectedStudent.name} className="h-24 w-24 rounded-full object-cover" />
+                <CircleAvatar
+                  src={selectedStudent.photo || selectedStudent.photoUrl || selectedStudent.image}
+                  alt={selectedStudent.name}
+                  name={selectedStudent.name}
+                  sizeClass="h-24 w-24"
+                  className="border-slate-300"
+                />
                 <div>
                   <h3 className="text-xl font-semibold text-slate-950">{selectedStudent.name}</h3>
                   <p className="text-sm text-slate-500">{selectedStudent.status}</p>
@@ -1027,7 +1034,7 @@ export default function StudentSessionManagementPage() {
             <button
               type="button"
               onClick={handleEditSave}
-              className="rounded-xl bg-[#1e3a5f] px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-900"
+              className="rounded-xl bg-[#1e3a5f] px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-900 hover-gradient-border"
             >
               Save
             </button>

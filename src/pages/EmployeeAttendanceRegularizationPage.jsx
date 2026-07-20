@@ -180,7 +180,7 @@ export default function EmployeeAttendanceRegularizationPage() {
                 <button
                   type="button"
                   onClick={handleApplyFilters}
-                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#1E293B] px-4 text-sm font-semibold text-white transition hover:bg-slate-800"
+                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#1E293B] px-4 text-sm font-semibold text-white transition hover:bg-slate-800 hover-gradient-border"
                 >
                   Go
                   <ArrowRight size={16} />
@@ -243,7 +243,7 @@ export default function EmployeeAttendanceRegularizationPage() {
                                   className="rounded-lg border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100"
                                 />
                                 {item.status === 'Pending' && (
-                                  <button type="button" className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-slate-50 p-2 transition hover:bg-slate-100">
+                                  <button type="button" className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-slate-50 p-2 transition hover:bg-slate-100 hover-gradient-border">
                                     <Edit3 size={16} />
                                   </button>
                                 )}
@@ -277,7 +277,7 @@ export default function EmployeeAttendanceRegularizationPage() {
             <button
               type="submit"
               form="attendance-regularization-form"
-              className="rounded-lg bg-[#1E293B] px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
+              className="rounded-lg bg-[#1E293B] px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 hover-gradient-border"
             >
               Submit
             </button>

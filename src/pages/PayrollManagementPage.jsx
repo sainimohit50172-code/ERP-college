@@ -280,7 +280,7 @@ export default function PayrollManagementPage() {
         </div>
       )}
 
-      <Modal title={editingStructure ? 'Update salary structure' : 'Create salary structure'} isOpen={isStructureModalOpen} onClose={() => { setIsStructureModalOpen(false); setEditingStructure(null); resetForm(); }} footer={<button type="button" onClick={handleStructureSubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400">Save structure</button>}>
+      <Modal title={editingStructure ? 'Update salary structure' : 'Create salary structure'} isOpen={isStructureModalOpen} onClose={() => { setIsStructureModalOpen(false); setEditingStructure(null); resetForm(); }} footer={<button type="button" onClick={handleStructureSubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 hover-gradient-border">Save structure</button>}>
         <form className="space-y-4" onSubmit={handleStructureSubmit}>
           <FormField label="Structure name"><input value={form.name} onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" /></FormField>
           <FormField label="Frequency"><select value={form.frequency} onChange={(event) => setForm((current) => ({ ...current, frequency: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none"><option>Monthly</option><option>Weekly</option><option>Daily</option><option>Contract</option></select></FormField>
@@ -292,7 +292,7 @@ export default function PayrollManagementPage() {
         </form>
       </Modal>
 
-      <Modal title={editingRevision ? 'Update salary revision' : 'Create salary revision'} isOpen={isRevisionModalOpen} onClose={() => { setIsRevisionModalOpen(false); setEditingRevision(null); resetForm(); }} footer={<button type="button" onClick={handleRevisionSubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400">Save revision</button>}>
+      <Modal title={editingRevision ? 'Update salary revision' : 'Create salary revision'} isOpen={isRevisionModalOpen} onClose={() => { setIsRevisionModalOpen(false); setEditingRevision(null); resetForm(); }} footer={<button type="button" onClick={handleRevisionSubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 hover-gradient-border">Save revision</button>}>
         <form className="space-y-4" onSubmit={handleRevisionSubmit}>
           <FormField label="Employee name"><input value={form.employeeName} onChange={(event) => setForm((current) => ({ ...current, employeeName: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" /></FormField>
           <FormField label="Effective date"><input type="date" value={form.period} onChange={(event) => setForm((current) => ({ ...current, period: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" /></FormField>
@@ -300,7 +300,7 @@ export default function PayrollManagementPage() {
         </form>
       </Modal>
 
-      <Modal title={editingPayroll ? 'Update payroll run' : 'Generate payroll run'} isOpen={isPayrollModalOpen} onClose={() => { setIsPayrollModalOpen(false); setEditingPayroll(null); resetForm(); }} footer={<button type="button" onClick={handlePayrollSubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400">Save run</button>}>
+      <Modal title={editingPayroll ? 'Update payroll run' : 'Generate payroll run'} isOpen={isPayrollModalOpen} onClose={() => { setIsPayrollModalOpen(false); setEditingPayroll(null); resetForm(); }} footer={<button type="button" onClick={handlePayrollSubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 hover-gradient-border">Save run</button>}>
         <form className="space-y-4" onSubmit={handlePayrollSubmit}>
           <FormField label="Employee"><input value={form.employeeName} onChange={(event) => setForm((current) => ({ ...current, employeeName: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" /></FormField>
           <FormField label="Period"><input type="month" value={form.period} onChange={(event) => setForm((current) => ({ ...current, period: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" /></FormField>
@@ -313,9 +313,9 @@ export default function PayrollManagementPage() {
 
       <Modal title="Add tax component" isOpen={isTaxModalOpen} onClose={() => { setIsTaxModalOpen(false); resetForm(); }} footer={<button type="button" onClick={() => {}} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400">Save component</button>}>
         <form className="space-y-4">
-          <FormField label="Component name"><input className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" /></FormField>
-          <FormField label="Type"><input className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" /></FormField>
-          <FormField label="Value"><input className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" /></FormField>
+          <FormField label="Component name"><input className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none hover-gradient-border" /></FormField>
+          <FormField label="Type"><input className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none hover-gradient-border" /></FormField>
+          <FormField label="Value"><input className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none hover-gradient-border" /></FormField>
         </form>
       </Modal>
     </div>

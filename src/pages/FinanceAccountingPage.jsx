@@ -303,7 +303,7 @@ export default function FinanceAccountingPage() {
         </div>
       )}
 
-      <Modal title="Add account" isOpen={isAccountModalOpen} onClose={() => { setIsAccountModalOpen(false); setForm(defaults); }} footer={<button type="button" onClick={handleAccountSubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400">Save account</button>}>
+      <Modal title="Add account" isOpen={isAccountModalOpen} onClose={() => { setIsAccountModalOpen(false); setForm(defaults); }} footer={<button type="button" onClick={handleAccountSubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 hover-gradient-border">Save account</button>}>
         <form className="space-y-4" onSubmit={handleAccountSubmit}>
           <FormField label="Account name"><input value={form.name} onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" /></FormField>
           <FormField label="Account code"><input value={form.accountCode} onChange={(event) => setForm((current) => ({ ...current, accountCode: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" /></FormField>
@@ -315,7 +315,7 @@ export default function FinanceAccountingPage() {
         </form>
       </Modal>
 
-      <Modal title="Post journal entry" isOpen={isEntryModalOpen} onClose={() => { setIsEntryModalOpen(false); setForm(defaults); }} footer={<button type="button" onClick={handleEntrySubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400">Post entry</button>}>
+      <Modal title="Post journal entry" isOpen={isEntryModalOpen} onClose={() => { setIsEntryModalOpen(false); setForm(defaults); }} footer={<button type="button" onClick={handleEntrySubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 hover-gradient-border">Post entry</button>}>
         <form className="space-y-4" onSubmit={handleEntrySubmit}>
           <FormField label="Description"><input value={form.name} onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" /></FormField>
           <FormField label="Account code"><input value={form.accountCode} onChange={(event) => setForm((current) => ({ ...current, accountCode: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" /></FormField>
@@ -324,7 +324,7 @@ export default function FinanceAccountingPage() {
         </form>
       </Modal>
 
-      <Modal title="Create voucher" isOpen={isVoucherModalOpen} onClose={() => { setIsVoucherModalOpen(false); setForm(defaults); }} footer={<button type="button" onClick={handleVoucherSubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400">Create voucher</button>}>
+      <Modal title="Create voucher" isOpen={isVoucherModalOpen} onClose={() => { setIsVoucherModalOpen(false); setForm(defaults); }} footer={<button type="button" onClick={handleVoucherSubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 hover-gradient-border">Create voucher</button>}>
         <form className="space-y-4" onSubmit={handleVoucherSubmit}>
           <FormField label="Voucher type"><select value={form.voucherType} onChange={(event) => setForm((current) => ({ ...current, voucherType: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none"><option>Receipt Voucher</option><option>Payment Voucher</option><option>Journal Voucher</option><option>Contra Voucher</option></select></FormField>
           <FormField label="Amount"><input type="number" value={form.amount} onChange={(event) => setForm((current) => ({ ...current, amount: Number(event.target.value) }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" /></FormField>
@@ -332,7 +332,7 @@ export default function FinanceAccountingPage() {
         </form>
       </Modal>
 
-      <Modal title="Create budget" isOpen={isBudgetModalOpen} onClose={() => { setIsBudgetModalOpen(false); setForm(defaults); }} footer={<button type="button" onClick={handleBudgetSubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400">Save budget</button>}>
+      <Modal title="Create budget" isOpen={isBudgetModalOpen} onClose={() => { setIsBudgetModalOpen(false); setForm(defaults); }} footer={<button type="button" onClick={handleBudgetSubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 hover-gradient-border">Save budget</button>}>
         <form className="space-y-4" onSubmit={handleBudgetSubmit}>
           <FormField label="Budget name"><input value={form.name} onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" /></FormField>
           <FormField label="Amount"><input type="number" value={form.amount} onChange={(event) => setForm((current) => ({ ...current, amount: Number(event.target.value) }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" /></FormField>
@@ -341,7 +341,7 @@ export default function FinanceAccountingPage() {
         </form>
       </Modal>
 
-      <Modal title="Add bank account" isOpen={isBankModalOpen} onClose={() => { setIsBankModalOpen(false); setForm(defaults); }} footer={<button type="button" onClick={handleBankSubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400">Save bank account</button>}>
+      <Modal title="Add bank account" isOpen={isBankModalOpen} onClose={() => { setIsBankModalOpen(false); setForm(defaults); }} footer={<button type="button" onClick={handleBankSubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 hover-gradient-border">Save bank account</button>}>
         <form className="space-y-4" onSubmit={handleBankSubmit}>
           <FormField label="Bank name"><input value={form.name} onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" /></FormField>
           <FormField label="Account code"><input value={form.accountCode} onChange={(event) => setForm((current) => ({ ...current, accountCode: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" /></FormField>

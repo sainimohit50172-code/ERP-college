@@ -30,7 +30,7 @@ class ErrorBoundary extends Component {
     if (this.state.hasError) {
       return (
         <div className="flex flex-col items-center justify-center gap-4 rounded-lg border border-red-200 bg-red-50 p-8">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-100 hover-gradient-border">
             <AlertCircle className="h-6 w-6 text-red-600" />
           </div>
           <div className="text-center">
@@ -40,7 +40,7 @@ class ErrorBoundary extends Component {
             </p>
             {process.env.NODE_ENV === 'development' && this.state.error && (
               <details className="mt-4 text-left">
-                <summary className="cursor-pointer text-xs font-medium text-red-700">
+                <summary className="cursor-pointer text-xs font-medium text-red-700 hover-gradient-border">
                   Error details (development only)
                 </summary>
                 <pre className="mt-2 overflow-auto rounded bg-red-100 p-2 text-xs text-red-900">

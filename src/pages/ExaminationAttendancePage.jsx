@@ -117,7 +117,7 @@ function ExaminationAttendancePage() {
         <form onSubmit={handleSubmit(onSubmit)} className="mt-4 grid gap-4 sm:grid-cols-2">
           <label className="block">
             <span className="text-sm text-slate-600">Student</span>
-            <select {...register('studentId', { required: true })} className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none">
+            <select {...register('studentId', { required: true })} className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none hover-gradient-border">
               <option value="">Select student</option>
               {students.map((student) => (
                 <option key={student.id} value={student.id}>{student.name}</option>
@@ -126,7 +126,7 @@ function ExaminationAttendancePage() {
           </label>
           <label className="block">
             <span className="text-sm text-slate-600">Exam</span>
-            <select {...register('examId', { required: true })} className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none">
+            <select {...register('examId', { required: true })} className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none hover-gradient-border">
               <option value="">Select exam</option>
               {examOptions.map((option) => (
                 <option key={option.value} value={option.value}>{option.label}</option>
@@ -135,7 +135,7 @@ function ExaminationAttendancePage() {
           </label>
           <label className="block">
             <span className="text-sm text-slate-600">Status</span>
-            <select {...register('status', { required: true })} className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none">
+            <select {...register('status', { required: true })} className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none hover-gradient-border">
               <option value="present">Present</option>
               <option value="absent">Absent</option>
               <option value="late">Late</option>
@@ -143,9 +143,9 @@ function ExaminationAttendancePage() {
           </label>
           <label className="block sm:col-span-2">
             <span className="text-sm text-slate-600">Notes</span>
-            <textarea {...register('notes')} rows="3" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none" />
+            <textarea {...register('notes')} rows="3" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none hover-gradient-border" />
           </label>
-          <button type="submit" className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white hover:bg-blue-700 sm:col-span-2">
+          <button type="submit" className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white hover:bg-blue-700 sm:col-span-2 hover-gradient-border">
             Save Attendance
           </button>
         </form>

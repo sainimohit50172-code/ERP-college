@@ -261,7 +261,7 @@ export default function AttendanceDashboard() {
           <div>
             <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">Attendance</h1>
           </div>
-          <div className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm">
+          <div className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover-gradient-border">
             <CalendarCheck className="mr-2 h-4 w-4 text-emerald-600" />
             Attendance Session 2026-27 Odd
           </div>
@@ -278,7 +278,7 @@ export default function AttendanceDashboard() {
                 <button
                   type="button"
                   onClick={handleRefresh}
-                  className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+                  className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition duration-300 hover:-translate-y-0.5 hover:shadow-lg hover-gradient-border"
                 >
                   <RefreshCw className="h-4 w-4" />
                   Refresh
@@ -324,7 +324,7 @@ export default function AttendanceDashboard() {
                           return (
                             <td key={`${row.id}-${lectureIndex}`} className="border-b border-slate-200 px-1 py-2 align-top">
                               {isBreak ? (
-                                <div className="mx-auto flex h-[110px] w-[70px] items-center justify-center rounded-[14px] bg-gradient-to-br from-[#A9AEB8] to-[#8F96A3] px-2 text-center text-[12px] font-semibold text-white shadow-sm">
+                                <div className="mx-auto flex h-[110px] w-[70px] items-center justify-center rounded-[14px] bg-gradient-to-br from-[#A9AEB8] to-[#8F96A3] px-2 text-center text-[12px] font-semibold text-white shadow-sm hover-gradient-border">
                                   Break
                                 </div>
                               ) : (
@@ -369,7 +369,7 @@ export default function AttendanceDashboard() {
             <div className="mt-5 grid gap-4 lg:grid-cols-3">
               {leaveApplications.map((leave) => (
                 <div key={leave.student} className="rounded-[18px] border border-slate-200 bg-slate-50 p-4 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-md">
-                  <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center justify-between gap-3 hover-gradient-border">
                     <div>
                       <p className="text-sm font-semibold text-slate-900">{leave.student}</p>
                       <p className="mt-1 text-sm text-slate-500">{leave.reason}</p>
@@ -378,11 +378,11 @@ export default function AttendanceDashboard() {
                       {leave.status}
                     </span>
                   </div>
-                  <div className="mt-4 flex items-center justify-between text-sm text-slate-500">
+                  <div className="mt-4 flex items-center justify-between text-sm text-slate-500 hover-gradient-border">
                     <span>{leave.date}</span>
                     <div className="flex gap-2">
-                      <button type="button" className="rounded-2xl border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-100">View</button>
-                      <button type="button" className="rounded-2xl border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-100">Approve</button>
+                      <button type="button" className="rounded-2xl border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 hover-gradient-border">View</button>
+                      <button type="button" className="rounded-2xl border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 hover-gradient-border">Approve</button>
                     </div>
                   </div>
                 </div>
@@ -393,21 +393,21 @@ export default function AttendanceDashboard() {
       </div>
 
       {activeLecture && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4 hover-gradient-border">
           <div className="w-full max-w-3xl overflow-hidden rounded-[28px] bg-white shadow-2xl">
             <div className="flex flex-col gap-4 border-b border-slate-200 bg-slate-50 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="text-xl font-semibold text-slate-900">Lecture details</h3>
                 <p className="mt-1 text-sm text-slate-600">Check attendance status and student summary.</p>
               </div>
-              <button type="button" onClick={handleCloseModal} className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100">
+              <button type="button" onClick={handleCloseModal} className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100 hover-gradient-border">
                 <X className="h-5 w-5" />
               </button>
             </div>
             <div className="grid gap-6 px-6 py-6 sm:grid-cols-[1.2fr_0.8fr]">
               <div className="space-y-4">
                 <div className="rounded-[22px] border border-slate-200 bg-slate-50 p-4 shadow-sm">
-                  <div className="flex items-center gap-3 text-slate-700">
+                  <div className="flex items-center gap-3 text-slate-700 hover-gradient-border">
                     <BookOpen className="h-5 w-5" />
                     <span className="font-semibold">Subject</span>
                   </div>
@@ -426,14 +426,14 @@ export default function AttendanceDashboard() {
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="rounded-[22px] border border-slate-200 bg-slate-50 p-4 shadow-sm">
                     <div className="text-sm text-slate-500">Room</div>
-                    <div className="mt-2 flex items-center gap-2 text-lg font-semibold text-slate-900">
+                    <div className="mt-2 flex items-center gap-2 text-lg font-semibold text-slate-900 hover-gradient-border">
                       <MapPin className="h-4 w-4 text-slate-600" />
                       {activeLecture.room}
                     </div>
                   </div>
                   <div className="rounded-[22px] border border-slate-200 bg-slate-50 p-4 shadow-sm">
                     <div className="text-sm text-slate-500">Duration</div>
-                    <div className="mt-2 flex items-center gap-2 text-lg font-semibold text-slate-900">
+                    <div className="mt-2 flex items-center gap-2 text-lg font-semibold text-slate-900 hover-gradient-border">
                       <Clock3 className="h-4 w-4 text-slate-600" />
                       {activeLecture.duration}
                     </div>
@@ -443,32 +443,32 @@ export default function AttendanceDashboard() {
 
               <div className="space-y-4">
                 <div className="rounded-[22px] border border-slate-200 bg-white p-5 shadow-sm">
-                  <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center justify-between gap-4 hover-gradient-border">
                     <div>
                       <p className="text-sm text-slate-500">Attendance Status</p>
                       <p className="mt-2 text-xl font-semibold text-slate-900">{statusMeta[activeLecture.status]?.title || 'Attendance Pending'}</p>
                     </div>
-                    <div className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-700">
+                    <div className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-700 hover-gradient-border">
                       <CheckCircle2 className="h-4 w-4 text-emerald-600" />
                       {activeLecture.count}
                     </div>
                   </div>
                 </div>
                 <div className="rounded-[22px] border border-slate-200 bg-slate-50 p-5 shadow-sm">
-                  <div className="flex items-center gap-3 text-slate-700">
+                  <div className="flex items-center gap-3 text-slate-700 hover-gradient-border">
                     <Users className="h-5 w-5" />
                     <span className="font-semibold">Class Summary</span>
                   </div>
                   <div className="mt-4 space-y-3 text-sm text-slate-600">
-                    <div className="flex items-center justify-between rounded-2xl bg-white px-4 py-3 shadow-sm">
+                    <div className="flex items-center justify-between rounded-2xl bg-white px-4 py-3 shadow-sm hover-gradient-border">
                       <span>Students Present</span>
                       <span>{activeLecture.count.split('/')[0].trim()}</span>
                     </div>
-                    <div className="flex items-center justify-between rounded-2xl bg-white px-4 py-3 shadow-sm">
+                    <div className="flex items-center justify-between rounded-2xl bg-white px-4 py-3 shadow-sm hover-gradient-border">
                       <span>Students Absent</span>
                       <span>{activeLecture.count.includes('/') ? String(parseInt(activeLecture.count.split('/')[1], 10) - parseInt(activeLecture.count.split('/')[0], 10)) : '0'}</span>
                     </div>
-                    <div className="flex items-center justify-between rounded-2xl bg-white px-4 py-3 shadow-sm">
+                    <div className="flex items-center justify-between rounded-2xl bg-white px-4 py-3 shadow-sm hover-gradient-border">
                       <span>Attendance %</span>
                       <span>{activeLecture.count.includes('/') ? `${Math.round((parseInt(activeLecture.count.split('/')[0], 10) / parseInt(activeLecture.count.split('/')[1], 10)) * 100)}%` : '0%'}</span>
                     </div>
@@ -478,11 +478,11 @@ export default function AttendanceDashboard() {
                   <button
                     type="button"
                     onClick={handleMarkAttendance}
-                    className="inline-flex items-center justify-center rounded-2xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700"
+                    className="inline-flex items-center justify-center rounded-2xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700 hover-gradient-border"
                   >
                     Mark Attendance
                   </button>
-                  <button type="button" className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+                  <button type="button" className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover-gradient-border">
                     View Students
                   </button>
                 </div>

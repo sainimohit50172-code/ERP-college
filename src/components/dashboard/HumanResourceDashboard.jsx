@@ -157,7 +157,7 @@ export default function HumanResourceDashboard() {
           <div>
             <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">Human Resource</h1>
           </div>
-          <div className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-yellow-50 px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm">
+          <div className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-yellow-50 px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover-gradient-border">
             <CalendarCheck className="mr-2 h-4 w-4 text-amber-600" />
             HR Session 2026-27 Odd
           </div>
@@ -191,7 +191,7 @@ export default function HumanResourceDashboard() {
               <div className="space-y-4">
                 <div className="rounded-[18px] border border-slate-200 bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 shadow-sm transition duration-300 hover:-translate-y-0.5">
                   <div className="text-sm text-slate-500">Employee Headcount</div>
-                  <div className="mt-2 flex items-center justify-between">
+                  <div className="mt-2 flex items-center justify-between hover-gradient-border">
                     <div>
                       <div className="text-3xl font-bold text-slate-900">{totalEmployees}</div>
                       <div className="mt-1 text-sm text-slate-600">Total Employees</div>
@@ -205,7 +205,7 @@ export default function HumanResourceDashboard() {
 
                 <div className="rounded-[18px] border border-slate-200 bg-gradient-to-br from-teal-50 to-teal-100 p-4 shadow-sm transition duration-300 hover:-translate-y-0.5">
                   <div className="text-sm text-slate-500">New Joinings</div>
-                  <div className="mt-2 flex items-center justify-between">
+                  <div className="mt-2 flex items-center justify-between hover-gradient-border">
                     <div>
                       <div className="text-3xl font-bold text-slate-900">0</div>
                       <div className="mt-1 text-sm text-slate-600">This Month</div>
@@ -241,8 +241,8 @@ export default function HumanResourceDashboard() {
                 <div className="flex w-full flex-col gap-2 lg:w-[40%]">
                   <div className="grid gap-2">
                     {DEPARTMENTS.map((d) => (
-                      <div key={d.name} className="flex items-center justify-between rounded-2xl border border-slate-100 bg-slate-50 p-3">
-                        <div className="flex min-w-0 items-center gap-3">
+                      <div key={d.name} className="flex items-center justify-between rounded-2xl border border-slate-100 bg-slate-50 p-3 hover-gradient-border">
+                        <div className="flex min-w-0 items-center gap-3 hover-gradient-border">
                           <div className="h-3 w-3 rounded-full" style={{ background: d.color }} />
                           <div className="min-w-0 truncate text-sm font-semibold text-slate-900">{d.name}</div>
                         </div>
@@ -265,7 +265,7 @@ export default function HumanResourceDashboard() {
                       <div className="text-xs text-slate-500">{b.date}</div>
                     </div>
                     <div>
-                      <button className="rounded-full bg-emerald-50 px-3 py-1 text-emerald-700 text-sm">Birthday</button>
+                      <button className="rounded-full bg-emerald-50 px-3 py-1 text-emerald-700 text-sm hover-gradient-border">Birthday</button>
                     </div>
                   </div>
                 ))}
@@ -362,7 +362,7 @@ export default function HumanResourceDashboard() {
                 <div>
                   <h3 className="text-lg font-semibold">Today's Employee Attendance</h3>
                 </div>
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2 hover-gradient-border">
                   <label className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Select</label>
                   <select
                     value={selectedAttendanceStatus}
@@ -375,14 +375,14 @@ export default function HumanResourceDashboard() {
                   <button
                     type="button"
                     onClick={exportAttendanceCsv}
-                    className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-700 transition hover:bg-slate-200"
+                    className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-700 transition hover:bg-slate-200 hover-gradient-border"
                   >
                     CSV
                   </button>
                   <button
                     type="button"
                     onClick={printAttendance}
-                    className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-700 transition hover:bg-slate-200"
+                    className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-700 transition hover:bg-slate-200 hover-gradient-border"
                   >
                     Print
                   </button>
@@ -410,7 +410,7 @@ export default function HumanResourceDashboard() {
 
             <div className="flex flex-col gap-4">
               <div className="relative overflow-hidden rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm text-slate-900">
-                <div className="absolute right-4 top-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 text-white shadow-lg shadow-slate-900/20">
+                <div className="absolute right-4 top-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 text-white shadow-lg shadow-slate-900/20 hover-gradient-border">
                   <PieChartIcon className="h-6 w-6" />
                 </div>
                 <div className="relative">

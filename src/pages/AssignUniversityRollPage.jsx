@@ -275,14 +275,14 @@ export default function AssignUniversityRollPage() {
             <button
               type="button"
               onClick={handleOpenFilters}
-              className="mr-5 h-11 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300"
+              className="mr-5 h-11 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover-gradient-border"
             >
               Filter
             </button>
             <button
               type="button"
               onClick={handleAutoAssign}
-              className="h-11 rounded-2xl bg-sky-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-700"
+              className="h-11 rounded-2xl bg-sky-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-700 hover-gradient-border"
             >
               Auto Assign
             </button>
@@ -345,21 +345,21 @@ export default function AssignUniversityRollPage() {
             <button
               type="button"
               onClick={handleCancelFilters}
-              className="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700"
+              className="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover-gradient-border"
             >
               Cancel
             </button>
             <button
               type="button"
               onClick={handleResetFilters}
-              className="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700"
+              className="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover-gradient-border"
             >
               Reset
             </button>
             <button
               type="button"
               onClick={handleApplyFilters}
-              className="rounded-2xl bg-[#1e3a5f] px-4 py-2 text-sm font-semibold text-white"
+              className="rounded-2xl bg-[#1e3a5f] px-4 py-2 text-sm font-semibold text-white hover-gradient-border"
             >
               Apply Filters
             </button>

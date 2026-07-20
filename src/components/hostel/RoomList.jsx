@@ -4,7 +4,7 @@ export default function RoomList({ rooms = [] }) {
       <h3 className="text-sm font-semibold text-slate-900">Rooms</h3>
       <ul className="mt-3 space-y-2 text-sm text-slate-600">
         {rooms.map((r) => (
-          <li key={r.id} className="flex items-center justify-between">
+          <li key={r.id} className="flex items-center justify-between hover-gradient-border">
             <div>
               <div className="font-semibold">{r.roomNumber}</div>
               <div className="text-xs text-slate-500">Capacity: {r.capacity || 1} · Occupied: {r.occupiedBeds || 0}</div>

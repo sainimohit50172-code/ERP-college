@@ -12,7 +12,7 @@ export default function Modal({ title, children, isOpen, onClose, footer }) {
           <button
             type="button"
             onClick={onClose}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-700 transition hover:bg-slate-100"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-700 transition hover:bg-slate-100 hover-gradient-border"
             aria-label="Close modal"
           >
             <X className="h-4 w-4" />

@@ -84,8 +84,8 @@ export default function AllocateSubjectPage() {
     {
       key: 'action', label: 'Action', render: (_, row) => (
         <div className="flex gap-2">
-          <button type="button" title="Edit Allocation" className="h-9 rounded-2xl bg-white border px-3 text-sm">Edit</button>
-          <button type="button" title="Remove Allocation" className="h-9 rounded-2xl bg-white border px-3 text-sm">Remove</button>
+          <button type="button" title="Edit Allocation" className="h-9 rounded-2xl bg-white border px-3 text-sm hover-gradient-border">Edit</button>
+          <button type="button" title="Remove Allocation" className="h-9 rounded-2xl bg-white border px-3 text-sm hover-gradient-border">Remove</button>
           <ViewButton
             title="View details"
             ariaLabel="View details"
@@ -127,7 +127,7 @@ export default function AllocateSubjectPage() {
               <button
                 type="button"
                 onClick={handleGo}
-                className="h-11 rounded-2xl bg-sky-700 px-4 py-2 text-sm font-semibold text-white"
+                className="h-11 rounded-2xl bg-sky-700 px-4 py-2 text-sm font-semibold text-white hover-gradient-border"
               >
                 Go
               </button>

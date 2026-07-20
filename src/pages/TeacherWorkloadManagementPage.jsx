@@ -133,7 +133,7 @@ export default function TeacherWorkloadManagementPage() {
             <h2 className="text-xl font-semibold text-white">Detailed workload summary</h2>
             <p className="text-sm text-slate-400">Individual teacher workload metrics and distribution breakdown.</p>
           </div>
-          <button className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700">
+          <button className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700 hover-gradient-border">
             <FaDownload /> Export
           </button>
         </div>

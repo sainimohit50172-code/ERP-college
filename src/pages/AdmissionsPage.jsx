@@ -38,15 +38,15 @@ export default function AdmissionsPage() {
             <div className="flex items-center gap-3 text-sky-300"><FaUserPlus /><span className="text-sm uppercase">New applications</span></div>
             <p className="mt-3 text-2xl font-semibold">{metrics.newApplications}</p>
           </div>
-          <div className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4 text-slate-200 shadow-sm">
+          <div className="hover-gradient-border rounded-[24px] border border-white/10 bg-slate-950/60 p-4 text-slate-200 shadow-sm">
             <div className="flex items-center gap-3 text-emerald-300"><FaClipboardCheck /><span className="text-sm uppercase">Offers sent</span></div>
             <p className="mt-3 text-2xl font-semibold">{metrics.offersSent}</p>
           </div>
-          <div className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4 text-slate-200 shadow-sm">
+          <div className="hover-gradient-border rounded-[24px] border border-white/10 bg-slate-950/60 p-4 text-slate-200 shadow-sm">
             <div className="flex items-center gap-3 text-violet-300"><FaUserPlus /><span className="text-sm uppercase">Enrolled</span></div>
             <p className="mt-3 text-2xl font-semibold">{metrics.enrolled}</p>
           </div>
-          <div className="rounded-[24px] border border-white/10 bg-slate-950/60 p-4 text-slate-200 shadow-sm">
+          <div className="hover-gradient-border rounded-[24px] border border-white/10 bg-slate-950/60 p-4 text-slate-200 shadow-sm">
             <div className="flex items-center gap-3 text-rose-300"><FaFileInvoiceDollar /><span className="text-sm uppercase">Pending documents</span></div>
             <p className="mt-3 text-2xl font-semibold">{metrics.pendingDocuments}</p>
           </div>

@@ -27,7 +27,7 @@ export default function OverviewCards() {
           key={card.label} 
           onClick={() => handleCardClick(card.label)}
           className="cursor-pointer rounded-[22px] border border-slate-200/80 bg-white p-5 shadow-[0_18px_50px_-26px_rgba(15,23,42,0.28)] transition-all duration-300 hover:shadow-[0_24px_60px_-16px_rgba(15,23,42,0.45)] hover:scale-105">
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center justify-between gap-3 hover-gradient-border">
             <div>
               <div className="text-sm font-semibold text-slate-500">{card.label}</div>
               <div className="mt-2 text-3xl font-semibold text-slate-900">{card.value}</div>
@@ -41,8 +41,8 @@ export default function OverviewCards() {
       ))}
       <div 
         onClick={handleWellnessClick}
-        className="cursor-pointer rounded-[22px] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 p-5 text-white shadow-[0_20px_50px_-24px_rgba(15,23,42,0.45)] transition-all duration-300 hover:shadow-[0_28px_70px_-16px_rgba(15,23,42,0.55)] hover:scale-105">
-        <div className="flex items-center justify-between gap-3">
+        className="cursor-pointer rounded-[22px] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 p-5 text-white shadow-[0_20px_50px_-24px_rgba(15,23,42,0.45)] transition-all duration-300 hover:shadow-[0_28px_70px_-16px_rgba(15,23,42,0.55)] hover:scale-105 hover-gradient-border">
+        <div className="flex items-center justify-between gap-3 hover-gradient-border">
           <div>
             <div className="text-sm font-semibold text-slate-300">Student wellness</div>
             <div className="mt-2 text-3xl font-semibold">92%</div>

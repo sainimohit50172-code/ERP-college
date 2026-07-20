@@ -288,7 +288,7 @@ export default function FeeManagementPage() {
             <button
               type="button"
               onClick={handleExport}
-              className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700"
+              className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700 hover-gradient-border"
             >
               <FaDownload /> Export fees
             </button>
@@ -310,18 +310,18 @@ export default function FeeManagementPage() {
         }
       />
 
-      <input ref={importInputRef} type="file" accept=".csv" className="hidden" onChange={handleFileChange} />
+      <input ref={importInputRef} type="file" accept=".csv" className="hidden hover-gradient-border" onChange={handleFileChange} />
 
       <div className="grid gap-3 md:grid-cols-3">
-        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+        <div className="hover-gradient-border rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
           <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Today&apos;s collection</p>
           <p className="mt-3 text-2xl font-semibold text-white">{formatCurrency(paymentSummary.todaysCollection)}</p>
         </div>
-        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+        <div className="hover-gradient-border rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
           <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Monthly collection</p>
           <p className="mt-3 text-2xl font-semibold text-white">{formatCurrency(paymentSummary.monthlyCollection)}</p>
         </div>
-        <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
+        <div className="hover-gradient-border rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
           <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Pending amount</p>
           <p className="mt-3 text-2xl font-semibold text-white">{formatCurrency(paymentSummary.pendingAmount)}</p>
         </div>
@@ -527,9 +527,9 @@ export default function FeeManagementPage() {
             <p className="text-sm text-slate-400">Generate daily, monthly, outstanding, scholarship and fine reports for fee operations.</p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <button type="button" className="rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 hover:bg-slate-700">Daily report</button>
-            <button type="button" className="rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 hover:bg-slate-700">Monthly report</button>
-            <button type="button" className="rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 hover:bg-slate-700">Outstanding report</button>
+            <button type="button" className="rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 hover:bg-slate-700 hover-gradient-border">Daily report</button>
+            <button type="button" className="rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 hover:bg-slate-700 hover-gradient-border">Monthly report</button>
+            <button type="button" className="rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 hover:bg-slate-700 hover-gradient-border">Outstanding report</button>
           </div>
         </div>
 
@@ -561,7 +561,7 @@ export default function FeeManagementPage() {
             type="button"
             onClick={handleSubmit(handleSubmitPayment)}
             disabled={isSubmitting || createPaymentMutation.isLoading}
-            className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-60 hover-gradient-border"
           >
             Save payment
           </button>
@@ -571,7 +571,7 @@ export default function FeeManagementPage() {
           <FormField label="Student">
             <select
               {...register('studentId', { required: 'Student is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             >
               <option value="">Select student</option>
               {students.map((student) => (
@@ -584,7 +584,7 @@ export default function FeeManagementPage() {
             <input
               type="number"
               {...register('amount', { required: 'Amount is required', min: { value: 1, message: 'Enter a valid amount' } })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
               placeholder="0"
             />
             {errors.amount && <p className="mt-1 text-sm text-rose-400">{errors.amount.message}</p>}
@@ -593,7 +593,7 @@ export default function FeeManagementPage() {
             <input
               type="number"
               {...register('scholarshipAmount')}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
               placeholder="0"
             />
           </FormField>
@@ -601,7 +601,7 @@ export default function FeeManagementPage() {
             <input
               type="number"
               {...register('waiverAmount')}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
               placeholder="0"
             />
           </FormField>
@@ -609,7 +609,7 @@ export default function FeeManagementPage() {
             <input
               type="number"
               {...register('fine')}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
               placeholder="0"
             />
           </FormField>
@@ -617,7 +617,7 @@ export default function FeeManagementPage() {
             <input
               type="number"
               {...register('discountAmount')}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
               placeholder="0"
             />
           </FormField>
@@ -625,7 +625,7 @@ export default function FeeManagementPage() {
             <input
               type="text"
               {...register('installmentNumber')}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
               placeholder="1/3"
             />
           </FormField>
@@ -633,14 +633,14 @@ export default function FeeManagementPage() {
             <input
               type="date"
               {...register('date', { required: 'Date is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             />
             {errors.date && <p className="mt-1 text-sm text-rose-400">{errors.date.message}</p>}
           </FormField>
           <FormField label="Payment method">
             <select
               {...register('method', { required: 'Method is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             >
               <option value="Cash">Cash</option>
               <option value="UPI">UPI</option>
@@ -653,7 +653,7 @@ export default function FeeManagementPage() {
           <FormField label="Status">
             <select
               {...register('status', { required: 'Status is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             >
               <option value="Paid">Paid</option>
               <option value="Pending">Pending</option>
@@ -663,7 +663,7 @@ export default function FeeManagementPage() {
           <FormField label="Notes">
             <textarea
               {...register('notes')}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
               rows={4}
               placeholder="Payment notes or reference"
             />

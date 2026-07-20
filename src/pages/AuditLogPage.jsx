@@ -44,7 +44,7 @@ export default function AuditLogPage() {
           <button
             type="button"
             onClick={handleClear}
-            className="rounded-3xl bg-rose-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-rose-500"
+            className="rounded-3xl bg-rose-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-rose-500 hover-gradient-border"
           >
             Clear log
           </button>

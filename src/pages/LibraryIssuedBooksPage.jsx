@@ -111,7 +111,7 @@ export default function LibraryIssuedBooksPage() {
               <button
                 type="button"
                 onClick={handleApplyFine}
-                className="inline-flex items-center justify-center rounded-lg bg-[#1E293B] px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                className="inline-flex items-center justify-center rounded-lg bg-[#1E293B] px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 hover-gradient-border"
               >
                 Apply
               </button>

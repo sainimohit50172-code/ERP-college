@@ -11,7 +11,39 @@ const api = axios.create({
   timeout: DEFAULT_TIMEOUT,
 });
 
+function getApiBasePath(baseURL = '') {
+  if (typeof baseURL !== 'string' || !baseURL.trim()) return '';
+  try {
+    const url = new URL(baseURL, 'http://localhost');
+    return url.pathname.replace(/\/+$|^\s+|\s+$/g, '') || '';
+  } catch (error) {
+    return baseURL.replace(/^[^/]*\/\/[^/]+/, '').replace(/\/+$|^\s+|\s+$/g, '') || '';
+  }
+}
+
+function normalizeApiUrl(config) {
+  const url = config.url || '';
+  const baseURL = config.baseURL || '';
+  if (typeof url !== 'string' || !baseURL) {
+    return url;
+  }
+
+  const normalizedUrl = url.startsWith('/') ? url : `/${url}`;
+  const basePath = getApiBasePath(baseURL);
+  if (!basePath) {
+    return normalizedUrl;
+  }
+
+  if (normalizedUrl === basePath || normalizedUrl.startsWith(`${basePath}/`)) {
+    const stripped = normalizedUrl.slice(basePath.length) || '/';
+    return stripped.startsWith('/') ? stripped : `/${stripped}`;
+  }
+
+  return normalizedUrl;
+}
+
 api.interceptors.request.use((config) => {
+  config.url = normalizeApiUrl(config);
   const resolvedUrl = `${config.baseURL || ''}${config.url || ''}`;
   console.info('[api-request]', config.method?.toUpperCase?.() || 'REQUEST', resolvedUrl, config.data);
   return config;

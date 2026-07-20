@@ -29,7 +29,7 @@ export default function AllocationPanel() {
           {(rooms.data?.items || []).map((r) => <option key={r.id} value={r.id}>{r.roomNumber || r.id}</option>)}
         </select>
         <div className="flex gap-2">
-          <button onClick={doAllocate} className="rounded-2xl bg-sky-400 px-3 py-2 text-sm font-semibold">Allocate</button>
+          <button onClick={doAllocate} className="rounded-2xl bg-sky-400 px-3 py-2 text-sm font-semibold hover-gradient-border">Allocate</button>
         </div>
       </div>
 

@@ -11,7 +11,7 @@ const cards = [
 
 export default function SettingsPage() {
   return (
-    <div className="rounded-[28px] border border-slate-200/80 bg-white p-5 shadow-sm sm:p-7">
+    <div className="no-hover-border rounded-[28px] border border-slate-200/80 bg-white p-5 shadow-sm sm:p-7">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.24em] text-emerald-600">Workspace settings</p>
@@ -26,7 +26,7 @@ export default function SettingsPage() {
         {cards.map((card) => {
           const Icon = card.icon;
           return (
-            <Link key={card.title} to={card.href} className="rounded-[24px] border border-slate-200 bg-slate-50 p-5 transition hover:border-emerald-200 hover:bg-white">
+            <Link key={card.title} to={card.href} className="hover-gradient-border rounded-[24px] border border-slate-200 bg-slate-50 p-5 transition hover:border-emerald-200 hover:bg-white">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="text-lg font-semibold text-slate-950">{card.title}</p>

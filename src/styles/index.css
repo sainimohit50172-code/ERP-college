@@ -178,6 +178,22 @@ img, svg {
   height: auto;
 }
 
+.avatar-circle {
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.avatar-circle img {
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
 ::selection {
   background: rgba(16, 185, 129, 0.24);
 }
@@ -199,6 +215,45 @@ button, input, textarea, select {
 .bg-primary-navy { background-color: var(--primary-navy); }
 .bg-primary-navy-dark { background-color: var(--primary-navy-dark); }
 .border-primary-navy { border-color: var(--primary-navy); }
+
+/* Shared gradient hover border refinement for interactive child cards and controls */
+.hover-gradient-border,
+.hover-gradient-border-target,
+button:not(.no-hover-border),
+input:not([type='hidden']):not(.no-hover-border),
+select:not(.no-hover-border),
+textarea:not(.no-hover-border),
+[role='button']:not(.no-hover-border),
+a[href]:not(.no-hover-border) {
+  --hover-gradient-radius: 14px;
+  transition: border 0.35s ease, border-image-source 0.35s ease, box-shadow 0.35s ease, background-color 0.35s ease, border-radius 0.35s ease;
+}
+
+.hover-gradient-border:hover,
+.hover-gradient-border:focus-visible,
+.hover-gradient-border-target:hover,
+.hover-gradient-border-target:focus-visible,
+button:not(.no-hover-border):hover,
+button:not(.no-hover-border):focus-visible,
+input:not([type='hidden']):not(.no-hover-border):hover,
+input:not([type='hidden']):not(.no-hover-border):focus-visible,
+select:not(.no-hover-border):hover,
+select:not(.no-hover-border):focus-visible,
+textarea:not(.no-hover-border):hover,
+textarea:not(.no-hover-border):focus-visible,
+[role='button']:not(.no-hover-border):hover,
+[role='button']:not(.no-hover-border):focus-visible,
+a[href]:not(.no-hover-border):hover,
+a[href]:not(.no-hover-border):focus-visible {
+  border: 2px solid transparent !important;
+  border-image: linear-gradient(135deg, #16a34a, #2563eb, #84cc16, #facc15, #fb7185, #16a34a) 1 !important;
+  border-image-slice: 1 !important;
+  border-radius: var(--hover-gradient-radius) !important;
+}
+
+.no-hover-border {
+  border-image: none !important;
+}
 
 /* Shared ERP card interaction utilities */
 .erp-card,
@@ -246,15 +301,15 @@ table {
 
 table th,
 table td {
-  padding: 0.3rem 0.4rem !important;
-  line-height: 1.2;
+  padding: 0.75rem 1rem !important;
+  line-height: 1.4;
   min-width: 0 !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
 }
 
 table th {
-  text-align: center !important;
+  text-align: left !important;
   font-size: 0.68rem !important;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -500,13 +555,13 @@ table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.75rem;
-  table-layout: auto;
+  table-layout: fixed;
 }
 
 table th,
 table td {
-  padding: 0.35rem 0.45rem !important;
-  line-height: 1.2;
+  padding: 0.55rem 0.85rem !important;
+  line-height: 1.4;
   min-width: 0 !important;
 }
 
@@ -533,9 +588,11 @@ table td span {
   width: 100%;
   min-width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 .overflow-x-auto table th,
 .overflow-x-auto table td {
+  padding: 0.55rem 0.85rem !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -543,6 +600,9 @@ table td span {
 .overflow-x-auto table th.action-header,
 .overflow-x-auto table td.action-cell {
   min-width: 180px;
+}
+.overflow-x-auto table th.action-header {
+  text-align: center !important;
 }
 .overflow-x-auto table td.action-cell > div { display: flex; align-items: center; justify-content: center; gap: 8px; }
 .overflow-x-auto table td.action-cell button { white-space: nowrap; }
@@ -565,6 +625,10 @@ table td span {
 .overflow-x-auto table th.university-roll-cell,
 .overflow-x-auto table td.university-roll-cell {
   min-width: 170px;
+}
+.overflow-x-auto table th.fathername-cell,
+.overflow-x-auto table td.fathername-cell {
+  padding-left: 1.2rem;
 }
 .overflow-x-auto table th.status-cell,
 .overflow-x-auto table td.status-cell {
@@ -681,10 +745,15 @@ table {
 
 table th,
 table td {
+  padding: 0.55rem 1rem !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   vertical-align: middle;
+}
+
+table th {
+  text-align: left !important;
 }
 
 /* Ensure action column never shrinks and buttons remain visible */

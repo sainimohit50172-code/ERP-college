@@ -107,15 +107,15 @@ export default function LeadsPage() {
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <button className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+            <button className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover-gradient-border">
               <Filter size={16} /> Filter
             </button>
-            <button className="inline-flex items-center gap-2 rounded-xl bg-[#1e3a5f] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900">
+            <button className="inline-flex items-center gap-2 rounded-xl bg-[#1e3a5f] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900 hover-gradient-border">
               <FileText size={16} /> Excel
             </button>
             <button
               type="button"
-              className="inline-flex items-center gap-2 rounded-xl bg-[#1e3a5f] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#1e3a5f] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900 hover-gradient-border"
               onClick={() => setIsAddLeadOpen(true)}
             >
               <Plus size={16} /> Add Lead
@@ -324,10 +324,10 @@ export default function LeadsPage() {
                   <tr key={row.id} className={`${index % 2 === 0 ? 'bg-white' : 'bg-slate-50'} border-l-4 border-red-500`}>
                     <td className="px-2 py-3 align-top action-cell">
                       <div className="inline-flex items-center gap-2">
-                        <button className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-700 transition hover:bg-slate-200">
+                        <button className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-700 transition hover:bg-slate-200 hover-gradient-border">
                           <Settings size={14} />
                         </button>
-                        <button className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-700 transition hover:bg-slate-200">
+                        <button className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-700 transition hover:bg-slate-200 hover-gradient-border">
                           <Pencil size={14} />
                         </button>
                       </div>

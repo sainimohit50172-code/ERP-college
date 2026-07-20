@@ -178,7 +178,7 @@ export default function ExaminationModule() {
             <div className="mt-4 space-y-2">
               {masters.map((master) => (
                 <div key={master.id} className="rounded-[16px] border border-slate-700/70 bg-slate-900/80 p-3">
-                  <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center justify-between gap-3 hover-gradient-border">
                     <div>
                       <p className="font-semibold text-white">{master.name}</p>
                       <p className="text-sm text-slate-400">{master.description || master.kind}</p>
@@ -194,7 +194,7 @@ export default function ExaminationModule() {
             <div className="mt-4 space-y-2">
               {filteredSchedules.map((schedule) => (
                 <div key={schedule.id} className="rounded-[16px] border border-slate-700/70 bg-slate-900/80 p-3">
-                  <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center justify-between gap-3 hover-gradient-border">
                     <div>
                       <p className="font-semibold text-white">{schedule.examName}</p>
                       <p className="text-sm text-slate-400">{schedule.course} • {schedule.department} • {schedule.date}</p>
@@ -216,7 +216,7 @@ export default function ExaminationModule() {
           </div>
           <div className="flex flex-wrap gap-2">
             <button type="button" onClick={() => setMarkModalOpen(true)} className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-2 text-sm text-slate-200 hover:bg-slate-700"><FaPlus /> New mark entry</button>
-            <button type="button" onClick={handlePublishMarks} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-400 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-emerald-300">Publish drafts</button>
+            <button type="button" onClick={handlePublishMarks} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-400 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-emerald-300 hover-gradient-border">Publish drafts</button>
           </div>
         </div>
 
@@ -257,8 +257,8 @@ export default function ExaminationModule() {
           </div>
           <div className="flex flex-wrap gap-2">
             <button type="button" onClick={() => setResultModalOpen(true)} className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-2 text-sm text-slate-200 hover:bg-slate-700"><FaPlus /> Add result</button>
-            <button type="button" className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-2 text-sm text-slate-200 hover:bg-slate-700"><FaDownload /> Export</button>
-            <button type="button" className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-2 text-sm text-slate-200 hover:bg-slate-700"><FaPrint /> Print</button>
+            <button type="button" className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-2 text-sm text-slate-200 hover:bg-slate-700 hover-gradient-border"><FaDownload /> Export</button>
+            <button type="button" className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-2 text-sm text-slate-200 hover:bg-slate-700 hover-gradient-border"><FaPrint /> Print</button>
           </div>
         </div>
         <div className="mt-4 overflow-x-auto rounded-[20px] border border-slate-700/60 bg-slate-950/90">
@@ -296,7 +296,7 @@ export default function ExaminationModule() {
         </div>
       </div>
 
-      <Modal title="Create exam master" isOpen={masterModalOpen} onClose={() => setMasterModalOpen(false)} footer={<Button onClick={handleCreateMaster} variant="primary">Save master</Button>}>
+      <Modal title="Create exam master" isOpen={masterModalOpen} onClose={() => setMasterModalOpen(false)} footer={<button onClick={handleCreateMaster} variant="primary" className="hover-gradient-border">Save master</button>}>
         <form className="space-y-4" onSubmit={handleCreateMaster}>
           <FormField label="Type">
             <select value={masterForm.kind} onChange={(event) => setMasterForm((current) => ({ ...current, kind: event.target.value }))} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none">
@@ -308,7 +308,7 @@ export default function ExaminationModule() {
         </form>
       </Modal>
 
-      <Modal title="Schedule exam" isOpen={scheduleModalOpen} onClose={() => setScheduleModalOpen(false)} footer={<Button onClick={handleCreateSchedule} variant="primary">Save schedule</Button>}>
+      <Modal title="Schedule exam" isOpen={scheduleModalOpen} onClose={() => setScheduleModalOpen(false)} footer={<button onClick={handleCreateSchedule} variant="primary" className="hover-gradient-border">Save schedule</button>}>
         <form className="grid gap-4 lg:grid-cols-2" onSubmit={handleCreateSchedule}>
           <FormField label="Exam name"><input value={scheduleForm.examName} onChange={(event) => setScheduleForm((current) => ({ ...current, examName: event.target.value }))} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none" /></FormField>
           <FormField label="Course"><input value={scheduleForm.course} onChange={(event) => setScheduleForm((current) => ({ ...current, course: event.target.value }))} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none" /></FormField>
@@ -324,7 +324,7 @@ export default function ExaminationModule() {
         </form>
       </Modal>
 
-      <Modal title="Add mark entry" isOpen={markModalOpen} onClose={() => setMarkModalOpen(false)} footer={<Button onClick={handleCreateMark} variant="primary">Save marks</Button>}>
+      <Modal title="Add mark entry" isOpen={markModalOpen} onClose={() => setMarkModalOpen(false)} footer={<button onClick={handleCreateMark} variant="primary" className="hover-gradient-border">Save marks</button>}>
         <form className="grid gap-4 lg:grid-cols-2" onSubmit={handleCreateMark}>
           <FormField label="Student name"><input value={markForm.studentName} onChange={(event) => setMarkForm((current) => ({ ...current, studentName: event.target.value }))} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none" /></FormField>
           <FormField label="Student ID"><input value={markForm.studentId} onChange={(event) => setMarkForm((current) => ({ ...current, studentId: event.target.value }))} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none" /></FormField>
@@ -340,7 +340,7 @@ export default function ExaminationModule() {
         </form>
       </Modal>
 
-      <Modal title="Create result" isOpen={resultModalOpen} onClose={() => setResultModalOpen(false)} footer={<Button onClick={handleCreateResult} variant="primary">Save result</Button>}>
+      <Modal title="Create result" isOpen={resultModalOpen} onClose={() => setResultModalOpen(false)} footer={<button onClick={handleCreateResult} variant="primary" className="hover-gradient-border">Save result</button>}>
         <form className="grid gap-4 lg:grid-cols-2" onSubmit={handleCreateResult}>
           <FormField label="Student name"><input value={resultForm.studentName} onChange={(event) => setResultForm((current) => ({ ...current, studentName: event.target.value }))} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none" /></FormField>
           <FormField label="Student ID"><input value={resultForm.studentId} onChange={(event) => setResultForm((current) => ({ ...current, studentId: event.target.value }))} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none" /></FormField>

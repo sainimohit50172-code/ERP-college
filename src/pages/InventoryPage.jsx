@@ -1236,7 +1236,7 @@ export default function InventoryPage() {
             subtitle="Configure inventory categories and track example asset groups."
             action={(
               <div className="flex flex-wrap items-center gap-3">
-                <button onClick={openNewCategoryModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500">
+                <button onClick={openNewCategoryModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border">
                   <Plus className="h-4 w-4" /> New category
                 </button>
                 <button onClick={() => handleExport(exportCategories, 'asset-categories.xlsx')} className="inline-flex items-center gap-2 rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
@@ -1269,7 +1269,7 @@ export default function InventoryPage() {
             subtitle="Capture asset lifecycle details and attach photos or documents."
             action={(
               <div className="flex flex-wrap items-center gap-3">
-                <button onClick={openNewAssetModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500">
+                <button onClick={openNewAssetModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border">
                   <Plus className="h-4 w-4" /> New asset
                 </button>
                 <button onClick={() => handleExport(exportAssets, 'assets.xlsx')} className="inline-flex items-center gap-2 rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
@@ -1307,7 +1307,7 @@ export default function InventoryPage() {
             subtitle="Manage vendor details, GST, and supplier banking information."
             action={(
               <div className="flex flex-wrap items-center gap-3">
-                <button onClick={openNewVendorModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500">
+                <button onClick={openNewVendorModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border">
                   <Plus className="h-4 w-4" /> New vendor
                 </button>
                 <button onClick={() => handleExport(exportVendors, 'vendors.xlsx')} className="inline-flex items-center gap-2 rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
@@ -1342,7 +1342,7 @@ export default function InventoryPage() {
             subtitle="Track purchase orders, invoices, and procurement value."
             action={(
               <div className="flex flex-wrap items-center gap-3">
-                <button onClick={openNewPurchaseModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500">
+                <button onClick={openNewPurchaseModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border">
                   <Plus className="h-4 w-4" /> New purchase
                 </button>
                 <button onClick={() => handleExport(exportPurchases, 'purchase-orders.xlsx')} className="inline-flex items-center gap-2 rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
@@ -1377,7 +1377,7 @@ export default function InventoryPage() {
             subtitle="Manage stock movements, transfer history, returns, and adjustments."
             action={(
               <div className="flex flex-wrap items-center gap-3">
-                <button onClick={openNewStockModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500">
+                <button onClick={openNewStockModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border">
                   <Plus className="h-4 w-4" /> New stock move
                 </button>
                 <button onClick={() => handleExport(exportStock, 'stock-movements.xlsx')} className="inline-flex items-center gap-2 rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
@@ -1413,7 +1413,7 @@ export default function InventoryPage() {
             subtitle="Track assignments for teachers, employees, labs, library and hostel."
             action={(
               <div className="flex flex-wrap items-center gap-3">
-                <button onClick={openNewAssignmentModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500">
+                <button onClick={openNewAssignmentModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border">
                   <Plus className="h-4 w-4" /> Assign asset
                 </button>
                 <button onClick={() => handleExport(exportAssignments, 'asset-assignments.xlsx')} className="inline-flex items-center gap-2 rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
@@ -1449,7 +1449,7 @@ export default function InventoryPage() {
             subtitle="Log service requests, repair details, AMC coverage and warranty claims."
             action={(
               <div className="flex flex-wrap items-center gap-3">
-                <button onClick={openNewMaintenanceModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500">
+                <button onClick={openNewMaintenanceModal} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border">
                   <Plus className="h-4 w-4" /> New request
                 </button>
                 <button onClick={() => handleExport(exportMaintenance, 'maintenance-requests.xlsx')} className="inline-flex items-center gap-2 rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
@@ -1616,7 +1616,7 @@ export default function InventoryPage() {
           <button
             type="button"
             onClick={handleSubmitCategory(handleCategorySubmit)}
-            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
+            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border"
           >
             {isEditCategory ? 'Save category' : 'Create category'}
           </button>
@@ -1624,14 +1624,14 @@ export default function InventoryPage() {
       >
         <div className="grid gap-6">
           <FormField label="Category name">
-            <input type="text" {...registerCategory('name', { required: true })} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerCategory('name', { required: true })} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
             {categoryErrors.name && <p className="text-sm text-rose-600">Name is required.</p>}
           </FormField>
           <FormField label="Description">
-            <textarea {...registerCategory('description')} rows="4" className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <textarea {...registerCategory('description')} rows="4" className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Example items">
-            <input type="text" {...registerCategory('exampleItems')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerCategory('exampleItems')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
         </div>
       </Modal>
@@ -1644,7 +1644,7 @@ export default function InventoryPage() {
           <button
             type="button"
             onClick={handleSubmitAsset(handleAssetSubmit)}
-            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
+            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border"
           >
             {isEditAsset ? 'Update asset' : 'Create asset'}
           </button>
@@ -1652,61 +1652,61 @@ export default function InventoryPage() {
       >
         <div className="grid gap-6 lg:grid-cols-2">
           <FormField label="Asset ID">
-            <input type="text" {...registerAsset('assetId')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" placeholder="Auto-generated if blank" />
+            <input type="text" {...registerAsset('assetId')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" placeholder="Auto-generated if blank" />
           </FormField>
           <FormField label="Asset name">
-            <input type="text" {...registerAsset('name', { required: true })} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerAsset('name', { required: true })} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
             {assetErrors.name && <p className="text-sm text-rose-600">Name is required.</p>}
           </FormField>
           <FormField label="Category">
-            <select {...registerAsset('category', { required: true })} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100">
+            <select {...registerAsset('category', { required: true })} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border">
               <option value="">Select category</option>
               {categories.map((category) => (<option key={category.id} value={category.name}>{category.name}</option>))}
             </select>
             {assetErrors.category && <p className="text-sm text-rose-600">Category is required.</p>}
           </FormField>
           <FormField label="Brand">
-            <input type="text" {...registerAsset('brand')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerAsset('brand')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Model">
-            <input type="text" {...registerAsset('model')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerAsset('model')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Serial number">
-            <input type="text" {...registerAsset('serialNumber')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerAsset('serialNumber')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Purchase date">
-            <input type="date" {...registerAsset('purchaseDate')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="date" {...registerAsset('purchaseDate')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Purchase price">
-            <input type="number" {...registerAsset('purchasePrice')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="number" {...registerAsset('purchasePrice')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Vendor">
-            <select {...registerAsset('vendor')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100">
+            <select {...registerAsset('vendor')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border">
               <option value="">Select vendor</option>
               {vendors.map((vendor) => (<option key={vendor.id} value={vendor.name}>{vendor.name}</option>))}
             </select>
           </FormField>
           <FormField label="Warranty">
-            <input type="text" {...registerAsset('warranty')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerAsset('warranty')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Department">
-            <input type="text" {...registerAsset('department')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerAsset('department')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Current location">
-            <input type="text" {...registerAsset('currentLocation')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerAsset('currentLocation')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Assigned to">
-            <input type="text" {...registerAsset('assignedTo')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerAsset('assignedTo')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Status">
-            <select {...registerAsset('status')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100">
+            <select {...registerAsset('status')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border">
               {statusOptions.map((option) => (
                 <option key={option.value} value={option.value}>{option.label}</option>
               ))}
             </select>
           </FormField>
           <FormField label="Quantity">
-            <input type="number" {...registerAsset('quantity')} min="1" className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="number" {...registerAsset('quantity')} min="1" className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Asset photo">
             <input type="file" accept="image/*" {...registerAsset('assetPhoto')} ref={(e) => { registerAsset('assetPhoto').ref(e); assetPhotoRef.current = e; }} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none" />
@@ -1725,7 +1725,7 @@ export default function InventoryPage() {
           <button
             type="button"
             onClick={handleSubmitVendor(handleVendorSubmit)}
-            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
+            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border"
           >
             {isEditVendor ? 'Save vendor' : 'Create vendor'}
           </button>
@@ -1733,26 +1733,26 @@ export default function InventoryPage() {
       >
         <div className="grid gap-6 lg:grid-cols-2">
           <FormField label="Vendor name">
-            <input type="text" {...registerVendor('name', { required: true })} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerVendor('name', { required: true })} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
             {vendorErrors.name && <p className="text-sm text-rose-600">Name is required.</p>}
           </FormField>
           <FormField label="GST">
-            <input type="text" {...registerVendor('gst')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerVendor('gst')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Email">
-            <input type="email" {...registerVendor('email')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="email" {...registerVendor('email')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Phone">
-            <input type="tel" {...registerVendor('phone')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="tel" {...registerVendor('phone')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Address">
-            <textarea {...registerVendor('address')} rows="4" className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <textarea {...registerVendor('address')} rows="4" className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Contact person">
-            <input type="text" {...registerVendor('contactPerson')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerVendor('contactPerson')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Bank details">
-            <textarea {...registerVendor('bankDetails')} rows="4" className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <textarea {...registerVendor('bankDetails')} rows="4" className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
         </div>
       </Modal>
@@ -1765,7 +1765,7 @@ export default function InventoryPage() {
           <button
             type="button"
             onClick={handleSubmitPurchase(handlePurchaseSubmit)}
-            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
+            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border"
           >
             {isEditPurchase ? 'Save purchase' : 'Create purchase'}
           </button>
@@ -1773,28 +1773,28 @@ export default function InventoryPage() {
       >
         <div className="grid gap-6 lg:grid-cols-2">
           <FormField label="Purchase order ID">
-            <input type="text" {...registerPurchase('purchaseOrderId')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" placeholder="Auto-generated if blank" />
+            <input type="text" {...registerPurchase('purchaseOrderId')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" placeholder="Auto-generated if blank" />
           </FormField>
           <FormField label="Supplier">
-            <select {...registerPurchase('supplier')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100">
+            <select {...registerPurchase('supplier')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border">
               <option value="">Select vendor</option>
               {vendors.map((vendor) => (<option key={vendor.id} value={vendor.name}>{vendor.name}</option>))}
             </select>
           </FormField>
           <FormField label="Invoice number">
-            <input type="text" {...registerPurchase('invoiceNumber')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerPurchase('invoiceNumber')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Purchase date">
-            <input type="date" {...registerPurchase('purchaseDate')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="date" {...registerPurchase('purchaseDate')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Tax">
-            <input type="number" {...registerPurchase('tax')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="number" {...registerPurchase('tax')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Discount">
-            <input type="number" {...registerPurchase('discount')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="number" {...registerPurchase('discount')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Grand total">
-            <input type="number" {...registerPurchase('grandTotal')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="number" {...registerPurchase('grandTotal')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Attachments">
             <input type="file" accept="image/*,.pdf" {...registerPurchase('attachments')} ref={(e) => { registerPurchase('attachments').ref(e); purchaseAttachmentRef.current = e; }} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none" />
@@ -1810,7 +1810,7 @@ export default function InventoryPage() {
           <button
             type="button"
             onClick={handleSubmitStock(handleStockSubmit)}
-            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
+            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border"
           >
             {isEditStock ? 'Save movement' : 'Create movement'}
           </button>
@@ -1818,16 +1818,16 @@ export default function InventoryPage() {
       >
         <div className="grid gap-6 lg:grid-cols-2">
           <FormField label="Movement ID">
-            <input type="text" {...registerStock('movementId')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" placeholder="Auto-generated if blank" />
+            <input type="text" {...registerStock('movementId')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" placeholder="Auto-generated if blank" />
           </FormField>
           <FormField label="Asset ID">
-            <select {...registerStock('assetId')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100">
+            <select {...registerStock('assetId')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border">
               <option value="">Select asset</option>
               {assets.map((asset) => (<option key={asset.id} value={asset.assetId}>{asset.name}</option>))}
             </select>
           </FormField>
           <FormField label="Movement type">
-            <select {...registerStock('type')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100">
+            <select {...registerStock('type')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border">
               <option>Stock In</option>
               <option>Stock Out</option>
               <option>Transfer</option>
@@ -1836,16 +1836,16 @@ export default function InventoryPage() {
             </select>
           </FormField>
           <FormField label="Quantity">
-            <input type="number" {...registerStock('quantity')} min="1" className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="number" {...registerStock('quantity')} min="1" className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Source">
-            <input type="text" {...registerStock('source')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerStock('source')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Destination">
-            <input type="text" {...registerStock('destination')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerStock('destination')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Notes">
-            <textarea {...registerStock('notes')} rows="4" className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <textarea {...registerStock('notes')} rows="4" className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
         </div>
       </Modal>
@@ -1858,7 +1858,7 @@ export default function InventoryPage() {
           <button
             type="button"
             onClick={handleSubmitAssignment(handleAssignmentSubmit)}
-            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
+            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border"
           >
             {isEditAssignment ? 'Save assignment' : 'Assign asset'}
           </button>
@@ -1866,19 +1866,19 @@ export default function InventoryPage() {
       >
         <div className="grid gap-6 lg:grid-cols-2">
           <FormField label="Assignment ID">
-            <input type="text" {...registerAssignment('assignmentId')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" placeholder="Auto-generated if blank" />
+            <input type="text" {...registerAssignment('assignmentId')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" placeholder="Auto-generated if blank" />
           </FormField>
           <FormField label="Asset ID">
-            <select {...registerAssignment('assetId')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100">
+            <select {...registerAssignment('assetId')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border">
               <option value="">Select asset</option>
               {assets.map((asset) => (<option key={asset.id} value={asset.assetId}>{asset.name}</option>))}
             </select>
           </FormField>
           <FormField label="Assigned to">
-            <input type="text" {...registerAssignment('assignedTo')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerAssignment('assignedTo')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Assigned type">
-            <select {...registerAssignment('assignedType')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100">
+            <select {...registerAssignment('assignedType')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border">
               <option>Teacher</option>
               <option>Employee</option>
               <option>Department</option>
@@ -1888,26 +1888,26 @@ export default function InventoryPage() {
             </select>
           </FormField>
           <FormField label="Department / location">
-            <input type="text" {...registerAssignment('department')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerAssignment('department')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Location">
-            <input type="text" {...registerAssignment('location')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerAssignment('location')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Assigned date">
-            <input type="date" {...registerAssignment('assignedDate')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="date" {...registerAssignment('assignedDate')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Return date">
-            <input type="date" {...registerAssignment('returnDate')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="date" {...registerAssignment('returnDate')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Status">
-            <select {...registerAssignment('status')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100">
+            <select {...registerAssignment('status')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border">
               <option>Pending</option>
               <option>Assigned</option>
               <option>Returned</option>
             </select>
           </FormField>
           <FormField label="Notes">
-            <textarea {...registerAssignment('notes')} rows="4" className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <textarea {...registerAssignment('notes')} rows="4" className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
         </div>
       </Modal>
@@ -1920,7 +1920,7 @@ export default function InventoryPage() {
           <button
             type="button"
             onClick={handleSubmitMaintenance(handleMaintenanceSubmit)}
-            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
+            className="rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border"
           >
             {isEditMaintenance ? 'Save request' : 'Create request'}
           </button>
@@ -1928,40 +1928,40 @@ export default function InventoryPage() {
       >
         <div className="grid gap-6 lg:grid-cols-2">
           <FormField label="Request ID">
-            <input type="text" {...registerMaintenance('requestId')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" placeholder="Auto-generated if blank" />
+            <input type="text" {...registerMaintenance('requestId')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" placeholder="Auto-generated if blank" />
           </FormField>
           <FormField label="Asset ID">
-            <select {...registerMaintenance('assetId')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100">
+            <select {...registerMaintenance('assetId')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border">
               <option value="">Select asset</option>
               {assets.map((asset) => (<option key={asset.id} value={asset.assetId}>{asset.name}</option>))}
             </select>
           </FormField>
           <FormField label="Issue">
-            <input type="text" {...registerMaintenance('issue')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerMaintenance('issue')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Vendor">
-            <select {...registerMaintenance('vendor')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100">
+            <select {...registerMaintenance('vendor')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border">
               <option value="">Select vendor</option>
               {vendors.map((vendor) => (<option key={vendor.id} value={vendor.name}>{vendor.name}</option>))}
             </select>
           </FormField>
           <FormField label="Schedule date">
-            <input type="date" {...registerMaintenance('scheduleDate')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="date" {...registerMaintenance('scheduleDate')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Repair cost">
-            <input type="number" {...registerMaintenance('repairCost')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="number" {...registerMaintenance('repairCost')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Warranty claim">
-            <select {...registerMaintenance('warrantyClaim')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100">
+            <select {...registerMaintenance('warrantyClaim')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border">
               <option>No</option>
               <option>Yes</option>
             </select>
           </FormField>
           <FormField label="AMC details">
-            <input type="text" {...registerMaintenance('amcDetails')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <input type="text" {...registerMaintenance('amcDetails')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Status">
-            <select {...registerMaintenance('status')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100">
+            <select {...registerMaintenance('status')} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border">
               <option>Requested</option>
               <option>Scheduled</option>
               <option>In Progress</option>
@@ -1969,7 +1969,7 @@ export default function InventoryPage() {
             </select>
           </FormField>
           <FormField label="Service history">
-            <textarea {...registerMaintenance('serviceHistory')} rows="4" className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" />
+            <textarea {...registerMaintenance('serviceHistory')} rows="4" className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 hover-gradient-border" />
           </FormField>
           <FormField label="Attachments">
             <input type="file" accept="image/*,.pdf" {...registerMaintenance('attachments')} ref={(e) => { registerMaintenance('attachments').ref(e); maintenanceAttachmentRef.current = e; }} className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none" />

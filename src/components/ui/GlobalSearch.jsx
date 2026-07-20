@@ -237,7 +237,7 @@ export default function GlobalSearch({ className = 'w-full' }) {
                 <div className="flex items-center justify-between gap-3">
                   <p className="text-sm font-semibold text-slate-900">Recent searches</p>
                   {recentSearches.length > 0 ? (
-                    <button type="button" onClick={handleClearAll} className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-200">
+                    <button type="button" onClick={handleClearAll} className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-200 hover-gradient-border">
                       <Trash2 className="h-4 w-4" /> Clear all
                     </button>
                   ) : null}
@@ -250,7 +250,7 @@ export default function GlobalSearch({ className = 'w-full' }) {
                       <div key={searchTerm} className="flex items-center justify-between gap-3 rounded-[18px] border border-slate-200 bg-slate-50 px-4 py-3">
                         <button
                           type="button"
-                          className="text-left text-sm text-slate-700"
+                          className="text-left text-sm text-slate-700 hover-gradient-border"
                           onClick={() => handleSelectResult(searchTerm)}
                           onKeyDown={handleKeyDown}
                           id={`global-search-item-${index}`}

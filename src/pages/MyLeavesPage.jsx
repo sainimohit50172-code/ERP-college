@@ -99,8 +99,8 @@ export default function MyLeavesPage() {
   const loadData = async () => {
     try {
       const [requestsResponse, leaveTypesResponse] = await Promise.all([
-        api.get('/api/v1/leave-requests/'),
-        api.get('/api/v1/leave-types/'),
+        api.get('/leave-requests/'),
+        api.get('/leave-types/'),
       ]);
       const nextRequests = normalizeItems(requestsResponse);
       const nextLeaveTypes = normalizeItems(leaveTypesResponse);
@@ -206,7 +206,7 @@ export default function MyLeavesPage() {
     }
 
     try {
-      await api.post('/api/v1/leave-requests/', {
+      await api.post('/leave-requests/', {
         start_date: formState.startDate,
         end_date: formState.endDate,
         leave_period: formState.leavePeriod,
@@ -242,7 +242,7 @@ export default function MyLeavesPage() {
             >
               <Plus className="h-4 w-4" /> Request Leave
             </button>
-            <button type="button" className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700">
+            <button type="button" className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover-gradient-border">
               <BookOpen className="h-4 w-4 text-slate-500" /> Leave Policy
             </button>
             <div className="relative" ref={snapshotRef}>
@@ -324,7 +324,7 @@ export default function MyLeavesPage() {
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">Balance overview</p>
                 <h2 className="mt-1 text-[16px] font-semibold text-slate-900">Leave allocation</h2>
               </div>
-              <button type="button" className="rounded-full bg-slate-100 px-3 py-1 text-[12px] font-medium text-slate-600">Personal</button>
+              <button type="button" className="rounded-full bg-slate-100 px-3 py-1 text-[12px] font-medium text-slate-600 hover-gradient-border">Personal</button>
             </div>
 
             <select
@@ -404,7 +404,7 @@ export default function MyLeavesPage() {
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">Overview</p>
                 <h2 className="text-[16px] font-semibold text-slate-900">Recent requests</h2>
               </div>
-              <button type="button" className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700">Export report</button>
+              <button type="button" className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 hover-gradient-border">Export report</button>
             </div>
             <div className="overflow-auto">
               <table className="min-w-full text-left text-sm">
@@ -488,15 +488,15 @@ export default function MyLeavesPage() {
           <div className="flex flex-col gap-4">
             <div>
               <label className="mb-1 block text-[12px] font-semibold uppercase tracking-[0.18em] text-slate-500">Leave Start Date</label>
-              <input type="date" name="startDate" min={today} value={formState.startDate} onChange={handleFieldChange} className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-emerald-500" />
+              <input type="date" name="startDate" min={today} value={formState.startDate} onChange={handleFieldChange} className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-emerald-500 hover-gradient-border" />
             </div>
             <div>
               <label className="mb-1 block text-[12px] font-semibold uppercase tracking-[0.18em] text-slate-500">Leave End Date</label>
-              <input type="date" name="endDate" min={formState.startDate || today} value={formState.endDate} onChange={handleFieldChange} className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-emerald-500" />
+              <input type="date" name="endDate" min={formState.startDate || today} value={formState.endDate} onChange={handleFieldChange} className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-emerald-500 hover-gradient-border" />
             </div>
             <div>
               <label className="mb-1 block text-[12px] font-semibold uppercase tracking-[0.18em] text-slate-500">Select Leave Period</label>
-              <select name="leavePeriod" value={formState.leavePeriod} onChange={handleFieldChange} className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-emerald-500">
+              <select name="leavePeriod" value={formState.leavePeriod} onChange={handleFieldChange} className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-emerald-500 hover-gradient-border">
                 <option value="Full Day">Full Day</option>
                 <option value="First Half">First Half</option>
                 <option value="Second Half">Second Half</option>
@@ -504,7 +504,7 @@ export default function MyLeavesPage() {
             </div>
             <div>
               <label className="mb-1 block text-[12px] font-semibold uppercase tracking-[0.18em] text-slate-500">Reason</label>
-              <textarea name="reason" value={formState.reason} onChange={handleFieldChange} rows={4} placeholder="Enter Your Reason" className="w-full resize-none rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-emerald-500" />
+              <textarea name="reason" value={formState.reason} onChange={handleFieldChange} rows={4} placeholder="Enter Your Reason" className="w-full resize-none rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-emerald-500 hover-gradient-border" />
             </div>
             <div>
               <label className="mb-1 block text-[12px] font-semibold uppercase tracking-[0.18em] text-slate-500">Document Upload</label>
@@ -512,7 +512,7 @@ export default function MyLeavesPage() {
                 <UploadCloud className="mb-2 h-10 w-10 text-slate-400" />
                 <p className="text-[13px] text-slate-500">Click to upload</p>
                 <p className="mt-1 text-[11px] text-slate-400">.pdf, .jpg, .png</p>
-                <input type="file" accept=".pdf,.jpg,.png" className="hidden" onChange={(event) => setSelectedFileName(event.target.files?.[0]?.name || '')} />
+                <input type="file" accept=".pdf,.jpg,.png" className="hidden hover-gradient-border" onChange={(event) => setSelectedFileName(event.target.files?.[0]?.name || '')} />
               </label>
               {selectedFileName ? <p className="mt-2 text-sm text-emerald-600">Selected: {selectedFileName}</p> : null}
             </div>
@@ -532,7 +532,7 @@ export default function MyLeavesPage() {
 
           <div className="mt-auto flex justify-end gap-2 border-t border-slate-200 pt-4">
             <button type="button" onClick={() => setIsDrawerOpen(false)} className="rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700">Close</button>
-            <button type="submit" className="rounded-lg bg-gradient-to-r from-[#1e3a5f] to-[#2d5a8e] px-5 py-2.5 text-sm font-semibold text-white">Apply Leave</button>
+            <button type="submit" className="rounded-lg bg-gradient-to-r from-[#1e3a5f] to-[#2d5a8e] px-5 py-2.5 text-sm font-semibold text-white hover-gradient-border">Apply Leave</button>
           </div>
         </form>
       </div>

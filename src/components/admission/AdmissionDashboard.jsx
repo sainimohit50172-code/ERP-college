@@ -56,7 +56,7 @@ export default function AdmissionDashboard() {
         <div className="flex flex-col gap-4">
           {/* Header Section */}
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 hover-gradient-border">
               <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Admission</h1>
             </div>
             <div className="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm">
@@ -82,7 +82,7 @@ export default function AdmissionDashboard() {
                 className={`${card.bgColor} rounded-[22px] border ${card.borderColor} p-6 shadow-md relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] cursor-pointer`}
               >
                 <div className="relative z-10">
-                  <div className="flex items-start justify-between">
+                  <div className="flex items-start justify-between hover-gradient-border">
                     <div>
                       <p className={`text-sm font-semibold ${card.textColor}`}>{card.title}</p>
                       <h2 className="mt-3 text-4xl font-bold text-slate-900">{card.value}</h2>
@@ -100,12 +100,12 @@ export default function AdmissionDashboard() {
           <div className="grid gap-4 xl:grid-cols-[1.5fr_1fr]">
             {/* Left Card: Admission Data */}
             <div className="rounded-[22px] border border-slate-200/80 bg-white p-5 shadow-[0_18px_50px_-26px_rgba(15,23,42,0.28)]">
-              <div className="mb-4 flex items-center justify-between gap-4">
+              <div className="mb-4 flex items-center justify-between gap-4 hover-gradient-border">
                 <h2 className="text-lg font-semibold text-slate-900">Admission Data</h2>
                 <button
                   type="button"
                   onClick={handleRefresh}
-                  className="rounded-full p-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+                  className="rounded-full p-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 hover-gradient-border"
                   title="Refresh chart data"
                 >
                   <RotateCw className="h-5 w-5" />
@@ -127,7 +127,7 @@ export default function AdmissionDashboard() {
 
           {/* Full Width: Course Wise Admission */}
           <div className="rounded-[22px] border border-slate-200/80 bg-white p-5 shadow-[0_18px_50px_-26px_rgba(15,23,42,0.28)]">
-            <div className="mb-4 flex items-center justify-between gap-4">
+            <div className="mb-4 flex items-center justify-between gap-4 hover-gradient-border">
               <h2 className="text-lg font-semibold text-slate-900">Admission Enquiry Course Wise</h2>
             </div>
             <div className="mt-4">

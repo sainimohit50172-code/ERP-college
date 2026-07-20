@@ -282,46 +282,46 @@ export default function AttendanceModule({
                 <p className="text-sm text-slate-400">Configure the academic session and capture daily attendance in one screen.</p>
               </div>
               <div className="flex flex-wrap gap-2">
-                <button type="button" onClick={handleMarkAllPresent} className="rounded-3xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 hover:bg-slate-700">Mark all present</button>
-                <button type="button" onClick={handleQuickToggle} className="rounded-3xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 hover:bg-slate-700">Quick toggle</button>
-                <button type="button" onClick={handleBulkAttendance} className="rounded-3xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 hover:bg-slate-700">Bulk attendance</button>
+                <button type="button" onClick={handleMarkAllPresent} className="rounded-3xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 hover:bg-slate-700 hover-gradient-border">Mark all present</button>
+                <button type="button" onClick={handleQuickToggle} className="rounded-3xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 hover:bg-slate-700 hover-gradient-border">Quick toggle</button>
+                <button type="button" onClick={handleBulkAttendance} className="rounded-3xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 hover:bg-slate-700 hover-gradient-border">Bulk attendance</button>
               </div>
             </div>
 
             <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               <FormField label="Academic year">
-                <input name="academicYear" value={sessionValues.academicYear || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+                <input name="academicYear" value={sessionValues.academicYear || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
               </FormField>
               <FormField label="Campus">
-                <input name="campus" value={sessionValues.campus || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+                <input name="campus" value={sessionValues.campus || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
               </FormField>
               <FormField label="Department">
-                <input name="department" value={sessionValues.department || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+                <input name="department" value={sessionValues.department || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
               </FormField>
               {scope === 'student' && (
                 <>
                   <FormField label="Course">
-                    <input name="course" value={sessionValues.course || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+                    <input name="course" value={sessionValues.course || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
                   </FormField>
                   <FormField label="Semester">
-                    <input name="semester" value={sessionValues.semester || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+                    <input name="semester" value={sessionValues.semester || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
                   </FormField>
                   <FormField label="Section">
-                    <input name="section" value={sessionValues.section || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+                    <input name="section" value={sessionValues.section || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
                   </FormField>
                 </>
               )}
               <FormField label={scope === 'student' ? 'Subject' : scope === 'teacher' ? 'Subject' : scope === 'employee' ? 'Shift' : 'Post'}>
-                <input name={scope === 'student' ? 'subject' : scope === 'teacher' ? 'subject' : scope === 'employee' ? 'shift' : 'post'} value={scope === 'student' ? sessionValues.subject || '' : scope === 'teacher' ? sessionValues.subject || '' : scope === 'employee' ? sessionValues.shift || '' : sessionValues.post || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+                <input name={scope === 'student' ? 'subject' : scope === 'teacher' ? 'subject' : scope === 'employee' ? 'shift' : 'post'} value={scope === 'student' ? sessionValues.subject || '' : scope === 'teacher' ? sessionValues.subject || '' : scope === 'employee' ? sessionValues.shift || '' : sessionValues.post || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
               </FormField>
               <FormField label={scope === 'student' ? 'Faculty' : scope === 'teacher' ? 'Faculty' : scope === 'employee' ? 'Employee' : 'Guard'}>
-                <input name={scope === 'student' ? 'faculty' : scope === 'teacher' ? 'faculty' : scope === 'employee' ? 'employeeName' : 'guardName'} value={scope === 'student' ? sessionValues.faculty || '' : scope === 'teacher' ? sessionValues.faculty || '' : scope === 'employee' ? sessionValues.employeeName || '' : sessionValues.guardName || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+                <input name={scope === 'student' ? 'faculty' : scope === 'teacher' ? 'faculty' : scope === 'employee' ? 'employeeName' : 'guardName'} value={scope === 'student' ? sessionValues.faculty || '' : scope === 'teacher' ? sessionValues.faculty || '' : scope === 'employee' ? sessionValues.employeeName || '' : sessionValues.guardName || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
               </FormField>
               <FormField label="Date">
-                <input type="date" name="date" value={sessionValues.date || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+                <input type="date" name="date" value={sessionValues.date || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
               </FormField>
               <FormField label="Time slot">
-                <input name="timeSlot" value={sessionValues.timeSlot || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+                <input name="timeSlot" value={sessionValues.timeSlot || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
               </FormField>
             </div>
 
@@ -342,7 +342,7 @@ export default function AttendanceModule({
                         <div className="text-xs text-slate-500">{entry.subject || sessionValues.subject || '—'}</div>
                       </td>
                       <td className="px-4 py-3">
-                        <div className="flex flex-wrap gap-2" tabIndex={0} onKeyDown={(event) => {
+                        <div className="flex flex-wrap gap-2 hover-gradient-border" tabIndex={0} onKeyDown={(event) => {
                           if (event.key === 'Enter' || event.key === ' ') {
                             event.preventDefault();
                             updateDraftStatus(entry.id, entry.status === 'Present' ? 'Absent' : 'Present');
@@ -364,10 +364,10 @@ export default function AttendanceModule({
               </table>
             </div>
 
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-[18px] border border-slate-800/80 bg-slate-950/80 p-3 text-sm text-slate-300">
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-[18px] border border-slate-800/80 bg-slate-950/80 p-3 text-sm text-slate-300 hover-gradient-border">
               <span>{statusMessage}</span>
               <div className="flex flex-wrap gap-2">
-                <button type="button" onClick={handleSubmitAttendance} disabled={isSubmitting || !draftEntries.length} className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-2 font-semibold text-slate-950 transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-60">
+                <button type="button" onClick={handleSubmitAttendance} disabled={isSubmitting || !draftEntries.length} className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-2 font-semibold text-slate-950 transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-60 hover-gradient-border">
                   <FaSave /> {isSubmitting ? 'Submitting...' : 'Submit attendance'}
                 </button>
                 <button type="button" onClick={() => loadAttendanceData()} className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-2 text-slate-200 hover:bg-slate-700">
@@ -428,8 +428,8 @@ export default function AttendanceModule({
 
         <div className="space-y-6">
           <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
-            <div className="mb-4 flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-slate-700/80 text-slate-200"><FaUserGraduate className="h-5 w-5" /></div>
+            <div className="mb-4 flex items-center gap-3 hover-gradient-border">
+              <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-slate-700/80 text-slate-200 hover-gradient-border"><FaUserGraduate className="h-5 w-5" /></div>
               <div>
                 <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Search & filters</p>
                 <h3 className="text-xl font-semibold text-white">Find attendance quickly</h3>
@@ -472,7 +472,7 @@ export default function AttendanceModule({
           </div>
 
           <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
-            <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center justify-between gap-3 hover-gradient-border">
               <div>
                 <h3 className="text-xl font-semibold text-white">Reports</h3>
                 <p className="text-sm text-slate-400">Export, print and review attendance summaries for operations teams.</p>
@@ -493,7 +493,7 @@ export default function AttendanceModule({
             <div className="mt-4 flex flex-wrap gap-2">
               <button type="button" onClick={() => handleExport('csv')} className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-2 text-sm text-slate-200 hover:bg-slate-700"><FaDownload /> CSV</button>
               <button type="button" onClick={() => handleExport('excel')} className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-2 text-sm text-slate-200 hover:bg-slate-700"><FaDownload /> Excel</button>
-              <button type="button" onClick={handlePrint} className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-2 text-sm text-slate-200 hover:bg-slate-700"><FaPrint /> Print</button>
+              <button type="button" onClick={handlePrint} className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-2 text-sm text-slate-200 hover:bg-slate-700 hover-gradient-border"><FaPrint /> Print</button>
             </div>
             <div className="mt-4 rounded-[18px] border border-slate-700/70 bg-slate-950/70 p-4 text-sm text-slate-300">
               <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Current report</p>
@@ -503,16 +503,16 @@ export default function AttendanceModule({
           </div>
 
           <div className="rounded-[24px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
-            <div className="mb-3 flex items-center justify-between gap-3">
+            <div className="mb-3 flex items-center justify-between gap-3 hover-gradient-border">
               <div>
                 <h3 className="text-xl font-semibold text-white">Leave requests</h3>
                 <p className="text-sm text-slate-400">Capture late, absent and medical leave details for review.</p>
               </div>
             </div>
             <form onSubmit={handleCreateLeave} className="space-y-3">
-              <input value={sessionValues.studentName || ''} onChange={handleFieldChange} name="studentName" placeholder="Student / staff name" className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
-              <textarea name="remarks" value={sessionValues.remarks || ''} onChange={handleFieldChange} rows="3" placeholder="Leave reason" className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
-              <button type="submit" className="rounded-3xl bg-slate-800/80 px-4 py-2 text-sm text-slate-200 hover:bg-slate-700">Create leave request</button>
+              <input value={sessionValues.studentName || ''} onChange={handleFieldChange} name="studentName" placeholder="Student / staff name" className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
+              <textarea name="remarks" value={sessionValues.remarks || ''} onChange={handleFieldChange} rows="3" placeholder="Leave reason" className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
+              <button type="submit" className="rounded-3xl bg-slate-800/80 px-4 py-2 text-sm text-slate-200 hover:bg-slate-700 hover-gradient-border">Create leave request</button>
             </form>
             {isLoading ? (
               <div className="mt-4 rounded-[16px] border border-slate-700/70 bg-slate-950/70 p-3 text-sm text-slate-300">
@@ -522,7 +522,7 @@ export default function AttendanceModule({
               <div className="mt-4 space-y-2">
                 {leaves.slice(0, 4).map((leave) => (
                   <div key={leave.id} className="rounded-[16px] border border-slate-700/70 bg-slate-950/70 p-3 text-sm text-slate-300">
-                    <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center justify-between gap-3 hover-gradient-border">
                       <span className="font-semibold text-white">{leave.studentName || leave.employeeName || leave.guardName || 'Leave request'}</span>
                       <StatusBadge status={leave.status || 'Pending'} />
                     </div>

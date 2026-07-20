@@ -5,6 +5,7 @@ import ViewButton from '../components/ui/ViewButton.jsx';
 import Button from '../components/ui/Button.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import TablePagination from '../components/tables/TablePagination.jsx';
+import CircleAvatar from '../components/ui/CircleAvatar.jsx';
 
 const feedbackRecords = [
   {
@@ -282,11 +283,11 @@ export default function StudentFeedbackPage() {
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <Button type="button" variant="secondary" className="rounded-2xl px-4 py-2" onClick={() => { setDraftFilters(savedFilters); setFilterModalOpen(true); }}>
+            <Button type="button" variant="secondary" className="rounded-2xl px-4 py-2 hover-gradient-border" onClick={() => { setDraftFilters(savedFilters); setFilterModalOpen(true); }}>
               <Filter className="h-4 w-4" />
               Filter
             </Button>
-            <Button type="button" variant="secondary" className="rounded-2xl px-4 py-2" onClick={() => window.print()}>
+            <Button type="button" variant="secondary" className="rounded-2xl px-4 py-2 hover-gradient-border" onClick={() => window.print()}>
               <Printer className="h-4 w-4" />
               Print
             </Button>
@@ -331,7 +332,7 @@ export default function StudentFeedbackPage() {
             </div>
           </div>
           <div className="mt-4 flex flex-wrap items-center gap-3">
-            <Button type="button" variant="secondary" className="rounded-2xl px-4 py-2" onClick={handleResetFilters}>
+            <Button type="button" variant="secondary" className="rounded-2xl px-4 py-2 hover-gradient-border" onClick={handleResetFilters}>
               Reset Filters
             </Button>
             <p className="text-sm text-slate-600">{filteredRecords.length} record{filteredRecords.length === 1 ? '' : 's'} found</p>
@@ -345,7 +346,7 @@ export default function StudentFeedbackPage() {
                 <tr>
                   <th className="sticky top-0 px-4 py-4 text-left font-semibold">
                     <label className="inline-flex items-center">
-                      <input type="checkbox" className="h-4 w-4 rounded border-slate-300 text-slate-900" />
+                      <input type="checkbox" className="h-4 w-4 rounded border-slate-300 text-slate-900 hover-gradient-border" />
                     </label>
                   </th>
                   <th className="sticky top-0 px-4 py-4 text-left font-semibold">S.No</th>
@@ -365,16 +366,18 @@ export default function StudentFeedbackPage() {
                   <tr key={record.id} className={index % 2 === 0 ? 'bg-white hover:bg-slate-50' : 'bg-slate-50 hover:bg-slate-100'}>
                     <td className="px-4 py-4">
                       <label className="inline-flex items-center">
-                        <input type="checkbox" className="h-4 w-4 rounded border-slate-300 text-slate-900" />
+                        <input type="checkbox" className="h-4 w-4 rounded border-slate-300 text-slate-900 hover-gradient-border" />
                       </label>
                     </td>
                     <td className="px-4 py-4 font-medium text-slate-900">{index + 1}</td>
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-full overflow-hidden bg-slate-100">
-                          {/* placeholder avatar */}
-                          <div className="h-full w-full bg-center bg-cover" style={{ backgroundImage: `url('https://i.pravatar.cc/40?img=${(index % 70) + 1}')` }} />
-                        </div>
+                        <CircleAvatar
+                          src={`https://i.pravatar.cc/40?img=${(index % 70) + 1}`}
+                          alt={record.studentName}
+                          name={record.studentName}
+                          sizeClass="h-10 w-10"
+                        />
                         <span className="font-medium text-slate-900">{record.studentName}</span>
                       </div>
                     </td>
@@ -396,7 +399,7 @@ export default function StudentFeedbackPage() {
                           ariaLabel="View feedback"
                           className="h-10 w-10 rounded-2xl bg-slate-100 text-slate-700 hover:bg-slate-200"
                         />
-                        <button type="button" title="Print Feedback" className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 transition hover:bg-slate-200" onClick={() => window.print()}>
+                        <button type="button" title="Print Feedback" className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 transition hover:bg-slate-200 hover-gradient-border" onClick={() => window.print()}>
                           <Printer className="h-4 w-4" />
                         </button>
                       </div>
@@ -417,10 +420,10 @@ export default function StudentFeedbackPage() {
         onClose={handleCancelFilterModal}
         footer={
           <>
-            <Button type="button" variant="secondary" className="rounded-2xl px-4 py-2" onClick={handleCancelFilterModal}>
+            <Button type="button" variant="secondary" className="rounded-2xl px-4 py-2 hover-gradient-border" onClick={handleCancelFilterModal}>
               Cancel
             </Button>
-            <Button type="button" variant="primary" className="rounded-2xl px-4 py-2" onClick={handleApplyFilter}>
+            <Button type="button" variant="primary" className="rounded-2xl px-4 py-2 hover-gradient-border" onClick={handleApplyFilter}>
               Go →
             </Button>
           </>

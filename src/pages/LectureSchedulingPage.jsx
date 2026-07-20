@@ -87,7 +87,7 @@ export default function LectureSchedulingPage() {
             <p className="text-sm text-slate-400">Search lectures, manage schedules and track attendance across sections.</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <button className="inline-flex items-center gap-2 rounded-2xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 transition hover:bg-slate-700"><FaDownload /> Export</button>
+            <button className="inline-flex items-center gap-2 rounded-2xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 transition hover:bg-slate-700 hover-gradient-border"><FaDownload /> Export</button>
             <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 rounded-2xl bg-sky-400 px-3 py-2 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"><FaPlus /> Add lecture</button>
           </div>
         </div>
@@ -116,29 +116,29 @@ export default function LectureSchedulingPage() {
         </div>
         <div className="mt-4"><TablePagination page={page} pageCount={pageCount} onPageChange={setPage} /></div>
       </div>
-      <Modal title="Schedule new lecture" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<button onClick={handleSubmit(onSubmit)} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">Schedule lecture</button>}>
+      <Modal title="Schedule new lecture" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<button onClick={handleSubmit(onSubmit)} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 hover-gradient-border">Schedule lecture</button>}>
         <form className="grid gap-5 lg:grid-cols-2">
-          <FormField label="Subject"><select {...register('subject', { required: 'Subject is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+          <FormField label="Subject"><select {...register('subject', { required: 'Subject is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border">
               <option value="">Select subject</option>
               {subjects.map((subject) => (<option key={subject.id} value={subject.code}>{subject.title}</option>))}
             </select>{errors.subject && <p className="mt-1 text-sm text-rose-400">{errors.subject.message}</p>}</FormField>
-          <FormField label="Teacher"><select {...register('teacher', { required: 'Teacher is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+          <FormField label="Teacher"><select {...register('teacher', { required: 'Teacher is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border">
               <option value="">Select teacher</option>
               {teachers.map((teacher) => (<option key={teacher.id} value={teacher.name}>{teacher.name}</option>))}
             </select>{errors.teacher && <p className="mt-1 text-sm text-rose-400">{errors.teacher.message}</p>}</FormField>
-          <FormField label="Course"><select {...register('course', { required: 'Course is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+          <FormField label="Course"><select {...register('course', { required: 'Course is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border">
               <option value="">Select course</option>
               {courses.map((course) => (<option key={course.id} value={course.code}>{course.code}</option>))}
             </select>{errors.course && <p className="mt-1 text-sm text-rose-400">{errors.course.message}</p>}</FormField>
-          <FormField label="Section"><select {...register('section', { required: 'Section is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+          <FormField label="Section"><select {...register('section', { required: 'Section is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border">
               <option value="">Select section</option>
               {sections.map((section) => (<option key={section.id} value={section.name}>{section.name}</option>))}
             </select>{errors.section && <p className="mt-1 text-sm text-rose-400">{errors.section.message}</p>}</FormField>
-          <FormField label="Date"><input type="date" {...register('date', { required: 'Date is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />{errors.date && <p className="mt-1 text-sm text-rose-400">{errors.date.message}</p>}</FormField>
-          <FormField label="Time"><input type="text" {...register('time', { required: 'Time is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="9:00 AM - 10:30 AM" />{errors.time && <p className="mt-1 text-sm text-rose-400">{errors.time.message}</p>}</FormField>
-          <FormField label="Classroom"><input type="text" {...register('room', { required: 'Classroom is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="A-101" />{errors.room && <p className="mt-1 text-sm text-rose-400">{errors.room.message}</p>}</FormField>
-          <FormField label="Type"><select {...register('type', { required: 'Type is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"><option value="Theory">Theory</option><option value="Practical">Practical</option><option value="Seminar">Seminar</option></select>{errors.type && <p className="mt-1 text-sm text-rose-400">{errors.type.message}</p>}</FormField>
-          <FormField label="Status"><select {...register('status', { required: 'Status is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"><option value="Scheduled">Scheduled</option><option value="Completed">Completed</option><option value="Cancelled">Cancelled</option></select>{errors.status && <p className="mt-1 text-sm text-rose-400">{errors.status.message}</p>}</FormField>
+          <FormField label="Date"><input type="date" {...register('date', { required: 'Date is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />{errors.date && <p className="mt-1 text-sm text-rose-400">{errors.date.message}</p>}</FormField>
+          <FormField label="Time"><input type="text" {...register('time', { required: 'Time is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="9:00 AM - 10:30 AM" />{errors.time && <p className="mt-1 text-sm text-rose-400">{errors.time.message}</p>}</FormField>
+          <FormField label="Classroom"><input type="text" {...register('room', { required: 'Classroom is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="A-101" />{errors.room && <p className="mt-1 text-sm text-rose-400">{errors.room.message}</p>}</FormField>
+          <FormField label="Type"><select {...register('type', { required: 'Type is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"><option value="Theory">Theory</option><option value="Practical">Practical</option><option value="Seminar">Seminar</option></select>{errors.type && <p className="mt-1 text-sm text-rose-400">{errors.type.message}</p>}</FormField>
+          <FormField label="Status"><select {...register('status', { required: 'Status is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"><option value="Scheduled">Scheduled</option><option value="Completed">Completed</option><option value="Cancelled">Cancelled</option></select>{errors.status && <p className="mt-1 text-sm text-rose-400">{errors.status.message}</p>}</FormField>
         </form>
       </Modal>
     </div>

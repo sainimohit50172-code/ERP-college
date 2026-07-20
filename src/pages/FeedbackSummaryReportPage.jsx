@@ -149,14 +149,14 @@ export default function FeedbackSummaryReportPage() {
             <button
               type="button"
               onClick={handleExport}
-              className="inline-flex items-center justify-center rounded-lg border border-[#1E293B] bg-white px-4 py-3 text-sm font-semibold text-[#1E293B] transition hover:bg-slate-50"
+              className="inline-flex items-center justify-center rounded-lg border border-[#1E293B] bg-white px-4 py-3 text-sm font-semibold text-[#1E293B] transition hover:bg-slate-50 hover-gradient-border"
             >
               Export as Excel
             </button>
             <button
               type="button"
               onClick={handleGo}
-              className="inline-flex items-center justify-center rounded-lg bg-[#1E293B] px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-900"
+              className="inline-flex items-center justify-center rounded-lg bg-[#1E293B] px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-900 hover-gradient-border"
             >
               Go
             </button>

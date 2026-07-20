@@ -1,6 +1,7 @@
 from app.models.auth.models import (
     AuthSession,
     EmailVerification,
+    MobileOTP,
     PasswordReset,
     Permission,
     Role,
@@ -12,6 +13,7 @@ from app.models.auth.models import (
 __all__ = [
     "AuthSession",
     "EmailVerification",
+    "MobileOTP",
     "PasswordReset",
     "Permission",
     "Role",

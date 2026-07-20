@@ -119,10 +119,16 @@ export const mapClassroomRecord = (record = {}) => ({
 
 const normalizeListParams = (params = {}) => {
   const normalized = { ...params };
+  const requestedPageSize = Number(normalized.pageSize ?? normalized.page_size ?? 10);
+  const clampedPageSize = Number.isFinite(requestedPageSize) ? Math.min(100, Math.max(1, requestedPageSize)) : 10;
+
   if ('pageSize' in normalized) {
-    normalized.page_size = normalized.pageSize;
+    normalized.page_size = clampedPageSize;
     delete normalized.pageSize;
+  } else if ('page_size' in normalized) {
+    normalized.page_size = clampedPageSize;
   }
+
   if ('sortBy' in normalized) {
     normalized.sort_by = normalized.sortBy;
     delete normalized.sortBy;

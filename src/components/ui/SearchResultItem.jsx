@@ -44,7 +44,7 @@ export default function SearchResultItem({ item, query, isActive, onClick, onKey
       type="button"
       onClick={onClick}
       onKeyDown={onKeyDown}
-      className={`group flex w-full flex-col gap-1 rounded-[18px] border px-4 py-4 text-left transition ${
+      className={`hover-gradient-border group flex w-full flex-col gap-1 rounded-[18px] border px-4 py-4 text-left transition ${
         isActive ? 'border-emerald-300 bg-emerald-50 shadow-sm' : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50'
       }`}
       role="option"

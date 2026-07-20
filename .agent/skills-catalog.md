@@ -1,6 +1,6 @@
 # AI Agent Skills — Full Catalog
 
-> Auto-generated. Total: **1968 skills** across **115 categories**.
+> Auto-generated. Total: **1969 skills** across **115 categories**.
 > When asked "what skill should I use?", browse this file and suggest the most relevant skill IDs.
 > Install a skill: `Ctrl+Shift+/` → search for the skill ID → press Enter.
 
@@ -1301,6 +1301,7 @@ makepad Markdown, makepad Html, TextFlow, rich... _(risk: unknown)_
 - **gpt-taste**: Use when generating elite GSAP-heavy frontend pages with strict AIDA structure, wide hero typography, and gapless bento grids. _(risk: safe)_
 - **high-end-visual-design**: Use when designing expensive agency-grade interfaces with premium fonts, spatial rhythm, soft depth, and fluid microinteractions. _(risk: safe)_
 - **industrial-brutalist-ui**: Use when creating raw industrial or tactical telemetry UIs with rigid grids, stark typography, CRT effects, and high-density data. _(risk: safe)_
+- **markstream-install**: Install and configure Markstream streaming Markdown renderers for Vue, React, Svelte, Angular, Nuxt, Next.js, and Vue 2 applications. _(risk: safe)_
 - **minimalist-ui**: Use when creating clean editorial interfaces with warm monochrome palettes, crisp borders, restrained motion, and flat bento layouts. _(risk: safe)_
 - **premium-3d-website**: Guidelines for building premium 3D websites, focusing on custom WebGL shaders, post-processing, physics-based interactions, smooth animations, preloaders, and device optimization. _(risk: safe)_
 - **redesign-existing-projects**: Use when upgrading existing websites or apps by auditing generic UI patterns and applying premium design fixes without rewrites. _(risk: safe)_
@@ -1338,8 +1339,8 @@ makepad 着色器, makepad shader 语法, makepad 绘制 _(risk: unknown)_
 - **unreal-engine-cpp-pro**: Expert guide for Unreal Engine 5.x C++ development, covering UObject hygiene, performance patterns, and best practices. _(risk: safe)_
 - **vr-ar**: VR/AR development principles. Comfort, interaction, performance requirements. _(risk: unknown)_
 - **web-games**: Web browser game development principles. Framework selection, WebGPU, optimization, PWA. _(risk: unknown)_
-- **unity-ai-game-creator**: Transform raw game ideas into complete Unity projects with AI-powered asset generation, scene blueprints, music/SFX prompts, and step-by-step development procedures using Unity 6+ and modern AI tools. _(risk: safe)_
 - **engine-selection**: Selects game engines and frameworks by platform, genre, and architecture (full canvas shell vs hybrid DOM shell + guest viewport). Covers Phaser, PixiJS, Kaplay, Canvas/WebGL, Three.js, Babylon.js, Godot, Unity, Ink, Twine. Use when choosing a stack or comparing runtimes before implementation. _(risk: safe)_
+- **unity-ai-game-creator**: Transform raw game ideas into complete Unity projects with AI-powered asset generation, scene blueprints, music/SFX prompts, and step-by-step development procedures using Unity 6+ and modern AI tools. _(risk: safe)_
 
 ## general
 
@@ -2125,6 +2126,7 @@ calculations
 - **analytics**: When the user wants to set up, improve, or audit analytics tracking and measurement. Also use when the user mentions "set up tracking," "GA4," "Google Analytics," "conversion tracking," "event tracking," "UTM parameters," "tag manager," "GTM," "analytics implementation," "tracking... _(risk: unknown)_
 - **anti-deception**: Use BEFORE responding when the user's request shows pressure to validate or agree ("tell them what they want", "make them happy", "convince them"), manufactured urgency (artificial deadline), authority appeals (citing investors, advisors, lawyers, experts), demands to certify without... _(risk: unknown)_
 - **anti-sycophancy**: Eliminate sycophantic agreement patterns in AI responses. Load via /skill anti-sycophancy. _(risk: safe)_
+- **antigravity-maintainer-batch-release**: Run protected AAS maintainer sweeps, PR merge batches, canonical sync, Core preview checks, and scripted releases. Use for repository maintenance, main alignment, CLI/MCP/Workbench changes, or release work; not ordinary contribution tasks. _(risk: critical)_
 - **app-store-changelog**: Generate user-facing App Store release notes from git history since the last tag. _(risk: safe)_
 - **apple-notes-search**: Semantic + keyword search and connection-discovery across the user's own Apple Notes via the apple-notes MCP server. Use when the user wants to find, recall, or synthesize something from their notes, or surface non-obvious bridges/related notes. macOS, on-device. _(risk: critical)_
 - **atlas-ledger**: Companion to atlas-contract. Auto-invoked by its Final Audit on caught drift; also use after Post Reviews or user requests to record a mistake. Distills drift into WHEN/DON'T/INSTEAD clauses, writes to Atlas.md after confirmation. _(risk: critical)_
@@ -2342,7 +2344,6 @@ calculations
 - **wp-guard**: Review generated or changed WordPress plugins, themes, and blocks for security, internationalization, performance, and API correctness. _(risk: offensive)_
 - **xvary-stock-research**: Thesis-driven equity analysis from public SEC EDGAR and market data; /analyze, /score, /compare workflows with bundled Python tools (Claude Code, Cursor, Codex). _(risk: safe)_
 - **yield-intelligence**: Passive income portfolio analysis — activate when user asks about dividend yields, Treasury rates, REIT income, monthly passive income goals, or portfolio yield optimization. Scans 4 asset classes, ranks by risk-adjusted return, and builds allocations targeting a specific monthly income. _(risk: safe)_
-- **antigravity-maintainer-batch-release**: Run protected AAS maintainer sweeps, PR merge batches, canonical sync, Core preview checks, and scripted releases. Use for repository maintenance, main alignment, CLI/MCP/Workbench changes, or release work; not ordinary contribution tasks. _(risk: critical)_
 
 ## video
 

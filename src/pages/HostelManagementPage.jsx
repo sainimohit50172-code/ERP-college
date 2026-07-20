@@ -254,7 +254,7 @@ export default function HostelManagementPage() {
             <button
               type="button"
               onClick={handleExport}
-              className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700"
+              className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700 hover-gradient-border"
             >
               <FaDownload /> Export rooms
             </button>
@@ -276,7 +276,7 @@ export default function HostelManagementPage() {
         }
       />
 
-      <input ref={importInputRef} type="file" accept=".csv" className="hidden" onChange={handleFileChange} />
+      <input ref={importInputRef} type="file" accept=".csv" className="hidden hover-gradient-border" onChange={handleFileChange} />
 
       <div className="grid gap-6 xl:grid-cols-4">
         <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
@@ -363,7 +363,7 @@ export default function HostelManagementPage() {
               `${room.occupiedBeds ?? Math.min(room.capacity || 0, 0)}/${room.capacity || 0}`,
               <div key={`${room.id}-actions`} className="flex items-center gap-2">
                 <button type="button" onClick={() => setIsAllocationModalOpen(true)} aria-label="Allot" className="h-8 w-8 flex items-center justify-center rounded-full bg-slate-800/80 text-slate-200 hover:bg-slate-700"><FaBed /></button>
-                <button type="button" onClick={handlePrint} aria-label="Slip" className="h-8 w-8 flex items-center justify-center rounded-full bg-slate-800/80 text-slate-200 hover:bg-slate-700">🏷</button>
+                <button type="button" onClick={handlePrint} aria-label="Slip" className="h-8 w-8 flex items-center justify-center rounded-full bg-slate-800/80 text-slate-200 hover:bg-slate-700 hover-gradient-border">🏷</button>
               </div>,
             ]) : [[
               <div key="empty" className="col-span-7 py-10 text-center text-slate-400">No hostel rooms found. Add a room or import room records to get started.</div>,
@@ -401,7 +401,7 @@ export default function HostelManagementPage() {
             <button onClick={() => setIsAllocationModalOpen(true)} className="rounded-3xl bg-slate-800/80 px-4 py-3 text-left text-sm text-slate-200 transition hover:bg-slate-700"><FaBed className="mr-2 inline-block" /> Allocate room</button>
             <button onClick={() => setIsAllocationModalOpen(true)} className="rounded-3xl bg-slate-800/80 px-4 py-3 text-left text-sm text-slate-200 transition hover:bg-slate-700"><FaExchangeAlt className="mr-2 inline-block" /> Transfer student</button>
             <button onClick={() => setIsAllocationModalOpen(true)} className="rounded-3xl bg-slate-800/80 px-4 py-3 text-left text-sm text-slate-200 transition hover:bg-slate-700"><FaDoorOpen className="mr-2 inline-block" /> Vacate room</button>
-            <button onClick={handlePrint} className="rounded-3xl bg-slate-800/80 px-4 py-3 text-left text-sm text-slate-200 transition hover:bg-slate-700"><FaPrint className="mr-2 inline-block" /> Print allocation slip</button>
+            <button onClick={handlePrint} className="rounded-3xl bg-slate-800/80 px-4 py-3 text-left text-sm text-slate-200 transition hover:bg-slate-700 hover-gradient-border"><FaPrint className="mr-2 inline-block" /> Print allocation slip</button>
           </div>
         </div>
 
@@ -441,7 +441,7 @@ export default function HostelManagementPage() {
           <button
             type="button"
             onClick={handleSubmitRoom(onSubmitRoom)}
-            className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"
+            className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 hover-gradient-border"
           >
             Save room
           </button>
@@ -451,7 +451,7 @@ export default function HostelManagementPage() {
           <FormField label="Hostel">
             <select
               {...registerRoom('hostelId', { required: 'Hostel is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             >
               <option value="">Select hostel</option>
               {hostels.map((hostel) => (
@@ -464,7 +464,7 @@ export default function HostelManagementPage() {
             <input
               type="text"
               {...registerRoom('floor', { required: 'Floor is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
               placeholder="1"
             />
             {roomErrors.floor && <p className="mt-1 text-sm text-rose-400">{roomErrors.floor.message}</p>}
@@ -473,7 +473,7 @@ export default function HostelManagementPage() {
             <input
               type="text"
               {...registerRoom('roomNumber', { required: 'Room number is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
               placeholder="101"
             />
             {roomErrors.roomNumber && <p className="mt-1 text-sm text-rose-400">{roomErrors.roomNumber.message}</p>}
@@ -482,7 +482,7 @@ export default function HostelManagementPage() {
             <input
               type="number"
               {...registerRoom('capacity', { required: 'Capacity is required', min: { value: 1, message: 'Capacity must be at least 1' } })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
               placeholder="2"
             />
             {roomErrors.capacity && <p className="mt-1 text-sm text-rose-400">{roomErrors.capacity.message}</p>}
@@ -490,7 +490,7 @@ export default function HostelManagementPage() {
           <FormField label="Status">
             <select
               {...registerRoom('status')}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             >
               <option value="Available">Available</option>
               <option value="Occupied">Occupied</option>
@@ -509,7 +509,7 @@ export default function HostelManagementPage() {
           <button
             type="button"
             onClick={handleSubmitAllocation(onSubmitAllocation)}
-            className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"
+            className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 hover-gradient-border"
           >
             Save allocation
           </button>
@@ -519,7 +519,7 @@ export default function HostelManagementPage() {
           <FormField label="Student">
             <select
               {...registerAllocation('studentId', { required: 'Student is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             >
               <option value="">Select student</option>
               {students.map((student) => (
@@ -531,7 +531,7 @@ export default function HostelManagementPage() {
           <FormField label="Room">
             <select
               {...registerAllocation('roomId', { required: 'Room is required' })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             >
               <option value="">Select room</option>
               {hostelRooms.map((room) => (
@@ -544,7 +544,7 @@ export default function HostelManagementPage() {
             <input
               type="number"
               {...registerAllocation('bedNumber', { required: 'Bed number is required', min: { value: 1, message: 'Bed number must be at least 1' } })}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
               placeholder="1"
             />
             {allocationErrors.bedNumber && <p className="mt-1 text-sm text-rose-400">{allocationErrors.bedNumber.message}</p>}
@@ -552,7 +552,7 @@ export default function HostelManagementPage() {
           <FormField label="Status">
             <select
               {...registerAllocation('status')}
-              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"
+              className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"
             >
               <option value="Occupied">Occupied</option>
               <option value="Vacant">Vacant</option>

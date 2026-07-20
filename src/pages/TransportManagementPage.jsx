@@ -558,51 +558,51 @@ export default function TransportManagementPage() {
       >
         <form className="grid gap-5 lg:grid-cols-2">
           <FormField label="Vehicle number">
-            <input type="text" {...register('vehicleNumber', { required: 'Vehicle number is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="TN-01-AB-1234" />
+            <input type="text" {...register('vehicleNumber', { required: 'Vehicle number is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="TN-01-AB-1234" />
             {errors.vehicleNumber && <p className="mt-1 text-sm text-rose-400">{errors.vehicleNumber.message}</p>}
           </FormField>
           <FormField label="Vehicle type">
-            <select {...register('vehicleType')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+            <select {...register('vehicleType')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border">
               {vehicleTypes.map((type) => (
                 <option key={type.value} value={type.value}>{type.label}</option>
               ))}
             </select>
           </FormField>
           <FormField label="Bus name">
-            <input type="text" {...register('busName')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Campus Cruiser" />
+            <input type="text" {...register('busName')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="Campus Cruiser" />
           </FormField>
           <FormField label="Capacity">
-            <input type="number" {...register('capacity', { valueAsNumber: true })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="40" />
+            <input type="number" {...register('capacity', { valueAsNumber: true })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="40" />
           </FormField>
           <FormField label="GPS ID">
-            <input type="text" {...register('gpsId')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="GPS-6789" />
+            <input type="text" {...register('gpsId')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="GPS-6789" />
           </FormField>
           <FormField label="Engine number">
-            <input type="text" {...register('engineNumber')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="ENG1234567" />
+            <input type="text" {...register('engineNumber')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="ENG1234567" />
           </FormField>
           <FormField label="Chassis number">
-            <input type="text" {...register('chassisNumber')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="CHS9876543" />
+            <input type="text" {...register('chassisNumber')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="CHS9876543" />
           </FormField>
           <FormField label="Purchase date">
-            <input type="date" {...register('purchaseDate')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+            <input type="date" {...register('purchaseDate')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
           </FormField>
           <FormField label="Insurance expiry">
-            <input type="date" {...register('insuranceExpiry')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+            <input type="date" {...register('insuranceExpiry')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
           </FormField>
           <FormField label="Permit expiry">
-            <input type="date" {...register('permitExpiry')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+            <input type="date" {...register('permitExpiry')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
           </FormField>
           <FormField label="Pollution certificate expiry">
-            <input type="date" {...register('pollutionCertificateExpiry')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+            <input type="date" {...register('pollutionCertificateExpiry')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
           </FormField>
           <FormField label="RC upload URL">
-            <input type="text" {...register('rcUpload')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="https://..." />
+            <input type="text" {...register('rcUpload')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="https://..." />
           </FormField>
           <FormField label="Insurance upload URL">
-            <input type="text" {...register('insuranceUpload')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="https://..." />
+            <input type="text" {...register('insuranceUpload')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="https://..." />
           </FormField>
           <FormField label="Status">
-            <select {...register('status')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+            <select {...register('status')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border">
               {transportStatusOptions.filter((option) => option.value !== 'All').map((option) => (
                 <option key={option.value} value={option.value}>{option.label}</option>
               ))}
@@ -636,44 +636,44 @@ export default function TransportManagementPage() {
       >
         <form className="grid gap-5 lg:grid-cols-2">
           <FormField label="Name">
-            <input type="text" {...registerDriver('name', { required: 'Name is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Driver name" />
+            <input type="text" {...registerDriver('name', { required: 'Name is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="Driver name" />
             {driverErrors.name && <p className="mt-1 text-sm text-rose-400">{driverErrors.name.message}</p>}
           </FormField>
           <FormField label="Employee ID">
-            <input type="text" {...registerDriver('employeeId', { required: 'Employee ID is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="EMP-001" />
+            <input type="text" {...registerDriver('employeeId', { required: 'Employee ID is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="EMP-001" />
             {driverErrors.employeeId && <p className="mt-1 text-sm text-rose-400">{driverErrors.employeeId.message}</p>}
           </FormField>
           <FormField label="License number">
-            <input type="text" {...registerDriver('licenseNumber', { required: 'License number is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="LIC-12345" />
+            <input type="text" {...registerDriver('licenseNumber', { required: 'License number is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="LIC-12345" />
             {driverErrors.licenseNumber && <p className="mt-1 text-sm text-rose-400">{driverErrors.licenseNumber.message}</p>}
           </FormField>
           <FormField label="Mobile">
-            <input type="text" {...registerDriver('mobile')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="(555) 123-4567" />
+            <input type="text" {...registerDriver('mobile')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="(555) 123-4567" />
           </FormField>
           <FormField label="Status">
-            <select {...registerDriver('status')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+            <select {...registerDriver('status')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border">
               {transportStatusOptions.filter((option) => option.value !== 'All').map((option) => (
                 <option key={option.value} value={option.value}>{option.label}</option>
               ))}
             </select>
           </FormField>
           <FormField label="License expiry">
-            <input type="date" {...registerDriver('licenseExpiry')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+            <input type="date" {...registerDriver('licenseExpiry')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
           </FormField>
           <FormField label="Address">
-            <input type="text" {...registerDriver('address')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="123 Main St" />
+            <input type="text" {...registerDriver('address')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="123 Main St" />
           </FormField>
           <FormField label="Emergency contact">
-            <input type="text" {...registerDriver('emergencyContact')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="(555) 987-6543" />
+            <input type="text" {...registerDriver('emergencyContact')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="(555) 987-6543" />
           </FormField>
           <FormField label="Blood group">
-            <input type="text" {...registerDriver('bloodGroup')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="O+" />
+            <input type="text" {...registerDriver('bloodGroup')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="O+" />
           </FormField>
           <FormField label="Joining date">
-            <input type="date" {...registerDriver('joiningDate')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />
+            <input type="date" {...registerDriver('joiningDate')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
           </FormField>
           <FormField label="Salary">
-            <input type="number" {...registerDriver('salary', { valueAsNumber: true })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="25000" />
+            <input type="number" {...registerDriver('salary', { valueAsNumber: true })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="25000" />
           </FormField>
         </form>
       </Modal>
@@ -707,7 +707,7 @@ export default function TransportManagementPage() {
           <p className="text-sm text-slate-500">Select a vehicle to assign. Existing assignments will be updated automatically.</p>
         </div>
       </Modal>
-      <input ref={importInputRef} type="file" accept=".csv" className="hidden" onChange={(event) => handleFileChange(event, importVehicles, 'vehicles')} />
+      <input ref={importInputRef} type="file" accept=".csv" className="hidden hover-gradient-border" onChange={(event) => handleFileChange(event, importVehicles, 'vehicles')} />
     </div>
   );
 }

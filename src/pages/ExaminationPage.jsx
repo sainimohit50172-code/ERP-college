@@ -171,7 +171,7 @@ export default function ExaminationPage() {
             <p className="text-sm text-slate-400">Schedule exams, set exam centers, manage invigilators and track exam progress.</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <button className="inline-flex items-center gap-2 rounded-2xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 transition hover:bg-slate-700"><FaDownload /> Export</button>
+            <button className="inline-flex items-center gap-2 rounded-2xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 transition hover:bg-slate-700 hover-gradient-border"><FaDownload /> Export</button>
             <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 rounded-2xl bg-sky-400 px-3 py-2 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"><FaPlus /> New exam</button>
           </div>
         </div>
@@ -215,20 +215,20 @@ export default function ExaminationPage() {
         </div>
         <div className="mt-4"><TablePagination page={page} pageCount={pageCount} onPageChange={setPage} /></div>
       </div>
-      <Modal title="Create new examination" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<Button onClick={handleSubmit(onSubmit)} variant="primary">Create exam</Button>}>
+      <Modal title="Create new examination" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<Button onClick={handleSubmit(onSubmit)} variant="primary" >Create exam</Button>}>
         <form className="grid gap-5 lg:grid-cols-2">
-          <FormField label="Exam name"><input type="text" {...register('examName', { required: 'Exam name is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Mid-Semester 2025 S5" />{errors.examName && <p className="mt-1 text-sm text-rose-400">{errors.examName.message}</p>}</FormField>
-          <FormField label="Exam type"><select {...register('examType')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"><option value="Midterm">Midterm</option><option value="Final">Final</option><option value="Reassessment">Reassessment</option><option value="Practical">Practical</option></select></FormField>
-          <FormField label="Subject"><input type="text" {...register('subject', { required: 'Subject is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Data Structures" />{errors.subject && <p className="mt-1 text-sm text-rose-400">{errors.subject.message}</p>}</FormField>
-          <FormField label="Course"><input type="text" {...register('course', { required: 'Course is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="BCA" />{errors.course && <p className="mt-1 text-sm text-rose-400">{errors.course.message}</p>}</FormField>
-          <FormField label="Semester"><input type="text" {...register('semester', { required: 'Semester is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="5" />{errors.semester && <p className="mt-1 text-sm text-rose-400">{errors.semester.message}</p>}</FormField>
-          <FormField label="Academic session"><input type="text" {...register('academicSession')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="2025-2026" /></FormField>
-          <FormField label="Exam date"><input type="date" {...register('examDate', { required: 'Exam date is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" />{errors.examDate && <p className="mt-1 text-sm text-rose-400">{errors.examDate.message}</p>}</FormField>
-          <FormField label="Total marks"><input type="number" {...register('totalMarks')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="100" /></FormField>
-          <FormField label="Duration"><input type="text" {...register('duration')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="3 hrs" /></FormField>
-          <FormField label="Exam center"><input type="text" {...register('examCenter', { required: 'Exam center is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Lab-A" />{errors.examCenter && <p className="mt-1 text-sm text-rose-400">{errors.examCenter.message}</p>}</FormField>
-          <FormField label="Number of invigilators"><input type="number" {...register('invigilators')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="2" /></FormField>
-          <FormField label="Status"><select {...register('status')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400"><option value="Scheduled">Scheduled</option><option value="Ongoing">Ongoing</option><option value="Completed">Completed</option><option value="Results Published">Results Published</option></select></FormField>
+          <FormField label="Exam name"><input type="text" {...register('examName', { required: 'Exam name is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="Mid-Semester 2025 S5" />{errors.examName && <p className="mt-1 text-sm text-rose-400">{errors.examName.message}</p>}</FormField>
+          <FormField label="Exam type"><select {...register('examType')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"><option value="Midterm">Midterm</option><option value="Final">Final</option><option value="Reassessment">Reassessment</option><option value="Practical">Practical</option></select></FormField>
+          <FormField label="Subject"><input type="text" {...register('subject', { required: 'Subject is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="Data Structures" />{errors.subject && <p className="mt-1 text-sm text-rose-400">{errors.subject.message}</p>}</FormField>
+          <FormField label="Course"><input type="text" {...register('course', { required: 'Course is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="BCA" />{errors.course && <p className="mt-1 text-sm text-rose-400">{errors.course.message}</p>}</FormField>
+          <FormField label="Semester"><input type="text" {...register('semester', { required: 'Semester is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="5" />{errors.semester && <p className="mt-1 text-sm text-rose-400">{errors.semester.message}</p>}</FormField>
+          <FormField label="Academic session"><input type="text" {...register('academicSession')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="2025-2026" /></FormField>
+          <FormField label="Exam date"><input type="date" {...register('examDate', { required: 'Exam date is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />{errors.examDate && <p className="mt-1 text-sm text-rose-400">{errors.examDate.message}</p>}</FormField>
+          <FormField label="Total marks"><input type="number" {...register('totalMarks')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="100" /></FormField>
+          <FormField label="Duration"><input type="text" {...register('duration')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="3 hrs" /></FormField>
+          <FormField label="Exam center"><input type="text" {...register('examCenter', { required: 'Exam center is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="Lab-A" />{errors.examCenter && <p className="mt-1 text-sm text-rose-400">{errors.examCenter.message}</p>}</FormField>
+          <FormField label="Number of invigilators"><input type="number" {...register('invigilators')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="2" /></FormField>
+          <FormField label="Status"><select {...register('status')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"><option value="Scheduled">Scheduled</option><option value="Ongoing">Ongoing</option><option value="Completed">Completed</option><option value="Results Published">Results Published</option></select></FormField>
         </form>
       </Modal>
       <Modal
@@ -236,7 +236,7 @@ export default function ExaminationPage() {
         isOpen={isHallTicketOpen}
         onClose={() => setIsHallTicketOpen(false)}
         footer={(
-          <button onClick={confirmHallTickets} disabled={isGeneratingHallTickets} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:bg-slate-700">
+          <button onClick={confirmHallTickets} disabled={isGeneratingHallTickets} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:bg-slate-700 hover-gradient-border">
             {isGeneratingHallTickets ? 'Generating...' : 'Generate hall tickets'}
           </button>
         )}
@@ -278,8 +278,8 @@ export default function ExaminationPage() {
                   ))}
                 </div>
                 <div className="mt-4 flex flex-wrap items-center gap-3">
-                  <button type="button" onClick={selectVisibleStudents} className="rounded-3xl bg-emerald-400 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-emerald-300">Select visible</button>
-                  <button type="button" onClick={clearSelectedStudents} className="rounded-3xl bg-rose-400/15 px-4 py-2 text-sm font-semibold text-rose-300 transition hover:bg-rose-400/20">Clear selection</button>
+                  <button type="button" onClick={selectVisibleStudents} className="rounded-3xl bg-emerald-400 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-emerald-300 hover-gradient-border">Select visible</button>
+                  <button type="button" onClick={clearSelectedStudents} className="rounded-3xl bg-rose-400/15 px-4 py-2 text-sm font-semibold text-rose-300 transition hover:bg-rose-400/20 hover-gradient-border">Clear selection</button>
                 </div>
                 <div className="mt-5 space-y-2 max-h-80 overflow-y-auto rounded-3xl border border-white/10 bg-slate-900/80 p-2">
                   {filteredHallTicketStudents.length ? filteredHallTicketStudents.map((student) => (

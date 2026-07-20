@@ -81,7 +81,7 @@ export default function SubjectManagementPage() {
                 <p className="text-sm text-slate-400">Review subjects, semester distribution, departmental assignment and credit load.</p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                <button className="inline-flex items-center gap-2 rounded-2xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 transition hover:bg-slate-700">
+                <button className="inline-flex items-center gap-2 rounded-2xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 transition hover:bg-slate-700 hover-gradient-border">
                   <FaDownload /> Export
                 </button>
                 <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 rounded-2xl bg-sky-400 px-3 py-2 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">
@@ -129,18 +129,18 @@ export default function SubjectManagementPage() {
         </div>
       </div>
 
-      <Modal title="Add subject" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<button onClick={handleSubmit(onSubmit)} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">Save subject</button>}>
+      <Modal title="Add subject" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<button onClick={handleSubmit(onSubmit)} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 hover-gradient-border">Save subject</button>}>
         <form className="grid gap-5 lg:grid-cols-2">
           <FormField label="Subject code">
-            <input type="text" {...register('code', { required: 'Code is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="CS201" />
+            <input type="text" {...register('code', { required: 'Code is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="CS201" />
             {errors.code && <p className="mt-1 text-sm text-rose-400">{errors.code.message}</p>}
           </FormField>
           <FormField label="Subject title">
-            <input type="text" {...register('title', { required: 'Title is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Data Structures" />
+            <input type="text" {...register('title', { required: 'Title is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="Data Structures" />
             {errors.title && <p className="mt-1 text-sm text-rose-400">{errors.title.message}</p>}
           </FormField>
           <FormField label="Department">
-            <select {...register('department', { required: 'Department is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+            <select {...register('department', { required: 'Department is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border">
               <option value="Computer Science">Computer Science</option>
               <option value="Mathematics">Mathematics</option>
               <option value="English">English</option>
@@ -150,7 +150,7 @@ export default function SubjectManagementPage() {
             {errors.department && <p className="mt-1 text-sm text-rose-400">{errors.department.message}</p>}
           </FormField>
           <FormField label="Semester">
-            <select {...register('semester', { required: 'Semester is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+            <select {...register('semester', { required: 'Semester is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border">
               <option value="Semester 1">Semester 1</option>
               <option value="Semester 2">Semester 2</option>
               <option value="Semester 3">Semester 3</option>
@@ -159,11 +159,11 @@ export default function SubjectManagementPage() {
             {errors.semester && <p className="mt-1 text-sm text-rose-400">{errors.semester.message}</p>}
           </FormField>
           <FormField label="Credit load">
-            <input type="number" {...register('credits', { required: 'Credits are required', min: { value: 1, message: 'Must be at least 1' } })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="3" />
+            <input type="number" {...register('credits', { required: 'Credits are required', min: { value: 1, message: 'Must be at least 1' } })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="3" />
             {errors.credits && <p className="mt-1 text-sm text-rose-400">{errors.credits.message}</p>}
           </FormField>
           <FormField label="Status">
-            <select {...register('status', { required: 'Status is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+            <select {...register('status', { required: 'Status is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border">
               <option value="Active">Active</option>
               <option value="Retired">Retired</option>
             </select>

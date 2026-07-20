@@ -320,7 +320,7 @@ export default function FollowUpsPage() {
           <button
             type="button"
             onClick={downloadCsv}
-            className="inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+            className="inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 hover-gradient-border"
           >
             <Download size={16} /> Export To Excel
           </button>
@@ -420,15 +420,15 @@ export default function FollowUpsPage() {
                   <td className="px-2 py-3 align-top text-slate-700">{index + 1}</td>
                   <td className="px-2 py-3 align-top text-slate-900">
                     <div className="mb-1 text-[10px] uppercase tracking-[0.24em] text-slate-500">Application Number</div>
-                    <button className="text-blue-600 hover:underline text-[13px]">{row.applicationNumber}</button>
+                    <button className="text-blue-600 hover:underline text-[13px] hover-gradient-border">{row.applicationNumber}</button>
                     <div className="mt-2 text-[10px] uppercase tracking-[0.24em] text-slate-500">Application Date</div>
-                    <button className="text-blue-600 hover:underline text-[13px]">{row.applicationDate}</button>
+                    <button className="text-blue-600 hover:underline text-[13px] hover-gradient-border">{row.applicationDate}</button>
                   </td>
                   <td className="px-2 py-3 align-top text-slate-900">
                     <div className="mb-1 text-[10px] uppercase tracking-[0.24em] text-slate-500">Name</div>
-                    <button className="text-blue-600 font-semibold hover:underline text-[13px]">{row.name}</button>
+                    <button className="text-blue-600 font-semibold hover:underline text-[13px] hover-gradient-border">{row.name}</button>
                     <div className="mt-2 text-[10px] uppercase tracking-[0.24em] text-slate-500">Phone No.</div>
-                    <button className="text-blue-600 hover:underline text-[13px]">{row.phone}</button>
+                    <button className="text-blue-600 hover:underline text-[13px] hover-gradient-border">{row.phone}</button>
                   </td>
                   <td className="px-2 py-3 align-top text-slate-900 break-words">
                     <div className="mb-1 text-[10px] uppercase tracking-[0.24em] text-slate-500">College</div>
@@ -717,7 +717,7 @@ export default function FollowUpsPage() {
               <button
                 type="button"
                 onClick={handleSaveRow}
-                className="rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800"
+                className="rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 hover-gradient-border"
               >
                 Save Follow Up
               </button>
@@ -821,7 +821,7 @@ export default function FollowUpsPage() {
               <button
                 type="button"
                 onClick={handleUpdateSelected}
-                className="rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800"
+                className="rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 hover-gradient-border"
               >
                 Save Changes
               </button>

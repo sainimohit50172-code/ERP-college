@@ -35,7 +35,7 @@ class Settings(BaseSettings):
     celery_broker_url: str = Field(default="redis://localhost:6379/1", alias="CELERY_BROKER_URL")
     celery_result_backend: str = Field(default="redis://localhost:6379/2", alias="CELERY_RESULT_BACKEND")
 
-    cors_origins: List[str] = Field(default_factory=lambda: ["http://localhost:3000", "http://localhost:5173"], alias="CORS_ORIGINS")
+    cors_origins: List[str] = Field(default_factory=lambda: ["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:5174", "http://127.0.0.1:5174", "http://localhost:5175", "http://127.0.0.1:5175"], alias="CORS_ORIGINS")
     log_level: str = Field(default="INFO", alias="LOG_LEVEL")
 
     @field_validator("cors_origins", mode="before")
@@ -54,7 +54,10 @@ class Settings(BaseSettings):
         return value
 
     model_config = SettingsConfigDict(
-        env_file=str(Path(__file__).resolve().parent.parent.parent / ".env"),
+        env_file=[
+            str(Path(__file__).resolve().parents[2] / ".env"),
+            str(Path(__file__).resolve().parents[3] / ".env"),
+        ],
         env_file_encoding="utf-8",
         extra="ignore",
     )

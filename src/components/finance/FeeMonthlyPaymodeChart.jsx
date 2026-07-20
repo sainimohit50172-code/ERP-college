@@ -34,12 +34,12 @@ export default function FeeMonthlyPaymodeChart() {
         </div>
       </div>
       <div className="mt-4 flex gap-6 text-sm">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 hover-gradient-border">
           <div className="h-3 w-3 rounded-full" style={{ backgroundColor: '#3b82f6' }}></div>
           <span className="text-slate-700">Cash</span>
           <span className="font-semibold text-slate-900">₹10005</span>
         </div>
-        <div className="flex items-center gap-1 rounded-full bg-slate-100 px-2 py-1">
+        <div className="flex items-center gap-1 rounded-full bg-slate-100 px-2 py-1 hover-gradient-border">
           <span className="text-xs text-slate-600">Receipts</span>
           <span className="font-bold text-slate-900">3</span>
         </div>

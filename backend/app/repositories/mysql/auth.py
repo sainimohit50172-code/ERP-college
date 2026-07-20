@@ -8,7 +8,7 @@ from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.core.security import verify_password
-from app.models.auth import AuthSession, PasswordReset, User
+from app.models.auth import AuthSession, MobileOTP, PasswordReset, Role, User, UserRole
 from app.repositories.interfaces.auth import AuthRepository
 from app.repositories.mysql.base import MySQLRepository
 from app.repositories.interfaces.base import RepositoryError
@@ -40,6 +40,57 @@ class MySQLAuthRepository(MySQLRepository[User], AuthRepository):
             if user is None or user.hashed_password is None:
                 return None
             return user if verify_password(password, user.hashed_password) else None
+        except SQLAlchemyError as exc:
+            raise RepositoryError(str(exc)) from exc
+
+    async def create_user(self, payload: dict) -> User:
+        try:
+            user = User(**payload)
+            self.session.add(user)
+            self.session.commit()
+            self.session.refresh(user)
+            return user
+        except SQLAlchemyError as exc:
+            self.session.rollback()
+            raise RepositoryError(str(exc)) from exc
+
+    async def assign_role(self, user_id: int, role_name: str) -> bool:
+        try:
+            role = self.session.scalars(select(Role).where(Role.name == role_name)).first()
+            if role is None:
+                role = Role(name=role_name, description=f"Auto-assigned {role_name}", is_builtin=False)
+                self.session.add(role)
+                self.session.flush()
+            assignment = UserRole(user_id=user_id, role_id=role.id)
+            self.session.add(assignment)
+            self.session.commit()
+            return True
+        except SQLAlchemyError as exc:
+            self.session.rollback()
+            raise RepositoryError(str(exc)) from exc
+
+    async def update_login_state(self, user_id: int, failed_attempts: int, locked_until: Optional[datetime]) -> bool:
+        try:
+            user = await self.get_by_id(user_id)
+            if user is None:
+                return False
+            user.meta = {**(user.meta or {}), "failed_attempts": failed_attempts, "locked_until": locked_until.isoformat() if locked_until else None}
+            self.session.commit()
+            return True
+        except SQLAlchemyError as exc:
+            self.session.rollback()
+            raise RepositoryError(str(exc)) from exc
+
+    async def get_login_state(self, user_id: int) -> dict:
+        try:
+            user = await self.get_by_id(user_id)
+            if user is None:
+                return {"failed_attempts": 0, "locked_until": None}
+            meta = user.meta or {}
+            return {
+                "failed_attempts": int(meta.get("failed_attempts", 0)),
+                "locked_until": meta.get("locked_until"),
+            }
         except SQLAlchemyError as exc:
             raise RepositoryError(str(exc)) from exc
 
@@ -138,6 +189,66 @@ class MySQLAuthRepository(MySQLRepository[User], AuthRepository):
                 session.revoked = True
             self.session.commit()
             return len(sessions)
+        except SQLAlchemyError as exc:
+            self.session.rollback()
+            raise RepositoryError(str(exc)) from exc
+
+    async def create_mobile_otp(
+        self,
+        mobile_number: str,
+        otp_code: str,
+        expires_at: datetime,
+        meta: Optional[dict] = None,
+    ) -> MobileOTP:
+        try:
+            otp_record = MobileOTP(
+                id=str(uuid4()),
+                mobile_number=mobile_number,
+                otp_code=otp_code,
+                expires_at=expires_at,
+                verified=False,
+                used=False,
+                meta=meta,
+            )
+            self.session.add(otp_record)
+            self.session.commit()
+            self.session.refresh(otp_record)
+            return otp_record
+        except SQLAlchemyError as exc:
+            self.session.rollback()
+            raise RepositoryError(str(exc)) from exc
+
+    async def get_latest_mobile_otp(self, mobile_number: str) -> Optional[MobileOTP]:
+        try:
+            stmt = (
+                select(MobileOTP)
+                .where(MobileOTP.mobile_number == mobile_number)
+                .order_by(MobileOTP.created_at.desc())
+            )
+            return self.session.scalars(stmt).first()
+        except SQLAlchemyError as exc:
+            raise RepositoryError(str(exc)) from exc
+
+    async def mark_mobile_otp_verified(self, otp_id: str) -> bool:
+        try:
+            otp_record = self.session.get(MobileOTP, otp_id)
+            if otp_record is None:
+                return False
+            otp_record.verified = True
+            self.session.commit()
+            return True
+        except SQLAlchemyError as exc:
+            self.session.rollback()
+            raise RepositoryError(str(exc)) from exc
+
+    async def mark_mobile_otp_used(self, otp_id: str) -> bool:
+        try:
+            otp_record = self.session.get(MobileOTP, otp_id)
+            if otp_record is None:
+                return False
+            otp_record.used = True
+            self.session.commit()
+            return True
         except SQLAlchemyError as exc:
             self.session.rollback()
             raise RepositoryError(str(exc)) from exc

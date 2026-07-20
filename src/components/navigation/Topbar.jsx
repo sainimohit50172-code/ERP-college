@@ -122,25 +122,25 @@ export default function Topbar({ onToggleSidebar }) {
   return (
     <header className="fixed inset-x-0 top-0 z-40 border-b border-slate-200 bg-white px-3 py-3 md:left-[200px] md:w-[calc(100%-200px)]">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex min-w-0 items-center gap-3">
+        <div className="flex min-w-0 items-center gap-3 hover-gradient-border">
           <button
             type="button"
             onClick={onToggleSidebar}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 md:hidden"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 md:hidden hover-gradient-border"
             aria-label="Open sidebar drawer"
           >
             <Menu className="h-5 w-5" />
           </button>
-          <div className="flex min-w-0 items-center gap-2">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-sm font-semibold text-slate-700">C</div>
-            <div className="flex min-w-0 items-center gap-2">
+          <div className="flex min-w-0 items-center gap-2 hover-gradient-border">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-sm font-semibold text-slate-700 hover-gradient-border">C</div>
+            <div className="flex min-w-0 items-center gap-2 hover-gradient-border">
               <span className="truncate text-[14px] font-semibold text-slate-900">College ERP</span>
               <span className="shrink-0 rounded-full bg-slate-100 px-2.5 py-1 text-[12px] font-medium text-slate-600">2026-27</span>
             </div>
           </div>
         </div>
 
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden items-center gap-2 md:flex hover-gradient-border">
           {navLinks.map((link) => {
             const active = isActiveLink(location.pathname, link.to);
             const isOpen = activeDropdown === link.label;
@@ -196,7 +196,7 @@ export default function Topbar({ onToggleSidebar }) {
           })}
         </div>
 
-        <div className="flex flex-wrap items-center justify-end gap-2 pr-0 md:pr-4" style={{ flexShrink: 0 }}>
+        <div className="flex flex-wrap items-center justify-end gap-2 pr-0 md:pr-4 hover-gradient-border" style={{ flexShrink: 0 }}>
           <div className="relative md:hidden" ref={mobileNavRef}>
             <button
               type="button"
@@ -248,7 +248,7 @@ export default function Topbar({ onToggleSidebar }) {
                 <input
                   type="search"
                   placeholder="Search students, fees, exams..."
-                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none focus:border-[#00c896] focus:ring-2 focus:ring-[#00c896]/20"
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none focus:border-[#00c896] focus:ring-2 focus:ring-[#00c896]/20 hover-gradient-border"
                   autoFocus
                 />
               </div>
@@ -300,9 +300,9 @@ export default function Topbar({ onToggleSidebar }) {
               <Settings2 className="h-4 w-4" />
             </button>
             {isQuickActionsOpen ? (
-              <div className="fixed inset-0 z-40 flex items-start justify-end bg-black/20">
+              <div className="fixed inset-0 z-40 flex items-start justify-end bg-black/20 hover-gradient-border">
                 <div className="relative h-full w-[320px] bg-white p-5 shadow-2xl">
-                  <div className="mb-4 flex items-center justify-between">
+                  <div className="mb-4 flex items-center justify-between hover-gradient-border">
                     <p className="text-base font-semibold text-slate-900">User Quick Actions</p>
                     <button type="button" onClick={() => setQuickActionsOpen(false)} className="rounded-full p-2 text-slate-500 hover:bg-slate-100">
                       <X className="h-4 w-4" />
@@ -320,7 +320,7 @@ export default function Topbar({ onToggleSidebar }) {
                         }}
                         className="group rounded-[10px] border border-[#e2e8f0] bg-white p-4 text-left transition hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
                       >
-                        <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-2xl text-base" style={{ backgroundColor: `${action.color}26`, color: action.color }}>
+                        <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-2xl text-base hover-gradient-border" style={{ backgroundColor: `${action.color}26`, color: action.color }}>
                           {action.icon}
                         </div>
                         <p className="text-[13px] font-semibold text-slate-950">{action.title}</p>
@@ -347,7 +347,7 @@ export default function Topbar({ onToggleSidebar }) {
           >
             <Bell className="h-4 w-4" />
             {unreadCount > 0 ? (
-              <span className="absolute -right-1 -top-1 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-rose-500 px-1.5 text-[10px] font-semibold text-white">
+              <span className="absolute -right-1 -top-1 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-rose-500 px-1.5 text-[10px] font-semibold text-white hover-gradient-border">
                 {unreadCount}
               </span>
             ) : null}
@@ -391,7 +391,7 @@ export default function Topbar({ onToggleSidebar }) {
                 <p className="truncate text-[13px] font-semibold text-slate-900">Hello, {displayName}</p>
                 <p className="truncate text-[11px] text-slate-500">Nice to have you back!</p>
               </div>
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-700">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-700 hover-gradient-border">
                 <UserCircle2 className="h-5 w-5" />
               </div>
             </button>

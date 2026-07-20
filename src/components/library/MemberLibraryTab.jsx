@@ -69,7 +69,7 @@ export default function MemberLibraryTab({ memberId, memberType = 'student' }) {
 
   return (
     <div className="grid gap-4 lg:grid-cols-[320px,1fr]">
-      <div className="card p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
+      <div className="card p-4 bg-white border border-slate-200 rounded-xl shadow-sm hover-gradient-border">
         <h3 className="text-sm font-semibold text-slate-900">Library Member</h3>
         <p className="mt-2 text-sm text-slate-600">ID: {memberId}</p>
         <p className="mt-1 text-sm text-slate-600">Status: {membershipStatus}</p>
@@ -91,13 +91,13 @@ export default function MemberLibraryTab({ memberId, memberType = 'student' }) {
 
       <div>
         <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between hover-gradient-border">
             <h3 className="text-sm font-semibold text-slate-900">Active loans</h3>
             <div className="text-sm text-slate-500">{activeLoans.length} active</div>
           </div>
           <ul className="mt-3 space-y-2 text-sm text-slate-600">
             {activeLoans.map((loan) => (
-              <li key={loan.id} className="flex items-center justify-between">
+              <li key={loan.id} className="flex items-center justify-between hover-gradient-border">
                 <div>
                   <div className="font-semibold">{books.find(b => b.id === loan.bookId)?.title || loan.bookId}</div>
                   <div className="text-xs text-slate-500">Due: {loan.dueDate || 'N/A'}</div>
@@ -154,7 +154,7 @@ export default function MemberLibraryTab({ memberId, memberType = 'student' }) {
           <h3 className="text-sm font-semibold text-slate-900">Fines</h3>
           <ul className="mt-3 space-y-2 text-sm text-slate-600">
             {memberFines.map((f) => (
-              <li key={f.id} className="flex items-center justify-between">
+              <li key={f.id} className="flex items-center justify-between hover-gradient-border">
                 <div>₹{f.amount} · {f.reason || 'Fine'}</div>
                 <div>
                   <WithPermission moduleKey="library" action="update"><button onClick={() => doPayFine(f)} className="rounded-2xl bg-emerald-400 px-3 py-1 text-xs font-semibold text-slate-900">Pay</button></WithPermission>
@@ -172,7 +172,7 @@ export default function MemberLibraryTab({ memberId, memberType = 'student' }) {
             </FormField>
             <div className="max-h-60 overflow-auto">
               {filteredBooks.map((b) => (
-                <div key={b.id} className="flex items-center justify-between border-b py-2">
+                <div key={b.id} className="flex items-center justify-between border-b py-2 hover-gradient-border">
                   <div>
                     <div className="font-semibold">{b.title}</div>
                     <div className="text-xs text-slate-500">{b.isbn || b.barcode}</div>

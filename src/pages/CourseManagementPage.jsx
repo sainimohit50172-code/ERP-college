@@ -72,7 +72,7 @@ export default function CourseManagementPage() {
               </div>
                 <div className="flex flex-wrap items-center gap-2">
                   <WithPermission moduleKey="courses" action="export">
-                    <button className="inline-flex items-center gap-2 rounded-2xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 transition hover:bg-slate-700">
+                    <button className="inline-flex items-center gap-2 rounded-2xl bg-slate-800/80 px-3 py-2 text-sm text-slate-200 transition hover:bg-slate-700 hover-gradient-border">
                       <FaDownload /> Export
                     </button>
                   </WithPermission>
@@ -119,18 +119,18 @@ export default function CourseManagementPage() {
           </div>
         </div>
       </div>
-      <Modal title="Add course" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<Button onClick={handleSubmit(onSubmit)} variant="primary">Save course</Button>}>
+      <Modal title="Add course" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<Button onClick={handleSubmit(onSubmit)} variant="primary" >Save course</Button>}>
         <form className="grid gap-5 lg:grid-cols-2">
           <FormField label="Course code">
-            <input type="text" {...register('code', { required: 'Code is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="BCA-01" />
+            <input type="text" {...register('code', { required: 'Code is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="BCA-01" />
             {errors.code && <p className="mt-1 text-sm text-rose-400">{errors.code.message}</p>}
           </FormField>
           <FormField label="Course title">
-            <input type="text" {...register('title', { required: 'Title is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="Bachelor of Computer Applications" />
+            <input type="text" {...register('title', { required: 'Title is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="Bachelor of Computer Applications" />
             {errors.title && <p className="mt-1 text-sm text-rose-400">{errors.title.message}</p>}
           </FormField>
           <FormField label="Department">
-            <select {...register('department', { required: 'Department is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+            <select {...register('department', { required: 'Department is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border">
               {departments.map((department) => (
                 <option key={department.id} value={department.name}>{department.name}</option>
               ))}
@@ -138,15 +138,15 @@ export default function CourseManagementPage() {
             {errors.department && <p className="mt-1 text-sm text-rose-400">{errors.department.message}</p>}
           </FormField>
           <FormField label="Duration">
-            <input type="text" {...register('duration', { required: 'Duration is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="3 years" />
+            <input type="text" {...register('duration', { required: 'Duration is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="3 years" />
             {errors.duration && <p className="mt-1 text-sm text-rose-400">{errors.duration.message}</p>}
           </FormField>
           <FormField label="Annual intake">
-            <input type="number" {...register('intake', { required: 'Intake is required', min: { value: 1, message: 'Must be at least 1' } })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400" placeholder="60" />
+            <input type="number" {...register('intake', { required: 'Intake is required', min: { value: 1, message: 'Must be at least 1' } })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="60" />
             {errors.intake && <p className="mt-1 text-sm text-rose-400">{errors.intake.message}</p>}
           </FormField>
           <FormField label="Status">
-            <select {...register('status', { required: 'Status is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400">
+            <select {...register('status', { required: 'Status is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border">
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
             </select>
