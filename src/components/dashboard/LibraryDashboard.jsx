@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Book, Clock, RefreshCw, Download } from 'lucide-react';
+import { BookOpen, Book, Clock, Download, Eye } from 'lucide-react';
+import IconActionButton from '../ui/IconActionButton.jsx';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import EmptyState from '../ui/EmptyState.jsx';
 import DataTable from '../ui/DataTable.jsx';
@@ -16,7 +17,6 @@ const demoMostIssued = [
 ];
 
 export default function LibraryDashboard() {
-  const [refreshTick, setRefreshTick] = useState(0);
   const [booksModalOpen, setBooksModalOpen] = useState(false);
   const [circulationModalOpen, setCirculationModalOpen] = useState(false);
   const [issuedRow, setIssuedRow] = useState(null);
@@ -29,9 +29,6 @@ export default function LibraryDashboard() {
         <h1 className="text-2xl font-bold text-slate-900">Library</h1>
         <div className="inline-flex items-center gap-3 hover-gradient-border">
           <div className="rounded-full bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700">Library Session 2026-27 Odd</div>
-          <button type="button" onClick={() => setRefreshTick((t) => t + 1)} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm">
-            <RefreshCw className="h-4 w-4" /> Refresh
-          </button>
         </div>
       </div>
 
@@ -41,7 +38,7 @@ export default function LibraryDashboard() {
           <div className="rounded-[17px] bg-white p-4 shadow-sm">
             <div className="flex items-center justify-between hover-gradient-border">
               <h3 className="text-base font-semibold">Books Count</h3>
-              <button onClick={() => setBooksModalOpen(true)} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700">View</button>
+              <IconActionButton icon={Eye} title="View books" ariaLabel="View books" onClick={() => setBooksModalOpen(true)} className="h-8 w-8" />
             </div>
             <div className="mt-4 space-y-3">
               <button onClick={() => setBooksModalOpen(true)} className="w-full rounded-2xl bg-yellow-50 p-4 text-left hover:shadow-md transition flex items-center gap-4">
@@ -77,7 +74,6 @@ export default function LibraryDashboard() {
           <div className="rounded-[17px] bg-white p-4 shadow-sm">
             <div className="flex items-center justify-between hover-gradient-border">
               <h3 className="text-base font-semibold">Books Issued</h3>
-              <button onClick={() => setRefreshTick((t) => t + 1)} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700">Refresh</button>
             </div>
             <div className="mt-4 space-y-3">
               <div className="w-full rounded-2xl bg-violet-50 p-4 text-left hover:shadow-md transition flex items-center gap-4">
@@ -113,7 +109,7 @@ export default function LibraryDashboard() {
           <div className="rounded-[17px] bg-white p-4 shadow-sm">
             <div className="flex items-center justify-between hover-gradient-border">
               <h3 className="text-base font-semibold">Books Circulation</h3>
-              <button onClick={() => setCirculationModalOpen(true)} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700">View</button>
+              <IconActionButton icon={Eye} title="View circulation" ariaLabel="View circulation" onClick={() => setCirculationModalOpen(true)} className="h-8 w-8" />
             </div>
             <div className="mt-4 space-y-3">
               <div className="w-full rounded-2xl bg-emerald-50 p-4 text-left hover:shadow-md transition flex items-center gap-4">
@@ -193,7 +189,6 @@ export default function LibraryDashboard() {
             <h3 className="text-lg font-semibold text-slate-900">Most Issued Books</h3>
             <div className="flex items-center gap-2 hover-gradient-border">
               <button className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700 hover-gradient-border"><Download className="h-4 w-4" /> PNG</button>
-              <button onClick={() => setRefreshTick((t) => t + 1)} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700">Refresh</button>
             </div>
           </div>
           <div className="mt-4 h-72">

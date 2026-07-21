@@ -94,15 +94,7 @@ export default function InstituteSetupPage2() {
           })}
         </div>
 
-        <div className="mt-5 flex items-center justify-between gap-4">
-          <button
-            type="button"
-            onClick={() => navigate('/settings/institute')}
-            className="inline-flex h-[42px] w-[95px] items-center justify-center rounded-[999px] border border-emerald-300 bg-white px-4 text-sm font-semibold text-emerald-700 shadow-sm transition-all duration-200 hover:border-emerald-400 hover:bg-emerald-50"
-          >
-            Back
-          </button>
-
+        <div className="mt-5 flex items-center justify-end gap-4">
           <button
             type="button"
             onClick={() => console.log('Institute Setup Page 3')}

@@ -297,7 +297,7 @@ export default function ExaminationPage() {
                               <p className="font-semibold text-white">{student.name || student.rollNo}</p>
                               <p className="text-sm text-slate-400">{student.rollNo} • Fee {student.feeStatus} • {student.attendancePercent}% attendance</p>
                             </div>
-                            <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${student.isEligible ? 'bg-emerald-400/10 text-emerald-300' : 'bg-rose-400/10 text-rose-300'}`}>
+                            <span className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${student.isEligible ? 'bg-emerald-400/10 text-emerald-300' : 'bg-rose-400/10 text-rose-300'}`}>
                               {student.eligibilityLabel}
                             </span>
                           </div>

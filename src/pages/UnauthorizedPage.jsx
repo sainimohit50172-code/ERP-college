@@ -10,9 +10,8 @@ export default function UnauthorizedPage() {
         </div>
         <h1 className="mt-8 text-3xl font-semibold text-slate-950">Access denied</h1>
         <p className="mt-4 text-sm text-slate-500">You do not have permission to view this module. Please contact your administrator if you believe this is an error.</p>
-        <div className="mt-8 inline-flex gap-3">
+        <div className="mt-8">
           <Link to="/" className="rounded-3xl bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500">Go to dashboard</Link>
-          <Link to="/auth/login" className="rounded-3xl border border-slate-200 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Back to login</Link>
         </div>
       </div>
     </div>

@@ -1445,6 +1445,35 @@ export default function Sidebar({ isOpen, onClose }) {
 
   return (
     <>
+      <style>{`
+        /* Sidebar scrollbar styling - applies to both desktop and mobile sidebar navigation */
+        
+        /* Chrome, Edge, Safari */
+        aside nav.overflow-y-auto::-webkit-scrollbar {
+          width: 4px;
+        }
+        
+        aside nav.overflow-y-auto::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        
+        aside nav.overflow-y-auto::-webkit-scrollbar-thumb {
+          background-color: #8B8B8B;
+          border-radius: 999px;
+          border: 1px solid transparent;
+        }
+        
+        aside nav.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+          background-color: #6B6B6B;
+        }
+        
+        /* Firefox */
+        aside nav.overflow-y-auto {
+          scrollbar-width: thin;
+          scrollbar-color: #8B8B8B transparent;
+        }
+      `}</style>
+      
       {/* Desktop static sidebar */}
       <aside
         className="hidden md:fixed md:left-0 md:top-0 md:z-50 md:flex md:flex-col md:overflow-y-auto md:py-4"

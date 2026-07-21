@@ -154,7 +154,7 @@ export default function LibraryIssuedBooksPage() {
                     <td className="px-4 py-4 text-slate-700">{book.dueDate}</td>
                     <td className="px-4 py-4 text-slate-700">₹{book.fine}</td>
                     <td className="px-4 py-4">
-                      <span className={`inline-flex rounded-full px-3 py-1 text-[11px] font-semibold ${statusClasses[book.status]}`}>
+                      <span className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${statusClasses[book.status]}`}>
                         {book.status}
                       </span>
                     </td>

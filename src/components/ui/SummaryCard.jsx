@@ -1,6 +1,6 @@
 export default function SummaryCard({ title, value, subtitle, icon: Icon, badge }) {
   return (
-    <article className="hover-gradient-border rounded-[20px] border border-slate-200/70 bg-white/95 p-5 shadow-sm transition hover:-translate-y-0.5" style={{ '--hover-gradient-radius': '14px' }}>
+    <article className="hover-gradient-border cursor-pointer rounded-[20px] border border-slate-200/70 bg-white/95 p-5 shadow-sm transition hover:-translate-y-0.5" data-hover-interactive="true" style={{ '--hover-gradient-radius': '14px' }}>
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <p className="text-xs uppercase tracking-[0.24em] text-slate-500">{title}</p>

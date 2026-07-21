@@ -39,9 +39,7 @@ export default function ForgotPasswordPage() {
           <div className="mt-8 rounded-[24px] bg-emerald-50 p-6 text-emerald-900">
             <p className="font-semibold">Request received</p>
             <p className="mt-2 text-sm">{statusMessage}</p>
-            <button type="button" onClick={() => navigate('/auth/login')} className="mt-4 inline-flex items-center gap-2 rounded-3xl border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100">
-              Back to login
-            </button>
+
           </div>
         ) : (
           <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { CheckCircle2 } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useResourceList } from '../hooks/useResourceHooks';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
@@ -6,6 +7,7 @@ import DataTable from '../components/ui/DataTable.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import FormField from '../components/forms/FormField.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
+import IconActionButton from '../components/ui/IconActionButton.jsx';
 import { calculateTrialBalance, createChartOfAccount } from '../services/financeService.js';
 import { summarizeLedger, createLedgerEntry, approveLedgerEntry } from '../services/ledgerService.js';
 import { createVoucher, postVoucher, buildVoucherSummary } from '../services/voucherService.js';
@@ -223,7 +225,7 @@ export default function FinanceAccountingPage() {
             { label: 'Debit', key: 'debit', sortable: true, render: (value) => `₹${Number(value || 0).toLocaleString()}` },
             { label: 'Credit', key: 'credit', sortable: true, render: (value) => `₹${Number(value || 0).toLocaleString()}` },
             { label: 'Status', key: 'status', sortable: true, render: (value) => <StatusBadge status={value} /> },
-            { label: 'Action', key: 'action', sortable: false, render: (_value, row) => <button type="button" onClick={() => approveEntry(row)} className="rounded-full border border-slate-300 bg-slate-100 px-3 py-1 text-xs">Approve</button> },
+            { label: 'Action', key: 'action', sortable: false, render: (_value, row) => <IconActionButton icon={CheckCircle2} title="Approve entry" ariaLabel="Approve entry" variant="success" className="h-8 w-8" onClick={() => approveEntry(row)} /> },
           ]} rows={entries} initialPageSize={8} placeholder="Search ledger" />
         </div>
       )}

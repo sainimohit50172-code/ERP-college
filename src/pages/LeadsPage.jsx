@@ -346,7 +346,7 @@ export default function LeadsPage() {
                           <option value="NPC">NPC</option>
                         </select>
                         {row.tag && (
-                          <span className={`inline-flex rounded-full px-2 py-1 text-[11px] font-semibold ${tagClasses[row.tag]}`}>
+                          <span className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${tagClasses[row.tag]}`}>
                             {row.tag}
                           </span>
                         )}
@@ -362,7 +362,7 @@ export default function LeadsPage() {
                     <td className="px-2 py-3 align-top break-words">{row.college}</td>
                     <td className="px-2 py-3 align-top break-words">{row.course}</td>
                     <td className="px-2 py-3 align-top">
-                      <span className={`inline-flex rounded-full px-3 py-1 text-[11px] font-semibold ${sourceClasses[row.source]}`}>
+                      <span className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${sourceClasses[row.source]}`}>
                         {row.source}
                       </span>
                     </td>

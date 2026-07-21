@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
 import CircleAvatar from '../components/ui/CircleAvatar.jsx';
+import IconActionButton from '../components/ui/IconActionButton.jsx';
 import { UserPlus, Filter, Printer, Download } from 'lucide-react';
 
 const NAVY_BTN = 'inline-flex items-center gap-2 rounded-xl bg-[#1e3a5f] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900';
@@ -363,20 +364,25 @@ export default function StudentCollegeWisePage() {
     { label: 'Status', key: 'status', sortable: true, render: (val) => <StatusBadge status={val} /> },
     { label: 'Actions', key: 'actions', sortable: false, render: (v, row) => (
       <div className="inline-flex gap-2">
-        <button
-          type="button"
+        <IconActionButton
+          icon={Edit3}
+          title="Edit student"
+          ariaLabel="Edit student"
+          variant="primary"
+          className="h-8 w-8"
           onClick={() => {
-            // open edit modal by populating form
             const raw = row.raw || row;
             setEditingStudent(raw);
-            // Use the existing modal flow: set fields via form reset
             reset({ ...defaultFormValues, ...raw });
             setShowModal(true);
           }}
-          className="rounded-2xl bg-sky-500 px-3 py-1 text-xs font-semibold text-white hover-gradient-border"
-        >Edit</button>
-        <button
-          type="button"
+        />
+        <IconActionButton
+          icon={Trash2}
+          title="Delete student"
+          ariaLabel="Delete student"
+          variant="danger"
+          className="h-8 w-8"
           onClick={async () => {
             const raw = row.raw || row;
             if (!window.confirm(`Delete student ${raw.name || raw.firstName || raw.admissionNo || ''}?`)) return;
@@ -387,8 +393,7 @@ export default function StudentCollegeWisePage() {
               toast.error(err?.message || 'Could not delete student');
             }
           }}
-          className="rounded-2xl bg-rose-500 px-3 py-1 text-xs font-semibold text-white hover-gradient-border"
-        >Delete</button>
+        />
       </div>
     ) },
   ];

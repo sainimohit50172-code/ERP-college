@@ -445,23 +445,27 @@ const { data: departmentsData } = useResourceList('departments', { page: 1, page
                 <span key={`${teacher.id}-shift`} className="text-[13px] text-slate-700">{teacher.shift}</span>,
                 <span key={`${teacher.id}-experience`} className="text-[13px] text-slate-700">{teacher.experience}</span>,
                 <StatusBadge key={`${teacher.id}-status`} status={teacher.status} />,
-                <div key={`${teacher.id}-actions`} className="flex flex-wrap gap-2">
+                <div key={`${teacher.id}-actions`} className="flex flex-wrap items-center justify-center gap-1.5">
                   {perms.canEdit('teachers') && (
                     <button
                       type="button"
+                      title="Edit"
+                      aria-label="Edit"
                       onClick={() => openEditTeacherModal(teacher)}
-                      className="rounded-full border border-white/10 bg-slate-800/80 px-3 py-2 text-[11px] text-slate-200 transition hover:bg-slate-700"
+                      className="h-8 w-8 rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 transition hover:bg-emerald-100 hover-gradient-border"
                     >
-                      <FaEdit className="inline-block" /> Edit
+                      <FaEdit />
                     </button>
                   )}
                   {perms.canDelete('teachers') && (
                     <button
                       type="button"
+                      title="Delete"
+                      aria-label="Delete"
                       onClick={() => handleDelete(teacher)}
-                      className="rounded-full border border-white/10 bg-rose-500/10 px-3 py-2 text-[11px] text-rose-300 transition hover:bg-rose-500/20"
+                      className="h-8 w-8 rounded-full border border-rose-200 bg-rose-50 text-rose-700 transition hover:bg-rose-100 hover-gradient-border"
                     >
-                      <FaTrash className="inline-block" /> Remove
+                      <FaTrash />
                     </button>
                   )}
                 </div>,

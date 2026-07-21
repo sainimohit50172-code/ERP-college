@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Edit2, Plus, Trash2 } from 'lucide-react';
+import { Edit3, Eye, Plus, Trash2 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { useResourceList, useCreateResource, useUpdateResource, useDeleteResource } from '../../hooks/useResourceHooks';
 import DataTable from './DataTable.jsx';
@@ -33,20 +33,33 @@ export default function GenericCrudPage({
         const value = item?.[column.key];
         return value ?? '—';
       }),
-      <div key={`${item.id || item.name || 'row'}-actions`} className="flex flex-wrap gap-2">
+      <div key={`${item.id || item.name || 'row'}-actions`} className="flex flex-wrap items-center justify-center gap-1.5">
         <button
           type="button"
+          title="View"
+          aria-label="View"
           onClick={() => openEdit(item)}
-          className="rounded-2xl bg-sky-500 px-3 py-2 text-xs font-semibold text-white transition hover:bg-sky-400"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-sky-200 bg-sky-50 text-sky-700 transition hover:bg-sky-100 hover-gradient-border"
         >
-          <span className="inline-flex items-center gap-2"><Edit2 className="h-3.5 w-3.5" /> Edit</span>
+          <Eye className="h-4 w-4" />
         </button>
         <button
           type="button"
-          onClick={() => handleDelete(item)}
-          className="rounded-2xl bg-rose-500 px-3 py-2 text-xs font-semibold text-white transition hover:bg-rose-400"
+          title="Edit"
+          aria-label="Edit"
+          onClick={() => openEdit(item)}
+          className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 transition hover:bg-emerald-100 hover-gradient-border"
         >
-          <span className="inline-flex items-center gap-2"><Trash2 className="h-3.5 w-3.5" /> Delete</span>
+          <Edit3 className="h-4 w-4" />
+        </button>
+        <button
+          type="button"
+          title="Delete"
+          aria-label="Delete"
+          onClick={() => handleDelete(item)}
+          className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-rose-200 bg-rose-50 text-rose-700 transition hover:bg-rose-100 hover-gradient-border"
+        >
+          <Trash2 className="h-4 w-4" />
         </button>
       </div>,
     ]);

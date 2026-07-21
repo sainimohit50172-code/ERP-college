@@ -302,13 +302,6 @@ export default function HelpdeskRaiseTicketPage() {
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <button
-                  type="button"
-                  onClick={() => navigate(-1)}
-                  className="inline-flex items-center justify-center rounded-3xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
-                >
-                  Back
-                </button>
-                <button
                   type="submit"
                   disabled={isSubmitting}
                   className="inline-flex items-center justify-center rounded-3xl bg-orange-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-orange-400 hover-gradient-border"

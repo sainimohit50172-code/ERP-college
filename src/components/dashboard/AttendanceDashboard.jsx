@@ -374,15 +374,15 @@ export default function AttendanceDashboard() {
                       <p className="text-sm font-semibold text-slate-900">{leave.student}</p>
                       <p className="mt-1 text-sm text-slate-500">{leave.reason}</p>
                     </div>
-                    <span className={`rounded-full px-3 py-1 text-xs font-semibold ${leave.status === 'Approved' ? 'bg-emerald-100 text-emerald-700' : leave.status === 'Rejected' ? 'bg-rose-100 text-rose-700' : 'bg-amber-100 text-amber-700'}`}>
+                    <span className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${leave.status === 'Approved' ? 'bg-emerald-100 text-emerald-700' : leave.status === 'Rejected' ? 'bg-rose-100 text-rose-700' : 'bg-amber-100 text-amber-700'}`}>
                       {leave.status}
                     </span>
                   </div>
                   <div className="mt-4 flex items-center justify-between text-sm text-slate-500 hover-gradient-border">
                     <span>{leave.date}</span>
                     <div className="flex gap-2">
-                      <button type="button" className="rounded-2xl border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 hover-gradient-border">View</button>
-                      <button type="button" className="rounded-2xl border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 hover-gradient-border">Approve</button>
+                      <IconActionButton icon={Eye} title="View leave request" ariaLabel="View leave request" className="h-8 w-8" />
+                      <IconActionButton icon={CheckCircle2} title="Approve leave request" ariaLabel="Approve leave request" variant="success" className="h-8 w-8" />
                     </div>
                   </div>
                 </div>

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { CheckCircle2, Edit3, Lock, FileText, Send } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useResourceList } from '../hooks/useResourceHooks';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
@@ -6,6 +7,7 @@ import DataTable from '../components/ui/DataTable.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import FormField from '../components/forms/FormField.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
+import IconActionButton from '../components/ui/IconActionButton.jsx';
 import { useAuth } from '../services/AuthContext.jsx';
 import { createSalaryStructure, updateSalaryStructure } from '../services/salaryStructureService.js';
 import { createSalaryRevision, updateSalaryRevision } from '../services/salaryRevisionService.js';
@@ -240,7 +242,7 @@ export default function PayrollManagementPage() {
             { label: 'Gross', key: 'grossSalary', sortable: true, render: (value) => `₹${Number(value || 0).toLocaleString()}` },
             { label: 'Net', key: 'netSalary', sortable: true, render: (value) => `₹${Number(value || 0).toLocaleString()}` },
             { label: 'Status', key: 'status', sortable: true, render: (value) => <StatusBadge status={value} /> },
-            { label: 'Actions', key: 'actions', sortable: false, render: (_value, row) => <div className="flex flex-wrap gap-2"><button type="button" onClick={() => processPayrollAction(row, 'submit')} className="rounded-full border border-slate-300 bg-white px-3 py-1 text-xs">Submit</button><button type="button" onClick={() => processPayrollAction(row, 'approve')} className="rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-xs text-emerald-700">Approve</button><button type="button" onClick={() => processPayrollAction(row, 'lock')} className="rounded-full border border-slate-300 bg-slate-100 px-3 py-1 text-xs">Lock</button><button type="button" onClick={() => processPayrollAction(row, 'edit')} className="rounded-full border border-slate-300 bg-slate-100 px-3 py-1 text-xs">Edit</button><button type="button" onClick={() => handlePayslipCreate(row)} className="rounded-full border border-slate-300 bg-slate-100 px-3 py-1 text-xs">Payslip</button></div> },
+            { label: 'Actions', key: 'actions', sortable: false, render: (_value, row) => <div className="flex flex-wrap gap-2"><IconActionButton icon={Send} title="Submit payroll" ariaLabel="Submit payroll" variant="primary" className="h-8 w-8" onClick={() => processPayrollAction(row, 'submit')} /><IconActionButton icon={CheckCircle2} title="Approve payroll" ariaLabel="Approve payroll" variant="success" className="h-8 w-8" onClick={() => processPayrollAction(row, 'approve')} /><IconActionButton icon={Lock} title="Lock payroll" ariaLabel="Lock payroll" className="h-8 w-8" onClick={() => processPayrollAction(row, 'lock')} /><IconActionButton icon={Edit3} title="Edit payroll" ariaLabel="Edit payroll" className="h-8 w-8" onClick={() => processPayrollAction(row, 'edit')} /><IconActionButton icon={FileText} title="Create payslip" ariaLabel="Create payslip" className="h-8 w-8" onClick={() => handlePayslipCreate(row)} /></div> },
           ]} rows={filteredPayrollRuns} initialPageSize={8} placeholder="Search payroll" />
         </div>
       )}

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Sidebar from '../components/navigation/Sidebar.jsx';
 import Topbar from '../components/navigation/Topbar.jsx';
 import ErrorBoundary from '../components/ErrorBoundary.jsx';
+import BackNavigationButton from '../components/ui/BackNavigationButton.jsx';
 
 export default function RootLayout() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -20,7 +21,10 @@ export default function RootLayout() {
         <main className="min-h-screen overflow-x-hidden bg-[#f5f6fa] pb-10 pt-20">
           <div className="erp-content-wrapper">
             <ErrorBoundary>
-              <Outlet />
+              <div className="pt-1">
+                <BackNavigationButton />
+                <Outlet />
+              </div>
             </ErrorBoundary>
           </div>
         </main>

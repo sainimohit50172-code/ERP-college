@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { RefreshCw, Users, Gift, Clock, CalendarCheck, FileText, Download, Filter } from 'lucide-react';
+import { Users, Gift, Clock, CalendarCheck, FileText, Download, Filter } from 'lucide-react';
 import DataTable from '../ui/DataTable.jsx';
 import Modal from '../ui/Modal.jsx';
 import EmptyState from '../ui/EmptyState.jsx';
@@ -46,7 +46,6 @@ export default function HODDashboard() {
   const [leaveModalOpen, setLeaveModalOpen] = useState(false);
   const [taskModalOpen, setTaskModalOpen] = useState(false);
   const [attendanceModal, setAttendanceModal] = useState(null);
-  const [refreshTick, setRefreshTick] = useState(0);
 
   const totalEmployees = useMemo(() => demoEmployees.length, []);
 
@@ -60,9 +59,6 @@ export default function HODDashboard() {
           </div>
           <div className="inline-flex items-center gap-3 hover-gradient-border">
             <div className="rounded-full bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700">Academic Session 2026-27 Odd</div>
-            <button type="button" onClick={() => setRefreshTick((t) => t + 1)} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm">
-              <RefreshCw className="h-4 w-4" /> Refresh
-            </button>
           </div>
         </div>
 
@@ -73,9 +69,6 @@ export default function HODDashboard() {
               <div className="rounded-[17px] bg-white p-4 shadow-sm">
                 <div className="flex items-center justify-between hover-gradient-border">
                   <h3 className="text-base font-semibold">Employee Statistics <span className="text-xs font-normal text-slate-500">(Employee Type Wise)</span></h3>
-                  <button type="button" onClick={() => setRefreshTick((t) => t + 1)} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700">
-                    <RefreshCw className="h-4 w-4" />
-                  </button>
                 </div>
 
                 <div className="mt-4 space-y-3">

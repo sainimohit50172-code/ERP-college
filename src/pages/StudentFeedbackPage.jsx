@@ -387,7 +387,7 @@ export default function StudentFeedbackPage() {
                     <td className="px-4 py-4 text-slate-700">{record.course}</td>
                     <td className="px-4 py-4 text-slate-700">{record.section}</td>
                     <td className="px-4 py-4">
-                      <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${STATUS_CLASSNAME[record.status] || 'bg-slate-100 text-slate-700'}`}>
+                      <span className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${STATUS_CLASSNAME[record.status] || 'bg-slate-100 text-slate-700'}`}>
                         {record.status}
                       </span>
                     </td>

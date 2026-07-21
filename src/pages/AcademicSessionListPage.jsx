@@ -50,12 +50,7 @@ export default function AcademicSessionListPage() {
                   Manage academic years, session periods, and registration-ready terms in one place.
                 </p>
               </div>
-              <Link
-                to="/settings/institute"
-                className="inline-flex items-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100"
-              >
-                <ChevronRight className="h-4 w-4" /> Back to setup
-              </Link>
+
             </div>
           </div>
         </div>
@@ -90,7 +85,7 @@ export default function AcademicSessionListPage() {
                     <td className="whitespace-nowrap px-4 py-4">{session.startDate}</td>
                     <td className="whitespace-nowrap px-4 py-4">{session.endDate}</td>
                     <td className="whitespace-nowrap px-4 py-4 text-sm font-semibold text-slate-900">
-                      <span className={`inline-flex rounded-full px-3 py-1 ${session.status === 'Active' ? 'bg-emerald-100 text-emerald-700' : session.status === 'Planned' ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-700'}`}>
+                      <span className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${session.status === 'Active' ? 'bg-emerald-100 text-emerald-700' : session.status === 'Planned' ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-700'}`}>
                         {session.status}
                       </span>
                     </td>

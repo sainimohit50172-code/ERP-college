@@ -91,7 +91,7 @@ export default function TimetableGeneratorPage() {
               timetable.section,
               timetable.generatedDate,
               timetable.totalSlots,
-              <div key={`${timetable.id}-conflicts`} className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${timetable.conflicts > 0 ? 'bg-rose-400/10 text-rose-300' : 'bg-emerald-400/10 text-emerald-300'}`}>{timetable.conflicts} conflicts</div>,
+              <div key={`${timetable.id}-conflicts`} className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${timetable.conflicts > 0 ? 'bg-rose-400/10 text-rose-300' : 'bg-emerald-400/10 text-emerald-300'}`}>{timetable.conflicts} conflicts</div>,
               <StatusBadge key={`${timetable.id}-status`} status={timetable.status} />,
             ])}
           />

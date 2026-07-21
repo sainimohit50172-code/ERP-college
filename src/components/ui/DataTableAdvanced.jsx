@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
-import { ChevronDown, ChevronUp, Printer, Download } from 'lucide-react';
+import { ChevronDown, ChevronUp, Download, Edit3, Printer, Trash2 } from 'lucide-react';
 import { useReactToPrint } from 'react-to-print';
 import { CSVLink } from 'react-csv';
 import LoadingOverlay from './LoadingOverlay.jsx';
@@ -207,9 +207,13 @@ export default function DataTableAdvanced({
                     if (isAction && !column.render && (onEdit || onDelete)) {
                       return (
                         <td key={`${index}-${column.key}`} className={`break-words px-3 py-3 align-top text-slate-700 action-cell ${column.key ? String(column.key).toLowerCase() + '-cell' : ''} ${textAlign === 'left' ? 'text-left' : textAlign === 'right' ? 'text-right' : 'text-center'}`} style={{ minWidth: width !== 'auto' ? width : undefined, width: width && width.endsWith('px') ? width : undefined, whiteSpace: 'nowrap', textAlign }}>
-                          <div className="min-w-0 flex items-center justify-center gap-2">
-                            <button type="button" onClick={() => onEdit(row)} className="rounded-2xl bg-sky-500 px-3 py-1 text-xs font-semibold text-white">Edit</button>
-                            <button type="button" onClick={() => onDelete(row)} className="rounded-2xl bg-rose-500 px-3 py-1 text-xs font-semibold text-white">Delete</button>
+                          <div className="flex min-w-0 items-center justify-center gap-1.5">
+                            <button type="button" title="Edit" aria-label="Edit" onClick={() => onEdit(row)} className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 transition hover:bg-emerald-100 hover-gradient-border">
+                              <Edit3 className="h-4 w-4" />
+                            </button>
+                            <button type="button" title="Delete" aria-label="Delete" onClick={() => onDelete(row)} className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-rose-200 bg-rose-50 text-rose-700 transition hover:bg-rose-100 hover-gradient-border">
+                              <Trash2 className="h-4 w-4" />
+                            </button>
                           </div>
                         </td>
                       );

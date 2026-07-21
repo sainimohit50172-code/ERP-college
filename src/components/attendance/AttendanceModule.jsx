@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { FaDownload, FaPrint, FaSave, FaSyncAlt, FaUserGraduate } from 'react-icons/fa';
+import { Trash2 } from 'lucide-react';
 import SectionHeader from '../ui/SectionHeader.jsx';
+import IconActionButton from '../ui/IconActionButton.jsx';
 import SearchFilter from '../forms/SearchFilter.jsx';
 import FormField from '../forms/FormField.jsx';
 import InfoCard from '../ui/InfoCard.jsx';
@@ -349,7 +351,7 @@ export default function AttendanceModule({
                           }
                         }}>
                           {ATTENDANCE_STATUSES.map((status) => (
-                            <button key={`${entry.id}-${status}`} type="button" onClick={() => updateDraftStatus(entry.id, status)} className={`rounded-full px-2.5 py-1.5 text-xs font-semibold ${entry.status === status ? getStatusClass(status) : 'bg-slate-700/70 text-slate-200'}`}>
+                            <button key={`${entry.id}-${status}`} type="button" onClick={() => updateDraftStatus(entry.id, status)} className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${entry.status === status ? getStatusClass(status) : 'bg-slate-700/70 text-slate-200'}`}>
                               {status}
                             </button>
                           ))}
@@ -417,7 +419,7 @@ export default function AttendanceModule({
                       <td className="px-4 py-3"><StatusBadge status={entry.status} /></td>
                       <td className="px-4 py-3">{entry.subject || '—'}</td>
                       <td className="px-4 py-3">{entry.remarks || '—'}</td>
-                      <td className="px-4 py-3"><button type="button" onClick={() => handleDeleteRecord(entry.id)} className="rounded-full bg-rose-600/80 px-3 py-2 text-xs font-semibold text-white">Delete</button></td>
+                      <td className="px-4 py-3"><IconActionButton icon={Trash2} title="Delete record" ariaLabel="Delete record" variant="danger" onClick={() => handleDeleteRecord(entry.id)} /></td>
                     </tr>
                   )) : <tr><td colSpan="5" className="px-4 py-6 text-center text-slate-500">No attendance history yet.</td></tr>}
                 </tbody>

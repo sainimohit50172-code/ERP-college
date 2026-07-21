@@ -108,7 +108,7 @@ export default function LectureSchedulingPage() {
                 lecture.day,
                 lecture.time,
                 lecture.room,
-                <div key={`${lecture.id}-type`} className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${lecture.type === 'Theory' ? 'bg-cyan-400/10 text-cyan-300' : 'bg-green-400/10 text-green-300'}`}>{lecture.type}</div>,
+                <div key={`${lecture.id}-type`} className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${lecture.type === 'Theory' ? 'bg-cyan-400/10 text-cyan-300' : 'bg-green-400/10 text-green-300'}`}>{lecture.type}</div>,
                 <StatusBadge key={`${lecture.id}-status`} status={lecture.status} />,
               ];
             })}

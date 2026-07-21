@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
+import { Edit3, Trash2 } from 'lucide-react';
 import ViewButton from '../components/ui/ViewButton.jsx';
+import IconActionButton from '../components/ui/IconActionButton.jsx';
 import Breadcrumb from '../components/ui/Breadcrumb.jsx';
 import DataTableAdvanced from '../components/ui/DataTableAdvanced.jsx';
 
@@ -84,8 +86,8 @@ export default function AllocateSubjectPage() {
     {
       key: 'action', label: 'Action', render: (_, row) => (
         <div className="flex gap-2">
-          <button type="button" title="Edit Allocation" className="h-9 rounded-2xl bg-white border px-3 text-sm hover-gradient-border">Edit</button>
-          <button type="button" title="Remove Allocation" className="h-9 rounded-2xl bg-white border px-3 text-sm hover-gradient-border">Remove</button>
+          <IconActionButton icon={Edit3} title="Edit allocation" ariaLabel="Edit allocation" variant="primary" />
+          <IconActionButton icon={Trash2} title="Remove allocation" ariaLabel="Remove allocation" variant="danger" />
           <ViewButton
             title="View details"
             ariaLabel="View details"

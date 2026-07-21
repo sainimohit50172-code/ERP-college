@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { FaDownload, FaPlus, FaPrint } from 'react-icons/fa';
+import { Edit3, Send } from 'lucide-react';
 import SectionHeader from '../ui/SectionHeader.jsx';
 import SearchFilter from '../forms/SearchFilter.jsx';
 // DataTable not used in this module — removed to satisfy lint
@@ -7,6 +8,7 @@ import FormField from '../forms/FormField.jsx';
 import Modal from '../ui/Modal.jsx';
 import Button from '../ui/Button.jsx';
 import StatusBadge from '../ui/StatusBadge.jsx';
+import IconActionButton from '../ui/IconActionButton.jsx';
 import { createExamMaster, createExamSchedule, listExamMasters, listExamSchedules } from '../../services/examService.js';
 import { createMarkEntry, listMarkEntries, publishMarkEntries } from '../../services/markEntryService.js';
 import { createResult, listResults, publishResult, updateResult } from '../../services/resultService.js';
@@ -285,8 +287,8 @@ export default function ExaminationModule() {
                   <td className="px-4 py-3"><StatusBadge status={entry.status} /></td>
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap gap-2">
-                      <button type="button" onClick={() => handlePublishResult(entry.id)} className="rounded-3xl bg-emerald-400 px-3 py-2 text-xs font-semibold text-slate-950">Publish</button>
-                      <button type="button" onClick={() => handleEditResult(entry)} className="rounded-3xl bg-slate-800/80 px-3 py-2 text-xs font-semibold text-slate-200">Edit</button>
+                      <IconActionButton icon={Send} title="Publish result" ariaLabel="Publish result" variant="success" onClick={() => handlePublishResult(entry.id)} className="h-8 w-8" />
+                      <IconActionButton icon={Edit3} title="Edit result" ariaLabel="Edit result" onClick={() => handleEditResult(entry)} className="h-8 w-8" />
                     </div>
                   </td>
                 </tr>

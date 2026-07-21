@@ -22,7 +22,7 @@ function formatMonth(value) {
 }
 
 function badgeStyles(status) {
-  const base = 'inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold';
+  const base = 'inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-medium';
   if (status === 'Paid') return `${base} bg-emerald-100 text-emerald-700`;
   if (status === 'Pending') return `${base} bg-amber-100 text-amber-700`;
   return `${base} bg-sky-100 text-sky-700`;

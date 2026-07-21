@@ -101,8 +101,8 @@ export default function StudentPromotionPage() {
               promotion.currentSem,
               <div key={`${promotion.id}-sem`} className={`font-semibold ${promotion.nextSem === '-' ? 'text-rose-400' : 'text-emerald-400'}`}>{promotion.nextSem}</div>,
               <div key={`${promotion.id}-cgpa`} className={`font-semibold ${parseFloat(promotion.cgpa) >= 3.0 ? 'text-emerald-400' : parseFloat(promotion.cgpa) >= 2.0 ? 'text-amber-400' : 'text-rose-400'}`}>{promotion.cgpa}</div>,
-              <div key={`${promotion.id}-backlog`} className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${parseInt(promotion.backlog) === 0 ? 'bg-emerald-400/10 text-emerald-300' : 'bg-rose-400/10 text-rose-300'}`}>{promotion.backlog}</div>,
-              <div key={`${promotion.id}-elig`} className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${promotion.eligibility === 'Pass' ? 'bg-emerald-400/10 text-emerald-300' : promotion.eligibility === 'Conditional Pass' ? 'bg-amber-400/10 text-amber-300' : 'bg-rose-400/10 text-rose-300'}`}>{promotion.eligibility}</div>,
+              <div key={`${promotion.id}-backlog`} className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${parseInt(promotion.backlog) === 0 ? 'bg-emerald-400/10 text-emerald-300' : 'bg-rose-400/10 text-rose-300'}`}>{promotion.backlog}</div>,
+              <div key={`${promotion.id}-elig`} className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${promotion.eligibility === 'Pass' ? 'bg-emerald-400/10 text-emerald-300' : promotion.eligibility === 'Conditional Pass' ? 'bg-amber-400/10 text-amber-300' : 'bg-rose-400/10 text-rose-300'}`}>{promotion.eligibility}</div>,
               <StatusBadge key={`${promotion.id}-status`} status={promotion.promotionStatus} />,
             ])}
           />

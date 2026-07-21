@@ -423,7 +423,7 @@ export default function MyLeavesPage() {
                       <td className="px-3 py-2 text-slate-600">{formatDate(request.startDate)} - {formatDate(request.endDate)}</td>
                       <td className="px-3 py-2 text-slate-900">{request.days ?? '-'}</td>
                       <td className="px-3 py-2">
-                        <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${normalizeStatus(request.status) === 'approved' ? 'bg-emerald-100 text-emerald-700' : normalizeStatus(request.status) === 'submitted' ? 'bg-amber-100 text-amber-700' : normalizeStatus(request.status) === 'rejected' ? 'bg-rose-100 text-rose-700' : 'bg-slate-100 text-slate-700'}`}>
+                        <span className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${normalizeStatus(request.status) === 'approved' ? 'bg-emerald-100 text-emerald-700' : normalizeStatus(request.status) === 'submitted' ? 'bg-amber-100 text-amber-700' : normalizeStatus(request.status) === 'rejected' ? 'bg-rose-100 text-rose-700' : 'bg-slate-100 text-slate-700'}`}>
                           {request.status || 'Pending'}
                         </span>
                       </td>

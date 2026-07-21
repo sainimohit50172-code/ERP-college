@@ -129,7 +129,7 @@ export default function ResultProcessingPage() {
               result.external,
               result.total,
               <div key={`${result.id}-percent`} className={`font-semibold ${parseFloat(result.percentage) >= 75 ? 'text-emerald-400' : parseFloat(result.percentage) >= 60 ? 'text-amber-400' : 'text-rose-400'}`}>{result.percentage}</div>,
-              <div key={`${result.id}-grade`} className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${result.grade === 'A' ? 'bg-emerald-400/10 text-emerald-300' : result.grade === 'B' ? 'bg-blue-400/10 text-blue-300' : result.grade === 'C' ? 'bg-amber-400/10 text-amber-300' : 'bg-rose-400/10 text-rose-300'}`}>{result.grade}</div>,
+              <div key={`${result.id}-grade`} className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${result.grade === 'A' ? 'bg-emerald-400/10 text-emerald-300' : result.grade === 'B' ? 'bg-blue-400/10 text-blue-300' : result.grade === 'C' ? 'bg-amber-400/10 text-amber-300' : 'bg-rose-400/10 text-rose-300'}`}>{result.grade}</div>,
               <StatusBadge key={`${result.id}-status`} status={result.status} />,
               <div key={`${result.id}-actions`} className="flex flex-wrap gap-2">
                 <button

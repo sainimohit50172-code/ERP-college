@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { CheckCircle2, XCircle, Edit3, Send, Ban, FileText } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useResourceList } from '../hooks/useResourceHooks';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
@@ -6,6 +7,7 @@ import DataTable from '../components/ui/DataTable.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import FormField from '../components/forms/FormField.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
+import IconActionButton from '../components/ui/IconActionButton.jsx';
 import { useAuth } from '../services/AuthContext.jsx';
 import { createLeavePolicy, updateLeavePolicy } from '../services/leavePolicyService.js';
 import { createLeaveRequest, updateLeaveRequest, submitLeaveRequest, approveLeaveRequest, rejectLeaveRequest, cancelLeaveRequest } from '../services/leaveRequestService.js';
@@ -307,11 +309,11 @@ export default function LeaveManagementPage() {
               { label: 'Status', key: 'status', sortable: true, render: (value) => <StatusBadge status={value} /> },
               { label: 'Actions', key: 'actions', sortable: false, render: (_value, row) => (
                 <div className="flex flex-wrap gap-2">
-                  {row.status === 'Draft' && <button type="button" onClick={() => handleAction(row, 'submit')} className="rounded-full border border-slate-300 bg-white px-3 py-1 text-xs">Submit</button>}
-                  {['Submitted', 'Manager Review'].includes(row.status) && <button type="button" onClick={() => handleAction(row, 'approve')} className="rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-xs text-emerald-700">Approve</button>}
-                  {['Submitted', 'Manager Review'].includes(row.status) && <button type="button" onClick={() => handleAction(row, 'reject')} className="rounded-full border border-rose-300 bg-rose-50 px-3 py-1 text-xs text-rose-700">Reject</button>}
-                  {row.status !== 'Cancelled' && <button type="button" onClick={() => handleAction(row, 'cancel')} className="rounded-full border border-slate-300 bg-slate-100 px-3 py-1 text-xs">Cancel</button>}
-                  <button type="button" onClick={() => { setEditingRequest(row); setRequestForm({ ...row, days: row.days || 1 }); setIsRequestModalOpen(true); }} className="rounded-full border border-slate-300 bg-slate-100 px-3 py-1 text-xs">Edit</button>
+                  {row.status === 'Draft' && <IconActionButton icon={Send} title="Submit request" ariaLabel="Submit request" variant="primary" className="h-8 w-8" onClick={() => handleAction(row, 'submit')} />}
+                  {['Submitted', 'Manager Review'].includes(row.status) && <IconActionButton icon={CheckCircle2} title="Approve request" ariaLabel="Approve request" variant="success" className="h-8 w-8" onClick={() => handleAction(row, 'approve')} />}
+                  {['Submitted', 'Manager Review'].includes(row.status) && <IconActionButton icon={XCircle} title="Reject request" ariaLabel="Reject request" variant="danger" className="h-8 w-8" onClick={() => handleAction(row, 'reject')} />}
+                  {row.status !== 'Cancelled' && <IconActionButton icon={Ban} title="Cancel request" ariaLabel="Cancel request" className="h-8 w-8" onClick={() => handleAction(row, 'cancel')} />}
+                  <IconActionButton icon={Edit3} title="Edit request" ariaLabel="Edit request" className="h-8 w-8" onClick={() => { setEditingRequest(row); setRequestForm({ ...row, days: row.days || 1 }); setIsRequestModalOpen(true); }} />
                 </div>
               ) },
             ]}

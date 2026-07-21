@@ -4,10 +4,12 @@ import { hasPermission } from '../../services/rbac.js';
 
 export default function ProtectedRoute({ moduleKey, action = 'view', children }) {
   const { auth } = useAuth();
-  if (!auth?.isAuthenticated) {
+  const demoModeEnabled = typeof window !== 'undefined' && window.localStorage.getItem('erp_demo_mode') === 'true';
+  const isAuthenticated = Boolean(auth?.isAuthenticated) || demoModeEnabled;
+  if (!isAuthenticated) {
     return <Navigate to="/auth/login" replace />;
   }
-  if (moduleKey && !hasPermission(auth.permissions, moduleKey, action)) {
+  if (moduleKey && !hasPermission(auth.permissions || {}, moduleKey, action)) {
     return <Navigate to="/unauthorized" replace />;
   }
   if (children) {

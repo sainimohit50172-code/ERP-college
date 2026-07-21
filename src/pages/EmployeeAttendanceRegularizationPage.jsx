@@ -231,7 +231,7 @@ export default function EmployeeAttendanceRegularizationPage() {
                             <td className="px-4 py-4 text-slate-700">{item.reason}</td>
                             <td className="px-4 py-4 text-slate-700">{item.time}</td>
                             <td className="px-4 py-4">
-                              <span className={`inline-flex rounded-full px-3 py-1 text-[11px] font-semibold ${statusBadge(item.status)}`}>
+                              <span className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${statusBadge(item.status)}`}>
                                 {item.status}
                               </span>
                             </td>

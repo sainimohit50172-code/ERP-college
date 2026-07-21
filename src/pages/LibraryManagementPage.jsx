@@ -222,16 +222,16 @@ export default function LibraryManagementPage() {
               book.copies || 1,
               book.availableCopies || 0,
               <StatusBadge key={`${book.id}-status`} status={book.status || 'Available'} />,
-              <div key={`${book.id}-actions`} className="flex items-center gap-2">
+              <div key={`${book.id}-actions`} className="flex items-center justify-center gap-1.5">
                 <ViewButton
                   title="View book"
                   ariaLabel="View book"
-                  className="h-8 w-8 rounded-full bg-sky-400 text-slate-950 hover:opacity-90"
+                  className="h-8 w-8 rounded-full border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100"
                   onClick={() => openIssueModal(book)}
                 />
-                <button aria-label="Return" onClick={() => onReturnBook(book)} className="h-8 w-8 flex items-center justify-center rounded-full bg-emerald-400 text-slate-950 hover:opacity-90"><FaEdit /></button>
-                <button aria-label="Fine" onClick={() => onCollectFine(book)} className="h-8 w-8 flex items-center justify-center rounded-full bg-amber-400 text-slate-950 hover:opacity-90"><FaEdit /></button>
-                <button aria-label="Delete" onClick={() => onDeleteBook(book)} className="h-8 w-8 flex items-center justify-center rounded-full bg-rose-400 text-slate-950 hover:opacity-90"><FaTrash /></button>
+                <button title="Edit" aria-label="Edit" onClick={() => onReturnBook(book)} className="h-8 w-8 flex items-center justify-center rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 transition hover:bg-emerald-100 hover-gradient-border"><FaEdit /></button>
+                <button title="Edit" aria-label="Edit" onClick={() => onCollectFine(book)} className="h-8 w-8 flex items-center justify-center rounded-full border border-amber-200 bg-amber-50 text-amber-700 transition hover:bg-amber-100 hover-gradient-border"><FaEdit /></button>
+                <button title="Delete" aria-label="Delete" onClick={() => onDeleteBook(book)} className="h-8 w-8 flex items-center justify-center rounded-full border border-rose-200 bg-rose-50 text-rose-700 transition hover:bg-rose-100 hover-gradient-border"><FaTrash /></button>
               </div>,
             ])}
           />

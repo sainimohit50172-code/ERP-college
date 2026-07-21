@@ -43,6 +43,15 @@ import TeacherSemesterAssignmentPage from '../pages/TeacherSemesterAssignmentPag
 import TeacherCourseAssignmentPage from '../pages/TeacherCourseAssignmentPage.jsx';
 import TeacherWorkloadManagementPage from '../pages/TeacherWorkloadManagementPage.jsx';
 import LectureAttendancePage from '../pages/LectureAttendancePage.jsx';
+import CourseManagementPage from '../pages/CourseManagementPage.jsx';
+import InstituteTransportPage from '../pages/InstituteTransportPage.jsx';
+import InstituteHostelPage from '../pages/InstituteHostelPage.jsx';
+import HostelListPage from '../pages/HostelListPage.jsx';
+import HostelRoomsPage from '../pages/HostelRoomsPage.jsx';
+import HostelOccupiedPage from '../pages/HostelOccupiedPage.jsx';
+import HostelAvailablePage from '../pages/HostelAvailablePage.jsx';
+import HostelStudentsPage from '../pages/HostelStudentsPage.jsx';
+import HostelWardensPage from '../pages/HostelWardensPage.jsx';
 
 export const routes = [
   { path: '/', element: DashboardPage },
@@ -88,7 +97,17 @@ export const routes = [
   { path: '/admissions/follow-ups', element: FollowUpsPage },
   { path: '/settings', element: SettingsPage },
   { path: '/settings/institute', element: InstituteSetupPage },
+  { path: '/settings/institute/courses', element: CourseManagementPage },
+  { path: '/settings/institute/transport', element: InstituteTransportPage },
+  { path: '/settings/institute/hostel', element: InstituteHostelPage },
+  { path: '/settings/institute/hostels/list', element: HostelListPage },
+  { path: '/settings/institute/hostels/rooms', element: HostelRoomsPage },
+  { path: '/settings/institute/hostels/occupied', element: HostelOccupiedPage },
+  { path: '/settings/institute/hostels/available', element: HostelAvailablePage },
+  { path: '/settings/institute/hostels/students', element: HostelStudentsPage },
+  { path: '/settings/institute/hostels/wardens', element: HostelWardensPage },
   { path: '/institute-setup', element: InstituteSetupPage },
+  { path: '/courses', element: CourseManagementPage },
   { path: '/auth/login', element: LoginPage },
   { path: '*', element: NotFoundPage },
 ];

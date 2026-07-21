@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react';
+import { Edit3 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import DataTableAdvanced from '../components/ui/DataTableAdvanced.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import CircleAvatar from '../components/ui/CircleAvatar.jsx';
+import IconActionButton from '../components/ui/IconActionButton.jsx';
 import { useResourceList, useUpdateResource } from '../hooks/useResourceHooks';
 
 export default function UpdateRollNumberPage() {
@@ -43,7 +45,7 @@ export default function UpdateRollNumberPage() {
     { key: 'courseSection', label: 'Course-Section' },
     { key: 'semester', label: 'Semester' },
     { key: 'action', label: 'Action', render: (_, row) => (
-      <button type="button" onClick={() => openModal(row)} className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold">Edit</button>
+      <IconActionButton icon={Edit3} title="Edit roll number" ariaLabel="Edit roll number" variant="primary" className="h-8 w-8" onClick={() => openModal(row)} />
     ) },
   ];
 

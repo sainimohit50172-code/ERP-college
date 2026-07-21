@@ -88,8 +88,8 @@ export default function QuestionBankPage() {
             rows={displayedQuestions.map((question) => [
               <div key={question.id} className="max-w-sm truncate font-semibold text-white">{question.question}</div>,
               question.subject,
-              <div key={`${question.id}-type`} className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${question.type === 'Theory' ? 'bg-blue-400/10 text-blue-300' : 'bg-green-400/10 text-green-300'}`}>{question.type}</div>,
-              <div key={`${question.id}-difficulty`} className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${question.difficulty === 'Easy' ? 'bg-emerald-400/10 text-emerald-300' : question.difficulty === 'Medium' ? 'bg-amber-400/10 text-amber-300' : 'bg-rose-400/10 text-rose-300'}`}>{question.difficulty}</div>,
+              <div key={`${question.id}-type`} className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${question.type === 'Theory' ? 'bg-blue-400/10 text-blue-300' : 'bg-green-400/10 text-green-300'}`}>{question.type}</div>,
+              <div key={`${question.id}-difficulty`} className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${question.difficulty === 'Easy' ? 'bg-emerald-400/10 text-emerald-300' : question.difficulty === 'Medium' ? 'bg-amber-400/10 text-amber-300' : 'bg-rose-400/10 text-rose-300'}`}>{question.difficulty}</div>,
               question.marks,
               question.createdBy,
               question.usageCount,

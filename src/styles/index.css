@@ -216,7 +216,7 @@ button, input, textarea, select {
 .bg-primary-navy-dark { background-color: var(--primary-navy-dark); }
 .border-primary-navy { border-color: var(--primary-navy); }
 
-/* Shared gradient hover border refinement for interactive child cards and controls */
+/* Shared gradient hover border refinement for interactive controls and cards only */
 .hover-gradient-border,
 .hover-gradient-border-target,
 button:not(.no-hover-border),
@@ -224,7 +224,11 @@ input:not([type='hidden']):not(.no-hover-border),
 select:not(.no-hover-border),
 textarea:not(.no-hover-border),
 [role='button']:not(.no-hover-border),
-a[href]:not(.no-hover-border) {
+[role='option']:not(.no-hover-border),
+[role='menuitem']:not(.no-hover-border),
+a[href]:not(.no-hover-border),
+[data-hover-interactive='true']:not(.no-hover-border),
+.erp-card-action:not(.no-hover-border) {
   --hover-gradient-radius: 14px;
   transition: border 0.35s ease, border-image-source 0.35s ease, box-shadow 0.35s ease, background-color 0.35s ease, border-radius 0.35s ease;
 }
@@ -243,8 +247,16 @@ textarea:not(.no-hover-border):hover,
 textarea:not(.no-hover-border):focus-visible,
 [role='button']:not(.no-hover-border):hover,
 [role='button']:not(.no-hover-border):focus-visible,
+[role='option']:not(.no-hover-border):hover,
+[role='option']:not(.no-hover-border):focus-visible,
+[role='menuitem']:not(.no-hover-border):hover,
+[role='menuitem']:not(.no-hover-border):focus-visible,
 a[href]:not(.no-hover-border):hover,
-a[href]:not(.no-hover-border):focus-visible {
+a[href]:not(.no-hover-border):focus-visible,
+[data-hover-interactive='true']:not(.no-hover-border):hover,
+[data-hover-interactive='true']:not(.no-hover-border):focus-visible,
+.erp-card-action:not(.no-hover-border):hover,
+.erp-card-action:not(.no-hover-border):focus-visible {
   border: 2px solid transparent !important;
   border-image: linear-gradient(135deg, #16a34a, #2563eb, #84cc16, #facc15, #fb7185, #16a34a) 1 !important;
   border-image-slice: 1 !important;

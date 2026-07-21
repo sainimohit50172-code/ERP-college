@@ -320,20 +320,20 @@ export default function TransportManagementPage() {
     vehicle.capacity,
     vehicle.gpsId,
     vehicle.status,
-    <div key={`${vehicle.id}-actions`} className="flex items-center gap-2">
+    <div key={`${vehicle.id}-actions`} className="flex items-center justify-center gap-1.5">
       <WithPermission moduleKey="transport" action="view">
         <ViewButton
           title="View vehicle"
           ariaLabel="View vehicle"
-          className="h-8 w-8 rounded-full bg-slate-800/80 text-slate-200 hover:bg-slate-700"
+          className="h-8 w-8 rounded-full border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100"
           onClick={() => {}}
         />
       </WithPermission>
       <WithPermission moduleKey="transport" action="edit">
-        <button aria-label="Edit" onClick={() => { setSelectedRecord(vehicle); setIsEditMode(true); setIsModalOpen(true); reset({ ...vehicle }); }} className="h-8 w-8 flex items-center justify-center rounded-full bg-slate-800/80 text-slate-200 hover:bg-slate-700"><FaEdit /></button>
+        <button title="Edit" aria-label="Edit" onClick={() => { setSelectedRecord(vehicle); setIsEditMode(true); setIsModalOpen(true); reset({ ...vehicle }); }} className="h-8 w-8 flex items-center justify-center rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 transition hover:bg-emerald-100 hover-gradient-border"><FaEdit /></button>
       </WithPermission>
       <WithPermission moduleKey="transport" action="delete">
-        <button aria-label="Delete" onClick={() => deleteVehicle.mutate(vehicle.id)} className="h-8 w-8 flex items-center justify-center rounded-full bg-rose-500/10 text-rose-300 hover:bg-rose-500/20"><FaTrash /></button>
+        <button title="Delete" aria-label="Delete" onClick={() => deleteVehicle.mutate(vehicle.id)} className="h-8 w-8 flex items-center justify-center rounded-full border border-rose-200 bg-rose-50 text-rose-700 transition hover:bg-rose-100 hover-gradient-border"><FaTrash /></button>
       </WithPermission>
     </div>,
   ]);

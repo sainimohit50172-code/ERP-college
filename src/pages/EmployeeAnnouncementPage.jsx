@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Download, Plus, Calendar, Edit2, X } from 'lucide-react';
+import IconActionButton from '../components/ui/IconActionButton.jsx';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ViewButton from '../components/ui/ViewButton.jsx';
@@ -308,7 +309,7 @@ export default function EmployeeAnnouncementPage() {
                     <td className="px-4 py-4">{record.date}</td>
                     <td className="px-4 py-4">{record.sentBy}</td>
                     <td className="px-4 py-4">
-                      <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${statusClasses[record.status]}`}>
+                      <span className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${statusClasses[record.status]}`}>
                         {record.status}
                       </span>
                     </td>
@@ -320,10 +321,7 @@ export default function EmployeeAnnouncementPage() {
                           className="h-9 w-9 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200"
                         />
                         {record.sentBy === 'Admin' && (
-                          <button type="button" className="inline-flex items-center gap-1 text-slate-600 transition hover:text-slate-900 hover-gradient-border">
-                            <Edit2 size={16} />
-                            <span className="hidden sm:inline">Edit</span>
-                          </button>
+                          <IconActionButton icon={Edit2} title="Edit announcement" ariaLabel="Edit announcement" variant="primary" className="h-9 w-9" />
                         )}
                       </div>
                     </td>

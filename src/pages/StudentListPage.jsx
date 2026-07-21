@@ -737,15 +737,15 @@ export default function StudentListPage() {
                         <td className="px-2 py-2 align-top whitespace-nowrap text-[11px]">{row.semester || '—'}</td>
                         <td className="px-2 py-2 align-top whitespace-nowrap text-[11px]"><StatusBadge status={row.status} /></td>
                         <td className="px-2 py-2 align-top whitespace-nowrap text-[11px]">
-                          <div className="flex flex-wrap gap-2">
+                          <div className="flex flex-wrap items-center justify-center gap-1.5">
                             <WithPermission moduleKey="students" action="edit">
-                              <button type="button" onClick={() => openEditForm(row.student)} className="rounded-2xl bg-slate-800 px-2 py-1 text-[10px] font-semibold text-white transition hover:bg-slate-700">
-                                <FaEdit className="mr-1 inline-block" /> Edit
+                              <button type="button" title="Edit" aria-label="Edit" onClick={() => openEditForm(row.student)} className="h-8 w-8 rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 transition hover:bg-emerald-100 hover-gradient-border">
+                                <FaEdit className="mx-auto" />
                               </button>
                             </WithPermission>
                             <WithPermission moduleKey="students" action="delete">
-                              <button type="button" onClick={() => handleDelete(row.student)} className="rounded-2xl bg-rose-500/10 px-2 py-1 text-[10px] font-semibold text-rose-700 transition hover:bg-rose-500/20">
-                                <FaTrash className="mr-1 inline-block" /> Delete
+                              <button type="button" title="Delete" aria-label="Delete" onClick={() => handleDelete(row.student)} className="h-8 w-8 rounded-full border border-rose-200 bg-rose-50 text-rose-700 transition hover:bg-rose-100 hover-gradient-border">
+                                <FaTrash className="mx-auto" />
                               </button>
                             </WithPermission>
                           </div>

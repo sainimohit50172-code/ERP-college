@@ -161,7 +161,7 @@ export default function TeacherWorkloadManagementPage() {
               workload.practicalHours,
               <div key={`${workload.id}-total`} className="font-semibold text-sky-300">{workload.totalHours}</div>,
               workload.avgPerWeek,
-              <div key={`${workload.id}-status`} className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${workload.workloadStatus === 'Optimal' ? 'bg-emerald-400/10 text-emerald-300' : workload.workloadStatus === 'Light' ? 'bg-blue-400/10 text-blue-300' : 'bg-rose-400/10 text-rose-300'}`}>
+              <div key={`${workload.id}-status`} className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${workload.workloadStatus === 'Optimal' ? 'bg-emerald-400/10 text-emerald-300' : workload.workloadStatus === 'Light' ? 'bg-blue-400/10 text-blue-300' : 'bg-rose-400/10 text-rose-300'}`}>
                 {workload.workloadStatus}
               </div>,
             ])}

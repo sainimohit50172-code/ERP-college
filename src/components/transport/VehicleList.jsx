@@ -1,4 +1,6 @@
 import ViewButton from '../ui/ViewButton.jsx';
+import IconActionButton from '../ui/IconActionButton.jsx';
+import { Edit3, Archive, Trash2 } from 'lucide-react';
 
 export default function VehicleList({ vehicles = [], onView = () => {}, onEdit = () => {}, onDelete = () => {}, onArchive = () => {} }) {
   return (
@@ -18,9 +20,9 @@ export default function VehicleList({ vehicles = [], onView = () => {}, onEdit =
                 className="h-8 w-8 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200"
                 onClick={() => onView(v)}
               />
-              <button onClick={() => onEdit(v)} className="text-xs text-sky-500 hover:underline">Edit</button>
-              <button onClick={() => onArchive(v)} className="text-xs text-amber-600 hover:underline">Archive</button>
-              <button onClick={() => onDelete(v)} className="text-xs text-rose-600 hover:underline">Delete</button>
+              <IconActionButton icon={Edit3} title="Edit vehicle" ariaLabel="Edit vehicle" variant="primary" className="h-8 w-8" onClick={() => onEdit(v)} />
+              <IconActionButton icon={Archive} title="Archive vehicle" ariaLabel="Archive vehicle" className="h-8 w-8" onClick={() => onArchive(v)} />
+              <IconActionButton icon={Trash2} title="Delete vehicle" ariaLabel="Delete vehicle" variant="danger" className="h-8 w-8" onClick={() => onDelete(v)} />
             </div>
           </li>
         ))}
