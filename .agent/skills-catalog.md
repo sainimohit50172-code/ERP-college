@@ -1,6 +1,6 @@
 # AI Agent Skills — Full Catalog
 
-> Auto-generated. Total: **1969 skills** across **115 categories**.
+> Auto-generated. Total: **1987 skills** across **115 categories**.
 > When asked "what skill should I use?", browse this file and suggest the most relevant skill IDs.
 > Install a skill: `Ctrl+Shift+/` → search for the skill ID → press Enter.
 
@@ -402,6 +402,12 @@ Matrix 集成, 聊天客户端 _(risk: unknown)_
 - **sendblue-notify**: Text the user's phone when a long-running task, agent turn, or scheduled job finishes — via @sendblue/cli for outbound, optionally wired to a Claude Code Stop hook for automatic fire. _(risk: critical)_
 - **smart-git-automation**: Smart change detection, auto branch naming, and streamlined commit/PR workflow _(risk: critical)_
 - **textme**: Text Claude from your phone — set up the njerschow/textme daemon so inbound iMessages drive a Claude Code session on your laptop, with voice notes, image input, code execution, and a phone-number whitelist. _(risk: critical)_
+- **n8n-agents**: Design n8n AI agents, chains, classifiers, extractors, tool calling, memory, RAG, structured output, and human-review flows. _(risk: critical)_
+- **n8n-binary-and-data**: Handle n8n files and binary data across uploads, downloads, transforms, multimodal inputs, agent tools, and chat surfaces. _(risk: unknown)_
+- **n8n-code-tool**: Write and debug JavaScript or Python for the AI-callable n8n Custom Code Tool, including schemas, sandbox limits, and return formats. _(risk: unknown)_
+- **n8n-error-handling**: Design visible, structured, recoverable n8n failures using error outputs, retries, Error Trigger workflows, and HTTP error responses. _(risk: unknown)_
+- **n8n-multi-instance**: Select, verify, and safely switch n8n MCP instances across production, staging, teams, or clients, especially before credential writes. _(risk: critical)_
+- **n8n-subworkflows**: Build reusable n8n sub-workflows with typed inputs, all-vs-each execution, discoverable naming, and agent-tool exposure. _(risk: unknown)_
 
 ## backend
 
@@ -498,6 +504,7 @@ applications.
 - **azure-servicebus-rust**: Azure Service Bus library for Rust. Send and receive messages using queues, topics, and subscriptions. Triggers: "service bus rust", "ServiceBusClient rust", "send message servicebus rust", "receive message servicebus rust", "queue rust messaging", "topic subscription rust". _(risk: unknown)_
 - **azure-storage-queue-rust**: Azure Queue Storage library for Rust. Send, receive, and manage queue messages. Triggers: "queue storage rust", "QueueClient rust", "send message rust", "receive messages rust", "QueueServiceClient rust", "queue rust". _(risk: unknown)_
 - **rclone-cli**: Rclone command-line cloud storage manager reference and usage guide. Use this skill whenever the user mentions rclone, or any task involving terminal-based cloud file operations such as upload, download, sync, copy, move, mount, or remote management. Triggers on S3-compatible storage,... _(risk: unknown)_
+- **hf-cloud-aws-context-discovery**: Discover the effective local AWS profile, region, account, and caller identity before any AWS task without exposing credentials. _(risk: safe)_
 
 ## cloud-devops
 
@@ -1308,6 +1315,16 @@ makepad Markdown, makepad Html, TextFlow, rich... _(risk: unknown)_
 - **review-animations**: Use when reviewing animation and motion code against a strict craft, performance, accessibility, and interaction-quality bar. _(risk: safe)_
 - **stitch-design-taste**: Use when generating Google Stitch DESIGN.md systems for premium typography, color, layout, motion intent, and anti-generic UI rules. _(risk: safe)_
 - **sveltekit**: Build full-stack web applications with SvelteKit — file-based routing, SSR, SSG, API routes, and form actions in one framework. _(risk: safe)_
+- **markstream-angular**: Integrate the alpha markstream-angular renderer into Angular 20+ applications with standalone components, signals, safe HTML defaults, and optional peer features. _(risk: critical)_
+- **markstream-custom-components**: Override Markstream node renderers and add trusted custom tags across Vue, React, Svelte, and Angular using scoped or renderer-local mappings. _(risk: critical)_
+- **markstream-migration**: Audit and migrate an existing Markdown renderer to Markstream while preserving custom renderers, security policy, streaming behavior, and explicit parity gaps. _(risk: critical)_
+- **markstream-nuxt**: Integrate markstream-vue into Nuxt 3 or 4 with SSR-safe client boundaries, renderer modes, explicit CSS, and browser-only optional peers. _(risk: critical)_
+- **markstream-react**: Integrate the beta markstream-react renderer into React 18+ or Next.js with correct client/server entrypoints, CSS, streaming state, and component overrides. _(risk: critical)_
+- **markstream-svelte**: Integrate the beta markstream-svelte renderer into Svelte 5 or SvelteKit with runes, explicit CSS, smooth streaming, workers, and SSR-safe boundaries. _(risk: critical)_
+- **markstream-vue**: Integrate markstream-vue into plain Vue 3 with renderer modes, code and DOM choices, streaming state, virtualization, optional peers, and scoped components. _(risk: critical)_
+- **markstream-vue2**: Integrate markstream-vue2 into Vue 2.6 or 2.7 with correct Composition API decisions, CSS, streaming state, optional peers, and scoped overrides. _(risk: critical)_
+- **markstream-vue2-cli**: Integrate markstream-vue2 into Vue CLI or Webpack 4 with export-map-safe CSS, CDN worker fallbacks, and conservative code-block defaults. _(risk: critical)_
+- **markstream-vue2-vite**: Integrate markstream-vue2 into Vue 2 plus Vite with bundled worker imports, CSS ordering, Composition API compatibility, and safe streaming defaults. _(risk: critical)_
 
 ## fullstack
 
@@ -2344,6 +2361,7 @@ calculations
 - **wp-guard**: Review generated or changed WordPress plugins, themes, and blocks for security, internationalization, performance, and API correctness. _(risk: offensive)_
 - **xvary-stock-research**: Thesis-driven equity analysis from public SEC EDGAR and market data; /analyze, /score, /compare workflows with bundled Python tools (Claude Code, Cursor, Codex). _(risk: safe)_
 - **yield-intelligence**: Passive income portfolio analysis — activate when user asks about dividend yields, Treasury rates, REIT income, monthly passive income goals, or portfolio yield optimization. Scans 4 asset classes, ranks by risk-adjusted return, and builds allocations targeting a specific monthly income. _(risk: safe)_
+- **using-n8n-mcp-skills**: Route n8n MCP workflow design, editing, validation, testing, deployment, credential, execution, and debugging tasks to specialist guidance. _(risk: critical)_
 
 ## video
 

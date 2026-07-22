@@ -36,6 +36,8 @@ class EmployeeDetail(EmployeeBase):
 
 class EmployeeListItem(EmployeeBase):
     id: int
+    # Allow nullable last_name for list views to tolerate incomplete DB records
+    last_name: Optional[str] = Field(default=None, min_length=1, max_length=100)
 
 
 class EmployeeResponse(EmployeeBase):

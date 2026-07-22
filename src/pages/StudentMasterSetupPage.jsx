@@ -329,6 +329,19 @@ export default function StudentMasterSetupPage() {
     ];
   }, [masters]);
 
+  const cardRouteMap = {
+    'Total Student Fields': '/settings/institute/student-master/student-fields',
+    'Mandatory Fields': '/settings/institute/student-master/mandatory-fields',
+    'Academic Fields': '/settings/institute/student-master/academic-fields',
+    'Parent Fields': '/settings/institute/student-master/parent-fields',
+    'Documents Required': '/settings/institute/student-master/documents',
+    'Fee Categories': '/settings/institute/student-master/fee-categories',
+    'Hostel Configurations': '/settings/institute/student-master/hostel-configurations',
+    'Transport Configurations': '/settings/institute/student-master/transport-configurations',
+    'Medical Records': '/settings/institute/student-master/medical-records',
+    'Student Status Types': '/settings/institute/student-master/student-status',
+  };
+
   const activeMaster = masters.find((master) => master.id === masterId) || null;
   const routeMode = useMemo(() => {
     const path = location.pathname.replace(/\/+$/, '');
@@ -494,6 +507,8 @@ export default function StudentMasterSetupPage() {
   const renderFieldRow = (master, sectionKey, fieldKey, fieldSetting) => {
     const searchMatch = !configSearch || [fieldSetting.label, fieldSetting.defaultValue, fieldSetting.placeholder].filter(Boolean).some((value) => value.toString().toLowerCase().includes(configSearch.toLowerCase()));
     if (!searchMatch) return null;
+
+    
 
     return (
       <div key={`${master.id}-${sectionKey}-${fieldKey}`} className="rounded-[20px] border border-slate-200 bg-slate-50/70 p-4 shadow-sm">
@@ -851,7 +866,11 @@ export default function StudentMasterSetupPage() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.16, delay: index * 0.03 }}
-              className="hover-gradient-border rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-[0_16px_35px_rgba(15,23,42,0.08)]"
+              className="hover-gradient-border rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-[0_16px_35px_rgba(15,23,42,0.08)] cursor-pointer"
+                onClick={() => { const path = cardRouteMap[card.label]; if (path) navigate(path); }}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { const path = cardRouteMap[card.label]; if (!path) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(path); } }}
             >
               <div className="inline-flex rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-emerald-600">
                 <Icon className="h-5 w-5" />

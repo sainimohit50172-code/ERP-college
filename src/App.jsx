@@ -39,6 +39,16 @@ import AttendanceManagementPage from './pages/AttendanceManagementPage.jsx';
 import InstitutePreferencePage from './pages/InstitutePreferencePage.jsx';
 import StudentFieldsManagementPage from './pages/StudentFieldsManagementPage.jsx';
 import StudentMasterSetupPage from './pages/StudentMasterSetupPage.jsx';
+import StudentFieldsPage from './pages/student-master/StudentFieldsPage.jsx';
+import MandatoryFieldsPage from './pages/student-master/MandatoryFieldsPage.jsx';
+import AcademicFieldsPage from './pages/student-master/AcademicFieldsPage.jsx';
+import ParentFieldsPage from './pages/student-master/ParentFieldsPage.jsx';
+import DocumentsPage from './pages/student-master/DocumentsPage.jsx';
+import FeeCategoriesPage from './pages/student-master/FeeCategoriesPage.jsx';
+import HostelConfigurationsPage from './pages/student-master/HostelConfigurationsPage.jsx';
+import TransportConfigurationsPage from './pages/student-master/TransportConfigurationsPage.jsx';
+import MedicalRecordsPage from './pages/student-master/MedicalRecordsPage.jsx';
+import StatusTypesPage from './pages/student-master/StatusTypesPage.jsx';
 import DepartmentManagementPage from './pages/DepartmentManagementPage.jsx';
 import DesignationManagementPage from './pages/DesignationManagementPage.jsx';
 import OrganizationManagementPage from './pages/OrganizationManagementPage.jsx';
@@ -464,6 +474,17 @@ function App() {
               <Route path="settings/institute/student-master/refresh" element={<ProtectedRoute moduleKey="settings"><StudentMasterSetupPage /></ProtectedRoute>} />
               <Route path="settings/institute/student-master/:masterId/edit" element={<ProtectedRoute moduleKey="settings"><StudentMasterSetupPage /></ProtectedRoute>} />
               <Route path="settings/institute/student-master/:masterId" element={<ProtectedRoute moduleKey="settings"><StudentMasterSetupPage /></ProtectedRoute>} />
+
+              <Route path="settings/institute/student-master/student-fields" element={<ProtectedRoute moduleKey="settings"><StudentFieldsPage /></ProtectedRoute>} />
+              <Route path="settings/institute/student-master/mandatory-fields" element={<ProtectedRoute moduleKey="settings"><MandatoryFieldsPage /></ProtectedRoute>} />
+              <Route path="settings/institute/student-master/academic-fields" element={<ProtectedRoute moduleKey="settings"><AcademicFieldsPage /></ProtectedRoute>} />
+              <Route path="settings/institute/student-master/parent-fields" element={<ProtectedRoute moduleKey="settings"><ParentFieldsPage /></ProtectedRoute>} />
+              <Route path="settings/institute/student-master/documents" element={<ProtectedRoute moduleKey="settings"><DocumentsPage /></ProtectedRoute>} />
+              <Route path="settings/institute/student-master/fee-categories" element={<ProtectedRoute moduleKey="settings"><FeeCategoriesPage /></ProtectedRoute>} />
+              <Route path="settings/institute/student-master/hostel-configurations" element={<ProtectedRoute moduleKey="settings"><HostelConfigurationsPage /></ProtectedRoute>} />
+              <Route path="settings/institute/student-master/transport-configurations" element={<ProtectedRoute moduleKey="settings"><TransportConfigurationsPage /></ProtectedRoute>} />
+              <Route path="settings/institute/student-master/medical-records" element={<ProtectedRoute moduleKey="settings"><MedicalRecordsPage /></ProtectedRoute>} />
+              <Route path="settings/institute/student-master/student-status" element={<ProtectedRoute moduleKey="settings"><StatusTypesPage /></ProtectedRoute>} />
               <Route path="settings/institute/hostels/list" element={<ProtectedRoute moduleKey="settings"><HostelListPage /></ProtectedRoute>} />
               <Route path="settings/institute/hostels/rooms" element={<ProtectedRoute moduleKey="settings"><HostelRoomsPage /></ProtectedRoute>} />
               <Route path="settings/institute/hostels/occupied" element={<ProtectedRoute moduleKey="settings"><HostelOccupiedPage /></ProtectedRoute>} />
