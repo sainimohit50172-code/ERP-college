@@ -31,6 +31,11 @@ from app.core.config import get_settings
 from app.core.logging import logger
 from app.db.database import Base, engine
 
+
+def initialize_database() -> None:
+    """Create the schema on startup when the database is reachable."""
+    Base.metadata.create_all(bind=engine)
+
 settings = get_settings()
 
 app = FastAPI(
@@ -112,6 +117,7 @@ async def health_check_v1():
 @app.on_event("startup")
 async def startup_event():
     logger.info("Starting %s", settings.app_name)
+    initialize_database()
 
 
 @app.on_event("shutdown")

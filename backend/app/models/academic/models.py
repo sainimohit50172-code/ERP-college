@@ -24,17 +24,54 @@ class Department(Base):
     code: Mapped[Optional[str]] = mapped_column(String(32), unique=True, nullable=True)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     description: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    created_by: Mapped[Optional[int]] = mapped_column(BigInteger, ForeignKey("users.id"), nullable=True)
-    updated_by: Mapped[Optional[int]] = mapped_column(BigInteger, ForeignKey("users.id"), nullable=True)
+
+    created_by: Mapped[Optional[int]] = mapped_column(
+        BigInteger,
+        ForeignKey("users.id"),
+        nullable=True,
+    )
+
+    updated_by: Mapped[Optional[int]] = mapped_column(
+        BigInteger,
+        ForeignKey("users.id"),
+        nullable=True,
+    )
+
     deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
-    updated_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        nullable=False,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow,
+    )
 
-    created_by_user: Mapped[Optional["User"]] = relationship(back_populates="created_departments", foreign_keys=[created_by], lazy="selectin")
-    updated_by_user: Mapped[Optional["User"]] = relationship(back_populates="updated_departments", foreign_keys=[updated_by], lazy="selectin")
-    courses: Mapped[list["Course"]] = relationship(back_populates="department", lazy="selectin")
-    employees: Mapped[list["Employee"]] = relationship(back_populates="department", lazy="selectin")
-    purchase_requests: Mapped[list["PurchaseRequest"]] = relationship(back_populates="requested_for_department", lazy="selectin")
+    created_by_user: Mapped[Optional["User"]] = relationship(
+        back_populates="created_departments",
+        foreign_keys=[created_by],
+        lazy="selectin",
+    )
+
+    updated_by_user: Mapped[Optional["User"]] = relationship(
+        back_populates="updated_departments",
+        foreign_keys=[updated_by],
+        lazy="selectin",
+    )
+
+    courses: Mapped[list["Course"]] = relationship(
+        back_populates="department",
+        lazy="selectin",
+    )
+
+    employees: Mapped[list["Employee"]] = relationship(
+        back_populates="department",
+        lazy="selectin",
+    )
+
+    purchase_requests: Mapped[list["PurchaseRequest"]] = relationship(
+        back_populates="requested_for_department",
+        lazy="selectin",
+    )
 
 
 class Designation(Base):
