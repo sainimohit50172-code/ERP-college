@@ -1,8 +1,6 @@
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  ArrowLeft,
   BookOpen,
   ChevronRight,
   ClipboardList,
@@ -74,7 +72,6 @@ function getStatusClasses(status) {
 }
 
 export default function StudentFieldsManagementPage() {
-  const navigate = useNavigate();
   const [fields, setFields] = useState(initialFields);
   const [search, setSearch] = useState('');
   const [sectionFilter, setSectionFilter] = useState('All Sections');
@@ -198,9 +195,6 @@ export default function StudentFieldsManagementPage() {
       <div className="rounded-[28px] border border-slate-200/80 bg-white p-6 shadow-sm">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="max-w-3xl">
-            <button type="button" onClick={() => navigate(-1)} className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-100 hover-gradient-border" aria-label="Go back">
-              <ArrowLeft className="h-4 w-4" />
-            </button>
             <div className="mt-3">
               <Breadcrumb items={[{ label: 'Settings', to: '/settings' }, { label: 'Institute Setup', to: '/settings/institute' }, { label: 'Student Fields' }]} />
             </div>

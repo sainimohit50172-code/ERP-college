@@ -18,6 +18,7 @@ import TeacherManagementPage from '../pages/TeacherManagementPage.jsx';
 import FeeManagementPage from '../pages/FeeManagementPage.jsx';
 import TimetableManagementPage from '../pages/TimetableManagementPage.jsx';
 import SectionManagementPage from '../pages/SectionManagementPage.jsx';
+import SubjectManagementPage from '../pages/SubjectManagementPage.jsx';
 import SubjectAssignmentPage from '../pages/SubjectAssignmentPage.jsx';
 import TeacherSubjectAssignmentPage from '../pages/TeacherSubjectAssignmentPage.jsx';
 import ClassroomManagementPage from '../pages/ClassroomManagementPage.jsx';
@@ -64,7 +65,7 @@ export const routes = [
   { path: '/hr-documents', element: HRDocumentsPage },
   { path: '/fees', element: FeeManagementPage },
   { path: '/sections', element: SectionManagementPage },
-  { path: '/subjects', element: SubjectAssignmentPage },
+  { path: '/subjects', element: SubjectManagementPage },
   { path: '/subject-assignments', element: TeacherSubjectAssignmentPage },
   { path: '/classrooms', element: ClassroomManagementPage },
   { path: '/calendar', element: AcademicCalendarPage },

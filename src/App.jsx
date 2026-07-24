@@ -36,6 +36,14 @@ import CourseManagementPage from './pages/CourseManagementPage.jsx';
 import InstituteTransportPage from './pages/InstituteTransportPage.jsx';
 import InstituteHostelPage from './pages/InstituteHostelPage.jsx';
 import AttendanceManagementPage from './pages/AttendanceManagementPage.jsx';
+import AcademicsSetupPage from './pages/AcademicsSetupPage.jsx';
+import AcademicPlaceholderPage from './pages/academics/AcademicPlaceholderPage.jsx';
+import SubjectMappingV2Page from './pages/academics/SubjectMappingV2Page.jsx';
+import SubjectMappingV2ViewPage from './pages/academics/SubjectMappingV2ViewPage.jsx';
+import SubjectMappingV2EditPage from './pages/academics/SubjectMappingV2EditPage.jsx';
+import SubjectCollegeMappingPage from './pages/academics/SubjectCollegeMappingPage.jsx';
+import EditSubjectCollegeMappingPage from './pages/academics/EditSubjectCollegeMappingPage.jsx';
+import FacultyMappingPage from './pages/academics/FacultyMappingPage.jsx';
 import InstitutePreferencePage from './pages/InstitutePreferencePage.jsx';
 import StudentFieldsManagementPage from './pages/StudentFieldsManagementPage.jsx';
 import StudentMasterSetupPage from './pages/StudentMasterSetupPage.jsx';
@@ -64,6 +72,7 @@ import EmployeeAttendanceRegularizationPage from './pages/EmployeeAttendanceRegu
 import FinanceAccountingPage from './pages/FinanceAccountingPage.jsx';
 import SemesterManagementPage from './pages/SemesterManagementPage.jsx';
 import SectionManagementPage from './pages/SectionManagementPage.jsx';
+import SubjectManagementPage from './pages/SubjectManagementPage.jsx';
 import SubjectAssignmentPage from './pages/SubjectAssignmentPage.jsx';
 import TeacherSubjectAssignmentPage from './pages/TeacherSubjectAssignmentPage.jsx';
 import ClassroomManagementPage from './pages/ClassroomManagementPage.jsx';
@@ -276,7 +285,7 @@ function App() {
               <Route path="departments" element={<ProtectedRoute moduleKey="students"><DepartmentManagementPage /></ProtectedRoute>} />
               <Route path="semesters" element={<ProtectedRoute moduleKey="students"><SemesterManagementPage /></ProtectedRoute>} />
               <Route path="sections" element={<SectionManagementPage />} />
-              <Route path="subjects" element={<SubjectAssignmentPage />} />
+              <Route path="subjects" element={<ProtectedRoute moduleKey="subjects"><SubjectManagementPage /></ProtectedRoute>} />
               <Route path="subject-assignments" element={<ProtectedRoute moduleKey="teacherAssignments"><TeacherSubjectAssignmentPage /></ProtectedRoute>} />
               <Route path="classrooms" element={<ClassroomManagementPage />} />
               <Route path="calendar" element={<ProtectedRoute moduleKey="calendar"><AcademicCalendarPage /></ProtectedRoute>} />
@@ -464,6 +473,27 @@ function App() {
               <Route path="settings/institute/transport" element={<ProtectedRoute moduleKey="settings"><InstituteTransportPage /></ProtectedRoute>} />
               <Route path="settings/institute/hostel" element={<ProtectedRoute moduleKey="settings"><InstituteHostelPage /></ProtectedRoute>} />
               <Route path="settings/institute/attendance" element={<ProtectedRoute moduleKey="settings"><AttendanceManagementPage /></ProtectedRoute>} />
+              <Route path="settings/institute/academics" element={<ProtectedRoute moduleKey="settings"><AcademicsSetupPage /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/faculty-mapping" element={<ProtectedRoute moduleKey="settings"><FacultyMappingPage /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/subject-college-mapping" element={<ProtectedRoute moduleKey="settings"><SubjectCollegeMappingPage /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/subject-college-mapping/view/:id" element={<ProtectedRoute moduleKey="settings"><EditSubjectCollegeMappingPage /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/subject-college-mapping/edit/:id" element={<ProtectedRoute moduleKey="settings"><EditSubjectCollegeMappingPage /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/subject-college-mapping-v2" element={<ProtectedRoute moduleKey="settings"><SubjectMappingV2Page /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/subject-mapping-v2" element={<ProtectedRoute moduleKey="settings"><SubjectMappingV2Page /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/subject-college-mapping-v2/edit/:id" element={<ProtectedRoute moduleKey="settings"><SubjectMappingV2EditPage /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/subject-mapping-v2/edit/:id" element={<ProtectedRoute moduleKey="settings"><SubjectMappingV2EditPage /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/subject-college-mapping-v2/view/:id" element={<ProtectedRoute moduleKey="settings"><SubjectMappingV2ViewPage /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/subject-mapping-v2/view/:id" element={<ProtectedRoute moduleKey="settings"><SubjectMappingV2ViewPage /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/assessment-master" element={<ProtectedRoute moduleKey="settings"><AcademicPlaceholderPage title="Assessment Master" description="Configure and manage assessment rules, categories, and academic scoring definitions." /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/assessment-grade-setup" element={<ProtectedRoute moduleKey="settings"><AcademicPlaceholderPage title="Assessment Grade Setup" description="Define grade scales, achievement bands, and academic grade configuration rules." /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/attendance-marks-setup" element={<ProtectedRoute moduleKey="settings"><AcademicPlaceholderPage title="Attendance Marks Setup" description="Configure attendance score logic, thresholds, and academic attendance evaluation criteria." /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/assessment-config" element={<ProtectedRoute moduleKey="settings"><AcademicPlaceholderPage title="Assessment Config" description="Control assessment behavior, evaluation settings, and institute-wide assessment policy defaults." /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/assessment-group" element={<ProtectedRoute moduleKey="settings"><AcademicPlaceholderPage title="Assessment Group" description="Organize assessment components into logical groups for academic administration." /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/assessment-config-college-wise" element={<ProtectedRoute moduleKey="settings"><AcademicPlaceholderPage title="Assessment Config College Wise" description="Maintain college-specific assessment configurations and local academic setting overrides." /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/assessment-group-college-wise" element={<ProtectedRoute moduleKey="settings"><AcademicPlaceholderPage title="Assessment Group College Wise" description="Manage assessment grouping by college for academic structure and reporting consistency." /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/remark-setup-list" element={<ProtectedRoute moduleKey="settings"><AcademicPlaceholderPage title="Remark Setup List" description="Maintain academic, attendance, and performance remark configuration lists." /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/result-setup-list" element={<ProtectedRoute moduleKey="settings"><AcademicPlaceholderPage title="Result Setup List" description="Define result publishing and computation configuration for academic outcome management." /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/attendance-remarks" element={<ProtectedRoute moduleKey="settings"><AcademicPlaceholderPage title="Attendance Remarks" description="Configure attendance remark categories and standardized institute-wide remarks." /></ProtectedRoute>} />
               <Route path="settings/institute/preferences" element={<ProtectedRoute moduleKey="settings"><InstitutePreferencePage /></ProtectedRoute>} />
               <Route path="settings/institute/student-fields" element={<ProtectedRoute moduleKey="settings"><StudentFieldsManagementPage /></ProtectedRoute>} />
               <Route path="settings/institute/student-master" element={<ProtectedRoute moduleKey="settings"><StudentMasterSetupPage /></ProtectedRoute>} />

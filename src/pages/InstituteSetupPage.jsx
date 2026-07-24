@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   BadgeCheck,
+  BookOpen,
   Building,
   Building2,
   Bus,
@@ -22,6 +23,7 @@ import {
 const setupCards = [
   { title: 'Institute Profile', description: 'Informative Details', icon: Building2, route: '/settings/institute/profile' },
   { title: 'Sessions', description: 'Academic Session', icon: CalendarDays, route: '/settings/institute/sessions' },
+  { title: 'Academics', description: 'Academic configuration and setup', icon: BookOpen, route: '/settings/institute/academics' },
   { title: 'Courses', description: 'Courses and Streams', icon: Monitor, route: '/settings/institute/courses' },
   { title: 'Transport', description: 'Transport Section', icon: Bus, route: '/settings/institute/transport' },
   { title: 'Hostel', description: 'Hostel Section', icon: Building, route: '/settings/institute/hostel' },

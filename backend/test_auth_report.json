@@ -1,0 +1,99 @@
+{
+  "timestamp": "2026-07-23T17:34:06.266756",
+  "tests": [
+    {
+      "name": "Register Admin User",
+      "status": "PASS",
+      "timestamp": "2026-07-23T17:34:06.777412",
+      "details": {
+        "user_id": 5,
+        "email": "admin@erp.example.com",
+        "username": "admin-etest-8246",
+        "role": "Admin",
+        "http_status": 201
+      }
+    },
+    {
+      "name": "Login Admin User",
+      "status": "PASS",
+      "timestamp": "2026-07-23T17:34:07.075829",
+      "details": {
+        "http_status": 200,
+        "access_token_present": true,
+        "refresh_token_present": true,
+        "token_type": "bearer",
+        "expires_in": 3600,
+        "user_email": "admin@erp.example.com"
+      }
+    },
+    {
+      "name": "Get Current User",
+      "status": "PASS",
+      "timestamp": "2026-07-23T17:34:07.086217",
+      "details": {
+        "http_status": 200,
+        "user_id": 5,
+        "email": "admin@erp.example.com",
+        "username": "admin-etest-8246",
+        "full_name": "System Administrator",
+        "is_active": true,
+        "is_superuser": false
+      }
+    },
+    {
+      "name": "Refresh Token",
+      "status": "PASS",
+      "timestamp": "2026-07-23T17:34:07.143927",
+      "details": {
+        "http_status": 200,
+        "new_access_token_present": true,
+        "new_refresh_token_present": true,
+        "token_type": "bearer",
+        "expires_in": 3600
+      }
+    },
+    {
+      "name": "Logout User",
+      "status": "PASS",
+      "timestamp": "2026-07-23T17:34:07.167663",
+      "details": {
+        "http_status": 200,
+        "success": true
+      }
+    },
+    {
+      "name": "Token Revocation Verification",
+      "status": "PASS",
+      "timestamp": "2026-07-23T17:34:07.186583",
+      "details": {
+        "http_status": 401,
+        "message": "Revoked token correctly rejected",
+        "error": "Invalid refresh token"
+      }
+    },
+    {
+      "name": "Invalid Bearer Token Rejection",
+      "status": "PASS",
+      "timestamp": "2026-07-23T17:34:07.191675",
+      "details": {
+        "http_status": 401,
+        "message": "Invalid token correctly rejected"
+      }
+    },
+    {
+      "name": "Missing Bearer Token Rejection",
+      "status": "PASS",
+      "timestamp": "2026-07-23T17:34:07.195635",
+      "details": {
+        "http_status": 401,
+        "message": "Missing token correctly rejected"
+      }
+    }
+  ],
+  "summary": {
+    "total": 8,
+    "passed": 8,
+    "failed": 0,
+    "bugs_found": []
+  }
+}

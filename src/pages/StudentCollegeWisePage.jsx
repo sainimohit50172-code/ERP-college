@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
 import CircleAvatar from '../components/ui/CircleAvatar.jsx';
 import IconActionButton from '../components/ui/IconActionButton.jsx';
-import { UserPlus, Filter, Printer, Download } from 'lucide-react';
+import { UserPlus, Filter, Printer, Download, Edit3, Trash2 } from 'lucide-react';
 
 const NAVY_BTN = 'inline-flex items-center gap-2 rounded-xl bg-[#1e3a5f] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900';
 const OUTLINE_BTN = 'inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50';

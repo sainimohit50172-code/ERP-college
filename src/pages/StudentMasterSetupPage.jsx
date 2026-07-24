@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  ArrowLeft,
   BookOpen,
   ChevronDown,
   ChevronRight,
@@ -565,9 +564,6 @@ export default function StudentMasterSetupPage() {
   const routeActionPage = (title, description, children, primaryActionLabel, primaryAction) => (
     <div className="mx-[10px] space-y-6">
       <section className="rounded-[28px] border border-slate-200/80 bg-white p-5 shadow-[0_18px_45px_rgba(15,23,42,0.05)] sm:p-6">
-        <button type="button" onClick={() => navigate('/settings/institute/student-master')} className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-100 hover-gradient-border" aria-label="Back to list">
-          <ArrowLeft className="h-4 w-4" />
-        </button>
         <div className="mt-4">
           <Breadcrumb items={[{ to: '/settings', label: 'Settings' }, { to: '/settings/institute', label: 'Institute Setup' }, { label: 'Student Master Setup' }, { label: title }]} />
         </div>
@@ -598,9 +594,6 @@ export default function StudentMasterSetupPage() {
     return (
       <div className="mx-[10px] space-y-6">
         <section className="rounded-[28px] border border-slate-200/80 bg-white p-5 shadow-[0_18px_45px_rgba(15,23,42,0.05)] sm:p-6">
-          <button type="button" onClick={() => navigate('/settings/institute/student-master')} className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-100 hover-gradient-border" aria-label="Back to list">
-            <ArrowLeft className="h-4 w-4" />
-          </button>
           <div className="mt-4">
             <Breadcrumb items={[{ to: '/settings', label: 'Settings' }, { to: '/settings/institute', label: 'Institute Setup' }, { label: 'Student Master Setup' }, { label: routeMode === 'edit' ? 'Edit Master' : 'Add Master' }]} />
           </div>
@@ -753,9 +746,6 @@ export default function StudentMasterSetupPage() {
     return (
       <div className="mx-[10px] space-y-6">
         <section className="rounded-[28px] border border-slate-200/80 bg-white p-5 shadow-[0_18px_45px_rgba(15,23,42,0.05)] sm:p-6">
-          <button type="button" onClick={() => navigate('/settings/institute/student-master')} className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-100 hover-gradient-border" aria-label="Back to list">
-            <ArrowLeft className="h-4 w-4" />
-          </button>
           <div className="mt-4">
             <Breadcrumb items={[{ to: '/settings', label: 'Settings' }, { to: '/settings/institute', label: 'Institute Setup' }, { label: 'Student Master Setup' }, { label: activeMaster.masterName }]} />
           </div>
@@ -837,9 +827,6 @@ export default function StudentMasterSetupPage() {
     return (
     <div className="mx-[10px] space-y-6">
       <section className="rounded-[28px] border border-slate-200/80 bg-white p-5 shadow-[0_18px_45px_rgba(15,23,42,0.05)] sm:p-6">
-        <button type="button" onClick={() => navigate(-1)} className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-100 hover-gradient-border" aria-label="Go back">
-          <ArrowLeft className="h-4 w-4" />
-        </button>
         <div className="mt-4">
           <Breadcrumb items={[{ to: '/settings', label: 'Settings' }, { to: '/settings/institute', label: 'Institute Setup' }, { label: 'Student Master Setup' }]} />
         </div>

@@ -53,7 +53,7 @@ const navLinks = [
 const quickActions = [
   { title: 'Institute Setup', subtitle: 'Informative Details', route: '/settings/institute', icon: '🏛️', color: '#3b82f6' },
   { title: 'Fee Structure', subtitle: 'Fee Details', route: '/fees/structure', icon: '💰', color: '#8b5cf6' },
-  { title: 'Academics', subtitle: 'Academic Setup', route: '/academic-calendar', icon: '🎓', color: '#10b981' },
+  { title: 'Academics', subtitle: 'Academic Setup', route: '/settings/institute/academics', icon: '🎓', color: '#10b981' },
   { title: 'Library Setup', subtitle: 'Library Details', route: '/library', icon: '📚', color: '#f59e0b' },
   { title: 'Advanced Setup', subtitle: 'Advanced Settings', route: '/settings', icon: '⚙️', color: '#6366f1' },
   { title: 'Admission Setup', subtitle: 'Admission Details', route: '/admissions', icon: '🎯', color: '#ec4899' },

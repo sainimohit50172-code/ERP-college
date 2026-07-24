@@ -106,9 +106,9 @@ function getSortedRows(rows, columns, sortKey, direction) {
   });
 }
 
-export default function DataTable({ columns, rows, loading = false, placeholder = 'Search...', initialPageSize = 10, hideHeader = false, headerClassName = '', tableMaxHeight, tableId, onEdit = () => {}, onDelete = () => {}, onRowClick = null }) {
+export default function DataTable({ columns, rows, loading = false, placeholder = 'Search...', initialPageSize = 10, hideHeader = false, hideControls = false, headerClassName = '', tableMaxHeight, tableId, onEdit = () => {}, onDelete = () => {}, onRowClick = null, query: externalQuery, onQueryChange }) {
   const columnsDefinition = useMemo(() => normalizeColumns(columns), [columns]);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(externalQuery ?? '');
   const [sortKey, setSortKey] = useState(null);
   const [sortDirection, setSortDirection] = useState('asc');
   const [pageSize, setPageSize] = useState(initialPageSize);
@@ -116,6 +116,14 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
   
   // Debounce search input
   const debouncedQuery = useDebounce(query, 300);
+
+  // Keep internal query in sync when controlled externally
+  useEffect(() => {
+    if (externalQuery !== undefined && externalQuery !== null && externalQuery !== query) {
+      setQuery(externalQuery);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [externalQuery]);
 
   const filteredRows = useMemo(() => {
     const normalizedQuery = debouncedQuery.trim().toLowerCase();
@@ -136,7 +144,7 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
     return sortedRows.slice(startIndex, startIndex + pageSize);
   }, [currentPage, pageSize, sortedRows]);
 
-  const headerClasses = `sticky top-0 border-b-2 border-slate-300 ${headerClassName || 'bg-slate-100 text-slate-700'}`;
+  const headerClasses = `sticky top-0 border-b-2 border-slate-300 ${headerClassName || 'bg-[#1E3A5F] text-white'} h-[56px] font-semibold`;
 
   const csvContent = useMemo(() => {
     const header = columnsDefinition.map((column) => column.label);
@@ -166,19 +174,19 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
   };
 
   return (
-    <div className="relative rounded-[20px] border border-slate-200/70 bg-white/95 p-4 shadow-sm text-xs">
+    <div className="relative rounded-[12px] border border-slate-200 bg-white p-4 shadow-sm text-xs">
       {/* Only show loading on initial load, not on pagination */}
       {loading && rows?.length === 0 && (
         <LoadingOverlay loading={true} message="Loading table data..." />
       )}
-      {!hideHeader && (
+      {!hideHeader && !hideControls && (
         <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-base font-semibold text-slate-950">Data table</h2>
             <p className="mt-1 text-xs text-slate-500">Search, sort, paginate, export, and print your records.</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <button type="button" onClick={downloadCsv} className="btn btn-secondary inline-flex items-center gap-2 hover-gradient-border">
+            <button type="button" onClick={downloadCsv} className="btn btn-secondary inline-flex items-center gap-2">
               <Download className="h-4 w-4" /> CSV
             </button>
             <button type="button" onClick={() => window.print()} className="btn btn-secondary inline-flex items-center gap-2">
@@ -188,37 +196,41 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
         </div>
       )}
 
-      <div className="mb-4 grid gap-3 sm:grid-cols-[1fr_auto] xl:grid-cols-[1fr_auto_auto]">
-        <div className="relative max-w-lg">
-          <input
-            type="search"
-            value={query}
-            onChange={(event) => {
-              setQuery(event.target.value);
-              setCurrentPage(1);
-            }}
-            placeholder={placeholder}
-            className="w-full rounded-3xl border border-slate-200/80 bg-slate-50 px-3 py-2 text-xs text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
-          />
+      {!hideControls && (
+        <div className="mb-4 grid gap-3 sm:grid-cols-[1fr_auto] xl:grid-cols-[1fr_auto_auto]">
+          <div className="relative max-w-lg">
+            <input
+              type="search"
+              value={query}
+              onChange={(event) => {
+                const v = event.target.value;
+                setQuery(v);
+                if (onQueryChange) onQueryChange(v);
+                setCurrentPage(1);
+              }}
+              placeholder={placeholder}
+              className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="whitespace-nowrap text-sm text-slate-500">Rows per page</label>
+            <select
+              value={pageSize}
+              onChange={(event) => {
+                setPageSize(Number(event.target.value));
+                setCurrentPage(1);
+              }}
+              className="rounded-md border border-slate-200 bg-white px-2 py-1 text-sm text-slate-900 outline-none"
+            >
+              {[10, 20, 30, 50].map((size) => (
+                <option key={size} value={size}>
+                  {size}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <label className="whitespace-nowrap text-xs text-slate-500">Rows per page</label>
-          <select
-            value={pageSize}
-            onChange={(event) => {
-              setPageSize(Number(event.target.value));
-              setCurrentPage(1);
-            }}
-            className="rounded-3xl border border-slate-200/80 bg-white px-2 py-1 text-xs text-slate-900 outline-none"
-          >
-            {[10, 20, 30, 50].map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
+      )}
 
       {paginatedRows.length === 0 ? (
         <EmptyState title="No matching records" description="Try adjusting your search query or changing the page size." />
@@ -246,8 +258,8 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
                   return (
                     <th
                       key={column.key}
-                      className={`whitespace-nowrap break-words px-[4px] py-[5px] font-semibold uppercase tracking-[0.02em] align-middle border-r border-slate-200 ${isAction ? 'action-header' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''} ${textAlign === 'left' ? 'text-left' : textAlign === 'right' ? 'text-right' : 'text-center'}`}
-                      style={{ minWidth: width !== 'auto' ? width : undefined, width: widthStyle, textAlign }}
+                      className={`whitespace-nowrap break-words px-4 py-3 font-semibold uppercase tracking-[0.02em] align-middle border-r border-transparent ${isAction ? 'action-header' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''} ${textAlign === 'left' ? 'text-left' : textAlign === 'right' ? 'text-right' : 'text-center'}`}
+                      style={{ minWidth: width !== 'auto' ? width : undefined, width: widthStyle, textAlign, height: '56px' }}
                     >
                       <button
                         type="button"
@@ -266,11 +278,12 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
               </tr>
             </thead>
             <tbody>
-              {paginatedRows.map((row, rowIndex) => (
+                {paginatedRows.map((row, rowIndex) => (
                 <tr
                   key={`row-${rowIndex}`}
                   onClick={() => onRowClick && onRowClick(row)}
-                  className={`${rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50'} hover:bg-blue-100 transition-colors border-b border-slate-200 ${onRowClick ? 'cursor-pointer' : ''}`}
+                  className={`${rowIndex % 2 === 0 ? 'bg-white' : 'bg-[#F8FAFC]'} hover:bg-[#EEF4FF] border-b`} 
+                  style={{ borderBottomColor: '#E5E7EB' }}
                 >
                     {columnsDefinition.map((column, columnIndex) => {
                     const cellValue = getCellValue(row, column, columnIndex);
@@ -303,10 +316,10 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
                           style={{ whiteSpace: 'nowrap', minWidth: width !== 'auto' ? width : undefined, width: widthStyle, textAlign }}
                         >
                           <div className="flex min-w-0 items-center justify-center gap-1.5">
-                            <button type="button" title="Edit" aria-label="Edit" onClick={() => onEdit(row)} className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 transition hover:bg-emerald-100 hover-gradient-border">
+                            <button type="button" title="Edit" aria-label="Edit" onClick={() => onEdit(row)} className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-transparent bg-transparent text-[#1E3A5F] transition hover:text-blue-600" style={{ height: 36, width: 36 }}>
                               <Edit3 className="h-4 w-4" />
                             </button>
-                            <button type="button" title="Delete" aria-label="Delete" onClick={() => onDelete(row)} className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-rose-200 bg-rose-50 text-rose-700 transition hover:bg-rose-100 hover-gradient-border">
+                            <button type="button" title="Delete" aria-label="Delete" onClick={() => onDelete(row)} className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-transparent bg-transparent text-[#1E3A5F] transition hover:text-blue-600" style={{ height: 36, width: 36 }}>
                               <Trash2 className="h-4 w-4" />
                             </button>
                           </div>
@@ -344,31 +357,40 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
       </div>
       )}
 
-      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-xs text-slate-500">
-          Showing {paginatedRows.length} of {filteredRows.length} entries
-          {loading && rows?.length > 0 && (
-            <span className="ml-2 inline-flex items-center gap-1 text-blue-600">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-blue-600" />
-              Updating...
-            </span>
-          )}
-        </p>
-        <div className="flex flex-wrap items-center gap-2 text-xs">
+      <div className="mt-4 flex items-center justify-end gap-3">
+        <div className="hidden sm:flex items-center gap-3 text-sm text-slate-600">
+          <span>Rows per page</span>
+          <select
+            value={pageSize}
+            onChange={(event) => {
+              setPageSize(Number(event.target.value));
+              setCurrentPage(1);
+            }}
+            className="rounded-md border border-slate-200 bg-white px-2 py-1 text-sm text-slate-900 outline-none"
+          >
+            {[10, 20, 30, 50].map((size) => (
+              <option key={size} value={size}>
+                {size}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="flex items-center gap-3 text-sm text-slate-600">Total: {filteredRows.length}</div>
+        <div className="flex items-center gap-2">
           <button
             type="button"
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((current) => Math.max(current - 1, 1))}
-            className="btn btn-secondary rounded-full px-3 py-1 text-xs disabled:opacity-50"
+            className="rounded-md border border-slate-200 bg-white px-3 py-1 text-sm disabled:opacity-50"
           >
             Previous
           </button>
-          <span className="px-2 text-slate-700 text-xs">Page {currentPage} of {pageCount}</span>
+          <span className="px-2 text-slate-700 text-sm">Page {currentPage} of {pageCount}</span>
           <button
             type="button"
             disabled={currentPage === pageCount}
             onClick={() => setCurrentPage((current) => Math.min(current + 1, pageCount))}
-            className="btn btn-secondary rounded-full px-3 py-1 text-xs disabled:opacity-50"
+            className="rounded-md border border-slate-200 bg-white px-3 py-1 text-sm disabled:opacity-50"
           >
             Next
           </button>

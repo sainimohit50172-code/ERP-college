@@ -107,7 +107,6 @@ class AuthService:
                 "username": getattr(created_user, "username", None) or (created_user.get("username") if isinstance(created_user, dict) else None),
                 "full_name": getattr(created_user, "full_name", None) or (created_user.get("full_name") if isinstance(created_user, dict) else None),
                 "role": role_name,
-                "hashed_password": hashed_password,
             }
         }
 
@@ -298,8 +297,14 @@ class AuthService:
         session = await self._auth_repository.get_refresh_session(refresh_token_hash)
         if session is None or session.revoked:
             raise AuthServiceError("Invalid refresh token")
-        if session.expires_at is not None and session.expires_at < datetime.now(timezone.utc):
-            raise AuthServiceError("Refresh token expired")
+        # Handle both naive and aware datetimes from database
+        if session.expires_at is not None:
+            expires_at = session.expires_at
+            if expires_at.tzinfo is None:
+                # Convert naive datetime to aware UTC for comparison
+                expires_at = expires_at.replace(tzinfo=timezone.utc)
+            if expires_at < datetime.now(timezone.utc):
+                raise AuthServiceError("Refresh token expired")
 
         user = await self._auth_repository.get_by_id(session.user_id)
         if user is None:

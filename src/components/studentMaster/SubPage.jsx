@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Download, Eye, Pencil, Plus, RefreshCw, Search, Trash2 } from 'lucide-react';
+import { Download, Eye, Pencil, Plus, RefreshCw, Search, Trash2 } from 'lucide-react';
 import Breadcrumb from '../../components/ui/Breadcrumb.jsx';
 
-export default function SubPage({ title, subtitle, columns = [], demoData = [], addLabel = 'Add', backPath = '/settings/institute/student-master' }) {
-  const navigate = useNavigate();
+export default function SubPage({ title, subtitle, columns = [], demoData = [], addLabel = 'Add', _backPath = '/settings/institute/student-master' }) {
   const [search, setSearch] = useState('');
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -33,9 +31,6 @@ export default function SubPage({ title, subtitle, columns = [], demoData = [], 
   return (
     <div className="mx-[10px] space-y-6">
       <section className="rounded-[28px] border border-slate-200/80 bg-white p-5 shadow-[0_18px_45px_rgba(15,23,42,0.05)] sm:p-6">
-        <button type="button" onClick={() => navigate(backPath)} className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-100 hover-gradient-border" aria-label="Back">
-          <ArrowLeft className="h-4 w-4" />
-        </button>
         <div className="mt-4">
           <Breadcrumb items={[{ to: '/settings', label: 'Settings' }, { to: '/settings/institute', label: 'Institute Setup' }, { label: 'Student Master Setup' }, { label: title }]} />
         </div>
@@ -131,7 +126,7 @@ export default function SubPage({ title, subtitle, columns = [], demoData = [], 
               ))}
               <div className="flex justify-end gap-3">
                 <button type="button" onClick={() => setIsAddOpen(false)} className="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700">Cancel</button>
-                <button type="button" onClick={() => saveAdd({ id: `demo-${Date.now()}`, ...Object.fromEntries(columns.map((c, i) => [c.key, `${c.label} ${Math.floor(Math.random() * 99)}`])) })} className="rounded-2xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white">Save</button>
+                <button type="button" onClick={() => saveAdd({ id: `demo-${Date.now()}`, ...Object.fromEntries(columns.map((c) => [c.key, `${c.label} ${Math.floor(Math.random() * 99)}`])) })} className="rounded-2xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white">Save</button>
               </div>
             </div>
           </div>

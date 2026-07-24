@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy import select, func
 
 from app.api.v1.auth.router import router as auth_router
 from app.api.v1.admissions.router import router as admissions_router
@@ -35,6 +36,56 @@ from app.db.database import Base, engine
 def initialize_database() -> None:
     """Create the schema on startup when the database is reachable."""
     Base.metadata.create_all(bind=engine)
+
+
+def create_default_admin() -> None:
+    """Create default admin user if users table is empty."""
+    from sqlalchemy.orm import sessionmaker
+    from app.models.auth import User, Role, UserRole
+    from app.core.security import get_password_hash
+    
+    try:
+        # Create a session
+        SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+        db = SessionLocal()
+        
+        # Check if users table is empty
+        user_count = db.query(func.count(User.id)).scalar()
+        
+        if user_count == 0:
+            logger.info("Creating default admin user...")
+            
+            # Create admin role if it doesn't exist
+            admin_role = db.query(Role).filter(Role.name == "Admin").first()
+            if not admin_role:
+                admin_role = Role(name="Admin", description="Administrator", is_builtin=True)
+                db.add(admin_role)
+                db.flush()
+            
+            # Create admin user
+            admin_user = User(
+                email="admin@example.com",
+                username="admin",
+                hashed_password=get_password_hash("Admin123"),
+                full_name="System Administrator",
+                is_active=True,
+                is_superuser=True,
+            )
+            db.add(admin_user)
+            db.flush()
+            
+            # Assign Admin role to user
+            user_role = UserRole(user_id=admin_user.id, role_id=admin_role.id)
+            db.add(user_role)
+            
+            db.commit()
+            logger.info("Default admin user created: admin@example.com (username: admin)")
+        else:
+            logger.info("Users table is not empty, skipping default admin creation")
+        
+        db.close()
+    except Exception as exc:
+        logger.error("Failed to create default admin: %s", exc)
 
 settings = get_settings()
 
@@ -118,6 +169,7 @@ async def health_check_v1():
 async def startup_event():
     logger.info("Starting %s", settings.app_name)
     initialize_database()
+    create_default_admin()
 
 
 @app.on_event("shutdown")

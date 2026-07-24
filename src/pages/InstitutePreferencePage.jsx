@@ -2,16 +2,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  ArrowLeft,
   Bell,
   BookOpen,
   Building2,
   CheckCircle2,
   ChevronRight,
-  Clock3,
   FileCog,
-  Globe2,
-  KeyRound,
   Search,
   ShieldCheck,
   SlidersHorizontal,
@@ -143,7 +139,7 @@ const summaryCards = [
 ];
 
 export default function InstitutePreferencePage() {
-  const navigate = useNavigate();
+  const _navigate = useNavigate();
   const [preferences, setPreferences] = useState(defaultPreferences);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
@@ -254,14 +250,6 @@ export default function InstitutePreferencePage() {
       <div className="rounded-[28px] border border-slate-200/80 bg-white p-6 shadow-sm">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="max-w-3xl">
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-100 hover-gradient-border"
-              aria-label="Go back"
-            >
-              <ArrowLeft className="h-4 w-4" />
-            </button>
             <div className="mt-3">
               <Breadcrumb
                 items={[
@@ -273,9 +261,7 @@ export default function InstitutePreferencePage() {
             </div>
             <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-600">Institute setup</p>
             <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-900">Institute Preferences</h1>
-            <p className="mt-2 text-sm text-slate-600 sm:text-[15px]">
-              Configure institution-wide preferences, academic defaults, communication settings and operational defaults from one centralized workspace.
-            </p>
+            <p className="mt-2 text-sm text-slate-600 sm:text-[15px]">Configure institution-wide preferences, academic defaults, communication settings and operational defaults from one centralized workspace.</p>
           </div>
           <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
             Premium configuration center
