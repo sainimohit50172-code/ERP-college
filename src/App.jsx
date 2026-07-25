@@ -41,6 +41,11 @@ import AcademicPlaceholderPage from './pages/academics/AcademicPlaceholderPage.j
 import SubjectMappingV2Page from './pages/academics/SubjectMappingV2Page.jsx';
 import SubjectMappingV2ViewPage from './pages/academics/SubjectMappingV2ViewPage.jsx';
 import SubjectMappingV2EditPage from './pages/academics/SubjectMappingV2EditPage.jsx';
+import AssessmentMasterPage from './pages/AssessmentMasterPage.jsx';
+import AssessmentConfigPage from './pages/academics/AssessmentConfigPage.jsx';
+import AssessmentGroupPage from './pages/academics/AssessmentGroupPage.jsx';
+import AssessmentGradeSetupPage from './pages/academics/AssessmentGradeSetupPage.jsx';
+import AttendanceMarksSetupPage from './pages/academics/AttendanceMarksSetupPage.jsx';
 import SubjectCollegeMappingPage from './pages/academics/SubjectCollegeMappingPage.jsx';
 import EditSubjectCollegeMappingPage from './pages/academics/EditSubjectCollegeMappingPage.jsx';
 import FacultyMappingPage from './pages/academics/FacultyMappingPage.jsx';
@@ -213,6 +218,7 @@ function App() {
               <Route path="admissions" element={<ProtectedRoute moduleKey="admissions"><AdmissionsPage /></ProtectedRoute>} />
               <Route path="admissions/follow-ups" element={<ProtectedRoute moduleKey="admissions"><FollowUpsPage /></ProtectedRoute>} />
               <Route path="admissions/follow-up-remark-report" element={<ProtectedRoute moduleKey="admissions"><FollowUpRemarkReportPage /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/assessment-group" element={<ProtectedRoute moduleKey="settings"><AssessmentGroupPage /></ProtectedRoute>} />
               <Route path="admissions/reports/daily-collection" element={<ProtectedRoute moduleKey="admissions"><DailyCollectionReportPage /></ProtectedRoute>} />
               <Route path="admissions/reports/summary" element={<ProtectedRoute moduleKey="admissions"><AdmissionSummaryReportPage /></ProtectedRoute>} />
               <Route path="admissions/reports/subject-combination" element={<ProtectedRoute moduleKey="admissions"><SubjectCombinationReportPage /></ProtectedRoute>} />
@@ -484,10 +490,10 @@ function App() {
               <Route path="settings/institute/academics/subject-mapping-v2/edit/:id" element={<ProtectedRoute moduleKey="settings"><SubjectMappingV2EditPage /></ProtectedRoute>} />
               <Route path="settings/institute/academics/subject-college-mapping-v2/view/:id" element={<ProtectedRoute moduleKey="settings"><SubjectMappingV2ViewPage /></ProtectedRoute>} />
               <Route path="settings/institute/academics/subject-mapping-v2/view/:id" element={<ProtectedRoute moduleKey="settings"><SubjectMappingV2ViewPage /></ProtectedRoute>} />
-              <Route path="settings/institute/academics/assessment-master" element={<ProtectedRoute moduleKey="settings"><AcademicPlaceholderPage title="Assessment Master" description="Configure and manage assessment rules, categories, and academic scoring definitions." /></ProtectedRoute>} />
-              <Route path="settings/institute/academics/assessment-grade-setup" element={<ProtectedRoute moduleKey="settings"><AcademicPlaceholderPage title="Assessment Grade Setup" description="Define grade scales, achievement bands, and academic grade configuration rules." /></ProtectedRoute>} />
-              <Route path="settings/institute/academics/attendance-marks-setup" element={<ProtectedRoute moduleKey="settings"><AcademicPlaceholderPage title="Attendance Marks Setup" description="Configure attendance score logic, thresholds, and academic attendance evaluation criteria." /></ProtectedRoute>} />
-              <Route path="settings/institute/academics/assessment-config" element={<ProtectedRoute moduleKey="settings"><AcademicPlaceholderPage title="Assessment Config" description="Control assessment behavior, evaluation settings, and institute-wide assessment policy defaults." /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/assessment-master" element={<ProtectedRoute moduleKey="settings"><AssessmentMasterPage /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/assessment-grade-setup" element={<ProtectedRoute moduleKey="settings"><AssessmentGradeSetupPage /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/attendance-marks-setup" element={<ProtectedRoute moduleKey="settings"><AttendanceMarksSetupPage /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/assessment-config" element={<ProtectedRoute moduleKey="settings"><AssessmentConfigPage /></ProtectedRoute>} />
               <Route path="settings/institute/academics/assessment-group" element={<ProtectedRoute moduleKey="settings"><AcademicPlaceholderPage title="Assessment Group" description="Organize assessment components into logical groups for academic administration." /></ProtectedRoute>} />
               <Route path="settings/institute/academics/assessment-config-college-wise" element={<ProtectedRoute moduleKey="settings"><AcademicPlaceholderPage title="Assessment Config College Wise" description="Maintain college-specific assessment configurations and local academic setting overrides." /></ProtectedRoute>} />
               <Route path="settings/institute/academics/assessment-group-college-wise" element={<ProtectedRoute moduleKey="settings"><AcademicPlaceholderPage title="Assessment Group College Wise" description="Manage assessment grouping by college for academic structure and reporting consistency." /></ProtectedRoute>} />

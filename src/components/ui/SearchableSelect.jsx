@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { ChevronDown } from 'lucide-react';
 
@@ -15,6 +15,13 @@ export default function SearchableSelect({ options = [], value = '', onChange = 
     const q = query.trim().toLowerCase();
     return options.filter((o) => !q || String(o.label).toLowerCase().includes(q));
   }, [options, query]);
+
+  const selectedOptionLabel = useMemo(() => {
+    const selected = options.find((option) => option.value === value);
+    return selected ? String(selected.label) : '';
+  }, [options, value]);
+
+  const displayValue = open ? query : selectedOptionLabel || '';
 
   useEffect(() => {
     function onDoc(e) {
@@ -101,11 +108,12 @@ export default function SearchableSelect({ options = [], value = '', onChange = 
           type="text"
           role="combobox"
           aria-expanded={open}
-          value={open ? query : (value || '')}
+          value={displayValue}
           onChange={(e) => { setQuery(e.target.value); setOpen(true); }}
           onFocus={() => setOpen(true)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
+          required={required}
           className="h-10 w-full rounded-[6px] border border-slate-200 px-3 pr-10 text-sm text-slate-900 outline-none bg-white"
         />
         <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />

@@ -8,6 +8,8 @@ from app.api.v1.shared.dependencies import (
     get_subject_repository,
     get_academic_class_repository,
     get_section_repository,
+    get_assessment_grade_setup_repository,
+    get_attendance_marks_setup_repository,
     get_academic_service,
 )
 from app.models.academic import (
@@ -19,6 +21,10 @@ from app.models.academic import (
     Subject,
     AcademicClass,
     Section,
+    AssessmentGradeSetup,
+    AssessmentConfig,
+    AssessmentGroup,
+    AttendanceMarksSetup,
 )
 from app.schemas.academic.schemas import (
     DepartmentCreate,
@@ -53,6 +59,18 @@ from app.schemas.academic.schemas import (
     SectionUpdate,
     SectionDetail,
     SectionListItem,
+    AssessmentConfigCreate,
+    AssessmentConfigUpdate,
+    AssessmentConfigDetail,
+    AssessmentConfigListItem,
+    AssessmentGradeSetupCreate,
+    AssessmentGradeSetupUpdate,
+    AssessmentGradeSetupDetail,
+    AssessmentGradeSetupListItem,
+    AttendanceMarksSetupCreate,
+    AttendanceMarksSetupUpdate,
+    AttendanceMarksSetupDetail,
+    AttendanceMarksSetupListItem,
 )
 from app.schemas.shared.base import APIResponse, PaginationRequest, PaginationResponse
 from pydantic import BaseModel
@@ -165,6 +183,72 @@ section_router = build_crud_router(
     bulk_update_schema=SectionUpdate,
 )
 
+assessment_grade_setup_router = build_crud_router(
+    prefix="/assessment-grade-setups",
+    tags=["assessment-grade-setups"],
+    repository_dependency=get_assessment_grade_setup_repository,
+    service_dependency=get_academic_service,
+    model_class=AssessmentGradeSetup,
+    create_schema=AssessmentGradeSetupCreate,
+    update_schema=AssessmentGradeSetupUpdate,
+    detail_schema=AssessmentGradeSetupDetail,
+    list_schema=AssessmentGradeSetupListItem,
+    bulk_update_schema=AssessmentGradeSetupUpdate,
+)
+
+
+assessment_config_router = build_crud_router(
+    prefix="/assessment-configs",
+    tags=["assessment-configs"],
+    repository_dependency=get_assessment_config_repository,
+    service_dependency=get_academic_service,
+    model_class=AssessmentConfig,
+    create_schema=AssessmentConfigCreate,
+    update_schema=AssessmentConfigUpdate,
+    detail_schema=AssessmentConfigDetail,
+    list_schema=AssessmentConfigListItem,
+    bulk_update_schema=AssessmentConfigUpdate,
+)
+
+assessment_group_router = build_crud_router(
+    prefix="/assessment-group",
+    tags=["assessment-group"],
+    repository_dependency=get_assessment_group_repository,
+    service_dependency=get_academic_service,
+    model_class=None,  # model used by repository
+    model_class=AssessmentGroup,
+    create_schema=AssessmentGroupCreate,
+    update_schema=AssessmentGroupUpdate,
+    detail_schema=AssessmentGroupDetail,
+    list_schema=AssessmentGroupListItem,
+    bulk_update_schema=AssessmentGroupUpdate,
+)
+
+
+@router.post('/assessment-group/{id}/copy', response_model=APIResponse[AssessmentGroupDetail])
+async def copy_assessment_group(id: int, repo=Depends(get_assessment_group_repository)):
+    """Duplicate an existing assessment group including its items."""
+    try:
+        new_group = await repo.copy_group(id)
+    except Exception as exc:
+        return APIResponse(success=False, message=str(exc), data=None)
+
+    return APIResponse(success=True, message='Copied', data=new_group)
+
+
+attendance_marks_setup_router = build_crud_router(
+    prefix="/attendance-marks-setup",
+    tags=["attendance-marks-setup"],
+    repository_dependency=get_attendance_marks_setup_repository,
+    service_dependency=get_academic_service,
+    model_class=AttendanceMarksSetup,
+    create_schema=AttendanceMarksSetupCreate,
+    update_schema=AttendanceMarksSetupUpdate,
+    detail_schema=AttendanceMarksSetupDetail,
+    list_schema=AttendanceMarksSetupListItem,
+    bulk_update_schema=AttendanceMarksSetupUpdate,
+)
+
 from fastapi import APIRouter, Query
 from app.schemas.shared.base import APIResponse, PaginationRequest, PaginationResponse
 
@@ -183,6 +267,10 @@ for r in [
     subject_router,
     class_router,
     section_router,
+    assessment_grade_setup_router,
+    assessment_config_router,
+    assessment_group_router,
+    attendance_marks_setup_router,
 ]:
     router.include_router(r)
 

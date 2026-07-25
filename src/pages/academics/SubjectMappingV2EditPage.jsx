@@ -77,6 +77,21 @@ export default function SubjectMappingV2EditPage() {
     setGroups([{ id: `group-${Date.now()}`, title: 'Subject Group 1', subjects: demo.subjects.map((subject, index) => ({ ...subject, sequence: index + 1 })) }]);
   }, [id, navigate]);
 
+  // Hide the global BackNavigationButton (rendered in RootLayout) for this page only.
+  // This removes the duplicate back button while preserving the top-left arrow.
+  useEffect(() => {
+    const selector = '.erp-content-wrapper > .pt-1 > .mb-3';
+    const el = document.querySelector(selector);
+    let prevDisplay;
+    if (el) {
+      prevDisplay = el.style.display;
+      el.style.display = 'none';
+    }
+    return () => {
+      if (el) el.style.display = prevDisplay || '';
+    };
+  }, []);
+
   const teacherList = useMemo(() => {
     const subjectTeachers = mapping?.subjects.map((subject) => subject.teacher).filter(Boolean) || [];
     const unique = Array.from(new Set([...subjectTeachers, ...teacherOptions]));
@@ -232,7 +247,7 @@ export default function SubjectMappingV2EditPage() {
           <div className="inline-block min-w-full bg-white">
             {/* Header Row */}
             <div className="grid gap-0 bg-emerald-600 text-white h-12 items-center"
-              style={{ gridTemplateColumns: '50px 90px 220px 150px 170px 240px 200px 60px' }}>
+              style={{ gridTemplateColumns: '50px 90px 220px 150px 170px 240px 200px 150px' }}>
               <div className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-center">Seq</div>
               <div className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-center border-l border-emerald-500">Code</div>
               <div className="px-4 py-3 text-xs font-semibold uppercase tracking-wider border-l border-emerald-500">Subject</div>
@@ -248,7 +263,7 @@ export default function SubjectMappingV2EditPage() {
               <Fragment key={group.id}>
                 {/* Group Header */}
                 <div className="grid gap-0 bg-slate-100 h-10 items-center px-4 py-2 text-sm font-semibold text-slate-700 border-t border-slate-200"
-                  style={{ gridTemplateColumns: '50px 90px 220px 150px 170px 240px 200px 60px' }}>
+                  style={{ gridTemplateColumns: '50px 90px 220px 150px 170px 240px 200px 150px' }}>
                   {group.title}
                 </div>
 
@@ -258,7 +273,7 @@ export default function SubjectMappingV2EditPage() {
                   return (
                     <div key={subject.id} className="grid gap-0 border-t border-slate-200 bg-white"
                       style={{
-                        gridTemplateColumns: '50px 90px 220px 150px 170px 240px 200px 60px',
+                        gridTemplateColumns: '50px 90px 220px 150px 170px 240px 200px 150px',
                         minHeight: '96px',
                       }}>
                       
@@ -382,8 +397,9 @@ export default function SubjectMappingV2EditPage() {
                         <button
                           type="button"
                           onClick={() => navigate(`/settings/institute/academics/subject-college-mapping-v2/view/${id}`)}
-                          className="inline-flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition-all duration-200 hover:bg-blue-50 hover:text-blue-600"
+                          className="inline-flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 hover:bg-blue-50 hover:text-[#1E293B]"
                           aria-label="View subject"
+                          style={{ color: '#1E293B' }}
                         >
                           <Eye className="h-5 w-5" />
                         </button>
@@ -391,8 +407,9 @@ export default function SubjectMappingV2EditPage() {
                         <button
                           type="button"
                           onClick={() => navigate(`/settings/institute/academics/subject-college-mapping-v2/edit/${id}`)}
-                          className="inline-flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition-all duration-200 hover:bg-emerald-50 hover:text-emerald-600"
+                          className="inline-flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 hover:bg-emerald-50 hover:text-[#1E293B]"
                           aria-label="Edit subject"
+                          style={{ color: '#1E293B' }}
                         >
                           <Edit2 className="h-5 w-5" />
                         </button>
@@ -400,8 +417,9 @@ export default function SubjectMappingV2EditPage() {
                         <button
                           type="button"
                           onClick={() => removeSubject(group.id, subject.id)}
-                          className="inline-flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition-all duration-200 hover:bg-rose-50 hover:text-rose-600"
+                          className="inline-flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 hover:bg-rose-50 hover:text-[#EF4444]"
                           aria-label="Delete subject"
+                          style={{ color: '#EF4444' }}
                         >
                           <Trash2 className="h-5 w-5" />
                         </button>

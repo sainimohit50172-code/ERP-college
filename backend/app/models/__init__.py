@@ -12,6 +12,10 @@ from app.models.auth.models import (
 from app.models.academic.models import (
     AcademicClass,
     AcademicYear,
+    AssessmentConfig,
+    AssessmentGradeSetup,
+    AttendanceMarksConfig,
+    AttendanceMarksSetup,
     Course,
     Department,
     Designation,
@@ -59,6 +63,10 @@ from app.models.teachers.models import Teacher
 __all__ = [
     "AcademicClass",
     "AcademicYear",
+    "AssessmentConfig",
+    "AssessmentGradeSetup",
+    "AttendanceMarksConfig",
+    "AttendanceMarksSetup",
     "Base",
     "Admission",
     "AssetRegister",
@@ -124,7 +132,5 @@ __all__ = [
     "VehicleAssignment",
     "Supplier",
     "Visitor",
-    "Ticket",
-    "TicketAttachment",
     "Warehouse",
 ]

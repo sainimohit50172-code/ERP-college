@@ -112,6 +112,10 @@ const statusOptions = [
 const collegeOptions = [
   { value: 'ALL', label: 'All colleges' },
   { value: 'Roorkee College of Smart Computing', label: 'Roorkee College of Smart Computing' },
+  { value: 'Roorkee College of Engineering', label: 'Roorkee College of Engineering' },
+  { value: 'Roorkee College of Business Studies', label: 'Roorkee College of Business Studies' },
+  { value: 'Roorkee College of Agricultural Sciences', label: 'Roorkee College of Agricultural Sciences' },
+  { value: 'Roorkee College of Allied Health Sciences', label: 'Roorkee College of Allied Health Sciences' },
 ];
 
 const admissionCategoryOptions = [

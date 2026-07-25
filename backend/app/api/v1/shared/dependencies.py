@@ -26,6 +26,9 @@ from app.repositories.mysql.academic import (
     MySQLSubjectRepository,
     MySQLAcademicClassRepository,
     MySQLSectionRepository,
+    MySQLAssessmentGradeSetupRepository,
+    MySQLAssessmentConfigRepository,
+    MySQLAttendanceMarksSetupRepository,
 )
 from app.services.admissions.service import AdmissionService
 from app.services.attendance.service import AttendanceService
@@ -241,6 +244,24 @@ def get_section_repository(db=Depends(get_db)):
     return MySQLSectionRepository(db)
 
 
+def get_assessment_grade_setup_repository(db=Depends(get_db)):
+    return MySQLAssessmentGradeSetupRepository(db)
+
+
+def get_assessment_config_repository(db=Depends(get_db)):
+    return MySQLAssessmentConfigRepository(db)
+
+
+def get_attendance_marks_setup_repository(db=Depends(get_db)):
+    return MySQLAttendanceMarksSetupRepository(db)
+
+
+def get_assessment_group_repository(db=Depends(get_db)):
+    from app.repositories.mysql.academic import MySQLAssessmentGroupRepository
+
+    return MySQLAssessmentGroupRepository(db)
+
+
 def get_auth_repository(db=Depends(get_db)):
     return MySQLAuthRepository(db)
 
@@ -420,6 +441,8 @@ def get_academic_service(
     subject_repo=Depends(get_subject_repository),
     class_repo=Depends(get_academic_class_repository),
     section_repo=Depends(get_section_repository),
+    assessment_grade_setup_repo=Depends(get_assessment_grade_setup_repository),
+    attendance_marks_setup_repo=Depends(get_attendance_marks_setup_repository),
 ):
     return AcademicService(
         dept_repo,
@@ -430,6 +453,8 @@ def get_academic_service(
         subject_repo,
         class_repo,
         section_repo,
+        assessment_grade_setup_repo,
+        attendance_marks_setup_repo,
     )
 
 
