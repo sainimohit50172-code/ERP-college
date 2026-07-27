@@ -28,6 +28,7 @@ from app.repositories.mysql.academic import (
     MySQLSectionRepository,
     MySQLAssessmentGradeSetupRepository,
     MySQLAssessmentConfigRepository,
+    MySQLAssessmentGroupRepository,
     MySQLAttendanceMarksSetupRepository,
 )
 from app.services.admissions.service import AdmissionService
@@ -250,6 +251,10 @@ def get_assessment_grade_setup_repository(db=Depends(get_db)):
 
 def get_assessment_config_repository(db=Depends(get_db)):
     return MySQLAssessmentConfigRepository(db)
+
+
+def get_assessment_group_repository(db=Depends(get_db)):
+    return MySQLAssessmentGroupRepository(db)
 
 
 def get_attendance_marks_setup_repository(db=Depends(get_db)):

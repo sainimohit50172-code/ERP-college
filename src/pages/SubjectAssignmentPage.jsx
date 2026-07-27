@@ -1,106 +1,308 @@
-import { useMemo, useState } from 'react';
-import { FaDownload, FaPlus } from 'react-icons/fa';
-import { useForm } from 'react-hook-form';
-import SectionHeader from '../components/ui/SectionHeader.jsx';
-import SearchFilter from '../components/forms/SearchFilter.jsx';
-import DataTable from '../components/ui/DataTable.jsx';
-import TablePagination from '../components/tables/TablePagination.jsx';
-import Modal from '../components/ui/Modal.jsx';
-import FormField from '../components/forms/FormField.jsx';
-import StatusBadge from '../components/ui/StatusBadge.jsx';
-import { useResourceList, useCreateResource } from '../hooks/useResourceHooks';
-// subject assignments migrated to API-backed resource
-const statusOptions = [
-  { value: 'All', label: 'All statuses' },
-  { value: 'Active', label: 'Active' },
-  { value: 'Inactive', label: 'Inactive' },
+﻿import { useEffect, useRef, useState } from 'react';
+import { ArrowRight, ChevronDown, HelpCircle, Upload } from 'lucide-react';
+import Breadcrumb from '../components/ui/Breadcrumb.jsx';
+
+const collegeOptions = [
+  {
+    id: 'college-1',
+    title: 'ROORKEE COLLEGE OF SMART COMPUTING',
+    subtitle: 'BCA AI-ML',
+    extra: 'SEM 3 - B',
+  },
+  {
+    id: 'college-2',
+    title: 'ROORKEE COLLEGE OF SMART COMPUTING',
+    subtitle: 'BCA',
+    extra: 'SEM 3 - A',
+  },
+  {
+    id: 'college-3',
+    title: 'ROORKEE COLLEGE OF SMART COMPUTING',
+    subtitle: 'MCA',
+    extra: 'SEM 3 - A',
+  },
+  {
+    id: 'college-4',
+    title: 'ROORKEE COLLEGE OF SMART COMPUTING',
+    subtitle: 'B.TECH. HONS. CSE',
+    extra: 'SEM 3 - C',
+  },
+  {
+    id: 'college-5',
+    title: 'ROORKEE COLLEGE OF SMART COMPUTING',
+    subtitle: 'B.TECH. HONS. CSE',
+    extra: 'SEM 3 - A',
+  },
+  {
+    id: 'college-6',
+    title: 'ROORKEE COLLEGE OF SMART COMPUTING',
+    subtitle: 'B.TECH. HONS. CSE',
+    extra: 'SEM 3 - B',
+  },
+  {
+    id: 'college-7',
+    title: 'ROORKEE COLLEGE OF SMART COMPUTING',
+    subtitle: 'BCA',
+    extra: 'SEM 5 - A',
+  },
+  {
+    id: 'college-8',
+    title: 'ROORKEE COLLEGE OF SMART COMPUTING',
+    subtitle: 'B.SC. COMPUTER SCIENCE (DATA SCIENCE)',
+    extra: 'SEM 3 - A',
+  },
+  {
+    id: 'college-9',
+    title: 'ROORKEE COLLEGE OF SMART COMPUTING',
+    subtitle: 'BCA AI-ML',
+    extra: 'SEM 3 - A',
+  },
 ];
-export default function SubjectAssignmentPage() {
-  const { data: assignmentsData } = useResourceList('subjectAssignments', { page: 1, pageSize: 200 });
-  const subjectAssignments = assignmentsData?.items || [];
-  const createSubjectAssignment = useCreateResource('subjectAssignments');
-  const [search, setSearch] = useState('');
-  const [filter, setFilter] = useState('All');
-  const [page, setPage] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const pageSize = 5;
-  const { register, handleSubmit, reset, formState: { errors } } = useForm({
-    defaultValues: { subjectCode: '', subjectName: '', course: 'BCA', semester: '1', credits: '3', practicalHours: '0', isCore: true, status: 'Active' },
-  });
-  const filteredAssignments = useMemo(() => {
-    return subjectAssignments.filter((assignment) => {
-      const searchTerm = search.toLowerCase();
-      const matchesSearch = [assignment.subjectCode || assignment.subject?.code || '', assignment.subjectName || assignment.subject?.title || '', assignment.course, assignment.semester].some((value) => String(value).toLowerCase().includes(searchTerm));
-      const matchesFilter = filter === 'All' || assignment.status === filter;
-      return matchesSearch && matchesFilter;
-    });
-  }, [subjectAssignments, search, filter]);
-  const pageCount = Math.max(1, Math.ceil(filteredAssignments.length / pageSize));
-  const displayedAssignments = filteredAssignments.slice((page - 1) * pageSize, page * pageSize);
-  const onSubmit = (formValues) => {
-    createSubjectAssignment.mutate(formValues, { onSuccess: () => { reset({ subjectCode: '', subjectName: '', course: 'BCA', semester: '1', credits: '3', practicalHours: '0', isCore: true, status: 'Active' }); setPage(1); setIsModalOpen(false); } });
-  };
-  const totalSubjects = subjectAssignments.length;
-  const coreSubjects = subjectAssignments.filter((s) => s.isCore).length;
-  const totalCredits = subjectAssignments.reduce((acc, s) => acc + parseInt(s.credits || 0), 0);
+
+const subjectOptions = [
+  'Mathematics-I',
+  'Physics',
+  'Programming in C',
+  'Python Programming',
+  'Java Programming',
+  'Data Structures',
+  'Algorithms',
+  'Operating System',
+  'Database Management System',
+  'Computer Networks',
+  'Artificial Intelligence',
+  'Machine Learning',
+  'Software Engineering',
+  'Web Development',
+  'Discrete Mathematics',
+  'Object Oriented Programming',
+  'Cloud Computing',
+  'Cyber Security',
+  'Computer Graphics',
+  'Compiler Design',
+];
+
+const employeeOptions = [
+  'Dr. Amit Sharma',
+  'Prof. Rahul Verma',
+  'Dr. Neha Gupta',
+  'Prof. Ankit Singh',
+  'Dr. Priya Joshi',
+  'Prof. Mohit Kumar',
+  'Dr. Shalini Agarwal',
+  'Prof. Vivek Chauhan',
+  'Dr. Pooja Sharma',
+  'Prof. Deepak Kumar',
+];
+
+function Dropdown({ label, selected, options, onSelect, renderOption }) {
+  const [open, setOpen] = useState(false);
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    window.addEventListener('mousedown', handleClickOutside);
+    return () => window.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
-    <div className="space-y-8">
-      <SectionHeader title="Subject assignment" subtitle="Assign subjects to courses and semesters, define credits and learning outcomes." />
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Total subjects</p>
-          <p className="mt-4 text-3xl font-semibold text-white">{totalSubjects}</p>
+    <div ref={wrapperRef} className="relative w-full">
+      <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
+        {label}
+      </label>
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        className="inline-flex h-10 w-full items-center justify-between rounded-2xl border border-slate-300 bg-white px-4 text-left text-sm text-slate-900 shadow-sm transition hover:border-slate-400 focus:outline-none"
+      >
+        <span className="min-w-0 truncate">
+          {selected ? (renderOption ? renderOption(selected, true) : selected.label) : 'Select...'}
+        </span>
+        <ChevronDown className="h-4 w-4 text-slate-500" />
+      </button>
+
+      {open && (
+        <div className="absolute left-0 right-0 z-20 mt-2 max-h-72 overflow-auto rounded-2xl border border-slate-200 bg-white shadow-lg">
+          <ul className="divide-y divide-slate-200">
+            {options.map((option) => (
+              <li key={option.value ?? option.id ?? option}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onSelect(option);
+                    setOpen(false);
+                  }}
+                  className="w-full px-4 py-3 text-left hover:bg-slate-50"
+                >
+                  {renderOption ? renderOption(option, false) : option}
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Core subjects</p>
-          <p className="mt-4 text-3xl font-semibold text-white">{coreSubjects}</p>
-        </div>
-        <div className="rounded-[28px] border border-white/10 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Total credits</p>
-          <p className="mt-4 text-3xl font-semibold text-white">{totalCredits}</p>
-        </div>
-      </div>
-      <div className="rounded-[18px] border border-white/10 bg-slate-900/80 p-4 shadow-sm">
-        <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-          <div>
-            <h2 className="text-xl font-semibold text-white">Subject assignments</h2>
-            <p className="text-sm text-slate-400">Search and manage subject assignments across courses and semesters.</p>
-          </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <button className="inline-flex items-center gap-2 rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700 hover-gradient-border"><FaDownload /> Export</button>
-            <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 rounded-3xl bg-sky-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300"><FaPlus /> Add assignment</button>
-          </div>
-        </div>
-        <div className="mt-6 grid gap-4 md:grid-cols-2"><SearchFilter search={search} onSearch={setSearch} filter={filter} onFilter={setFilter} options={statusOptions} /></div>
-        <div className="mt-6">
-          <DataTable
-            columns={['Code', 'Subject', 'Course', 'Semester', 'Credits', 'Practical', 'Core', 'Status']}
-            rows={displayedAssignments.map((assignment) => [
-              <div key={assignment.id} className="font-semibold text-white">{assignment.subjectCode}</div>,
-              assignment.subjectName,
-              assignment.course,
-              assignment.semester,
-              assignment.credits,
-              `${assignment.practicalHours}h`,
-              assignment.isCore ? 'Yes' : 'No',
-              <StatusBadge key={`${assignment.id}-status`} status={assignment.status} />,
-            ])}
-          />
-        </div>
-        <div className="mt-6"><TablePagination page={page} pageCount={pageCount} onPageChange={setPage} /></div>
-      </div>
-      <Modal title="Add subject assignment" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} footer={<button onClick={handleSubmit(onSubmit)} className="rounded-3xl bg-sky-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300 hover-gradient-border">Save assignment</button>}>
-        <form className="grid gap-5 lg:grid-cols-2">
-          <FormField label="Subject code"><input type="text" {...register('subjectCode', { required: 'Subject code is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="CS501" />{errors.subjectCode && <p className="mt-1 text-sm text-rose-400">{errors.subjectCode.message}</p>}</FormField>
-          <FormField label="Subject name"><input type="text" {...register('subjectName', { required: 'Subject name is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="Data Structures" />{errors.subjectName && <p className="mt-1 text-sm text-rose-400">{errors.subjectName.message}</p>}</FormField>
-          <FormField label="Course"><select {...register('course', { required: 'Course is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"><option value="BCA">BCA</option><option value="MBA">MBA</option><option value="BSc Biology">BSc Biology</option></select>{errors.course && <p className="mt-1 text-sm text-rose-400">{errors.course.message}</p>}</FormField>
-          <FormField label="Semester"><select {...register('semester', { required: 'Semester is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select>{errors.semester && <p className="mt-1 text-sm text-rose-400">{errors.semester.message}</p>}</FormField>
-          <FormField label="Credits"><input type="number" {...register('credits', { required: 'Credits is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="3" />{errors.credits && <p className="mt-1 text-sm text-rose-400">{errors.credits.message}</p>}</FormField>
-          <FormField label="Practical hours/week"><input type="number" {...register('practicalHours', { required: 'Practical hours is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" placeholder="2" />{errors.practicalHours && <p className="mt-1 text-sm text-rose-400">{errors.practicalHours.message}</p>}</FormField>
-          <FormField label="Subject type"><select {...register('isCore')} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"><option value={true}>Core</option><option value={false}>Elective</option></select></FormField>
-          <FormField label="Status"><select {...register('status', { required: 'Status is required' })} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border"><option value="Active">Active</option><option value="Inactive">Inactive</option></select>{errors.status && <p className="mt-1 text-sm text-rose-400">{errors.status.message}</p>}</FormField>
-        </form>
-      </Modal>
+      )}
     </div>
+  );
+}
+
+export default function SubjectAssignmentPage() {
+  const [selectedCollege, setSelectedCollege] = useState(collegeOptions[0]);
+  const [selectedSubject, setSelectedSubject] = useState(subjectOptions[0]);
+  const [selectedEmployee, setSelectedEmployee] = useState(employeeOptions[0]);
+  const [showSubjectsColumn, setShowSubjectsColumn] = useState(false);
+  const [activeCollege, setActiveCollege] = useState(collegeOptions[0]);
+  const [selectedUploadFileName, setSelectedUploadFileName] = useState('');
+  const uploadInputRef = useRef(null);
+
+  useEffect(() => {
+    document.title = 'Assign Subject - Academics Setup';
+  }, []);
+
+  return (
+    <main className="min-h-screen w-full bg-slate-50 text-slate-950">
+      <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <Breadcrumb
+          items={[
+            { label: 'Dashboard', to: '/' },
+            { label: 'Academics Setup', to: '/settings/institute/academics' },
+            { label: 'Assign Subject' },
+          ]}
+        />
+
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div className="min-w-0">
+            <p className="text-sm uppercase tracking-[0.24em] text-slate-500">Academics Setup</p>
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">Assign Subject</h1>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">Manage subject assignments across college programs with clean dropdown selection and quick actions.</p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <button type="button" onClick={() => uploadInputRef.current?.click()} className="inline-flex items-center gap-2 rounded-2xl bg-white px-4 py-2.5 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-slate-200 transition hover:bg-slate-50">
+              <Upload className="h-4 w-4" />
+              Upload Excel
+            </button>
+            <button type="button" className="inline-flex items-center gap-2 rounded-2xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800">
+              <HelpCircle className="h-4 w-4" />
+              Need Help
+            </button>
+          </div>
+          <input
+            ref={uploadInputRef}
+            type="file"
+            accept=".csv,.xlsx,.xls"
+            className="hidden"
+            onChange={(event) => {
+              const file = event.target.files?.[0];
+              if (file) setSelectedUploadFileName(file.name);
+              event.target.value = '';
+            }}
+          />
+          {selectedUploadFileName ? (
+            <p className="mt-2 text-sm text-slate-600">Selected file: {selectedUploadFileName}</p>
+          ) : null}
+        </div>
+
+        <div className="grid gap-6 xl:grid-cols-[1.6fr_1fr]">
+          <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
+            <div className="flex flex-col gap-6">
+              <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+                <div className="space-y-2">
+                  <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Select college</p>
+                  <Dropdown
+                    label="College"
+                    selected={selectedCollege}
+                    options={collegeOptions}
+                    onSelect={setSelectedCollege}
+                    renderOption={(option, isSelected) => (
+                      <div className="space-y-0.5">
+                        <p className="truncate text-sm font-semibold text-slate-950">{option.title}</p>
+                        <p className="text-xs text-slate-500">{option.subtitle} · {option.extra}</p>
+                      </div>
+                    )}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Action</p>
+                    <p className="mt-2 text-sm font-semibold text-slate-900">Switch college view</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setActiveCollege(selectedCollege)}
+                    className="inline-flex items-center gap-2 rounded-2xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
+                  >
+                    Go
+                    <ArrowRight className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid gap-4 lg:grid-cols-2">
+                <Dropdown
+                  label="Select subject"
+                  selected={selectedSubject}
+                  options={subjectOptions}
+                  onSelect={setSelectedSubject}
+                  renderOption={(option) => <span className="text-sm text-slate-900">{option}</span>}
+                />
+                <Dropdown
+                  label="Select employee"
+                  selected={selectedEmployee}
+                  options={employeeOptions}
+                  onSelect={setSelectedEmployee}
+                  renderOption={(option) => <span className="text-sm text-slate-900">{option}</span>}
+                />
+              </div>
+
+              <div className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Display setting</p>
+                  <p className="mt-2 text-sm text-slate-700">Show Subjects Column</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowSubjectsColumn((prev) => !prev)}
+                  className={`relative inline-flex h-9 w-16 items-center rounded-full transition-colors ${showSubjectsColumn ? 'bg-slate-950' : 'bg-slate-300'}`}
+                >
+                  <span className={`absolute left-0.5 h-8 w-8 rounded-full bg-white shadow transition-transform ${showSubjectsColumn ? 'translate-x-7' : 'translate-x-0'}`} />
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <aside className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
+            <div className="space-y-4">
+              <div>
+                <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Active selection</p>
+                <p className="mt-2 text-sm font-semibold text-slate-950">{activeCollege.title}</p>
+                <p className="mt-1 text-sm text-slate-600">{activeCollege.subtitle} · {activeCollege.extra}</p>
+              </div>
+
+              <div className="grid gap-3 rounded-3xl border border-slate-200 bg-slate-50 p-4">
+                <div className="space-y-1">
+                  <p className="text-[11px] uppercase tracking-[0.22em] text-slate-500">Selected subject</p>
+                  <p className="text-sm font-semibold text-slate-950">{selectedSubject}</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-[11px] uppercase tracking-[0.22em] text-slate-500">Assigned employee</p>
+                  <p className="text-sm font-semibold text-slate-950">{selectedEmployee}</p>
+                </div>
+              </div>
+
+              <div className="rounded-3xl border border-slate-200 bg-white p-4 text-sm text-slate-600 shadow-sm">
+                <p className="font-semibold text-slate-900">Subjects column</p>
+                <p className="mt-2">{showSubjectsColumn ? 'Visible in the subject assignment table.' : 'Hidden from the subject assignment table.'}</p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
   );
 }

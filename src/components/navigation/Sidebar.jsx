@@ -1479,8 +1479,8 @@ export default function Sidebar({ isOpen, onClose }) {
         className="hidden md:fixed md:left-0 md:top-0 md:z-50 md:flex md:flex-col md:overflow-y-auto md:py-4"
         style={{ width: 200, height: '100vh', background: '#0a2e1a' }}
       >
-        <div style={{ height: 64 }} className="flex items-center px-3 hover-gradient-border">
-          <div className="flex w-full items-center hover-gradient-border">
+        <div style={{ height: 64 }} className="flex items-center px-3">
+          <div className="flex w-full items-center">
             <div style={{ width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <img src={HaridwarLogo} alt="Haridwar University" style={{ width: 36, height: 36 }} />
             </div>
@@ -3570,7 +3570,7 @@ export default function Sidebar({ isOpen, onClose }) {
         )}
 
         <div className="absolute bottom-4 left-0 right-0 px-3">
-          <div className="flex items-center gap-3 rounded p-2 hover-gradient-border" style={{ color: '#fff' }}>
+          <div className="flex items-center gap-3 rounded p-2" style={{ color: '#fff' }}>
             <div style={{ width: 32, height: 32, borderRadius: 999, background: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#012' }}>
               <span className="font-semibold text-sm">AD</span>
             </div>
@@ -3587,9 +3587,9 @@ export default function Sidebar({ isOpen, onClose }) {
       <div className={`fixed inset-0 z-50 md:hidden ${isOpen ? 'block' : 'hidden'}`} role="dialog" aria-modal="true">
         <div className="fixed inset-0 bg-black/40" onClick={onClose} />
         <aside className={`fixed left-0 top-0 flex h-full w-[86vw] max-w-[320px] flex-col bg-[#05331e] p-3 shadow-[0_35px_80px_rgba(7,43,22,0.18)] ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-          <div className="mb-4 flex items-center justify-between hover-gradient-border">
-            <div className="flex items-center gap-3 hover-gradient-border">
-              <div className="flex h-10 w-10 items-center justify-center rounded-3xl bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-400/20 hover-gradient-border">
+          <div className="mb-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-3xl bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-400/20">
                 <img src={HaridwarLogo} alt="Haridwar University" style={{ width: 36, height: 36 }} />
               </div>
               <div>

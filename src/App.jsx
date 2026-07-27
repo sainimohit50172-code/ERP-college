@@ -480,6 +480,7 @@ function App() {
               <Route path="settings/institute/hostel" element={<ProtectedRoute moduleKey="settings"><InstituteHostelPage /></ProtectedRoute>} />
               <Route path="settings/institute/attendance" element={<ProtectedRoute moduleKey="settings"><AttendanceManagementPage /></ProtectedRoute>} />
               <Route path="settings/institute/academics" element={<ProtectedRoute moduleKey="settings"><AcademicsSetupPage /></ProtectedRoute>} />
+              <Route path="settings/institute/academics/assign-university-roll" element={<ProtectedRoute moduleKey="settings"><AssignUniversityRollPage /></ProtectedRoute>} />
               <Route path="settings/institute/academics/faculty-mapping" element={<ProtectedRoute moduleKey="settings"><FacultyMappingPage /></ProtectedRoute>} />
               <Route path="settings/institute/academics/subject-college-mapping" element={<ProtectedRoute moduleKey="settings"><SubjectCollegeMappingPage /></ProtectedRoute>} />
               <Route path="settings/institute/academics/subject-college-mapping/view/:id" element={<ProtectedRoute moduleKey="settings"><EditSubjectCollegeMappingPage /></ProtectedRoute>} />

@@ -61,6 +61,7 @@ export default function DataTableAdvanced({
   initialPageSize = 10,
   hideHeader = false,
   className = '',
+  sideMargin = 10,
   onEdit = () => {},
   onDelete = () => {},
 }) {
@@ -108,7 +109,7 @@ export default function DataTableAdvanced({
   }
 
   return (
-    <div className={`w-full max-w-full rounded-[20px] border border-slate-200/70 bg-white/95 p-3 shadow-sm sm:p-4 ${className}`} style={{ marginLeft: 10, marginRight: 10 }}>
+    <div className={`w-full max-w-full rounded-[20px] border border-slate-200/70 bg-white/95 p-3 shadow-sm sm:p-4 ${className}`} style={{ marginLeft: sideMargin, marginRight: sideMargin }}>
       {!hideHeader && (
         <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-col gap-1">

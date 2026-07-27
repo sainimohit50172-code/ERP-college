@@ -117,9 +117,9 @@ export const academicsModuleConfig = [
   },
   {
     title: 'Assign Roll Number',
-    description: 'Assign roll numbers to students',
-    icon: Users,
-    route: '/students/update-roll',
+    description: 'Assign or update university roll numbers for students.',
+    icon: FileBadge2,
+    route: '/settings/institute/academics/assign-university-roll',
     permission: 'students',
     status: 'existing',
   },

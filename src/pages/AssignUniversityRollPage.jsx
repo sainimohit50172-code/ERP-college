@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import Breadcrumb from '../components/ui/Breadcrumb.jsx';
 import DataTableAdvanced from '../components/ui/DataTableAdvanced.jsx';
@@ -73,14 +73,16 @@ const DEMO_STUDENTS = [
 
 export default function AssignUniversityRollPage() {
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
-  const [sortBy, setSortBy] = useState('first_name');
-  const [sortDirection, setSortDirection] = useState('asc');
+  const [pageSize, _setPageSize] = useState(20);
+  const [sortBy, _setSortBy] = useState('first_name');
+  const [sortDirection, _setSortDirection] = useState('asc');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterModalOpen, setFilterModalOpen] = useState(false);
   const [draftFilters, setDraftFilters] = useState(DEFAULT_FILTERS);
   const [activeFilters, setActiveFilters] = useState(DEFAULT_FILTERS);
   const [autoPrefix, setAutoPrefix] = useState('U2024-');
+  const [uploadDropdownOpen, setUploadDropdownOpen] = useState(false);
+  const uploadInputRef = useRef(null);
   const [autoStart, setAutoStart] = useState('101');
   const [editableRollNumbers, setEditableRollNumbers] = useState({});
 
@@ -146,6 +148,10 @@ export default function AssignUniversityRollPage() {
     [filteredStudents, page, pageSize, editableRollNumbers],
   );
 
+  useEffect(() => {
+    document.title = 'Assign University Roll No. - Institute Setup - Academics';
+  }, []);
+
   const updateStudent = useUpdateResource('students');
 
   const handleUniversityRollChange = (studentId, value) => {
@@ -206,7 +212,6 @@ export default function AssignUniversityRollPage() {
     toast.success(`Auto-assigned ${assignableStudents.length} university roll numbers`);
   };
 
-  const handleOpenFilters = () => setFilterModalOpen(true);
   const handleCancelFilters = () => {
     setDraftFilters(activeFilters);
     setFilterModalOpen(false);
@@ -221,6 +226,44 @@ export default function AssignUniversityRollPage() {
   const handleResetFilters = () => {
     setDraftFilters(DEFAULT_FILTERS);
     setActiveFilters(DEFAULT_FILTERS);
+  };
+
+  const handleUploadClick = () => {
+    uploadInputRef.current?.click();
+    setUploadDropdownOpen(false);
+  };
+
+  const handleFileSelected = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    toast.success(`Selected upload file: ${file.name}`);
+    event.target.value = '';
+    setUploadDropdownOpen(false);
+  };
+
+  const handleDownloadExcel = () => {
+    const headerRow = columns
+      .filter((column) => column.key !== 'action')
+      .map((column) => column.label || column.key);
+
+    const csvRows = [headerRow.join(',')];
+    rows.forEach((row) => {
+      const rowData = columns.filter((column) => column.key !== 'action').map((column) => {
+        const value = row[column.key];
+        const textValue = value == null ? '' : String(value).replace(/"/g, '""');
+        return `"${textValue}"`;
+      });
+      csvRows.push(rowData.join(','));
+    });
+
+    const blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute('download', 'university-roll-numbers.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setUploadDropdownOpen(false);
   };
 
   const columns = [
@@ -262,77 +305,103 @@ export default function AssignUniversityRollPage() {
 
   return (
     <div className="min-h-screen bg-[#F5F7FB] py-6 text-slate-900">
-      <div className="space-y-6 w-full max-w-full">
-        <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between pr-[10px]">
-          <div className="space-y-3">
-            <Breadcrumb items={[{ to: '/', label: 'Dashboard' }, { label: 'Assign University Roll No.' }]} />
-            <div className="flex flex-wrap items-center gap-3">
-              <h1 className="text-3xl font-semibold text-slate-950">Assign University Roll No.</h1>
-              <span className="text-sm text-slate-600">Assign or update university roll numbers across student records.</span>
-            </div>
-          </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <button
-              type="button"
-              onClick={handleOpenFilters}
-              className="mr-5 h-11 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover-gradient-border"
-            >
-              Filter
-            </button>
-            <button
-              type="button"
-              onClick={handleAutoAssign}
-              className="h-11 rounded-2xl bg-sky-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-700 hover-gradient-border"
-            >
-              Auto Assign
-            </button>
-          </div>
-        </div>
-
+      <div className="w-full max-w-full px-2">
         <div className="rounded-[24px] bg-white p-5 shadow-sm ring-1 ring-slate-200 w-full">
-          <div className="grid gap-4 lg:grid-cols-[1fr_1fr_1fr]">
-            <div>
-              <label className="mb-2 block text-sm font-semibold text-slate-700">Search students</label>
-              <input
-                type="search"
-                value={searchTerm}
-                onChange={(event) => setSearchTerm(event.target.value)}
-                placeholder="Search by name, admission no, or university roll no."
-                className="h-12 w-full rounded-3xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
-              />
+          <div className="flex flex-col gap-6 xl:gap-4">
+            <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+              <div className="space-y-3">
+                <Breadcrumb items={[{ to: '/', label: 'Dashboard' }, { to: '/settings/institute', label: 'Institute Setup' }, { to: '/settings/institute/academics', label: 'Academics' }, { label: 'Assign Roll Number' }]} />
+                <div className="flex flex-wrap items-center gap-3">
+                  <h1 className="text-3xl font-semibold text-slate-950">Assign Roll Number</h1>
+                  <span className="text-sm text-slate-600">Assign or update university roll numbers across student records.</span>
+                </div>
+              </div>
+              <div className="relative flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setUploadDropdownOpen((current) => !current)}
+                  className="mr-5 h-11 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover-gradient-border"
+                >
+                  Upload Excel
+                </button>
+                {uploadDropdownOpen && (
+                  <div className="absolute right-0 top-full z-20 mt-2 w-44 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg">
+                    <button
+                      type="button"
+                      onClick={handleUploadClick}
+                      className="w-full px-4 py-3 text-left text-sm text-slate-700 hover:bg-slate-50"
+                    >
+                      Upload
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleDownloadExcel}
+                      className="w-full px-4 py-3 text-left text-sm text-slate-700 hover:bg-slate-50"
+                    >
+                      Download
+                    </button>
+                  </div>
+                )}
+                <input
+                  ref={uploadInputRef}
+                  type="file"
+                  accept=".xlsx,.xls,csv"
+                  className="hidden"
+                  onChange={handleFileSelected}
+                />
+                <button
+                  type="button"
+                  onClick={handleAutoAssign}
+                  className="h-11 rounded-2xl bg-sky-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-700 hover-gradient-border"
+                >
+                  Auto Assign
+                </button>
+              </div>
             </div>
-            <div>
-              <label className="mb-2 block text-sm font-semibold text-slate-700">Auto assign prefix</label>
-              <input
-                type="text"
-                value={autoPrefix}
-                onChange={(event) => setAutoPrefix(event.target.value)}
-                placeholder="U2024-"
-                className="h-12 w-full rounded-3xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
-              />
-            </div>
-            <div>
-              <label className="mb-2 block text-sm font-semibold text-slate-700">Starting number</label>
-              <input
-                type="number"
-                min="1"
-                value={autoStart}
-                onChange={(event) => setAutoStart(event.target.value)}
-                className="h-12 w-full rounded-3xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
-              />
-            </div>
-          </div>
-        </div>
 
-        <div className="mt-2">
-          <DataTableAdvanced
-            columns={columns}
-            rows={rows}
-            loading={isLoading}
-            placeholder="Search rows by student, admission number, or roll number"
-            initialPageSize={pageSize}
-            className="mt-2"
-          />
+            <div className="grid gap-4 lg:grid-cols-[1fr_1fr_1fr]">
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">Search students</label>
+                <input
+                  type="search"
+                  value={searchTerm}
+                  onChange={(event) => setSearchTerm(event.target.value)}
+                  placeholder="Search by name, admission no, or university roll no."
+                  className="h-12 w-full rounded-3xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
+                />
+              </div>
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">Auto assign prefix</label>
+                <input
+                  type="text"
+                  value={autoPrefix}
+                  onChange={(event) => setAutoPrefix(event.target.value)}
+                  placeholder="U2024-"
+                  className="h-12 w-full rounded-3xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
+                />
+              </div>
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">Starting number</label>
+                <input
+                  type="number"
+                  min="1"
+                  value={autoStart}
+                  onChange={(event) => setAutoStart(event.target.value)}
+                  className="h-12 w-full rounded-3xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
+                />
+              </div>
+            </div>
+
+            <DataTableAdvanced
+              columns={columns}
+              rows={rows}
+              loading={isLoading}
+              placeholder="Search rows by student, admission number, or roll number"
+              initialPageSize={pageSize}
+              sideMargin={0}
+              className="mt-6"
+            />
+          </div>
         </div>
       </div>
 

@@ -9,7 +9,9 @@ from app.api.v1.shared.dependencies import (
     get_academic_class_repository,
     get_section_repository,
     get_assessment_grade_setup_repository,
+    get_assessment_config_repository,
     get_attendance_marks_setup_repository,
+    get_assessment_group_repository,
     get_academic_service,
 )
 from app.models.academic import (
@@ -67,6 +69,10 @@ from app.schemas.academic.schemas import (
     AssessmentGradeSetupUpdate,
     AssessmentGradeSetupDetail,
     AssessmentGradeSetupListItem,
+    AssessmentGroupCreate,
+    AssessmentGroupUpdate,
+    AssessmentGroupDetail,
+    AssessmentGroupListItem,
     AttendanceMarksSetupCreate,
     AttendanceMarksSetupUpdate,
     AttendanceMarksSetupDetail,
@@ -215,7 +221,6 @@ assessment_group_router = build_crud_router(
     tags=["assessment-group"],
     repository_dependency=get_assessment_group_repository,
     service_dependency=get_academic_service,
-    model_class=None,  # model used by repository
     model_class=AssessmentGroup,
     create_schema=AssessmentGroupCreate,
     update_schema=AssessmentGroupUpdate,
@@ -223,17 +228,6 @@ assessment_group_router = build_crud_router(
     list_schema=AssessmentGroupListItem,
     bulk_update_schema=AssessmentGroupUpdate,
 )
-
-
-@router.post('/assessment-group/{id}/copy', response_model=APIResponse[AssessmentGroupDetail])
-async def copy_assessment_group(id: int, repo=Depends(get_assessment_group_repository)):
-    """Duplicate an existing assessment group including its items."""
-    try:
-        new_group = await repo.copy_group(id)
-    except Exception as exc:
-        return APIResponse(success=False, message=str(exc), data=None)
-
-    return APIResponse(success=True, message='Copied', data=new_group)
 
 
 attendance_marks_setup_router = build_crud_router(
@@ -273,6 +267,18 @@ for r in [
     attendance_marks_setup_router,
 ]:
     router.include_router(r)
+
+
+@router.post('/assessment-group/{id}/copy', response_model=APIResponse[AssessmentGroupDetail])
+async def copy_assessment_group(id: int, repo=Depends(get_assessment_group_repository)):
+    """Duplicate an existing assessment group including its items."""
+    try:
+        new_group = await repo.copy_group(id)
+    except Exception as exc:
+        return APIResponse(success=False, message=str(exc), data=None)
+
+    return APIResponse(success=True, message='Copied', data=new_group)
+
 
 # Stub endpoints for resources referenced by frontend but not yet fully implemented
 @router.get("/subject-assignments", response_model=APIResponse[PaginationResponse[dict]])

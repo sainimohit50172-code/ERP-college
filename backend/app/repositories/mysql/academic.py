@@ -30,6 +30,7 @@ from app.repositories.interfaces.academic import (
     SectionRepository,
     SemesterRepository,
     SubjectRepository,
+    AttendanceMarksSetupRepository,
     AssessmentGroupRepository,
 )
 
