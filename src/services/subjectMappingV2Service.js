@@ -4,6 +4,9 @@ const colleges = [
   'Roorkee College of Business Studies',
   'Roorkee College of Engineering',
   'Roorkee College of Smart Computing',
+  'Roorkee College of Hospitality Management',
+  'Roorkee College of Pharmacy',
+  'Roorkee College of Design',
 ];
 
 const courses = [
@@ -67,8 +70,8 @@ function rand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 function makeSubject(id){
   return {
     id: `${id}-s-${Math.floor(Math.random()*9999)}`,
-    name: ['Data Structures','Operating System Practical','Database Systems','Algorithms','Computer Networks','Software Engineering'][Math.floor(Math.random()*6)],
-    teacher: ['Dr. Asha Verma','Mr. Vinay Pant','Ms. S. Rao','Dr. R. Kumar'][Math.floor(Math.random()*4)],
+    name: ['Data Structures','Operating System Practical','Database Systems','Algorithms','Computer Networks','Software Engineering','Artificial Intelligence','Environmental Studies','Hospitality Management','Pharmaceutical Chemistry'][Math.floor(Math.random()*10)],
+    teacher: ['Dr. Asha Verma','Mr. Vinay Pant','Ms. S. Rao','Dr. R. Kumar','Ms. Priya Singh','Dr. Kunal Sharma','Ms. Richa Gupta','Prof. Varun Joshi','Ms. Shreya Nair'][Math.floor(Math.random()*9)],
     assessmentModel: rand(assessmentModels),
     mode: rand(modes),
     type: rand(types),

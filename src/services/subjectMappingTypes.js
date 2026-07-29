@@ -4,6 +4,9 @@ export const collegeOptions = [
   'Roorkee College of Business Studies',
   'Roorkee College of Engineering',
   'Roorkee College of Smart Computing',
+  'Roorkee College of Hospitality Management',
+  'Roorkee College of Pharmacy',
+  'Roorkee College of Design',
 ];
 
 export const courseOptions = [
@@ -15,6 +18,9 @@ export const courseOptions = [
   'B.Sc. Nursing',
   'MCA',
   'M.Sc. Physics',
+  'B.Pharmacy',
+  'B.Sc. Hospitality Management',
+  'B.Des. Interior Design',
 ];
 
 export const semesterOptions = ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5', 'Sem 6', 'Sem 7', 'Sem 8'];
@@ -41,6 +47,10 @@ export const teacherOptions = [
   'Anita Sharma-HU160',
   'Manish Kapoor-HU161',
   'Megha Nair-HU162',
+  'Dr. Seema Rathi-HU163',
+  'Prof. Varun Joshi-HU164',
+  'Dr. Kunal Sharma-HU165',
+  'Ms. Richa Gupta-HU166',
 ];
 
 export const subjectOptions = [
@@ -58,6 +68,10 @@ export const subjectOptions = [
   'Human Computer Interaction',
   'Artificial Intelligence',
   'Machine Learning',
+  'Environmental Studies',
+  'Digital Marketing',
+  'Hospitality Management',
+  'Pharmaceutical Chemistry',
 ];
 
 export const assessmentModelOptions = [

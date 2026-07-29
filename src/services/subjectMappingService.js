@@ -7,6 +7,9 @@ function generateDemoMappings(count = 60) {
     'Roorkee College of Business Studies',
     'Roorkee College of Engineering',
     'Roorkee College of Smart Computing',
+    'Roorkee College of Hospitality Management',
+    'Roorkee College of Pharmacy',
+    'Roorkee College of Design',
   ];
   const courses = [
     'B.Sc. Computer Science (Data Science)',
@@ -14,16 +17,19 @@ function generateDemoMappings(count = 60) {
     'BCA',
     'B.Com',
     'BBA',
+    'B.Pharmacy',
+    'B.Des. Interior Design',
+    'B.Sc. Hospitality Management',
   ];
   const semesters = ['Sem 1','Sem 2','Sem 3','Sem 4','Sem 5','Sem 6','Sem 7','Sem 8'];
   const sections = ['A','B','C','D'];
 
   const subjectPool = [
-    'Data Structures','Operating System','Database Management System','Computer Networks','Object Oriented Programming','Software Engineering','Discrete Mathematics','Compiler Design','Machine Learning','Cloud Computing','Cyber Security','Human Computer Interaction','Artificial Intelligence'
+    'Data Structures','Operating System','Database Management System','Computer Networks','Object Oriented Programming','Software Engineering','Discrete Mathematics','Compiler Design','Machine Learning','Cloud Computing','Cyber Security','Human Computer Interaction','Artificial Intelligence','Environmental Studies','Digital Marketing','Hospitality Management','Pharmaceutical Chemistry'
   ];
 
   const facultyPool = [
-    'Dr. Asha Verma','Mr. Vinay Pant','Ms. Priya Singh','Mr. Rohit Kumar','Ms. Anita Sharma','Mr. Suresh Tiwari','Ms. Kavita Joshi','Mr. Aman Verma','Ms. Sonal Gupta'
+    'Dr. Asha Verma','Mr. Vinay Pant','Ms. Priya Singh','Mr. Rohit Kumar','Ms. Anita Sharma','Mr. Suresh Tiwari','Ms. Kavita Joshi','Mr. Aman Verma','Ms. Sonal Gupta','Dr. Kunal Sharma','Ms. Richa Gupta','Prof. Varun Joshi','Ms. Shreya Nair'
   ];
 
   const rows = [];
