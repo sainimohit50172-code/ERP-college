@@ -1,6 +1,6 @@
 # AI Agent Skills — Full Catalog
 
-> Auto-generated. Total: **1992 skills** across **115 categories**.
+> Auto-generated. Total: **1993 skills** across **115 categories**.
 > When asked "what skill should I use?", browse this file and suggest the most relevant skill IDs.
 > Install a skill: `Ctrl+Shift+/` → search for the skill ID → press Enter.
 
@@ -473,6 +473,7 @@ applications.
 
 ## browser-automation
 
+- **browser-act**: Use BrowserAct for authenticated browser automation, JS-rendered extraction, screenshots, parallel sessions, verification handling, and human handoff. _(risk: critical)_
 - **browser-harness**: Drive an existing browser through CDP for authenticated, visual, or interactive web automation. _(risk: critical)_
 - **skyvern-browser-automation**: AI-powered browser automation — navigate sites, fill forms, extract structured data, log in with stored credentials, and build reusable workflows. _(risk: safe)_
 

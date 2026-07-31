@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Menu, Search, Download, Settings2, Bell, UserCircle2, X, ChevronDown, CircleDollarSign, BookOpen, BarChart3, Users, BadgeCheck, Ticket, MoreHorizontal, FileText, CalendarDays } from 'lucide-react';
+import { Menu, Search, Download, Settings2, Bell, UserCircle2, X, ChevronDown, CircleDollarSign, BookOpen, BarChart3, Users, BadgeCheck, Ticket, MoreHorizontal, FileText, CalendarDays, Building } from 'lucide-react';
 import NotificationDropdown from './NotificationDropdown.jsx';
 import { useAuth } from '../../services/AuthContext.jsx';
 import { useERP } from '../../services/ERPContext.jsx';

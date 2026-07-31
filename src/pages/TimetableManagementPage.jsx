@@ -1,5 +1,5 @@
 ﻿import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
-import { FaCog, FaCopy, FaFileExport, FaPlus, FaPrint, FaRedo, FaUserTie, FaTimes } from 'react-icons/fa';
+import { FaCog, FaCopy, FaFileExport, FaPlus, FaPrint, FaRedo, FaUserTie, FaTimes, FaPen } from 'react-icons/fa';
 import Breadcrumb from '../components/ui/Breadcrumb.jsx';
 import { useResourceList } from '../hooks/useResourceHooks';
 
@@ -155,6 +155,8 @@ const teacherOptions = [
 ];
 const sequenceOptions = Array.from({ length: 10 }, (_, index) => `${index + 1}`);
 const roomOptions = ['A101', 'A102', 'A103', 'B201', 'B202', 'B203', 'C301', 'Lab-1', 'Lab-2', 'Lab-3'];
+const compactFieldClassName = 'h-[34px] rounded-[8px] border border-slate-200 bg-slate-50 px-2.5 text-[13px] font-semibold text-slate-700 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-100';
+const compactLabelClassName = 'flex flex-col gap-1 text-[12px] font-semibold leading-4 text-slate-700';
 
 function createBlankSchedule(lectureCount = 7) {
   const timings = ['09:10 - 10:05', '10:05 - 11:00', '11:00 - 12:05', '12:05 - 13:00', '14:00 - 14:55', '14:55 - 15:50', '15:50 - 16:45'];
@@ -167,7 +169,7 @@ function createBlankSchedule(lectureCount = 7) {
 }
 
 export default function TimetableManagementPage() {
-  const { data: timetablesData } = useResourceList('timetables', { page: 1, pageSize: 200 });
+  const { data: timetablesData = { items: [] } } = useResourceList('timetables', { page: 1, pageSize: 200 });
   const dataItems = Array.isArray(timetablesData?.items) && timetablesData.items.length > 0 ? timetablesData.items : defaultRows;
   const [rows, setRows] = useState(dataItems);
   const [search, setSearch] = useState('');
@@ -183,8 +185,10 @@ export default function TimetableManagementPage() {
   const [replaceRowId, setReplaceRowId] = useState(dataItems[0]?.id || '');
   const [replaceTeacher, setReplaceTeacher] = useState('');
   const [viewTtOpen, setViewTtOpen] = useState(false);
+  
   const [viewTtItem, setViewTtItem] = useState(null);
   const [activeCell, setActiveCell] = useState(null);
+  const [activeBreakIndex, setActiveBreakIndex] = useState(null);
   const [popupSubject, setPopupSubject] = useState('');
   const [popupTeacher, setPopupTeacher] = useState('');
   const [popupSequence, setPopupSequence] = useState('1');
@@ -254,12 +258,12 @@ export default function TimetableManagementPage() {
 
   const generateScheduleCsv = () => {
     const header = ['S.No', 'Lecture Name', 'Lecture Timing', ...weekdayHeaders].join(',');
-    const rowsCsv = viewSchedule.map((row) => [
+    const rowsCsv = Array.isArray(viewSchedule) ? viewSchedule.map((row) => [
       row.sno,
       `"${row.lecture}"`,
       `"${row.timing}"`,
-      ...row.cells.map((cell) => (cell ? `"${cell.subject} - ${cell.teacher}"` : '""')),
-    ].join(','));
+      ...Array.isArray(row.cells) ? row.cells.map((cell) => (cell ? `"${cell.subject} - ${cell.teacher}"` : '""')) : [],
+    ].join(',')) : [];
     return [header, ...rowsCsv].join('\n');
   };
 
@@ -365,11 +369,59 @@ export default function TimetableManagementPage() {
   }
 
   function CenteredCellModal() {
-    if (!isCellPopupOpen || !activeCell) return null;
+    if (!isCellPopupOpen && activeBreakIndex === null) return null;
 
-    const lectureNumber = viewSchedule[activeCell.rowIndex]?.sno;
-    const weekday = weekdayHeaders[activeCell.dayIndex];
     const teacherOptions = getTeacherOptions();
+
+    // Break edit mode
+    if (activeBreakIndex !== null) {
+      const breakRow = viewSchedule[activeBreakIndex];
+      const breakLabel = breakRow?.label || '';
+      const breakNote = breakRow?.note || '';
+
+      return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4 py-6">
+          <div className="absolute inset-0 bg-black/35" onClick={() => { setActiveBreakIndex(null); }} aria-hidden="true" />
+          <div role="dialog" aria-modal="true" className="relative z-10 w-full max-w-[640px] overflow-hidden rounded-[20px] bg-white shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-start justify-between gap-4 px-6 py-5">
+              <div>
+                <h2 className="text-[16px] font-semibold tracking-tight text-slate-950">Edit Break</h2>
+                <p className="mt-1 text-[13px] text-slate-500">Adjust break name and duration.</p>
+              </div>
+              <button type="button" onClick={() => setActiveBreakIndex(null)} className="inline-flex h-11 items-center justify-center rounded-full border border-slate-200 bg-slate-50 px-4 text-sm font-semibold text-slate-700">Close</button>
+            </div>
+
+            <div className="border-t border-slate-200 px-6 py-5">
+              <div className="grid gap-3 sm:grid-cols-2">
+                <label className="flex flex-col gap-1 text-[13px] font-medium text-slate-700">
+                  Break Name
+                  <input defaultValue={breakLabel} id="__break_label" className="h-9 rounded-[6px] border border-slate-200 bg-slate-50 px-3 text-[13px] text-slate-800 outline-none" />
+                </label>
+                <label className="flex flex-col gap-1 text-[13px] font-medium text-slate-700">
+                  Duration (e.g., 10 Minutes)
+                  <input defaultValue={breakNote} id="__break_note" className="h-9 rounded-[6px] border border-slate-200 bg-slate-50 px-3 text-[13px] text-slate-800 outline-none" />
+                </label>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-3 border-t border-slate-200 bg-slate-50 px-6 py-4">
+              <button type="button" onClick={() => setActiveBreakIndex(null)} className="inline-flex h-9 items-center justify-center rounded-[6px] border border-slate-200 bg-white px-4 text-[13px] font-medium text-slate-700">Cancel</button>
+              <button type="button" onClick={() => {
+                const newLabel = document.getElementById('__break_label')?.value || '';
+                const newNote = document.getElementById('__break_note')?.value || '';
+                setViewSchedule((current) => current.map((row, idx) => idx === activeBreakIndex ? ({ ...row, label: newLabel, note: newNote }) : row));
+                setActiveBreakIndex(null);
+              }} className="inline-flex h-9 items-center justify-center rounded-[6px] bg-[#1e3a5f] px-4 text-[13px] font-medium text-white">Save</button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    const lectureNumber = viewSchedule[activeCell?.rowIndex]?.sno;
+    const weekday = activeCell ? weekdayHeaders[activeCell.dayIndex] : '';
+    const activeCellData = activeCell ? viewSchedule[activeCell.rowIndex]?.cells?.[activeCell.dayIndex] : null;
+    const isEditMode = !!activeCellData;
 
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center px-4 py-6">
@@ -388,8 +440,8 @@ export default function TimetableManagementPage() {
         >
                 <div className="flex items-start justify-between gap-4 px-6 py-5">
             <div>
-              <h2 className="text-[16px] font-semibold tracking-tight text-slate-950">Select Subject for {weekday}</h2>
-              <p className="mt-1 text-[13px] text-slate-500">Lecture {lectureNumber}</p>
+              <h2 className="text-[16px] font-semibold tracking-tight text-slate-950">{isEditMode ? 'Edit Lecture' : 'Add Lecture'}</h2>
+              <p className="mt-1 text-[13px] text-slate-500">{isEditMode ? `Lecture ${lectureNumber} • ${weekday}` : `Add Lecture • ${weekday}`}</p>
             </div>
             <button
               type="button"
@@ -477,29 +529,31 @@ export default function TimetableManagementPage() {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center justify-end gap-3 border-t border-slate-200 bg-slate-50 px-6 py-4">
-            <button
-              type="button"
-              onClick={closeCellPopup}
-              className="inline-flex h-9 items-center justify-center rounded-[6px] border border-slate-200 bg-white px-4 text-[13px] font-medium text-slate-700 transition hover:bg-slate-100"
-            >
-              Close
-            </button>
-            <button
-              type="button"
-              onClick={handleDeleteCell}
-              className="inline-flex h-9 items-center justify-center rounded-[6px] border border-rose-200 bg-rose-50 px-4 text-[13px] font-medium text-rose-700 transition hover:bg-rose-100"
-            >
-              Remove
-            </button>
-            <button
-              type="button"
-              onClick={handleSaveCell}
-              className="inline-flex h-9 items-center justify-center rounded-[6px] bg-[#1e3a5f] px-4 text-[13px] font-medium text-white transition hover:bg-slate-800"
-            >
-              Push
-            </button>
-          </div>
+            <div className="flex flex-wrap items-center justify-end gap-3 border-t border-slate-200 bg-slate-50 px-6 py-4">
+              <button
+                type="button"
+                onClick={closeCellPopup}
+                className="inline-flex h-9 items-center justify-center rounded-[6px] border border-slate-200 bg-white px-4 text-[13px] font-medium text-slate-700 transition hover:bg-slate-100"
+              >
+                Close
+              </button>
+              {isEditMode && (
+                <button
+                  type="button"
+                  onClick={handleDeleteCell}
+                  className="inline-flex h-9 items-center justify-center rounded-[6px] border border-rose-200 bg-rose-50 px-4 text-[13px] font-medium text-rose-700 transition hover:bg-rose-100"
+                >
+                  Remove
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={handleSaveCell}
+                className="inline-flex h-9 items-center justify-center rounded-[6px] bg-[#1e3a5f] px-4 text-[13px] font-medium text-white transition hover:bg-slate-800"
+              >
+                {isEditMode ? 'Update' : 'Save'}
+              </button>
+            </div>
         </div>
       </div>
     );
@@ -507,11 +561,11 @@ export default function TimetableManagementPage() {
 
   const handleSaveCell = () => {
     if (!activeCell || !popupSubject || !popupTeacher) return;
-    setViewSchedule((current) => current.map((row, rIndex) => {
+    setViewSchedule((current) => Array.isArray(current) ? current.map((row, rIndex) => {
       if (rIndex !== activeCell.rowIndex) return row;
       return {
         ...row,
-        cells: row.cells.map((cell, cIndex) => {
+        cells: Array.isArray(row.cells) ? row.cells.map((cell, cIndex) => {
           if (cIndex !== activeCell.dayIndex) return cell;
           return {
             subject: popupSubject,
@@ -520,21 +574,21 @@ export default function TimetableManagementPage() {
             room: popupRoom,
             isBreak: popupIsBreak,
           };
-        }),
+        }) : row.cells,
       };
-    }));
+    }) : current);
     closeCellPopup();
   };
 
   const handleDeleteCell = () => {
     if (!activeCell) return;
-    setViewSchedule((current) => current.map((row, rIndex) => {
+    setViewSchedule((current) => Array.isArray(current) ? current.map((row, rIndex) => {
       if (rIndex !== activeCell.rowIndex) return row;
       return {
         ...row,
-        cells: row.cells.map((cell, cIndex) => (cIndex === activeCell.dayIndex ? null : cell)),
+        cells: Array.isArray(row.cells) ? row.cells.map((cell, cIndex) => (cIndex === activeCell.dayIndex ? null : cell)) : row.cells,
       };
-    }));
+    }) : current);
     closeCellPopup();
   };
 
@@ -576,11 +630,30 @@ export default function TimetableManagementPage() {
 
   const handleReplaceTeacher = () => setIsReplaceOpen(true);
 
+  function handleViewEditLogs(item) {
+    setOpenDropdownId(null);
+    setSelectedActionItem(item);
+    setViewLogsItem(item);
+    setViewLogsOpen(true);
+  }
+
+  function handleEditSchedule() {
+    setSelectedActionItem(viewTtItem || defaultRows[0]);
+    setIsReplaceOpen(true);
+  }
+
+  function handleEditAndAssign() {
+    setSelectedActionItem(viewTtItem || defaultRows[0]);
+    setIsAssignOpen(true);
+  }
+
   const dropdownRef = useRef(null);
   const [openDropdownId, setOpenDropdownId] = useState(null);
   const [dropdownStyle, setDropdownStyle] = useState({ left: 0, top: 0, openUp: false });
   const [editLogsOpen, setEditLogsOpen] = useState(false);
   const [selectedActionItem, setSelectedActionItem] = useState(null);
+  const [viewLogsOpen, setViewLogsOpen] = useState(false);
+  const [viewLogsItem, setViewLogsItem] = useState(null);
 
   useEffect(() => {
     function handleDocumentClick(e) {
@@ -593,6 +666,7 @@ export default function TimetableManagementPage() {
       setOpenDropdownId(null);
       setIsCellPopupOpen(false);
       setActiveCell(null);
+      setActiveBreakIndex(null);
       setIsAssignOpen(false);
       setIsOverrideOpen(false);
       setSelectedActionItem(null);
@@ -603,6 +677,7 @@ export default function TimetableManagementPage() {
         setOpenDropdownId(null);
         setIsCellPopupOpen(false);
         setActiveCell(null);
+        setActiveBreakIndex(null);
         setIsAssignOpen(false);
         setIsOverrideOpen(false);
         setSelectedActionItem(null);
@@ -730,7 +805,7 @@ export default function TimetableManagementPage() {
   function addLectureRow() {
     setViewSchedule((cur) => {
       const nextIndex = cur.length + 1;
-      const next = { lecture: `Lect ${nextIndex}`, timing: `16:00 - 16:55`, cells: Array(7).fill(null) };
+      const next = { sno: nextIndex, lecture: `Lect ${nextIndex}`, timing: `16:00 - 16:55`, cells: Array(7).fill(null) };
       return [...cur, next];
     });
   }
@@ -796,12 +871,12 @@ export default function TimetableManagementPage() {
               <FaTimes className="h-4 w-4" />
             </button>
             <div className="grid min-h-[98px] items-end gap-3 grid-cols-[minmax(220px,1fr)_minmax(220px,1fr)_minmax(220px,1fr)_minmax(220px,220px)_minmax(150px,180px)_minmax(150px,180px)]">
-              <label className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700">
+              <label className={compactLabelClassName}>
                 Select College
                 <select
                   value={selectedCollege}
                   onChange={(event) => handleCollegeSelect(event.target.value)}
-                  className="h-11 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-[15px] text-slate-700 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-100"
+                  className={compactFieldClassName}
                 >
                   <option value="">Select College</option>
                   {filterOptions.college.filter((option) => option !== 'All').map((option) => (
@@ -810,13 +885,13 @@ export default function TimetableManagementPage() {
                 </select>
               </label>
 
-              <label className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700">
+              <label className={compactLabelClassName}>
                 Select Schedule
                 <select
                   value={selectedSchedule}
                   onChange={(event) => handleScheduleSelect(event.target.value)}
                   disabled={!selectedCollege}
-                  className="h-11 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-[15px] text-slate-700 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+                  className={`${compactFieldClassName} disabled:cursor-not-allowed disabled:opacity-50`}
                 >
                   <option value="">Select Schedule</option>
                   {scheduleOptions.map((option) => (
@@ -825,22 +900,22 @@ export default function TimetableManagementPage() {
                 </select>
               </label>
 
-              <label className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700">
+              <label className={compactLabelClassName}>
                 Assigned Till
                 <input
                   type="date"
                   value={assignedTill}
                   onChange={(event) => handleAssignedTillChange(event.target.value)}
-                  className="h-11 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-[15px] text-slate-700 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-100"
+                  className={compactFieldClassName}
                 />
               </label>
 
-              <label className="flex min-w-0 flex-col gap-2 text-sm font-medium text-slate-700">
+              <label className={compactLabelClassName}>
                 Show to Students
                 <button
                   type="button"
                   onClick={toggleShowToStudents}
-                  className={`inline-flex h-11 w-full items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 px-3 transition ${showToStudents ? 'bg-emerald-400' : 'bg-slate-50'}`}
+                  className={`inline-flex h-[34px] w-full items-center justify-center rounded-[8px] border border-slate-200 bg-slate-50 px-3 transition ${showToStudents ? 'bg-emerald-400' : 'bg-slate-50'}`}
                 >
                   <span className={`relative inline-flex h-6 w-12 shrink-0 items-center rounded-full transition-colors duration-200 ${showToStudents ? 'bg-emerald-400' : 'bg-slate-300'}`}>
                     <span className={`inline-block h-5 w-5 rounded-full bg-white shadow transition-transform duration-200 ${showToStudents ? 'translate-x-6' : 'translate-x-1'}`} />
@@ -889,18 +964,29 @@ export default function TimetableManagementPage() {
                             {row.cells.map((cell, cIndex) => (
                               <div key={`${rIndex}-${cIndex}`} className="flex min-h-[70px] items-start justify-center border border-slate-200 bg-white p-2">
                                 {cell ? (
-                                  <button
-                                    type="button"
+                                  <div
+                                    role="button"
+                                    tabIndex={0}
                                     onClick={(event) => handleCellClick(rIndex, cIndex, event)}
+                                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleCellClick(rIndex, cIndex, e); } }}
                                     className="flex min-h-[70px] w-full flex-col items-start justify-center rounded-[12px] border border-slate-200 bg-white px-3 py-2 text-left shadow-sm transition hover:border-slate-400 overflow-hidden"
                                   >
-                                    <div className="w-full whitespace-normal text-[13px] font-semibold text-slate-900" style={{ overflow: 'hidden', overflowWrap: 'anywhere', wordBreak: 'break-word', whiteSpace: 'normal' }}>
+                                    <div className="relative w-full pr-8 whitespace-normal text-[13px] font-semibold text-slate-900" style={{ overflow: 'hidden', overflowWrap: 'anywhere', wordBreak: 'break-word', whiteSpace: 'normal' }}>
                                       {cell.subject}
+                                      <button
+                                        type="button"
+                                        onClick={(e) => { e.stopPropagation(); handleCellClick(rIndex, cIndex, e); }}
+                                        aria-label="Edit cell"
+                                        className="absolute right-1.5 top-1.5 w-6 h-6 flex items-center justify-center text-[#6B7280] hover:text-[#1E3A8A]"
+                                        style={{ background: 'transparent', border: 'none', padding: 0 }}
+                                      >
+                                        <FaPen className="h-3.5 w-3.5" />
+                                      </button>
                                     </div>
                                     <div className="mt-1 w-full whitespace-normal text-[11px] text-slate-600" style={{ overflow: 'hidden', overflowWrap: 'anywhere', wordBreak: 'break-word', whiteSpace: 'normal' }}>
                                       {cell.teacher}
                                     </div>
-                                  </button>
+                                  </div>
                                 ) : (
                                   <button
                                     type="button"
@@ -956,102 +1042,10 @@ export default function TimetableManagementPage() {
                 Select a college and schedule to generate a blank timetable.
               </p>
             )}
-
-            <CenteredCellModal />
           </div>
         )}
 
-          <div className="mt-5 overflow-hidden rounded-[20px] border border-slate-200 bg-white px-4 py-4 shadow-sm">
-          <button
-            type="button"
-            onClick={handleResetFilters}
-            className="absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-50"
-            aria-label="Refresh filters"
-          >
-            <FaRedo className="h-4 w-4" />
-          </button>
-
-          <div className="grid gap-3 md:grid-cols-6">
-            <label className="flex flex-col gap-2 text-sm font-medium text-slate-700">
-              College
-              <select
-                value={filters.college}
-                onChange={(event) => handleFilterChange('college', event.target.value)}
-                className="h-11 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-100"
-              >
-                {filterOptions.college.map((option) => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
-              </select>
-            </label>
-
-            <label className="flex flex-col gap-2 text-sm font-medium text-slate-700">
-              Course
-              <select
-                value={filters.course}
-                onChange={(event) => handleFilterChange('course', event.target.value)}
-                className="h-11 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-100"
-              >
-                {filterOptions.course.map((option) => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
-              </select>
-            </label>
-
-            <label className="flex flex-col gap-2 text-sm font-medium text-slate-700">
-              Semester
-              <select
-                value={filters.semester}
-                onChange={(event) => handleFilterChange('semester', event.target.value)}
-                className="h-11 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-100"
-              >
-                {filterOptions.semester.map((option) => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
-              </select>
-            </label>
-
-            <label className="flex flex-col gap-2 text-sm font-medium text-slate-700">
-              Section
-              <select
-                value={filters.section}
-                onChange={(event) => handleFilterChange('section', event.target.value)}
-                className="h-11 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-100"
-              >
-                {filterOptions.section.map((option) => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
-              </select>
-            </label>
-
-            <label className="flex flex-col gap-2 text-sm font-medium text-slate-700">
-              Status
-              <select
-                value={filters.status}
-                onChange={(event) => handleFilterChange('status', event.target.value)}
-                className="h-11 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-100"
-              >
-                {filterOptions.status.map((option) => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
-              </select>
-            </label>
-
-            <label className="flex flex-col gap-2 text-sm font-medium text-slate-700 md:col-span-2">
-              Search
-              <input
-                type="search"
-                value={search}
-                onChange={(event) => {
-                  setSearch(event.target.value);
-                  setPage(1);
-                }}
-                placeholder="Search"
-                className="h-11 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-100"
-              />
-            </label>
-          </div>
-        </div>
+        <CenteredCellModal />
 
         {/* View Time Table overlay (full content area) */}
         {viewTtOpen && (
@@ -1140,10 +1134,12 @@ export default function TimetableManagementPage() {
                             className={`col-span-7 flex h-[112px] items-center justify-center border-b border-r border-slate-200 bg-slate-100 px-3 py-2 text-center ${rIndex % 2 === 0 ? 'bg-slate-100' : 'bg-slate-50'}`}
                             style={{ gridColumn: 'span 7 / span 7' }}
                           >
-                            <div>
-                              <div className="font-semibold uppercase tracking-[0.08em] text-slate-800">{row.label}</div>
-                              <div className="mt-1 text-sm text-slate-600">{row.note}</div>
-                            </div>
+                            <button type="button" onClick={() => { setActiveBreakIndex(rIndex); setIsCellPopupOpen(false); setActiveCell(null); }} className="w-full text-center">
+                              <div>
+                                <div className="font-semibold uppercase tracking-[0.08em] text-slate-800">{row.label}</div>
+                                <div className="mt-1 text-sm text-slate-600">{row.note}</div>
+                              </div>
+                            </button>
                           </div>
                         </>
                       ) : (
@@ -1164,18 +1160,29 @@ export default function TimetableManagementPage() {
                           {row.cells.map((c, cIndex) => (
                             <div key={`${rIndex}-${cIndex}`} className={`flex min-h-[112px] items-stretch justify-stretch border-b border-r border-slate-200 px-2 py-2 ${rIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50'}`}>
                               {c ? (
-                                <button
-                                  type="button"
+                                <div
+                                  role="button"
+                                  tabIndex={0}
                                   onClick={(event) => handleCellClick(rIndex, cIndex, event)}
-                                  className="flex min-h-[112px] w-full flex-col items-start justify-start rounded-[10px] border border-slate-200 bg-slate-50 p-2 text-left shadow-sm transition hover:border-slate-400 overflow-hidden"
+                                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleCellClick(rIndex, cIndex, e); } }}
+                                  className="relative flex min-h-[112px] w-full flex-col items-start justify-start rounded-[10px] border border-slate-200 bg-slate-50 p-2 text-left shadow-sm transition hover:border-slate-400 overflow-hidden"
                                 >
-                                  <div className="w-full whitespace-normal text-[13px] font-semibold leading-tight text-slate-900" style={{ overflow: 'hidden', overflowWrap: 'anywhere', wordBreak: 'break-word', whiteSpace: 'normal' }}>
+                                  <div className="w-full pr-8 whitespace-normal text-[13px] font-semibold leading-tight text-slate-900" style={{ overflow: 'hidden', overflowWrap: 'anywhere', wordBreak: 'break-word', whiteSpace: 'normal' }}>
                                     {c.subject}
                                   </div>
-                                  <div className="mt-1 w-full whitespace-normal text-[11px] leading-tight text-slate-600" style={{ overflow: 'hidden', overflowWrap: 'anywhere', wordBreak: 'break-word', whiteSpace: 'normal' }}>
+                                  <div className="mt-1 w-full pr-8 whitespace-normal text-[11px] leading-tight text-slate-600" style={{ overflow: 'hidden', overflowWrap: 'anywhere', wordBreak: 'break-word', whiteSpace: 'normal' }}>
                                     {c.teacher}
                                   </div>
-                                </button>
+                                  <button
+                                    type="button"
+                                    onClick={(e) => { e.stopPropagation(); handleCellClick(rIndex, cIndex, e); }}
+                                    aria-label="Edit cell"
+                                    className="absolute right-1.5 top-1.5 w-6 h-6 flex items-center justify-center text-[#6B7280] hover:text-[#1E3A8A]"
+                                    style={{ background: 'transparent', border: 'none', padding: 0 }}
+                                  >
+                                    <FaPen className="h-3.5 w-3.5" />
+                                  </button>
+                                </div>
                               ) : (
                                 <button
                                   type="button"
@@ -1201,15 +1208,106 @@ export default function TimetableManagementPage() {
                 <button type="button" onClick={deleteLastLectureRow} className="inline-flex items-center gap-2 rounded-[10px] border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700">Delete Last Row</button>
               </div>
               <div className="flex items-center gap-3">
-                <button type="button" onClick={handleReplaceTeacher} className="inline-flex items-center gap-2 rounded-[10px] bg-[#1e3a5f] px-4 py-2 text-sm font-semibold text-white">Edit</button>
-                <button type="button" onClick={handleReplaceTeacher} className="inline-flex items-center gap-2 rounded-[10px] border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700">Edit & Assign</button>
+                <button type="button" onClick={handleEditSchedule} className="inline-flex items-center gap-2 rounded-[10px] bg-[#1e3a5f] px-4 py-2 text-sm font-semibold text-white">Edit</button>
+                <button type="button" onClick={handleEditAndAssign} className="inline-flex items-center gap-2 rounded-[10px] border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700">Edit & Assign</button>
               </div>
             </div>
           </div>
         )}
 
-        <div className="mt-5 overflow-hidden rounded-[20px] border border-slate-200 bg-white shadow-sm">
+        <div className="mt-3 overflow-hidden rounded-[18px] border border-slate-200 bg-white shadow-sm">
           <div className="overflow-x-auto">
+            <div className="mx-3 mb-2 mt-2 rounded-[14px] border border-slate-200 bg-slate-50 px-2.5 py-2 shadow-sm sm:mx-4">
+              <div className="relative grid gap-2 md:grid-cols-6">
+                <button
+                  type="button"
+                  onClick={handleResetFilters}
+                  className="absolute right-2 top-2 inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-50"
+                  aria-label="Refresh filters"
+                >
+                  <FaRedo className="h-3.5 w-3.5" />
+                </button>
+
+                <label className={compactLabelClassName}>
+                  College
+                  <select
+                    value={filters.college}
+                    onChange={(event) => handleFilterChange('college', event.target.value)}
+                    className={compactFieldClassName}
+                  >
+                    {filterOptions.college.map((option) => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className={compactLabelClassName}>
+                  Course
+                  <select
+                    value={filters.course}
+                    onChange={(event) => handleFilterChange('course', event.target.value)}
+                    className={compactFieldClassName}
+                  >
+                    {filterOptions.course.map((option) => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className={compactLabelClassName}>
+                  Semester
+                  <select
+                    value={filters.semester}
+                    onChange={(event) => handleFilterChange('semester', event.target.value)}
+                    className={compactFieldClassName}
+                  >
+                    {filterOptions.semester.map((option) => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className={compactLabelClassName}>
+                  Section
+                  <select
+                    value={filters.section}
+                    onChange={(event) => handleFilterChange('section', event.target.value)}
+                    className={compactFieldClassName}
+                  >
+                    {filterOptions.section.map((option) => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className={compactLabelClassName}>
+                  Status
+                  <select
+                    value={filters.status}
+                    onChange={(event) => handleFilterChange('status', event.target.value)}
+                    className={compactFieldClassName}
+                  >
+                    {filterOptions.status.map((option) => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className={`${compactLabelClassName} md:col-span-2`}>
+                  Search
+                  <input
+                    type="search"
+                    value={search}
+                    onChange={(event) => {
+                      setSearch(event.target.value);
+                      setPage(1);
+                    }}
+                    placeholder="Search"
+                    className={compactFieldClassName}
+                  />
+                </label>
+              </div>
+            </div>
             <table className="min-w-full border-collapse text-sm text-slate-900" style={{ tableLayout: 'fixed' }}>
               <colgroup>
                 <col style={{ width: '5%' }} />
@@ -1308,7 +1406,7 @@ export default function TimetableManagementPage() {
                             <li>
                               <button
                                 type="button"
-                                onClick={() => setOpenDropdownId(null)}
+                                onClick={() => handleViewEditLogs(item)}
                                 className="w-full px-4 py-2 text-left text-sm text-slate-700 transition-colors duration-150 hover:bg-slate-100 cursor-pointer"
                               >
                                 View Edit Logs
@@ -1398,7 +1496,7 @@ export default function TimetableManagementPage() {
                         type="date"
                         value={assignStartDate}
                         onChange={(event) => setAssignStartDate(event.target.value)}
-                        className="h-9 rounded-[6px] border border-slate-200 bg-slate-50 px-3 text-sm text-slate-700 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-100"
+                        className={compactFieldClassName}
                       />
                     </label>
 
@@ -1408,7 +1506,7 @@ export default function TimetableManagementPage() {
                         type="date"
                         value={assignEndDate}
                         onChange={(event) => setAssignEndDate(event.target.value)}
-                        className="h-9 rounded-[6px] border border-slate-200 bg-slate-50 px-3 text-sm text-slate-700 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-100"
+                        className={compactFieldClassName}
                       />
                     </label>
 
@@ -1417,7 +1515,7 @@ export default function TimetableManagementPage() {
                       <select
                         value={assignEmployee}
                         onChange={(event) => setAssignEmployee(event.target.value)}
-                        className="h-9 rounded-[6px] border border-slate-200 bg-slate-50 px-3 text-sm text-slate-700 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-100"
+                        className={compactFieldClassName}
                       >
                         {assignEmployeeOptions.map((option) => (
                           <option key={option} value={option}>{option}</option>
@@ -1430,7 +1528,7 @@ export default function TimetableManagementPage() {
                       <select
                         value={assignSubject}
                         onChange={(event) => setAssignSubject(event.target.value)}
-                        className="h-9 rounded-[6px] border border-slate-200 bg-slate-50 px-3 text-sm text-slate-700 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-100"
+                        className={compactFieldClassName}
                       >
                         {assignSubjectOptions.map((option) => (
                           <option key={option} value={option}>{option}</option>
@@ -1497,7 +1595,7 @@ export default function TimetableManagementPage() {
                         type="date"
                         value={overrideStartDate}
                         onChange={(event) => setOverrideStartDate(event.target.value)}
-                        className="h-9 rounded-[6px] border border-slate-200 bg-slate-50 px-3 text-sm text-slate-700 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-100"
+                        className={compactFieldClassName}
                       />
                     </label>
 
@@ -1507,7 +1605,7 @@ export default function TimetableManagementPage() {
                         type="date"
                         value={overrideEndDate}
                         onChange={(event) => setOverrideEndDate(event.target.value)}
-                        className="h-9 rounded-[6px] border border-slate-200 bg-slate-50 px-3 text-sm text-slate-700 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-100"
+                        className={compactFieldClassName}
                       />
                     </label>
 
@@ -1516,7 +1614,7 @@ export default function TimetableManagementPage() {
                       <select
                         value={overrideEmployee}
                         onChange={(event) => setOverrideEmployee(event.target.value)}
-                        className="h-9 rounded-[6px] border border-slate-200 bg-slate-50 px-3 text-sm text-slate-700 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-100"
+                        className={compactFieldClassName}
                       >
                         {assignEmployeeOptions.map((option) => (
                           <option key={option} value={option}>{option}</option>
@@ -1529,7 +1627,7 @@ export default function TimetableManagementPage() {
                       <select
                         value={overrideSubject}
                         onChange={(event) => setOverrideSubject(event.target.value)}
-                        className="h-9 rounded-[6px] border border-slate-200 bg-slate-50 px-3 text-sm text-slate-700 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-100"
+                        className={compactFieldClassName}
                       >
                         {assignSubjectOptions.map((option) => (
                           <option key={option} value={option}>{option}</option>
@@ -1566,7 +1664,7 @@ export default function TimetableManagementPage() {
 
 
         {isReplaceOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center background-slate-950/40 p-4">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 p-4">
             <div className="w-full max-w-md rounded-[24px] border border-slate-200 bg-white p-6 shadow-2xl">
               <div className="mb-5 flex items-center justify-between">
                 <div>
@@ -1580,7 +1678,7 @@ export default function TimetableManagementPage() {
                 <select
                   value={replaceRowId}
                   onChange={(event) => setReplaceRowId(event.target.value)}
-                  className="h-11 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-100"
+                  className={`${compactFieldClassName} w-full`}
                 >
                   {rows.map((item) => (
                     <option key={item.id} value={item.id}>{`${item.college} • ${item.course} • ${item.section}`}</option>
@@ -1592,7 +1690,7 @@ export default function TimetableManagementPage() {
                   value={replaceTeacher}
                   onChange={(event) => setReplaceTeacher(event.target.value)}
                   placeholder="New teacher name"
-                  className="h-11 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-100"
+                  className={`${compactFieldClassName} w-full`}
                 />
               </div>
               <div className="mt-6 flex justify-end gap-3">

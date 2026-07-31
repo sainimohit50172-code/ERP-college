@@ -232,7 +232,6 @@ export default function Sidebar({ isOpen, onClose }) {
   const COE_ITEMS = {
     left: {
       examMaster: [
-        { id: 'exam-master', label: 'Exam Master', to: '/coe/exam-master' },
         { id: 'datesheet', label: 'Datesheet', to: '/coe/datesheet' },
         { id: 'exam-configuration', label: 'Exam Configuration', to: '/coe/configuration' },
       ],

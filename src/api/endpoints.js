@@ -60,6 +60,7 @@ const endpoints = {
   practicalMarks: 'practical-marks',
   internalMarks: 'internal-marks',
   questionBank: 'question-bank',
+  remarks: 'remarks',
   results: 'results',
   securityGuardAttendance: 'security-guard-attendance',
   securityGuards: 'security-guards',

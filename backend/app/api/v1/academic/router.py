@@ -78,9 +78,10 @@ from app.schemas.academic.schemas import (
     AttendanceMarksSetupDetail,
     AttendanceMarksSetupListItem,
 )
+from datetime import datetime
 from app.schemas.shared.base import APIResponse, PaginationRequest, PaginationResponse
 from pydantic import BaseModel
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 
 
 
@@ -243,9 +244,6 @@ attendance_marks_setup_router = build_crud_router(
     bulk_update_schema=AttendanceMarksSetupUpdate,
 )
 
-from fastapi import APIRouter, Query
-from app.schemas.shared.base import APIResponse, PaginationRequest, PaginationResponse
-
 # Stub response schemas for unimplemented resources
 class StubListItem(BaseModel):
     id: int = 1
@@ -267,6 +265,24 @@ for r in [
     attendance_marks_setup_router,
 ]:
     router.include_router(r)
+
+RESULT_STORAGE: list[dict] = []
+REMARK_STORAGE: list[dict] = []
+RESULT_NEXT_ID = 1
+REMARK_NEXT_ID = 1
+
+
+def _paginate_items(items: list[dict], pagination: PaginationRequest) -> PaginationResponse[dict]:
+    total = len(items)
+    start = (pagination.page - 1) * pagination.page_size
+    end = start + pagination.page_size
+    return PaginationResponse(
+        items=items[start:end],
+        total=total,
+        page=pagination.page,
+        page_size=pagination.page_size,
+        pages=(total + pagination.page_size - 1) // pagination.page_size,
+    )
 
 
 @router.post('/assessment-group/{id}/copy', response_model=APIResponse[AssessmentGroupDetail])
@@ -337,9 +353,78 @@ async def list_student_attendance(pagination: PaginationRequest = Depends()):
 
 @router.get("/results", response_model=APIResponse[PaginationResponse[dict]])
 async def list_results(pagination: PaginationRequest = Depends()):
-    """Stub endpoint for results - returns empty list"""
+    """Stub endpoint for results"""
     return APIResponse(
         success=True,
         message="Success",
-        data=PaginationResponse(items=[], total=0, page=pagination.page, page_size=pagination.page_size, pages=0)
+        data=_paginate_items(RESULT_STORAGE, pagination)
     )
+
+@router.post("/results", response_model=APIResponse[dict], status_code=status.HTTP_201_CREATED)
+async def create_result(payload: dict):
+    global RESULT_NEXT_ID
+    result = {
+        'id': RESULT_NEXT_ID,
+        'text': payload.get('text', ''),
+        'status': payload.get('status', 'Active'),
+        'createdDate': payload.get('createdDate', datetime.utcnow().isoformat()),
+        **payload,
+    }
+    RESULT_NEXT_ID += 1
+    RESULT_STORAGE.append(result)
+    return APIResponse(success=True, message='Created', data=result)
+
+@router.put("/results/{result_id}", response_model=APIResponse[dict])
+async def update_result(result_id: int, payload: dict):
+    result = next((item for item in RESULT_STORAGE if item['id'] == result_id), None)
+    if result is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Result not found')
+    result.update(payload)
+    return APIResponse(success=True, message='Updated', data=result)
+
+@router.delete("/results/{result_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_result(result_id: int):
+    index = next((idx for idx, item in enumerate(RESULT_STORAGE) if item['id'] == result_id), None)
+    if index is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Result not found')
+    RESULT_STORAGE.pop(index)
+    return
+
+@router.get("/remarks", response_model=APIResponse[PaginationResponse[dict]])
+async def list_remarks(pagination: PaginationRequest = Depends()):
+    """Stub endpoint for remarks"""
+    return APIResponse(
+        success=True,
+        message="Success",
+        data=_paginate_items(REMARK_STORAGE, pagination)
+    )
+
+@router.post("/remarks", response_model=APIResponse[dict], status_code=status.HTTP_201_CREATED)
+async def create_remark(payload: dict):
+    global REMARK_NEXT_ID
+    remark = {
+        'id': REMARK_NEXT_ID,
+        'text': payload.get('text', ''),
+        'status': payload.get('status', 'Active'),
+        'createdDate': payload.get('createdDate', datetime.utcnow().isoformat()),
+        **payload,
+    }
+    REMARK_NEXT_ID += 1
+    REMARK_STORAGE.append(remark)
+    return APIResponse(success=True, message='Created', data=remark)
+
+@router.put("/remarks/{remark_id}", response_model=APIResponse[dict])
+async def update_remark(remark_id: int, payload: dict):
+    remark = next((item for item in REMARK_STORAGE if item['id'] == remark_id), None)
+    if remark is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Remark not found')
+    remark.update(payload)
+    return APIResponse(success=True, message='Updated', data=remark)
+
+@router.delete("/remarks/{remark_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_remark(remark_id: int):
+    index = next((idx for idx, item in enumerate(REMARK_STORAGE) if item['id'] == remark_id), None)
+    if index is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Remark not found')
+    REMARK_STORAGE.pop(index)
+    return
