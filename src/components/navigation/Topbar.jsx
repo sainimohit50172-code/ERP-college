@@ -301,32 +301,36 @@ export default function Topbar({ onToggleSidebar }) {
             </button>
             {isQuickActionsOpen ? (
               <div className="fixed inset-0 z-40 flex items-start justify-end bg-black/20">
-                <div className="relative h-full w-[320px] bg-white p-5 shadow-2xl">
-                  <div className="mb-4 flex items-center justify-between">
-                    <p className="text-base font-semibold text-slate-900">User Quick Actions</p>
-                    <button type="button" onClick={() => setQuickActionsOpen(false)} className="rounded-full p-2 text-slate-500 hover:bg-slate-100">
-                      <X className="h-4 w-4" />
-                    </button>
-                  </div>
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    {quickActions.map((action) => (
-                      <button
-                        key={action.title}
-                        type="button"
-                        onClick={() => {
-                          navigate(action.route);
-                          setQuickActionsOpen(false);
-                          setActiveDropdown(null);
-                        }}
-                        className="group rounded-[10px] border border-[#e2e8f0] bg-white p-4 text-left transition hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
-                      >
-                        <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-2xl text-base" style={{ backgroundColor: `${action.color}26`, color: action.color }}>
-                          {action.icon}
-                        </div>
-                        <p className="text-[13px] font-semibold text-slate-950">{action.title}</p>
-                        <p className="mt-1 text-[11px] text-slate-500">{action.subtitle}</p>
+                <div className="relative h-full w-[320px] max-w-full bg-white p-5 shadow-2xl">
+                  <div className="flex h-full flex-col">
+                    <div className="mb-4 flex items-center justify-between">
+                      <p className="text-base font-semibold text-slate-900">User Quick Actions</p>
+                      <button type="button" onClick={() => setQuickActionsOpen(false)} className="rounded-full p-2 text-slate-500 hover:bg-slate-100">
+                        <X className="h-4 w-4" />
                       </button>
-                    ))}
+                    </div>
+                    <div className="flex-1 overflow-y-auto pr-1" style={{ maxHeight: 'calc(100vh - 6.5rem)' }}>
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        {quickActions.map((action) => (
+                          <button
+                            key={action.title}
+                            type="button"
+                            onClick={() => {
+                              navigate(action.route);
+                              setQuickActionsOpen(false);
+                              setActiveDropdown(null);
+                            }}
+                            className="group rounded-[10px] border border-[#e2e8f0] bg-white p-4 text-left transition hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
+                          >
+                            <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-2xl text-base" style={{ backgroundColor: `${action.color}26`, color: action.color }}>
+                              {action.icon}
+                            </div>
+                            <p className="text-[13px] font-semibold text-slate-950">{action.title}</p>
+                            <p className="mt-1 text-[11px] text-slate-500">{action.subtitle}</p>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
