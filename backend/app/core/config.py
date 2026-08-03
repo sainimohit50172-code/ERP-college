@@ -38,6 +38,11 @@ class Settings(BaseSettings):
     cors_origins: List[str] = Field(default_factory=lambda: ["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:5174", "http://127.0.0.1:5174", "http://localhost:5175", "http://127.0.0.1:5175"], alias="CORS_ORIGINS")
     log_level: str = Field(default="INFO", alias="LOG_LEVEL")
 
+    sms_dev_mode: bool = Field(default=True, alias="SMS_DEV_MODE")
+    msg91_auth_key: str = Field(default="", alias="MSG91_AUTH_KEY")
+    msg91_sender_id: str = Field(default="", alias="MSG91_SENDER_ID")
+    msg91_template_id: str = Field(default="", alias="MSG91_TEMPLATE_ID")
+
     @field_validator("cors_origins", mode="before")
     @classmethod
     def _parse_cors_origins(cls, value):

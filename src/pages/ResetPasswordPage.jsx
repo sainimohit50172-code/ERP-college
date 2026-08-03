@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Key, ShieldCheck, Lock, Eye, EyeOff } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { resetPasswordApi } from '../services/authService';
+import { showAuthFlowToast, showAuthFlowErrorToast } from '../utils/authToast';
 
 export default function ResetPasswordPage() {
   const [success, setSuccess] = useState(false);
@@ -25,10 +26,12 @@ export default function ResetPasswordPage() {
     const result = await resetPasswordApi(token, data.password);
     if (result?.error) {
       setStatusError(result.error.message || 'Unable to reset password.');
+      showAuthFlowErrorToast(result.error, 'Unable to reset password.');
       return;
     }
 
     setSuccess(true);
+    showAuthFlowToast(result, 'Password reset successfully.');
   };
   const strength = password.length > 12 ? 'Strong' : password.length > 8 ? 'Medium' : 'Weak';
   const strengthColor = strength === 'Strong' ? 'bg-emerald-500' : strength === 'Medium' ? 'bg-amber-400' : 'bg-rose-500';

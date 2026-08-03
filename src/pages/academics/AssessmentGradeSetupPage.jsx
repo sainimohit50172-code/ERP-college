@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Copy, Pencil, Plus, Trash2 } from 'lucide-react';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import Breadcrumb from '../../components/ui/Breadcrumb.jsx';
 import { useResourceList, useCreateResource, useUpdateResource, useDeleteResource } from '../../hooks/useResourceHooks';
 
@@ -279,7 +278,6 @@ export default function AssessmentGradeSetupPage() {
           </div>
         </div>
       </div>
-      <ToastContainer position="top-right" autoClose={2500} hideProgressBar theme="light" />
     </div>
   );
 }

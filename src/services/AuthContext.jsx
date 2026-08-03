@@ -4,7 +4,7 @@ import { getAuthState, saveAuthState, clearAuthState, loginApi, refreshTokenApi,
 import { getPermissionsForRole } from './rbac.js';
 import { recordAuditEvent } from './auditService.js';
 
-const AuthContext = createContext(null);
+export const AuthContext = createContext(null);
 
 const SESSION_TIMEOUT_MS = 1000 * 60 * 25; // 25 minutes
 const INACTIVITY_TIMEOUT_MS = 1000 * 60 * 15; // 15 minutes
@@ -66,9 +66,54 @@ export function AuthProvider({ children }) {
   const authValue = useMemo(() => ({
     auth,
     login: async (payload, remember = false) => {
-      const response = await loginApi(payload);
-      const data = response?.data || response || null;
-      const errorMessage = response?.error?.message || response?.error?.responseData?.detail || response?.error || null;
+      let data = null;
+      try {
+        if (import.meta.env.DEV) {
+          console.info('[AuthContext] login request', {
+            username: payload?.username || payload?.email,
+            role: payload?.role,
+          });
+        }
+
+        const response = await loginApi(payload);
+        data = response?.data || response || null;
+
+        if (import.meta.env.DEV) {
+          console.info('[AuthContext] login response', {
+            payload: { username: payload?.username || payload?.email, role: payload?.role },
+            responseData: data,
+          });
+        }
+      } catch (error) {
+        const isNetworkError = !error?.response;
+        if (import.meta.env.DEV && isNetworkError) {
+          const role = payload?.role || 'Admin';
+          const nextAuth = buildDemoAuth(payload, role);
+          setAuth(nextAuth);
+          setSessionExpiry(Date.now() + SESSION_TIMEOUT_MS);
+          setInactivityExpiry(Date.now() + INACTIVITY_TIMEOUT_MS);
+          setRememberMe(remember);
+          saveAuthState(nextAuth);
+          localStorage.setItem('erp_demo_mode', 'true');
+          localStorage.setItem('access_token', nextAuth.token);
+          localStorage.setItem('refresh_token', nextAuth.refreshToken);
+          recordAuditEvent({
+            action: 'Login',
+            moduleKey: 'dashboard',
+            description: `Demo login for ${nextAuth.user?.name || nextAuth.user?.email}`,
+            user: { id: nextAuth.user?.id, name: nextAuth.user?.name || nextAuth.user?.email, role: nextAuth.role },
+          });
+          navigate('/', { replace: true });
+          return nextAuth;
+        }
+        if (import.meta.env.DEV) {
+          console.error('[AuthContext] login failed', {
+            payload: { username: payload?.username || payload?.email, role: payload?.role },
+            error,
+          });
+        }
+        throw error;
+      }
       const role = payload?.role || data?.user?.role || 'Admin';
       const user = data?.user || {
         id: payload?.id || `${payload?.username || payload?.email || 'user'}-${Date.now()}`,
@@ -79,23 +124,7 @@ export function AuthProvider({ children }) {
       const token = data?.access_token || data?.token || null;
       const refreshToken = data?.refresh_token || data?.refreshToken || null;
       if (!token) {
-        const nextAuth = buildDemoAuth(payload, role);
-        setAuth(nextAuth);
-        setSessionExpiry(Date.now() + SESSION_TIMEOUT_MS);
-        setInactivityExpiry(Date.now() + INACTIVITY_TIMEOUT_MS);
-        setRememberMe(remember);
-        saveAuthState(nextAuth);
-        localStorage.setItem('erp_demo_mode', 'true');
-        localStorage.setItem('access_token', nextAuth.token);
-        localStorage.setItem('refresh_token', nextAuth.refreshToken);
-        recordAuditEvent({
-          action: 'Login',
-          moduleKey: 'dashboard',
-          description: `Demo login for ${user.name || user.email}`,
-          user: { id: user.id, name: user.name || user.email, role },
-        });
-        navigate('/', { replace: true });
-        return nextAuth;
+        throw new Error('Authentication failed: no access token received from server.');
       }
       const permissions = getPermissionsForRole(user.role);
       const nextAuth = {

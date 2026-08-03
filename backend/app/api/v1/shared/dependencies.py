@@ -7,6 +7,7 @@ from app.repositories.mysql.attendance import MySQLAttendanceRepository
 from app.repositories.mysql.audit import MySQLAuditRepository
 from app.repositories.mysql.employees import MySQLEmployeeRepository
 from app.repositories.mysql.examinations import MySQLExaminationRepository
+from app.repositories.mysql.exam_calendar import MySQLExamCalendarRepository
 from app.repositories.mysql.fees import MySQLFeeRepository
 from app.repositories.mysql.finance import MySQLFinanceRepository
 from app.repositories.mysql.hostel import MySQLHostelRepository
@@ -37,6 +38,7 @@ from app.services.audit.service import AuditService
 from app.services.auth.service import AuthService
 from app.services.employees.service import EmployeeService
 from app.services.examinations.service import ExaminationService
+from app.services.exam_calendar.service import ExamCalendarService
 from app.services.fees.service import FeeService
 from app.services.finance.service import FinanceService
 from app.services.hostel.service import HostelService
@@ -77,6 +79,10 @@ def get_fee_repository(db=Depends(get_db)):
 
 def get_examination_repository(db=Depends(get_db)):
     return MySQLExaminationRepository(db)
+
+
+def get_exam_calendar_repository(db=Depends(get_db)):
+    return MySQLExamCalendarRepository(db)
 
 
 def get_library_repository(db=Depends(get_db)):
@@ -293,6 +299,10 @@ def get_fee_service(repo=Depends(get_fee_repository)):
 
 def get_examination_service(repo=Depends(get_examination_repository)):
     return ExaminationService(repo)
+
+
+def get_exam_calendar_service(repo=Depends(get_exam_calendar_repository)):
+    return ExamCalendarService(repo)
 
 
 def get_library_service(repo=Depends(get_library_repository)):

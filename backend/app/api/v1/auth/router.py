@@ -7,11 +7,14 @@ from app.api.v1.shared.dependencies import get_auth_service
 from app.schemas.auth.schemas import (
     ChangePasswordRequest,
     CurrentUser,
+    ForgotPasswordResponse,
     LoginRequest,
     LoginResponse,
     LogoutRequest,
     MobileOtpSendRequest,
+    MobileOtpSendResponse,
     MobileOtpVerifyRequest,
+    MobileOtpVerifyResponse,
     MobileRegistrationCompleteRequest,
     PasswordResetRequest,
     RefreshTokenRequest,
@@ -19,9 +22,11 @@ from app.schemas.auth.schemas import (
     RegisterRequest,
     RegisterResponse,
     ResetPasswordRequest,
+    ResetPasswordResponse,
 )
 from app.schemas.shared.base import APIResponse
 from app.services.auth.service import AuthService, AuthServiceError
+from app.services.sms_service import send_otp_sms
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 security = HTTPBearer(auto_error=False)
@@ -56,8 +61,9 @@ async def get_current_user(
 async def login(payload: LoginRequest, request: Request, service: AuthService = Depends(get_auth_service)):
     user_agent = request.headers.get("user-agent")
     ip_address = request.client.host if request.client else None
+    identifier = payload.email or ""
     try:
-        result = await service.login_user(payload.email, payload.password, user_agent=user_agent, ip_address=ip_address)
+        result = await service.login_user(identifier, payload.password, user_agent=user_agent, ip_address=ip_address)
     except AuthServiceError as exc:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(exc))
     return APIResponse(data=LoginResponse(**result), message="Authenticated")
@@ -86,7 +92,7 @@ async def register(payload: RegisterRequest, service: AuthService = Depends(get_
 
 @router.post(
     "/register/send-otp",
-    response_model=APIResponse[dict[str, object]],
+    response_model=APIResponse[MobileOtpSendResponse],
     status_code=status.HTTP_200_OK,
     summary="Send OTP for mobile registration",
     description="Send a temporary OTP for the mobile-based registration flow.",
@@ -100,14 +106,32 @@ async def send_mobile_otp(payload: MobileOtpSendRequest, service: AuthService = 
             mobile_number=payload.mobile_number,
             role_name=payload.role_name or "Admin",
         )
+        otp_code = str(result.get("otp_code") or "")
+        sms_result = await send_otp_sms(payload.mobile_number, otp_code)
+        response_message = sms_result.get("message") or "OTP sent successfully"
+        response_data = MobileOtpSendResponse(
+            message=response_message,
+            otp_code=otp_code,
+            dev_mode=bool(sms_result.get("dev_mode", False)),
+        )
     except AuthServiceError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
-    return APIResponse(data=result, message="OTP sent successfully")
+    except RuntimeError as sms_exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"OTP generated successfully, but SMS delivery failed: {str(sms_exc)}",
+        ) from sms_exc
+    except ValueError as sms_exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"OTP generated successfully, but SMS delivery input was invalid: {str(sms_exc)}",
+        ) from sms_exc
+    return APIResponse(data=response_data, message=response_message)
 
 
 @router.post(
     "/register/verify-otp",
-    response_model=APIResponse[dict[str, bool]],
+    response_model=APIResponse[MobileOtpVerifyResponse],
     status_code=status.HTTP_200_OK,
     summary="Verify OTP for mobile registration",
     description="Verify the OTP sent to the mobile number for registration.",
@@ -117,7 +141,12 @@ async def verify_mobile_otp(payload: MobileOtpVerifyRequest, service: AuthServic
         result = await service.verify_mobile_otp(payload.mobile_number, payload.otp_code)
     except AuthServiceError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
-    return APIResponse(data=result, message="OTP verified successfully")
+    response_data = MobileOtpVerifyResponse(
+        success=bool(result.get("success", True)) if isinstance(result, dict) else True,
+        message="OTP verified successfully",
+        dev_mode=False,
+    )
+    return APIResponse(data=response_data, message=response_data.message)
 
 
 @router.post(
@@ -202,7 +231,7 @@ async def change_password(payload: ChangePasswordRequest, current_user=Depends(g
 
 @router.post(
     "/forgot-password",
-    response_model=APIResponse[dict[str, str]],
+    response_model=APIResponse[ForgotPasswordResponse],
     status_code=status.HTTP_200_OK,
     summary="Request password reset",
     description="Request a password reset token for the given email address.",
@@ -212,12 +241,17 @@ async def forgot_password(payload: PasswordResetRequest, service: AuthService = 
         reset_token = await service.request_password_reset(payload.email)
     except AuthServiceError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
-    return APIResponse(data={"reset_token": reset_token}, message="If the account exists, a reset link was generated")
+    response_data = ForgotPasswordResponse(
+        reset_token=reset_token,
+        message="If the account exists, a reset link was generated",
+        dev_mode=False,
+    )
+    return APIResponse(data=response_data, message=response_data.message)
 
 
 @router.post(
     "/reset-password",
-    response_model=APIResponse[dict[str, bool]],
+    response_model=APIResponse[ResetPasswordResponse],
     status_code=status.HTTP_200_OK,
     summary="Reset password",
     description="Reset a user's password using a valid password reset token.",
@@ -227,4 +261,9 @@ async def reset_password(payload: ResetPasswordRequest, service: AuthService = D
         await service.reset_password(payload.token, payload.new_password)
     except AuthServiceError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
-    return APIResponse(data={"success": True}, message="Password reset successfully")
+    response_data = ResetPasswordResponse(
+        success=True,
+        message="Password reset successfully",
+        dev_mode=False,
+    )
+    return APIResponse(data=response_data, message=response_data.message)

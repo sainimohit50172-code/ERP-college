@@ -7,10 +7,14 @@ from sqlalchemy import select, func
 from app.api.v1.auth.router import router as auth_router
 from app.api.v1.admissions.router import router as admissions_router
 from app.api.v1.attendance.router import router as attendance_router
+from app.api.v1.coe.router import router as coe_router
 from app.api.v1.audit.router import router as audit_router
 from app.api.v1.employees.router import router as employees_router
 from app.api.v1.leave.router import router as leave_router
 from app.api.v1.examinations.router import router as examinations_router
+from app.api.v1.exam_calendar.router import router as exam_calendar_router
+from app.api.v1.exam_fee_setup.router import router as exam_fee_setup_router
+from app.api.v1.exam_form_preferences.router import router as exam_form_preferences_router
 from app.api.v1.fees.router import router as fees_router
 from app.api.v1.finance.router import router as finance_router
 from app.api.v1.hostel.router import router as hostel_router
@@ -64,9 +68,9 @@ def create_default_admin() -> None:
             
             # Create admin user
             admin_user = User(
-                email="admin@example.com",
+                email="admin@collegeerp.local",
                 username="admin",
-                hashed_password=get_password_hash("Admin123"),
+                hashed_password=get_password_hash("Admin@123"),
                 full_name="System Administrator",
                 is_active=True,
                 is_superuser=True,
@@ -96,9 +100,21 @@ app = FastAPI(
     openapi_url=f"{settings.api_v1_str}/openapi.json",
 )
 
+# Determine whether to enable a permissive origin regex for Vercel-hosted frontends.
+vercel_allow_regex = None
+# Only enable a permissive vercel wildcard regex when explicitly requested via env var.
+# This avoids guessing or hardcoding domains. Set VERCEL_ALLOW_WILDCARD=true in the backend env to enable.
+try:
+    vercel_allow = os.environ.get('VERCEL_ALLOW_WILDCARD', '')
+    if isinstance(vercel_allow, str) and vercel_allow.lower() in ('1', 'true', 'yes'):
+        vercel_allow_regex = r"https?://([^.]+\.)*vercel\.app"
+except Exception:
+    vercel_allow_regex = None
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
+    allow_origin_regex=vercel_allow_regex,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -121,10 +137,14 @@ routers = [
     auth_router,
     admissions_router,
     attendance_router,
+    coe_router,
     audit_router,
     employees_router,
     leave_router,
     examinations_router,
+    exam_calendar_router,
+    exam_fee_setup_router,
+    exam_form_preferences_router,
     fees_router,
     finance_router,
     hostel_router,
@@ -157,21 +177,34 @@ if not any(getattr(m, "path", None) == "/uploads" for m in getattr(app, "user_mi
 
 @app.get("/health")
 async def health_check():
-    return {"status": "ok", "service": settings.app_name}
+    return {"status": "ok"}
 
 
 @app.get("/api/v1/health")
 async def health_check_v1():
-    return {"status": "ok", "service": settings.app_name, "version": settings.app_version}
+    return {"status": "ok", "version": settings.app_version}
+
+
+@app.get("/api/health")
+async def health_check_api():
+    return {"status": "ok", "version": settings.app_version}
 
 
 @app.on_event("startup")
 async def startup_event():
-    logger.info("Starting %s", settings.app_name)
+    logger.info("FastAPI startup event triggered")
     initialize_database()
     create_default_admin()
+    logger.info("FastAPI startup complete and ready to accept requests")
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
     logger.info("Shutting down %s", settings.app_name)
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    logger.info("Launching backend app on http://127.0.0.1:8000")
+    uvicorn.run(app, host="127.0.0.1", port=8000, log_level="info")

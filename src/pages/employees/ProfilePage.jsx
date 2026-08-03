@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { CalendarDays, Clock3, Edit2, FileText, Hash, Mail, MapPin, Phone, Ticket } from 'lucide-react';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import api from '../../api/axios.js';
 import Modal from '../../components/ui/Modal.jsx';
 import { useAuth } from '../../services/AuthContext.jsx';
@@ -276,7 +275,6 @@ export default function ProfilePage() {
 
   return (
     <div className="mx-[10px] min-h-[calc(100vh-88px)] w-auto max-w-none overflow-x-hidden overflow-y-auto bg-white px-[10px] py-4 sm:px-[10px] lg:px-[10px]">
-      <ToastContainer position="top-right" autoClose={2500} />
 <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2 text-sm">
             <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">My Profile</span>

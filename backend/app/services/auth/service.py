@@ -230,9 +230,10 @@ class AuthService:
         user_agent: Optional[str] = None,
         ip_address: Optional[str] = None,
     ) -> dict[str, str | int | dict[str, object]]:
-        user = await self._auth_repository.get_by_email(email)
+        normalized_identifier = (email or "").strip().lower()
+        user = await self._auth_repository.get_by_email(normalized_identifier)
         if user is None:
-            user = await self._auth_repository.get_by_username(email)
+            user = await self._auth_repository.get_by_username(normalized_identifier)
 
         if user is None:
             raise AuthServiceError("Invalid credentials")

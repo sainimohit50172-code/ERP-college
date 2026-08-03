@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import { Ticket, Briefcase, ShieldCheck, Layers, FileText, CalendarDays } from 'lucide-react';
 import api from '../api/axios.js';
 
@@ -313,7 +312,6 @@ export default function HelpdeskRaiseTicketPage() {
           </div>
         </div>
       </div>
-      <ToastContainer position="top-right" autoClose={4000} hideProgressBar theme="colored" />
     </div>
   );
 }

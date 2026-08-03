@@ -61,6 +61,21 @@ def _ensure_sqlite_compatible_schema(db_path: str) -> None:
         engine.dispose()
 
 
+def _ensure_coe_preference_settings_schema() -> None:
+    if not str(engine.url).startswith("sqlite"):
+        return
+    try:
+        with engine.connect() as conn:
+            table_info = conn.execute(text("PRAGMA table_info(coe_exam_form_preference_settings)")).fetchall()
+            has_exam_calendar_mode = any(column[1] == "exam_calendar_mode" for column in table_info)
+            if not has_exam_calendar_mode:
+                logger.warning("Adding missing exam_calendar_mode column to coe_exam_form_preference_settings")
+                conn.execute(text("ALTER TABLE coe_exam_form_preference_settings ADD COLUMN exam_calendar_mode VARCHAR(32) NOT NULL DEFAULT 'Draft'"))
+                conn.commit()
+    except OperationalError as exc:
+        logger.warning("Unable to ensure the COE preference settings schema: %s", exc)
+
+
 def _create_engine(url: str):
     if url.startswith("sqlite:"):
         sqlite_path = _sqlite_db_path(url)
@@ -109,6 +124,7 @@ try:
 except ImportError:
     pass
 Base.metadata.create_all(engine)
+_ensure_coe_preference_settings_schema()
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, future=True)
 

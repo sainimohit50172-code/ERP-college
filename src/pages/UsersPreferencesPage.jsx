@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 import { FileText, Star } from 'lucide-react';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 const sessions = ['2026-2027', '2025-2026', '2024-2025'];
 const landingPages = ['Dashboard', 'Employee Portal', 'Fee', 'Attendance'];
@@ -51,8 +50,6 @@ export default function UsersPreferencesPage() {
 
   return (
     <div className="min-h-[calc(100vh-88px)] bg-[#F8FAFC] p-6 font-sans text-slate-900">
-      <ToastContainer position="top-right" autoClose={1500} hideProgressBar />
-
       <div className="mb-5">
         <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Dashboard &gt; Users Preferences</p>
         <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">

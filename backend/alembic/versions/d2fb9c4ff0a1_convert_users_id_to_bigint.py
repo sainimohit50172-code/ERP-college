@@ -88,7 +88,9 @@ def _fetch_column_metadata(bind, table_name: str, column_name: str):
 def upgrade() -> None:
     bind = op.get_bind()
     if bind.dialect.name not in {"mysql", "mariadb"}:
-        raise RuntimeError("This migration is only supported for MySQL/MariaDB databases")
+        # SQLite uses the ORM-created compatible integer schema and has no
+        # MySQL foreign-key type conversion to perform.
+        return
 
     rows = _fetch_fk_rows(bind)
     if not rows:

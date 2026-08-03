@@ -2,6 +2,13 @@ import api from '../api/axios';
 
 const AUTH_STORAGE_KEY = 'erp_auth';
 
+export function sanitizeMobileNumber(value) {
+  const raw = typeof value === 'string' ? value : String(value ?? '');
+  const sanitizedDigits = raw.replace(/\D/g, '');
+  if (sanitizedDigits.length <= 10) return sanitizedDigits;
+  return sanitizedDigits.slice(-10);
+}
+
 function extractErrorMessage(error) {
   const responseData = error?.response?.data;
   if (typeof responseData === 'string') return responseData;
@@ -57,12 +64,17 @@ export async function loginApi(payload) {
     email: payload.email || payload.username || '',
     password: payload.password || '',
   };
-  const response = await api.post('/auth/login', body).catch((error) => {
+  try {
+    const response = await api.post('/auth/login', body);
+    return response.data;
+  } catch (error) {
     const errorDetails = logAuthError('login', error);
     errorDetails.message = extractErrorMessage(error);
-    return { data: null, error: errorDetails };
-  });
-  return response?.data?.data ? response.data : response;
+    const err = new Error(errorDetails.message);
+    err.response = error?.response;
+    err.details = errorDetails;
+    throw err;
+  }
 }
 
 export async function registerApi(payload) {
@@ -90,7 +102,7 @@ export async function sendOtpApi(payload) {
     full_name: payload.fullName || payload.full_name || '',
     username: payload.username || '',
     email: payload.email || '',
-    mobile_number: payload.mobile_number || payload.mobile || '',
+    mobile_number: sanitizeMobileNumber(payload.mobile_number || payload.mobile || ''),
     role_name: payload.role_name || payload.role || 'Admin',
   };
   const response = await api.post('/auth/register/send-otp', body).catch((error) => {
@@ -98,12 +110,13 @@ export async function sendOtpApi(payload) {
     errorDetails.message = extractErrorMessage(error);
     return { data: null, error: errorDetails };
   });
-  return response?.data?.data ? response.data : response;
+  const normalizedResponse = response?.data?.data ? response.data : response;
+  return normalizedResponse;
 }
 
 export async function verifyOtpApi(payload) {
   const body = {
-    mobile_number: payload.mobile_number || payload.mobile || '',
+    mobile_number: sanitizeMobileNumber(payload.mobile_number || payload.mobile || ''),
     otp_code: payload.otp_code || payload.otp || '',
   };
   const response = await api.post('/auth/register/verify-otp', body).catch((error) => {
@@ -116,7 +129,7 @@ export async function verifyOtpApi(payload) {
 
 export async function completeRegistrationApi(payload) {
   const body = {
-    mobile_number: payload.mobile_number || payload.mobile || '',
+    mobile_number: sanitizeMobileNumber(payload.mobile_number || payload.mobile || ''),
     password: payload.password || '',
     confirm_password: payload.confirm_password || payload.confirmPassword || '',
   };

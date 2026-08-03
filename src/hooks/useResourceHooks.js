@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import createResourceService from '../api/resourceService';
 import { parseApiError } from '../api/errorHandler';
@@ -6,10 +7,28 @@ import { useAuth } from '../services/AuthContext.jsx';
 import { recordAuditEvent } from '../services/auditService.js';
 import { getEndpoint } from '../api/endpoints';
 import uploadService from '../api/uploadService';
+import { getBackendHealthState, waitForBackendHealth } from '../api/startupReadiness';
 
 export function useResourceList(resource, params = {}) {
   const service = createResourceService(resource);
-  const serializedParams = JSON.stringify(params || {});
+  const serializedParams = useMemo(() => JSON.stringify(params || {}), [params]);
+  const [backendReady, setBackendReady] = useState(Boolean(getBackendHealthState().ready));
+
+  useEffect(() => {
+    let isMounted = true;
+    const synchronizeBackendReadiness = async () => {
+      const ready = await waitForBackendHealth();
+      if (isMounted) {
+        setBackendReady(ready);
+      }
+    };
+
+    synchronizeBackendReadiness();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const query = useQuery({ 
     queryKey: [resource, serializedParams], 
     queryFn: async () => {
@@ -21,6 +40,7 @@ export function useResourceList(resource, params = {}) {
         return { items: [], total: 0, page: params.page || 1, pageSize: params.pageSize || 10, pages: 0 };
       }
     },
+    enabled: backendReady,
     keepPreviousData: true,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 30 * 60 * 1000, // 30 minutes (formerly cacheTime)

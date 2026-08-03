@@ -72,22 +72,32 @@ export default function AcademicsSetupPage() {
                 />
               </label>
 
-              <label className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm">
-                <span className="text-slate-500">Quick filter</span>
-                <select
-                  value={quickFilter}
-                  onChange={(event) => setQuickFilter(event.target.value)}
-                  aria-label="Filter academic modules"
-                  className="rounded-xl border border-slate-200 bg-white px-2 py-1 text-sm text-slate-700 outline-none"
-                >
-                  <option value="all">All</option>
-                  <option value="assessment">Assessment</option>
-                  <option value="attendance">Attendance</option>
-                  <option value="scheduling">Scheduling</option>
-                  <option value="subject">Subject</option>
-                  <option value="students">Students</option>
-                </select>
-              </label>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <label className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm">
+                  <span className="text-slate-500">Quick filter</span>
+                  <select
+                    value={quickFilter}
+                    onChange={(event) => {
+                      const selected = event.target.value;
+                      if (selected === 'academics-management') {
+                        navigate('/settings/institute/academics-management');
+                        return;
+                      }
+                      setQuickFilter(selected);
+                    }}
+                    aria-label="Filter academic modules"
+                    className="rounded-xl border border-slate-200 bg-white px-2 py-1 text-sm text-slate-700 outline-none"
+                  >
+                    <option value="all">All</option>
+                    <option value="assessment">Assessment</option>
+                    <option value="attendance">Attendance</option>
+                    <option value="scheduling">Scheduling</option>
+                    <option value="subject">Subject</option>
+                    <option value="students">Students</option>
+                    <option value="academics-management">Academics Management</option>
+                  </select>
+                </label>
+              </div>
             </div>
           </div>
         </div>

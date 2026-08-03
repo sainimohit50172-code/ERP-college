@@ -9,6 +9,7 @@ export default function StatusBadge({ status }) {
     undermaintenance: 'bg-amber-500/15 text-amber-700',
     due: 'bg-amber-500/15 text-amber-700',
     scheduled: 'bg-sky-500/15 text-sky-700',
+    upcoming: 'bg-emerald-100 text-emerald-700',
     completed: 'bg-sky-500/15 text-sky-700',
     closed: 'bg-rose-500/15 text-rose-700',
     rejected: 'bg-rose-500/15 text-rose-700',

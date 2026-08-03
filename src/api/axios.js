@@ -1,12 +1,26 @@
 import axios from 'axios';
 import { toast } from '../utils/toast.js';
 import { getApiBaseUrl } from './apiConfig.js';
+import { getRetryDelay, shouldSuppressStartupToast } from './startupReadiness.js';
 
 const API_BASE = getApiBaseUrl();
 const DEFAULT_TIMEOUT = 10000; // Reduced to 10 seconds for faster failure detection
+const isProductionRuntime = (typeof import.meta !== 'undefined' && import.meta && import.meta.env)
+  ? import.meta.env.PROD === true
+  : (typeof globalThis !== 'undefined' && globalThis.process
+    ? globalThis.process.env.NODE_ENV === 'production' || globalThis.process.env.PROD === 'true' || globalThis.process.env.PROD === true
+    : false);
+let productionApiConfigErrorLogged = false;
+
+if (isProductionRuntime && API_BASE) {
+  // In production, avoid verbose logging; only surface the resolved base when explicitly enabled.
+  if (!isProductionRuntime && import.meta.env && import.meta.env.DEBUG_API_BASE) {
+    console.info('[api-config] Using production API base URL:', API_BASE);
+  }
+}
 
 const api = axios.create({
-  baseURL: API_BASE,
+  baseURL: API_BASE || undefined,
   headers: { 'Content-Type': 'application/json' },
   timeout: DEFAULT_TIMEOUT,
 });
@@ -21,34 +35,53 @@ function getApiBasePath(baseURL = '') {
   }
 }
 
-function normalizeApiUrl(config) {
-  const url = config.url || '';
-  const baseURL = config.baseURL || '';
+export function normalizeApiUrl(config) {
+  const url = config?.url || '';
+  const baseURL = config?.baseURL || '';
   if (typeof url !== 'string' || !baseURL) {
     return url;
   }
 
-  const normalizedUrl = url.startsWith('/') ? url : `/${url}`;
+  const trimmedUrl = url.trim();
+  if (!trimmedUrl) {
+    return '';
+  }
+
+  if (/^https?:\/\//i.test(trimmedUrl) || trimmedUrl.startsWith('//')) {
+    return trimmedUrl;
+  }
+
+  const normalizedUrl = trimmedUrl.startsWith('/') ? trimmedUrl : `/${trimmedUrl}`;
   const basePath = getApiBasePath(baseURL);
   if (!basePath) {
     return normalizedUrl;
   }
 
-  if (normalizedUrl === basePath || normalizedUrl.startsWith(`${basePath}/`)) {
-    const stripped = normalizedUrl.slice(basePath.length) || '/';
-    return stripped.startsWith('/') ? stripped : `/${stripped}`;
+  const normalizedBasePath = basePath.startsWith('/') ? basePath : `/${basePath}`;
+  if (normalizedUrl === normalizedBasePath || normalizedUrl.startsWith(`${normalizedBasePath}/`)) {
+    return normalizedUrl;
   }
 
-  return normalizedUrl;
+  return `${normalizedBasePath}${normalizedUrl}`;
 }
 
 api.interceptors.request.use((config) => {
+  if (isProductionRuntime && !API_BASE) {
+    if (!productionApiConfigErrorLogged) {
+      productionApiConfigErrorLogged = true;
+      console.warn('[api-config] Missing VITE_API_BASE_URL in production. Falling back to /api for request routing.');
+    }
+  }
+
   config.url = normalizeApiUrl(config);
   const resolvedUrl = `${config.baseURL || ''}${config.url || ''}`;
-  console.info('[api-request]', config.method?.toUpperCase?.() || 'REQUEST', resolvedUrl, config.data);
+  // Only log requests during development to avoid leaking production details
+  if (!isProductionRuntime) {
+    console.info('[api-request]', config.method?.toUpperCase?.() || 'REQUEST', resolvedUrl, config.data);
+  }
   return config;
 }, (error) => {
-  console.error('[api-request-error]', error);
+  if (!isProductionRuntime) console.error('[api-request-error]', error);
   return Promise.reject(error);
 });
 
@@ -56,7 +89,11 @@ api.interceptors.response.use((response) => {
   console.info('[api-response]', response.status, response.config?.url, response.data);
   return response;
 }, (error) => {
-  console.error('[api-response-error]', error?.response?.status, error?.config?.url, error?.response?.data || error?.message);
+  const original = error.config || {};
+  const suppressStartupErrors = shouldSuppressStartupToast(error, original);
+  if (!suppressStartupErrors) {
+    console.error('[api-response-error]', error?.response?.status, error?.config?.url, error?.response?.data || error?.message);
+  }
   return Promise.reject(error);
 });
 
@@ -98,9 +135,13 @@ api.interceptors.response.use(
     const shouldRetry = (networkError || (err.response && err.response.status >= 500)) && ['get', 'head'].includes(method) && original._retryCount < 2;
     if (shouldRetry) {
       original._retryCount += 1;
-      const delay = 200 * Math.pow(2, original._retryCount);
+      const delay = getRetryDelay(original._retryCount - 1);
       await new Promise((res) => setTimeout(res, delay));
       return api(original);
+    }
+
+    if (shouldSuppressStartupToast(err, original)) {
+      return Promise.reject(err);
     }
 
     // handle 401 -> try refresh flow

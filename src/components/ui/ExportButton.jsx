@@ -1,6 +1,6 @@
-import { FileSpreadsheet, FileText, Printer } from 'lucide-react';
+import { FileSpreadsheet, FileText, Printer, Download } from 'lucide-react';
 
-export default function ExportButton({ onExcel, onPdf, onPrint }) {
+export default function ExportButton({ onExcel, onCsv, onPdf, onPrint }) {
   return (
     <div className="flex flex-wrap items-center gap-3">
       <button
@@ -11,6 +11,15 @@ export default function ExportButton({ onExcel, onPdf, onPrint }) {
       >
         <FileSpreadsheet className="h-4 w-4" />
         Export XLS
+      </button>
+      <button
+        type="button"
+        onClick={onCsv}
+        className="hover-gradient-border inline-flex items-center gap-2 rounded-3xl bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
+        style={{ '--hover-gradient-radius': '24px' }}
+      >
+        <Download className="h-4 w-4" />
+        Export CSV
       </button>
       <button
         type="button"

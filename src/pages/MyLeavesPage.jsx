@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useAuth } from '../services/AuthContext.jsx';
 import api from '../api/axios.js';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import {
   BookOpen,
   CalendarDays,
@@ -537,7 +536,6 @@ export default function MyLeavesPage() {
         </form>
       </div>
 
-      <ToastContainer position="top-right" theme="light" />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Mail, ShieldCheck, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { forgotPasswordApi } from '../services/authService';
+import { showAuthFlowToast, showAuthFlowErrorToast } from '../utils/authToast';
 
 export default function ForgotPasswordPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -18,11 +19,13 @@ export default function ForgotPasswordPage() {
     const result = await forgotPasswordApi(data.email);
     if (result?.error) {
       setStatusError(result.error.message || 'Unable to send reset instructions.');
+      showAuthFlowErrorToast(result.error, 'Unable to send reset instructions.');
       return;
     }
 
     setSubmitted(true);
-    setStatusMessage(result?.message || 'If the account exists, a password reset link has been sent.');
+    setStatusMessage(result?.data?.message || result?.message || 'If the account exists, a password reset link has been sent.');
+    showAuthFlowToast(result, 'If the account exists, a password reset link has been sent.');
   };
 
   return (

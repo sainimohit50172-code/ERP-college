@@ -3,11 +3,11 @@ import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaUniversity, FaLock, FaUser, FaUserPlus, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import { useAuth } from '../services/AuthContext.jsx';
 import { ROLES } from '../services/rbac.js';
-import { completeRegistrationApi, sendOtpApi, verifyOtpApi } from '../services/authService';
+import { completeRegistrationApi, sanitizeMobileNumber, sendOtpApi, verifyOtpApi } from '../services/authService';
+import { showAuthFlowToast, showAuthFlowErrorToast } from '../utils/authToast';
 
 const roles = ROLES;
 const highlights = [
@@ -33,11 +33,13 @@ export default function LoginPage() {
     handleSubmit,
     watch,
     getValues,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({ mode: 'onTouched' });
 
   const passwordValue = watch('password', '');
   const mobileNumberValue = watch('mobileNumber', '');
+  const normalizedMobileNumberValue = sanitizeMobileNumber(mobileNumberValue);
   const otpValue = watch('otpCode', '');
   const confirmPasswordValue = watch('confirmPassword', '');
 
@@ -90,11 +92,12 @@ export default function LoginPage() {
   const handleSendOtp = async () => {
     setRegistrationError('');
     setRegistrationPending(true);
+    const mobileNumber = sanitizeMobileNumber(getValues('mobileNumber') || '');
     const payload = {
       fullName: getValues('fullName') || '',
       username: getValues('username') || '',
       email: getValues('email') || '',
-      mobile_number: getValues('mobileNumber') || '',
+      mobile_number: mobileNumber,
       role_name: selectedRole,
     };
 
@@ -110,13 +113,13 @@ export default function LoginPage() {
     setRegistrationStep(2);
     setOtpDemoCode(result?.data?.otp_code || '');
     setOtpCooldown(30);
-    toast.success('OTP sent successfully.');
+    showAuthFlowToast(result, 'OTP sent successfully.');
   };
 
   const handleVerifyOtp = async () => {
     setRegistrationError('');
     setRegistrationPending(true);
-    const result = await verifyOtpApi({ mobile_number: getValues('mobileNumber'), otp_code: otpValue });
+    const result = await verifyOtpApi({ mobile_number: sanitizeMobileNumber(getValues('mobileNumber')), otp_code: otpValue });
     setRegistrationPending(false);
 
     if (result?.error) {
@@ -125,14 +128,14 @@ export default function LoginPage() {
     }
 
     setRegistrationStep(3);
-    toast.success('OTP verified successfully.');
+    showAuthFlowToast(result, 'OTP verified successfully.');
   };
 
   const handleCompleteRegistration = async () => {
     setRegistrationError('');
     setRegistrationPending(true);
     const result = await completeRegistrationApi({
-      mobile_number: getValues('mobileNumber'),
+      mobile_number: sanitizeMobileNumber(getValues('mobileNumber')),
       password: getValues('password'),
       confirm_password: getValues('confirmPassword'),
     });
@@ -143,7 +146,7 @@ export default function LoginPage() {
       return;
     }
 
-    toast.success('Registration Successful! You can now login.');
+    showAuthFlowToast(result, 'Registration Successful! You can now login.');
     setMode('login');
     resetRegistrationFlow();
   };
@@ -338,12 +341,25 @@ export default function LoginPage() {
                     <label className="block text-xs font-medium text-slate-700 uppercase">Mobile number</label>
                     <div className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-3 py-2.5 focus-within:ring-2 focus-within:ring-sky-500/20">
                       <FaUser className="text-slate-400 text-xs" />
-                      <input type="tel" placeholder="Enter 10-digit mobile number" className="w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400 hover-gradient-border" {...register('mobileNumber', { required: 'Mobile number is required', pattern: { value: /^\d{10}$/, message: 'Enter a valid 10-digit mobile number' } })} />
+                      <input
+                        type="tel"
+                        placeholder="Enter 10-digit mobile number"
+                        className="w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400 hover-gradient-border"
+                        {...register('mobileNumber', {
+                          required: 'Mobile number is required',
+                          validate: (value) => sanitizeMobileNumber(value).length === 10 || 'Enter a valid 10-digit mobile number',
+                          onChange: (event) => {
+                            const sanitizedValue = sanitizeMobileNumber(event.target.value);
+                            event.target.value = sanitizedValue;
+                            setValue('mobileNumber', sanitizedValue, { shouldValidate: true, shouldDirty: true });
+                          },
+                        })}
+                      />
                     </div>
                     {errors.mobileNumber && <p className="text-xs text-rose-500">{errors.mobileNumber.message}</p>}
                   </div>
 
-                  <button type="button" onClick={handleSendOtp} disabled={registrationPending || !mobileNumberValue || mobileNumberValue.length !== 10} className="w-full rounded-2xl bg-[#00c896] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60">
+                  <button type="button" onClick={handleSendOtp} disabled={registrationPending || !normalizedMobileNumberValue || normalizedMobileNumberValue.length !== 10} className="w-full rounded-2xl bg-[#00c896] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60">
                     {registrationPending ? 'Sending OTP...' : 'Send OTP'}
                   </button>
                 </>
@@ -405,8 +421,6 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <ToastContainer position="top-right" theme="light" />
     </div>
   );
 }
-  

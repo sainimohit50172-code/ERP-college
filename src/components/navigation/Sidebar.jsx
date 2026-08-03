@@ -467,7 +467,7 @@ export default function Sidebar({ isOpen, onClose }) {
     utilities: [
       { id: 'update-roll-number', label: 'Update Roll Number', to: '/students/update-roll' },
       { id: 'assign-university-roll', label: 'Assign University Roll No.', to: '/students/assign-university-roll' },
-      { id: 'allocate-subjects', label: 'Allocate Subjects', to: '/students/allocate-subjects' },
+      { id: 'allocate-subjects', label: 'Allocate Subjects', to: '/students/allocate-subject' },
       { id: 'student-session-management', label: 'Student Session Management', to: '/students/session' },
     ],
     reports: [
@@ -3569,13 +3569,13 @@ export default function Sidebar({ isOpen, onClose }) {
         )}
 
         <div className="absolute bottom-4 left-0 right-0 px-3">
-          <div className="flex items-center gap-3 rounded p-2" style={{ color: '#fff' }}>
+          <div className="flex items-center gap-3 rounded p-2" style={{ background: '#000000', color: '#ffffff' }}>
             <div style={{ width: 32, height: 32, borderRadius: 999, background: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#012' }}>
               <span className="font-semibold text-sm">AD</span>
             </div>
             <div>
               <div className="text-sm font-semibold">Admin Demo</div>
-              <div className="text-xs text-slate-300">Super Admin</div>
+              <div className="text-xs" style={{ color: '#CFCFCF' }}>Super Admin</div>
             </div>
             <button className="ml-auto rounded p-2 text-slate-200 hover:text-white hover-gradient-border">Logout</button>
           </div>

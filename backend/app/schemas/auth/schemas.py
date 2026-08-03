@@ -6,10 +6,17 @@ from typing import Optional
 from pydantic import AliasChoices, BaseModel, ConfigDict, EmailStr, Field, field_validator
 
 
-class LoginRequest(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+def normalize_email(value: str) -> str:
+    value = value.strip()
+    if not value or "@" not in value or value.startswith("@") or value.endswith("@"):
+        raise ValueError("email must be a valid email address")
+    return value
 
-    email: str
+
+class LoginRequest(BaseModel):
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
+
+    email: str = Field(validation_alias=AliasChoices("email", "username"))
     password: str
 
     @field_validator("email")
@@ -17,7 +24,7 @@ class LoginRequest(BaseModel):
     def validate_email(cls, value: str) -> str:
         value = value.strip()
         if not value:
-            raise ValueError("email must not be empty")
+            raise ValueError("email or username must not be empty")
         return value
 
     @field_validator("password")
@@ -33,7 +40,7 @@ class UserSummary(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
-    email: EmailStr
+    email: str
     username: Optional[str] = None
     full_name: Optional[str] = None
     role: Optional[str] = None
@@ -107,7 +114,7 @@ class CurrentUser(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
-    email: EmailStr
+    email: str
     username: Optional[str] = None
     full_name: Optional[str] = None
     is_active: bool = True
@@ -128,6 +135,38 @@ class MobileOtpSendRequest(BaseModel):
     email: EmailStr
     mobile_number: str = Field(min_length=10, max_length=10)
     role_name: Optional[str] = Field(default=None, validation_alias=AliasChoices("role_name", "role"))
+
+
+class MobileOtpSendResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    message: str
+    otp_code: str
+    dev_mode: bool = False
+
+
+class MobileOtpVerifyResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    success: bool = True
+    message: str
+    dev_mode: bool = False
+
+
+class ForgotPasswordResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    reset_token: str
+    message: str
+    dev_mode: bool = False
+
+
+class ResetPasswordResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    success: bool = True
+    message: str
+    dev_mode: bool = False
 
 
 class MobileOtpVerifyRequest(BaseModel):
@@ -190,3 +229,8 @@ class ChangePasswordRequest(BaseModel):
         if value == "password":
             raise ValueError("new_password must not be password")
         return value
+
+
+MobileOtpSendRequest.model_rebuild()
+MobileOtpVerifyRequest.model_rebuild()
+MobileRegistrationCompleteRequest.model_rebuild()

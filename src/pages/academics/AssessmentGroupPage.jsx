@@ -136,8 +136,10 @@ export default function AssessmentGroupPage() {
               }
               if (!window.confirm('Are you sure you want to copy this AssessmentGroup?')) return;
               try {
-                const res = await fetch(`/api/assessment-group/${idToCopy}/copy`, { method: 'POST' });
-                if (!res.ok) throw new Error('Copy failed');
+                // Use configured API client so production uses VITE_API_BASE_URL
+                const { default: api } = await import('../../api/axios.js');
+                const resp = await api.post(`/assessment-group/${idToCopy}/copy`);
+                if (!resp || resp.status >= 400) throw new Error('Copy failed');
                 // reload list
                 window.location.reload();
               } catch (err) { console.error(err); alert('Copy failed'); }

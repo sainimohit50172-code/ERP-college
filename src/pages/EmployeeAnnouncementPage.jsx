@@ -1,8 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Download, Plus, Calendar, Edit2, X } from 'lucide-react';
 import IconActionButton from '../components/ui/IconActionButton.jsx';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import ViewButton from '../components/ui/ViewButton.jsx';
 
 const departments = ['Administration', 'Finance', 'Academic', 'Support'];
@@ -144,8 +143,6 @@ export default function EmployeeAnnouncementPage() {
 
   return (
     <div className="min-h-[calc(100vh-88px)] bg-[#F8FAFC] p-6 text-slate-900">
-      <ToastContainer position="top-right" autoClose={1500} hideProgressBar />
-
       <div className="mb-5">
         <p className="text-xs uppercase tracking-[0.28em] text-slate-500">Dashboard &gt; Employee Announcement</p>
         <div className="mt-3 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">

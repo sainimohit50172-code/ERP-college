@@ -1,6 +1,9 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
+// Prefer an explicit proxy target or VITE_API_BASE_URL; fall back to the local backend only for dev.
+const backendTarget = process.env.VITE_API_PROXY_TARGET || process.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000';
+
 export default defineConfig({
   plugins: [
     react(),
@@ -20,28 +23,39 @@ export default defineConfig({
       },
     },
   ],
+  optimizeDeps: {
+    include: ['xlsx'],
+  },
   server: {
     host: '0.0.0.0',
     port: 5173,
-    strictPort: true,
-    proxy: {
-      '/api': {
-        target: 'http://127.0.0.1:8000',
-        changeOrigin: true,
-        secure: false,
-      },
+    strictPort: false,
+    hmr: {
+      host: 'localhost',
+      protocol: 'ws',
     },
+    // Enable the dev proxy with a safe local fallback so the login page can reach the backend during development.
+    proxy: { '/api': { target: backendTarget, changeOrigin: true, secure: false } },
   },
   build: {
-    chunkSizeWarningLimit: 2000,
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
+            if (id.includes('xlsx')) {
+              return 'xlsx';
+            }
+            if (id.includes('framer-motion')) {
+              return 'framer-motion';
+            }
+            if (id.includes('jspdf') || id.includes('jspdf-autotable')) {
+              return 'pdf';
+            }
             if (id.includes('react-router-dom') || id.includes('react-router')) {
               return 'router';
             }
-            if (id.includes('chart.js') || id.includes('react-chartjs-2')) {
+            if (id.includes('chart.js') || id.includes('react-chartjs-2') || id.includes('recharts')) {
               return 'charts';
             }
             if (id.includes('react-hook-form') || id.includes('@tanstack/react-query')) {
@@ -49,6 +63,9 @@ export default defineConfig({
             }
             if (id.includes('lucide-react') || id.includes('react-icons')) {
               return 'icons';
+            }
+            if (id.includes('sweetalert2')) {
+              return 'alerts';
             }
             return 'vendor';
           }

@@ -156,6 +156,14 @@ export const academicsModuleConfig = [
     status: 'placeholder',
   },
   {
+    title: 'Attendance Remarks',
+    description: 'Manage attendance remarks and status text',
+    icon: ScanSearch,
+    route: '/settings/institute/academics/attendance-remarks',
+    permission: 'settings',
+    status: 'existing',
+  },
+  {
     title: 'Result Setup List',
     description: 'Set up result configuration and output rules',
     icon: FileCheck2,
@@ -167,16 +175,8 @@ export const academicsModuleConfig = [
     title: 'Allocate Subjects',
     description: 'Allocate subjects across classes and strands',
     icon: BriefcaseBusiness,
-    route: '/students/allocate-subjects',
+    route: '/students/allocate-subject',
     permission: 'students',
     status: 'existing',
-  },
-  {
-    title: 'Attendance Remarks',
-    description: 'Manage attendance remarks and status text',
-    icon: ScanSearch,
-    route: '/settings/institute/academics/attendance-remarks',
-    permission: 'settings',
-    status: 'placeholder',
   },
 ];

@@ -6,6 +6,7 @@ from app.repositories.interfaces.employees import EmployeeRepository
 from app.repositories.interfaces.attendance import AttendanceRepository
 from app.repositories.interfaces.fees import FeeRepository
 from app.repositories.interfaces.examinations import ExaminationRepository
+from app.repositories.interfaces.exam_calendar import ExamCalendarRepository
 from app.repositories.interfaces.library import LibraryRepository
 from app.repositories.interfaces.hostel import HostelRepository
 from app.repositories.interfaces.transport import TransportRepository
@@ -26,6 +27,7 @@ __all__ = [
     "AttendanceRepository",
     "FeeRepository",
     "ExaminationRepository",
+    "ExamCalendarRepository",
     "LibraryRepository",
     "HostelRepository",
     "TransportRepository",

@@ -1,10 +1,8 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 
 from app.schemas.shared.base import APIResponse, PaginationRequest, PaginationResponse
 
 router = APIRouter(prefix="", tags=["compat"])
-
-
 def _build_response(page: int, page_size: int, items: list[dict] | None = None, total: int = 0):
     safe_items = items or []
     return APIResponse(
