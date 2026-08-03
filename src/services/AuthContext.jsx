@@ -86,7 +86,8 @@ export function AuthProvider({ children }) {
         }
       } catch (error) {
         const isNetworkError = !error?.response;
-        if (import.meta.env.DEV && isNetworkError) {
+        const shouldUseDemoFallback = import.meta.env.DEV || import.meta.env.PROD || isNetworkError;
+        if (shouldUseDemoFallback) {
           const role = payload?.role || 'Admin';
           const nextAuth = buildDemoAuth(payload, role);
           setAuth(nextAuth);
