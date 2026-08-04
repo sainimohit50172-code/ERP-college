@@ -7,6 +7,8 @@ from sqlalchemy import select, func
 
 from app.db.database import get_db
 from app.models.exam_fee_setup.admit_card_preferences import CoeAdmitCardPreferences
+from app.models.exam_fee_setup.dmc_student_app import DmcStudentApp, DmcStudentAppGlobalSetting
+from app.models.exam_fee_setup.dmc_number_setup import DmcNumberSetup
 from app.models.exam_fee_setup.exam_bundle import CoeManageBundle
 from app.models.exam_fee_setup.exam_shift import CoeExamShift
 from app.models.exam_fee_setup.masking_number_setup import CoeMaskingNumberSetup
@@ -32,6 +34,18 @@ from app.schemas.exam_fee_setup.masking_number_setup import (
     CoeMaskingNumberSetupCreate,
     CoeMaskingNumberSetupDetail,
     CoeMaskingNumberSetupUpdate,
+)
+from app.schemas.exam_fee_setup.dmc_number_setup import (
+    DmcNumberSetupCreate,
+    DmcNumberSetupDetail,
+    DmcNumberSetupUpdate,
+)
+from app.schemas.exam_fee_setup.dmc_student_app import (
+    DmcStudentAppCreate,
+    DmcStudentAppDetail,
+    DmcStudentAppGlobalDetail,
+    DmcStudentAppGlobalUpdate,
+    DmcStudentAppUpdate,
 )
 from app.schemas.shared.base import APIResponse
 
@@ -203,6 +217,119 @@ def delete_masking_number_setup(entity_id: int, db=Depends(get_db)):
     return APIResponse(data={"success": True}, message="Masking number setup deleted successfully")
 
 
+@router.get("/dmc-student-app/global", response_model=APIResponse[DmcStudentAppGlobalDetail])
+def get_dmc_student_app_global(db=Depends(get_db)):
+    item = db.execute(select(DmcStudentAppGlobalSetting).order_by(DmcStudentAppGlobalSetting.id.asc()).limit(1)).scalars().first()
+    if item is None:
+        return APIResponse(data=DmcStudentAppGlobalDetail(enabled=False), message="Global DMC loaded")
+    return APIResponse(data=DmcStudentAppGlobalDetail.model_validate(item), message="Global DMC loaded")
+
+
+@router.put("/dmc-student-app/global", response_model=APIResponse[DmcStudentAppGlobalDetail])
+def update_dmc_student_app_global(payload: DmcStudentAppGlobalUpdate, db=Depends(get_db)):
+    item = db.execute(select(DmcStudentAppGlobalSetting).order_by(DmcStudentAppGlobalSetting.id.asc()).limit(1)).scalars().first()
+    values = payload.model_dump(by_alias=False)
+    if item is None:
+        item = DmcStudentAppGlobalSetting(**values)
+        db.add(item)
+    else:
+        for key, value in values.items():
+            setattr(item, key, value)
+        item.updated_at = datetime.utcnow()
+    db.commit()
+    db.refresh(item)
+    return APIResponse(data=DmcStudentAppGlobalDetail.model_validate(item), message="Global DMC saved")
+
+
+@router.get("/dmc-student-app", response_model=APIResponse[list[DmcStudentAppDetail]])
+def list_dmc_student_apps(db=Depends(get_db)):
+    items = db.execute(
+        select(DmcStudentApp)
+        .where(DmcStudentApp.deleted_at.is_(None))
+        .order_by(DmcStudentApp.id.asc())
+    ).scalars().all()
+    return APIResponse(data=[DmcStudentAppDetail.model_validate(item) for item in items], message="DMC student app settings loaded")
+
+
+@router.get("/dmc-student-app/{entity_id}", response_model=APIResponse[DmcStudentAppDetail])
+def get_dmc_student_app(entity_id: int, db=Depends(get_db)):
+    item = db.get(DmcStudentApp, entity_id)
+    if item is None or item.deleted_at is not None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="DMC student app record not found")
+    return APIResponse(data=DmcStudentAppDetail.model_validate(item), message="DMC student app record loaded")
+
+
+@router.post("/dmc-student-app", response_model=APIResponse[DmcStudentAppDetail], status_code=status.HTTP_201_CREATED)
+def create_dmc_student_app(payload: DmcStudentAppCreate, db=Depends(get_db)):
+    name = payload.name.strip()
+    duplicate = db.execute(
+        select(DmcStudentApp).where(
+            func.lower(DmcStudentApp.name) == name.lower(),
+            DmcStudentApp.deleted_at.is_(None),
+        )
+    ).scalars().first()
+    if duplicate is not None:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="DMC student app name must be unique.")
+
+    values = payload.model_dump(by_alias=False)
+    item = DmcStudentApp(**values)
+    db.add(item)
+    db.commit()
+    db.refresh(item)
+    return APIResponse(data=DmcStudentAppDetail.model_validate(item), message="DMC student app record created")
+
+
+@router.put("/dmc-student-app/{entity_id}", response_model=APIResponse[DmcStudentAppDetail])
+def update_dmc_student_app(entity_id: int, payload: DmcStudentAppUpdate, db=Depends(get_db)):
+    item = db.get(DmcStudentApp, entity_id)
+    if item is None or item.deleted_at is not None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="DMC student app record not found")
+    values = payload.model_dump(by_alias=False, exclude_unset=True)
+    if "name" in values:
+        duplicate = db.execute(
+            select(DmcStudentApp).where(
+                func.lower(DmcStudentApp.name) == values["name"].lower(),
+                DmcStudentApp.id != entity_id,
+                DmcStudentApp.deleted_at.is_(None),
+            )
+        ).scalars().first()
+        if duplicate is not None:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="DMC student app name must be unique.")
+
+    for key, value in values.items():
+        setattr(item, key, value)
+    item.updated_at = datetime.utcnow()
+    db.commit()
+    db.refresh(item)
+    return APIResponse(data=DmcStudentAppDetail.model_validate(item), message="DMC student app record updated")
+
+
+@router.patch("/dmc-student-app/{entity_id}/status", response_model=APIResponse[DmcStudentAppDetail])
+def update_dmc_student_app_status(entity_id: int, status_value: str, db=Depends(get_db)):
+    if status_value not in {"Active", "Inactive", "Draft"}:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Invalid status")
+    item = db.get(DmcStudentApp, entity_id)
+    if item is None or item.deleted_at is not None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="DMC student app record not found")
+    item.status = status_value
+    item.updated_at = datetime.utcnow()
+    db.commit()
+    db.refresh(item)
+    return APIResponse(data=DmcStudentAppDetail.model_validate(item), message="DMC student app record status updated")
+
+
+@router.delete("/dmc-student-app/{entity_id}", response_model=APIResponse[dict[str, bool]])
+def delete_dmc_student_app(entity_id: int, db=Depends(get_db)):
+    item = db.get(DmcStudentApp, entity_id)
+    if item is None or item.deleted_at is not None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="DMC student app record not found")
+    item.status = "Inactive"
+    item.deleted_at = datetime.utcnow()
+    item.updated_at = datetime.utcnow()
+    db.commit()
+    return APIResponse(data={"success": True}, message="DMC student app record deleted successfully")
+
+
 @router.get("/manage-bundles", response_model=APIResponse[list[CoeManageBundleDetail]])
 def list_manage_bundles(db=Depends(get_db)):
     items = db.execute(
@@ -301,3 +428,73 @@ def delete_manage_bundle(entity_id: int, db=Depends(get_db)):
     item.updated_at = datetime.utcnow()
     db.commit()
     return APIResponse(data={"success": True}, message="Bundle deleted successfully")
+
+
+# DMC Number Setup endpoints
+@router.get("/dmc-number-setup", response_model=APIResponse[list[DmcNumberSetupDetail]])
+def list_dmc_number_setups(db=Depends(get_db)):
+    items = db.execute(
+        select(DmcNumberSetup)
+        .where(DmcNumberSetup.deleted_at.is_(None))
+        .order_by(DmcNumberSetup.id.asc())
+    ).scalars().all()
+    return APIResponse(data=[DmcNumberSetupDetail.model_validate(item) for item in items], message="DMC number settings loaded")
+
+
+@router.get("/dmc-number-setup/{entity_id}", response_model=APIResponse[DmcNumberSetupDetail])
+def get_dmc_number_setup(entity_id: int, db=Depends(get_db)):
+    item = db.get(DmcNumberSetup, entity_id)
+    if item is None or item.deleted_at is not None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="DMC number setup not found")
+    return APIResponse(data=DmcNumberSetupDetail.model_validate(item), message="DMC number setup loaded")
+
+
+@router.post("/dmc-number-setup", response_model=APIResponse[DmcNumberSetupDetail], status_code=status.HTTP_201_CREATED)
+def create_dmc_number_setup(payload: DmcNumberSetupCreate, db=Depends(get_db)):
+    values = payload.model_dump(by_alias=False)
+    item = DmcNumberSetup(**values)
+    db.add(item)
+    db.commit()
+    db.refresh(item)
+    return APIResponse(data=DmcNumberSetupDetail.model_validate(item), message="DMC number setup created")
+
+
+@router.put("/dmc-number-setup/{entity_id}", response_model=APIResponse[DmcNumberSetupDetail])
+def update_dmc_number_setup(entity_id: int, payload: DmcNumberSetupUpdate, db=Depends(get_db)):
+    item = db.get(DmcNumberSetup, entity_id)
+    if item is None or item.deleted_at is not None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="DMC number setup not found")
+    values = payload.model_dump(by_alias=False, exclude_unset=True)
+    for key, value in values.items():
+        setattr(item, key, value)
+    item.updated_at = datetime.utcnow()
+    db.commit()
+    db.refresh(item)
+    return APIResponse(data=DmcNumberSetupDetail.model_validate(item), message="DMC number setup updated")
+
+
+@router.patch("/dmc-number-setup/{entity_id}/status", response_model=APIResponse[DmcNumberSetupDetail])
+def update_dmc_number_setup_status(entity_id: int, status_value: str, db=Depends(get_db)):
+    if status_value not in {"Active", "Inactive"}:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Invalid status")
+    item = db.get(DmcNumberSetup, entity_id)
+    if item is None or item.deleted_at is not None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="DMC number setup not found")
+    item.status = status_value
+    item.updated_at = datetime.utcnow()
+    db.commit()
+    db.refresh(item)
+    return APIResponse(data=DmcNumberSetupDetail.model_validate(item), message="DMC number setup status updated")
+
+
+@router.delete("/dmc-number-setup/{entity_id}", response_model=APIResponse[dict[str, bool]])
+def delete_dmc_number_setup(entity_id: int, db=Depends(get_db)):
+    item = db.get(DmcNumberSetup, entity_id)
+    if item is None or item.deleted_at is not None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="DMC number setup not found")
+    item.status = "Inactive"
+    item.deleted_at = datetime.utcnow()
+    item.updated_at = datetime.utcnow()
+    db.commit()
+    return APIResponse(data={"success": True}, message="DMC number setup deleted successfully")
+

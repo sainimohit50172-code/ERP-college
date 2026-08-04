@@ -117,12 +117,15 @@ import ExamFormPreferencesLandingPage from './pages/ExamFormPreferencesLandingPa
 import ExamFormPreferencesPage from './pages/ExamFormPreferencesPage.jsx';
 import ExamFormHeadersFootersPage from './pages/ExamFormHeadersFootersPage.jsx';
 import AdmitCardPreferencesPage from './pages/AdmitCardPreferencesPage.jsx';
+import CoePreferencePage from './pages/CoePreferencePage.jsx';
 import ExamShiftMasterPage from './pages/ExamShiftMasterPage.jsx';
 import ReceiptConfigurationPage from './pages/ReceiptConfigurationPage.jsx';
 import FeeHeadConfigurationPage from './pages/FeeHeadConfigurationPage.jsx';
 import MaskingNumberDashboardPage from './pages/MaskingNumberDashboardPage.jsx';
 import MaskingNumberSetupPage from './pages/MaskingNumberSetupPage.jsx';
 import MaskingNumberManagementPage from './pages/MaskingNumberManagementPage.jsx';
+import DmcNumberSetupPage from './pages/DmcNumberSetupPage.jsx';
+import DmcStudentAppPage from './pages/DmcStudentAppPage.jsx';
 import ManageBundlesPage from './pages/ManageBundlesPage.jsx';
 import HostelManagementPage from './pages/HostelManagementPage.jsx';
 import TransportManagementPage from './pages/TransportManagementPage.jsx';
@@ -221,6 +224,7 @@ const LazyExamFeeSetupLandingPage = lazy(() => import('./pages/ExamFeeSetupLandi
 const LazyExamFormPreferencesLandingPage = lazy(() => import('./pages/ExamFormPreferencesLandingPage.jsx'));
 const LazyMaskingNumberDashboardPage = lazy(() => import('./pages/MaskingNumberDashboardPage.jsx'));
 const LazyMaskingNumberSetupPage = lazy(() => import('./pages/MaskingNumberSetupPage.jsx'));
+const LazyDmcNumberSetupPage = lazy(() => import('./pages/DmcNumberSetupPage.jsx'));
 const LazyInventoryPage = lazy(() => import('./pages/InventoryPage.jsx'));
 const LazyStudentMasterSetupPage = lazy(() => import('./pages/StudentMasterSetupPage.jsx'));
 
@@ -409,7 +413,10 @@ function App() {
               <Route path="coe/masking-number-dashboard" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={RouteLoadingFallback}><LazyMaskingNumberDashboardPage /></Suspense></ProtectedRoute>} />
               <Route path="coe/masking-number-setup" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={RouteLoadingFallback}><LazyMaskingNumberSetupPage /></Suspense></ProtectedRoute>} />
               <Route path="coe/masking-number-management" element={<ProtectedRoute moduleKey="settings"><MaskingNumberManagementPage /></ProtectedRoute>} />
+              <Route path="coe/dmc-number-setup" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={RouteLoadingFallback}><LazyDmcNumberSetupPage /></Suspense></ProtectedRoute>} />
               <Route path="coe/manage-bundles" element={<ProtectedRoute moduleKey="settings"><ManageBundlesPage /></ProtectedRoute>} />
+              <Route path="coe/preferences" element={<ProtectedRoute moduleKey="settings"><CoePreferencePage /></ProtectedRoute>} />
+              <Route path="coe/student-dmc" element={<ProtectedRoute moduleKey="settings"><DmcStudentAppPage /></ProtectedRoute>} />
               <Route path="coe/exam-master" element={<ProtectedRoute moduleKey="settings"><ExamShiftMasterPage /></ProtectedRoute>} />
               <Route path="coe/datesheet" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={RouteLoadingFallback}><LazyCoeExamCalendarPage /></Suspense></ProtectedRoute>} />
               <Route path="coe/configuration" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={RouteLoadingFallback}><LazyExamFormPreferencesLandingPage /></Suspense></ProtectedRoute>} />
@@ -439,7 +446,6 @@ function App() {
               <Route path="coe/result-declare" element={<ProtectedRoute><PlaceholderPage title="Result Declare" /></ProtectedRoute>} />
               <Route path="coe/result-sheet" element={<ProtectedRoute><PlaceholderPage title="Result Sheet" /></ProtectedRoute>} />
               <Route path="coe/digi-locker" element={<ProtectedRoute><PlaceholderPage title="Digi Locker Report" /></ProtectedRoute>} />
-              <Route path="coe/student-dmc" element={<ProtectedRoute moduleKey="settings"><MaskingNumberSetupPage /></ProtectedRoute>} />
               <Route path="feedback" element={<ProtectedRoute><StudentFeedbackPage /></ProtectedRoute>} />
               <Route path="feedback/form" element={<ProtectedRoute><PlaceholderPage title="Student Feedback Form" /></ProtectedRoute>} />
               <Route path="feedback/submissions" element={<ProtectedRoute><PlaceholderPage title="Feedback Submissions" /></ProtectedRoute>} />

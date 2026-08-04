@@ -427,7 +427,7 @@ export default function CoeExamCalendarPage() {
 
         <div className="mt-6 overflow-x-auto rounded-[24px] border border-slate-200/70 bg-slate-50 p-1">
           <table className="min-w-[960px] w-full divide-y divide-slate-200 text-left text-sm text-slate-700">
-            <thead className="bg-slate-950 text-white">
+            <thead className="erp-table-header">
               <tr>
                 <th className="whitespace-nowrap px-4 py-4 text-left">S.No</th>
                 <th className="whitespace-nowrap px-4 py-4 text-left">Exam Name</th>

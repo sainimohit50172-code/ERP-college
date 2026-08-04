@@ -594,6 +594,44 @@ table th span,
 table td span {
   display: block;
 }
+.erp-table-header {
+  background-color: #1e3557;
+  color: #ffffff;
+  font-weight: 600;
+  min-height: 50px;
+  background-clip: padding-box;
+}
+.erp-table-header th {
+  background: transparent;
+  color: inherit;
+  font-weight: inherit;
+  vertical-align: middle;
+  padding: 16px !important;
+  border-radius: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: normal;
+}
+.erp-table-header th:first-child {
+  border-top-left-radius: 12px;
+}
+.erp-table-header th:last-child {
+  border-top-right-radius: 12px;
+}
+.erp-table-header th:not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+.erp-table-header th span,
+.erp-table-header td span {
+  display: block;
+}
+.erp-table-header th {
+  background-color: transparent;
+}
+.erp-table-header th,
+.erp-table-header td {
+  border-top-color: transparent;
+}
 .data-table-header { position: sticky; top: 0; z-index: 10; }
 .overflow-x-auto { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .overflow-x-auto table {

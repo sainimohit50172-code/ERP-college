@@ -38,7 +38,7 @@ export default function ExamFormPreferencesSettingsPage() {
     let active = true;
     api.get('/coe/exam-form-preferences/settings').then((response) => {
       if (active) setSettings({ ...settingDefaults, ...(response.data?.data || {}) });
-    }).catch((error) => toast.error(error?.response?.data?.detail || 'Unable to load exam form settings.')).finally(() => {
+    }).catch((error) => toast.error(error?.response?.data?.detail || 'Unable to load marks entry preference settings.')).finally(() => {
       if (active) setSettingsLoading(false);
     });
     return () => { active = false; };
@@ -50,9 +50,9 @@ export default function ExamFormPreferencesSettingsPage() {
     try {
       const response = await api.put('/coe/exam-form-preferences/settings', settings);
       setSettings({ ...settingDefaults, ...(response.data?.data || settings) });
-      toast.success('Exam form preferences saved successfully.');
+      toast.success('Marks entry preference settings saved successfully.');
     } catch (error) {
-      toast.error(error?.response?.data?.detail || 'Unable to save exam form preferences.');
+      toast.error(error?.response?.data?.detail || 'Unable to save marks entry preference settings.');
     } finally { setSettingsSaving(false); }
   };
 
@@ -61,16 +61,16 @@ export default function ExamFormPreferencesSettingsPage() {
   const closeEditor = () => { setEditor(null); reset(preferenceDefaults); };
   const submitPreference = async (values) => {
     try {
-      if (editor?.item) { await updatePreference.mutateAsync({ id: editor.item.id, payload: values }); toast.success('Exam form preference updated successfully.'); }
-      else { await createPreference.mutateAsync(values); toast.success('Exam form preference created successfully.'); }
+      if (editor?.item) { await updatePreference.mutateAsync({ id: editor.item.id, payload: values }); toast.success('Marks entry preference updated successfully.'); }
+      else { await createPreference.mutateAsync(values); toast.success('Marks entry preference created successfully.'); }
       closeEditor();
-    } catch (error) { toast.error(error?.response?.data?.detail || error?.message || 'Unable to save exam form preference.'); }
+    } catch (error) { toast.error(error?.response?.data?.detail || error?.message || 'Unable to save marks entry preference.'); }
   };
   const deleteRow = async () => {
-    try { await deletePreference.mutateAsync(remove.id); toast.success('Exam form preference deleted successfully.'); setRemove(null); } catch (error) { toast.error(error?.message || 'Unable to delete exam form preference.'); }
+    try { await deletePreference.mutateAsync(remove.id); toast.success('Marks entry preference deleted successfully.'); setRemove(null); } catch (error) { toast.error(error?.message || 'Unable to delete marks entry preference.'); }
   };
   const toggleStatus = async (row) => {
-    try { await updatePreference.mutateAsync({ id: row.id, payload: { status: row.status === 'Active' ? 'Inactive' : 'Active' } }); toast.success('Preference status updated.'); } catch (error) { toast.error(error?.message || 'Unable to update status.'); }
+    try { await updatePreference.mutateAsync({ id: row.id, payload: { status: row.status === 'Active' ? 'Inactive' : 'Active' } }); toast.success('Marks entry preference status updated.'); } catch (error) { toast.error(error?.message || 'Unable to update status.'); }
   };
 
   const columns = useMemo(() => [
@@ -85,13 +85,13 @@ export default function ExamFormPreferencesSettingsPage() {
   ], [rows]);
 
   return <div className="min-h-[calc(100vh-7rem)] rounded-[24px] border border-slate-200/80 bg-[linear-gradient(135deg,#f8fafc_0%,#ffffff_55%,#f8fafc_100%)] p-3 shadow-[0_18px_45px_rgba(15,23,42,0.06)] lg:p-5"><div className="rounded-[22px] border border-slate-200/70 bg-white/95 p-4 shadow-inner sm:p-6">
-    <Breadcrumb items={[{ label: 'Dashboard', to: '/' }, { label: 'COE Master', to: '/settings/coe' }, { label: 'Exam Form Preferences', to: '/coe/master/exam-form-preferences/settings' }, { label: 'Exam Form Preferences' }]} />
-    <div className="flex flex-col justify-between gap-4 border-b border-slate-200 pb-6 md:flex-row md:items-center"><div><p className="text-xs font-semibold uppercase tracking-[0.24em] text-blue-600">COE Master</p><h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">Exam Form Preferences</h1></div><Button onClick={saveSettings} isLoading={settingsSaving} disabled={settingsLoading}><Save className="mr-2 inline h-4 w-4" />Save</Button></div>
+    <Breadcrumb items={[{ label: 'Dashboard', to: '/' }, { label: 'COE Master', to: '/settings/coe' }, { label: 'Exam Form Preferences', to: '/coe/master/exam-form-preferences/settings' }, { label: 'Marks Entry Preference Management' }]} />
+    <div className="flex flex-col justify-between gap-4 border-b border-slate-200 pb-6 md:flex-row md:items-center"><div><p className="text-xs font-semibold uppercase tracking-[0.24em] text-blue-600">COE Master</p><h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">Marks Entry Preference Management</h1></div><Button onClick={saveSettings} isLoading={settingsSaving} disabled={settingsLoading}><Save className="mr-2 inline h-4 w-4" />Save</Button></div>
     <section className="mt-6 grid gap-4 md:grid-cols-3">{[['studentAwakeStatus', 'Student Awake Status'], ['autoApprove', 'Auto Approve'], ['personalDetailsCheck', 'Personal Details Check']].map(([key, label]) => <div key={key} className="flex min-h-[92px] items-center justify-between rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm"><div><p className="text-sm font-semibold text-slate-800">{label}</p><p className="mt-1 text-xs text-slate-500">{settings[key] ? 'Enabled' : 'Disabled'}</p></div><ERPFixedSwitch checked={Boolean(settings[key])} onChange={(value) => toggleSettings(key, value)} label={label} /></div>)}</section>
-    <div className="mt-8 flex flex-col justify-between gap-4 border-b border-slate-200 pb-5 md:flex-row md:items-end"><div><h2 className="text-xl font-semibold text-slate-950">Exam Form Preference Records</h2><p className="mt-1 text-sm text-slate-500">Configure the academic combination and its status.</p></div><Button onClick={openCreate}><Plus className="mr-2 inline h-4 w-4" />Add New</Button></div>
-    <div className="mt-5"><DataTable columns={columns} rows={rows} loading={isLoading} placeholder="Search exam form preferences..." initialPageSize={10} /></div>
-    <Modal isOpen={Boolean(editor)} onClose={closeEditor} title={`${editor?.item ? 'Edit' : 'Create'} Exam Form Preference`} footer={<><Button variant="secondary" onClick={closeEditor}>Cancel</Button><Button type="submit" form="coe-preference-form" isLoading={createPreference.isPending || updatePreference.isPending}>{editor?.item ? 'Save Changes' : 'Create Record'}</Button></>}><form id="coe-preference-form" onSubmit={handleSubmit(submitPreference)}><PreferenceFields register={register} errors={errors} /></form></Modal>
-    <Modal isOpen={Boolean(view)} onClose={() => setView(null)} title="Exam Form Preference Details" footer={<Button variant="secondary" onClick={() => setView(null)}>Close</Button>}><div className="grid gap-3 sm:grid-cols-2">{Object.entries(view || {}).map(([key, value]) => <div key={key} className="rounded-xl border border-slate-200 bg-slate-50 p-3"><p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">{key}</p><p className="mt-1 text-sm text-slate-800">{String(value ?? '—')}</p></div>)}</div></Modal>
-    <ConfirmDialog open={Boolean(remove)} title="Delete exam form preference?" description="This record will be removed from active results. Please confirm this action." onCancel={() => setRemove(null)} onConfirm={deleteRow} confirmLabel={deletePreference.isPending ? 'Deleting...' : 'Delete'} />
+    <div className="mt-8 flex flex-col justify-between gap-4 border-b border-slate-200 pb-5 md:flex-row md:items-end"><div><h2 className="text-xl font-semibold text-slate-950">Marks Entry Preference Records</h2><p className="mt-1 text-sm text-slate-500">Configure the academic combination and its status.</p></div><Button onClick={openCreate}><Plus className="mr-2 inline h-4 w-4" />Add New</Button></div>
+    <div className="mt-5"><DataTable columns={columns} rows={rows} loading={isLoading} placeholder="Search marks entry preferences..." initialPageSize={10} headerClassName="erp-table-header" /></div>
+    <Modal isOpen={Boolean(editor)} onClose={closeEditor} title={`${editor?.item ? 'Edit' : 'Create'} Marks Entry Preference`} footer={<><Button variant="secondary" onClick={closeEditor}>Cancel</Button><Button type="submit" form="coe-preference-form" isLoading={createPreference.isPending || updatePreference.isPending}>{editor?.item ? 'Save Changes' : 'Create Record'}</Button></>}><form id="coe-preference-form" onSubmit={handleSubmit(submitPreference)}><PreferenceFields register={register} errors={errors} /></form></Modal>
+    <Modal isOpen={Boolean(view)} onClose={() => setView(null)} title="Marks Entry Preference Details" footer={<Button variant="secondary" onClick={() => setView(null)}>Close</Button>}><div className="grid gap-3 sm:grid-cols-2">{Object.entries(view || {}).map(([key, value]) => <div key={key} className="rounded-xl border border-slate-200 bg-slate-50 p-3"><p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">{key}</p><p className="mt-1 text-sm text-slate-800">{String(value ?? '—')}</p></div>)}</div></Modal>
+    <ConfirmDialog open={Boolean(remove)} title="Delete marks entry preference?" description="This record will be removed from active results. Please confirm this action." onCancel={() => setRemove(null)} onConfirm={deleteRow} confirmLabel={deletePreference.isPending ? 'Deleting...' : 'Delete'} />
   </div></div>;
 }

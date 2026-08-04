@@ -229,9 +229,9 @@ Chat widget, Messages, PromptInput, Avatar, LLM _(risk: unknown)_
 - **runaway-guard**: Cost-safety discipline for paid AI / inference APIs: treat $-cost as a third complexity dimension alongside time and space. Forces a written per-run $-cap, per-day $-cap, max-iterations bound, concurrency limit, and a matching provider-dashboard hard cap BEFORE any call site is written. _(risk: safe)_
 - **train-sentence-transformers**: Train or fine-tune sentence-transformers models across `SentenceTransformer` (bi-encoder; dense or static embedding model; for retrieval, similarity, clustering, classification, paraphrase mining, dedup, multimodal), `CrossEncoder` (reranker; pair scoring for two-stage retrieval / pair... _(risk: critical)_
 - **trl-training**: Train and fine-tune transformer language models using TRL (Transformers Reinforcement Learning). Supports SFT, DPO, GRPO, KTO, RLOO and Reward Model training via CLI commands. _(risk: critical)_
+- **unified-ai-gateway**: Operate and evaluate Unified AI System through eight governed MCP tools while preserving fake-provider, authorization, and evidence boundaries. _(risk: critical)_
 - **unslop-commit**: Rewrites commit messages so they sound like a careful human engineer wrote them. Strips AI/marketing slop ("comprehensive solution", "robust implementation", "leverage", "enhance", "seamlessly", "This commit..."). Keeps Conventional Commits format. Subject ≤72 chars (aim ≤50),... _(risk: critical)_
 - **unslop-file**: Humanize natural-language memory files (CLAUDE.md, todos, preferences, docs) by removing AI-isms and adding burstiness while preserving every code block, URL, path, command, and heading exactly. Two modes: --deterministic (fast, regex-based, no API) and LLM (default, calls Claude for... _(risk: critical)_
-- **unified-ai-gateway**: Operate and evaluate Unified AI System through eight governed MCP tools while preserving fake-provider, authorization, and evidence boundaries. _(risk: critical)_
 
 ## ai-research
 
@@ -1083,11 +1083,11 @@ api docs, reference,... _(risk: unknown)_
 - **tiktok-automation**: Automate TikTok tasks via Rube MCP (Composio): upload/publish videos, post photos, manage content, and view user profiles/stats. Always search tools first for current schemas. _(risk: unknown)_
 - **using-git-worktrees**: Use when starting feature work that needs isolation from current workspace or before executing implementation plans - creates isolated git worktrees with smart directory selection and safety verifi... _(risk: unknown)_
 - **wiki-changelog**: Analyzes git commit history and generates structured changelogs categorized by change type. Use when the user asks about recent changes, wants a changelog, or needs to understand what changed in th... _(risk: unknown)_
+- **agents-generator**: Generate project-specific AGENTS.md and companion rules by analyzing a codebase. Supports full, minimal, update, and dry-run modes with package-manager detection, monorepos, backups, managed blocks, confidence scoring, and command validation. _(risk: critical)_
 - **gh-attach**: Upload and download GitHub user-attachments (screenshots, PDFs, zips, videos) from the terminal; use when asked to attach or embed a file in a PR, issue, or comment, or download an attachment URL. _(risk: critical)_
 - **gh-image**: Upload local images to GitHub and get canonical user-attachments embed URLs; use when asked to attach a screenshot to a PR, issue, or comment, or to embed before/after images in a README. _(risk: critical)_
 - **mcp-tool-developer**: Build Model Context Protocol (MCP) servers and tools from scratch. Full-stack MCP development with TypeScript/Python, testing, deployment, and registry publishing. _(risk: safe)_
 - **tokenwise**: Measurement-driven model router for Claude Code. Routes Haiku/Sonnet/Opus per task class, logs every routed task with real $ numbers, and A/B tests cheaper tiers before you trust the savings. _(risk: critical)_
-- **agents-generator**: Generate project-specific AGENTS.md and companion rules by analyzing a codebase. Supports full, minimal, update, and dry-run modes with package-manager detection, monorepos, backups, managed blocks, confidence scoring, and command validation. _(risk: critical)_
 
 ## development
 
@@ -1579,9 +1579,9 @@ pageflip, 组件设计, 组件模式 _(risk: unknown)_
 - **seo-drift**: Snapshot a site's SEO state and detect ranking, indexation, metadata, canonical, robots, schema, and on-page regressions over time. _(risk: safe)_
 - **socialclaw**: Agent-first social media publishing skill — schedule and publish posts across 13 platforms (X, LinkedIn, Instagram, Facebook Pages, TikTok, Discord, Telegram, YouTube, Reddit, WordPress, Pinterest) via a single workspace API key. _(risk: critical)_
 - **taisly-social-media-posting**: Use Taisly Agent Kit to prepare and publish approved short-form video posts across TikTok, Instagram Reels, YouTube Shorts, X, and Facebook. _(risk: critical)_
+- **talivia-agent-kit**: Set up and verify Talivia revenue analytics through MCP, with explicit confirmation for website changes and payment attribution. _(risk: critical)_
 - **wechat-official-account-strategist**: Grow WeChat Official Accounts (微信公众号) with high-conversion content strategy, title formulas, article architecture, and Mini-Program integration. _(risk: safe)_
 - **xiaohongshu-content-strategist**: Create viral Xiaohongshu (小红书) content with platform-native strategy, save-rate optimization, trending formats, and search SEO for China's #1 lifestyle platform. _(risk: safe)_
-- **talivia-agent-kit**: Set up and verify Talivia revenue analytics through MCP, with explicit confirmation for website changes and payment attribution. _(risk: critical)_
 
 ## marketing-growth
 

@@ -1,5 +1,5 @@
 import os
-from sqlalchemy import BigInteger, create_engine, text
+from sqlalchemy import BigInteger, create_engine, inspect, text
 from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import declarative_base, sessionmaker
@@ -76,6 +76,23 @@ def _ensure_coe_preference_settings_schema() -> None:
         logger.warning("Unable to ensure the COE preference settings schema: %s", exc)
 
 
+def _ensure_dmc_student_app_schema() -> None:
+    try:
+        inspector = inspect(engine)
+        if "dmc_student_app" not in inspector.get_table_names():
+            return
+        column_names = [column["name"] for column in inspector.get_columns("dmc_student_app")]
+        if "generation_type" not in column_names:
+            logger.warning("Adding missing generation_type column to dmc_student_app")
+            with engine.connect() as conn:
+                conn.execute(text("ALTER TABLE dmc_student_app ADD COLUMN generation_type VARCHAR(32) NOT NULL DEFAULT 'Sequence'"))
+                conn.commit()
+    except OperationalError as exc:
+        logger.warning("Unable to ensure the DMC student app schema: %s", exc)
+    except Exception as exc:
+        logger.warning("Error checking DMC student app schema: %s", exc)
+
+
 def _create_engine(url: str):
     if url.startswith("sqlite:"):
         sqlite_path = _sqlite_db_path(url)
@@ -124,6 +141,7 @@ try:
 except ImportError:
     pass
 Base.metadata.create_all(engine)
+_ensure_dmc_student_app_schema()
 _ensure_coe_preference_settings_schema()
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, future=True)

@@ -898,7 +898,9 @@ export default function Sidebar({ isOpen, onClose }) {
   useEffect(() => {
     const isStudentSectionRoute = location.pathname === '/students' || location.pathname.startsWith('/students/');
     const isInstituteSetupRoute = location.pathname === '/settings/institute' || location.pathname === '/institute-setup' || location.pathname.startsWith('/settings/institute/');
-    setShowStudentDropdown(isStudentSectionRoute);
+    // Do not auto-open dropdowns on route change. Dropdowns should open only
+    // when the user explicitly clicks the parent menu item.
+    // setShowStudentDropdown(isStudentSectionRoute);
 
     if (isInstituteSetupRoute) {
       setShowEmployeePortal(false);

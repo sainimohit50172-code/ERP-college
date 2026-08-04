@@ -12,6 +12,18 @@ const isProductionRuntime = (typeof import.meta !== 'undefined' && import.meta &
     : false);
 let productionApiConfigErrorLogged = false;
 
+function isNodeEnvironment() {
+  return typeof window === 'undefined' && typeof process !== 'undefined' && process.versions != null && !!process.versions.node;
+}
+
+function resolveAxiosBaseURL(baseURL) {
+  if (typeof baseURL !== 'string' || !baseURL.trim()) return undefined;
+  if (isNodeEnvironment() && baseURL.startsWith('/')) {
+    return `http://localhost${baseURL}`;
+  }
+  return baseURL;
+}
+
 if (isProductionRuntime && API_BASE) {
   // In production, avoid verbose logging; only surface the resolved base when explicitly enabled.
   if (!isProductionRuntime && import.meta.env && import.meta.env.DEBUG_API_BASE) {
@@ -20,7 +32,7 @@ if (isProductionRuntime && API_BASE) {
 }
 
 const api = axios.create({
-  baseURL: API_BASE || undefined,
+  baseURL: resolveAxiosBaseURL(API_BASE) || undefined,
   headers: { 'Content-Type': 'application/json' },
   timeout: DEFAULT_TIMEOUT,
 });
@@ -36,15 +48,19 @@ function getApiBasePath(baseURL = '') {
 }
 
 export function normalizeApiUrl(config) {
-  const url = config?.url || '';
+  const url = config?.url;
   const baseURL = config?.baseURL || '';
-  if (typeof url !== 'string' || !baseURL) {
+  if (typeof url !== 'string') {
     return url;
   }
 
   const trimmedUrl = url.trim();
   if (!trimmedUrl) {
-    return '';
+    return '/';
+  }
+
+  if (!baseURL) {
+    return trimmedUrl;
   }
 
   if (/^https?:\/\//i.test(trimmedUrl) || trimmedUrl.startsWith('//')) {
@@ -59,6 +75,13 @@ export function normalizeApiUrl(config) {
 
   const normalizedBasePath = basePath.startsWith('/') ? basePath : `/${basePath}`;
   if (normalizedUrl === normalizedBasePath || normalizedUrl.startsWith(`${normalizedBasePath}/`)) {
+    // If the requested URL already contains the API base path, strip it
+    // so axios's `baseURL` + `url` combination does not duplicate the prefix.
+    if (normalizedUrl === normalizedBasePath) return '/';
+    if (normalizedUrl.startsWith(`${normalizedBasePath}/`)) {
+      const remainder = normalizedUrl.slice(normalizedBasePath.length);
+      return remainder.startsWith('/') ? remainder : `/${remainder}`;
+    }
     return normalizedUrl;
   }
 
@@ -73,8 +96,25 @@ api.interceptors.request.use((config) => {
     }
   }
 
-  config.url = normalizeApiUrl(config);
-  const resolvedUrl = `${config.baseURL || ''}${config.url || ''}`;
+  const normalizedUrl = normalizeApiUrl(config);
+  if (typeof normalizedUrl === 'string') {
+    config.url = normalizedUrl;
+  }
+
+  // Extra safety: if the normalized URL still contains the base path prefix, remove it
+  try {
+    const basePath = getApiBasePath(config.baseURL || '');
+    if (basePath && typeof config.url === 'string') {
+      const normalizedBase = basePath.startsWith('/') ? basePath : `/${basePath}`;
+      if (config.url.startsWith(normalizedBase)) {
+        const remainder = config.url.slice(normalizedBase.length) || '/';
+        config.url = remainder.startsWith('/') ? remainder : `/${remainder}`;
+      }
+    }
+  } catch (e) {
+    // ignore; best-effort cleanup
+  }
+  const resolvedUrl = `${config.baseURL || ''}${typeof config.url === 'string' ? config.url : ''}`;
   // Only log requests during development to avoid leaking production details
   if (!isProductionRuntime) {
     console.info('[api-request]', config.method?.toUpperCase?.() || 'REQUEST', resolvedUrl, config.data);
@@ -125,6 +165,9 @@ api.interceptors.response.use(
   (res) => res,
   async (err) => {
     const original = err.config || {};
+    if (!original || typeof original.url !== 'string') {
+      return Promise.reject(err);
+    }
 
     // Network or timeout errors
     const networkError = !err.response;
@@ -166,7 +209,7 @@ api.interceptors.response.use(
         }
 
         isRefreshing = true;
-        const refreshClient = axios.create({ baseURL: API_BASE });
+        const refreshClient = axios.create({ baseURL: resolveAxiosBaseURL(API_BASE) });
         const resp = await refreshClient.post('/auth/refresh', { refresh_token: refreshToken });
         const newToken = resp?.data?.access_token;
         const newRefresh = resp?.data?.refresh_token || refreshToken;

@@ -189,7 +189,7 @@ export default function ManageBundlesPage() {
       label: 'Description',
       sortable: false,
       minWidth: '260px',
-      render: (bundle) => <span className="line-clamp-2 text-sm text-slate-600">{bundle.description || '—'}</span>,
+      render: (_value, bundle) => <span className="line-clamp-2 text-sm text-slate-600">{bundle.description || '—'}</span>,
     },
     {
       key: 'status',
@@ -197,7 +197,7 @@ export default function ManageBundlesPage() {
       sortable: true,
       align: 'center',
       minWidth: '120px',
-      render: (bundle) => <StatusBadge status={bundle.status} />,
+      render: (value) => <StatusBadge status={value} />,
     },
     {
       key: 'actions',
@@ -205,7 +205,7 @@ export default function ManageBundlesPage() {
       sortable: false,
       align: 'right',
       minWidth: '220px',
-      render: (bundle) => (
+      render: (_value, bundle) => (
         <div className="flex flex-wrap items-center justify-end gap-2">
           <Button variant="secondary" className="rounded-2xl px-3 py-2 text-[11px]" onClick={() => openEditModal(bundle)}>
             <Edit3 className="mr-2 h-4 w-4" /> Edit
@@ -321,7 +321,7 @@ export default function ManageBundlesPage() {
             rows={filteredBundles}
             loading={isLoading}
             hideControls
-            headerClassName="bg-emerald-900 text-white"
+            headerClassName="erp-table-header"
             placeholder="Search managed bundles..."
             initialPageSize={10}
             tableMaxHeight={560}

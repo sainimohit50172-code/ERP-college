@@ -1,5 +1,5 @@
-import ExamFormPreferencesSettingsPage from './ExamFormPreferencesSettingsPage.jsx';
+import MarksEntryPreferenceManagementPage from './MarksEntryPreferenceManagementPage.jsx';
 
 export default function ExamFormPreferencesPage() {
-  return <ExamFormPreferencesSettingsPage />;
+  return <MarksEntryPreferenceManagementPage />;
 }

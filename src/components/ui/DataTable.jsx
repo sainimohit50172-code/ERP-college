@@ -144,7 +144,7 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
     return sortedRows.slice(startIndex, startIndex + pageSize);
   }, [currentPage, pageSize, sortedRows]);
 
-  const headerClasses = `sticky top-0 border-b-2 border-slate-300 ${headerClassName || 'bg-[#1E3A5F] text-white'} h-[56px] font-semibold`;
+  const headerClasses = `sticky top-0 border-b-2 border-slate-300 ${headerClassName || 'erp-table-header'} h-[56px] font-semibold`;
 
   const csvContent = useMemo(() => {
     const header = columnsDefinition.map((column) => column.label);

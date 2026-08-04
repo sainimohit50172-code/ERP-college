@@ -52,13 +52,13 @@ const coeModules = [
     title: 'COE Preference',
     subtitle: 'COE Global Preferences',
     icon: Settings2,
-    route: '/coe',
+    route: '/coe/preferences',
   },
   {
     title: 'DMC Number Setup',
     subtitle: 'Manage DMC Number Series',
     icon: FileDigit,
-    route: '/coe/student-dmc',
+    route: '/coe/dmc-number-setup',
   },
 ];
 

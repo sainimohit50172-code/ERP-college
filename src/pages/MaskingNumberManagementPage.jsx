@@ -288,7 +288,7 @@ export default function MaskingNumberManagementPage() {
         <div className="mt-6 overflow-hidden rounded-[24px] border border-slate-200/70 bg-white shadow-sm">
           <div className="overflow-x-auto">
             <table className="min-w-full border-separate text-left text-sm text-slate-900" style={{ borderSpacing: '0 1rem' }}>
-              <thead className="bg-emerald-600 text-white">
+              <thead className="erp-table-header text-white">
                 <tr>
                   <th className="whitespace-nowrap px-4 py-4 text-left text-xs uppercase tracking-[0.24em]">#</th>
                   <th className="whitespace-nowrap px-4 py-4 text-left text-xs uppercase tracking-[0.24em]">Name</th>

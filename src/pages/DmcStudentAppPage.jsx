@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Plus, RefreshCw, Pencil, Trash2 } from 'lucide-react';
+import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import api from '../api/axios.js';
 import Breadcrumb from '../components/ui/Breadcrumb.jsx';
 import Button from '../components/ui/Button.jsx';
 import ConfirmDialog from '../components/ui/ConfirmDialog.jsx';
-import Modal from '../components/ui/Modal.jsx';
+import ERPFixedSwitch from '../components/ui/ERPFixedSwitch.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
 
 const defaultValues = {
@@ -24,8 +24,12 @@ const defaultValues = {
 const statusOptions = ['Active', 'Inactive', 'Draft'];
 const generationTypeOptions = ['Sequence', 'Random'];
 
-export default function MaskingNumberSetupPage() {
+export default function DmcStudentAppPage() {
   const [items, setItems] = useState([]);
+  const [globalEnabled, setGlobalEnabled] = useState(false);
+  const [savedGlobalEnabled, setSavedGlobalEnabled] = useState(false);
+  const [isGlobalLoading, setIsGlobalLoading] = useState(true);
+  const [isGlobalSaving, setIsGlobalSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -33,40 +37,38 @@ export default function MaskingNumberSetupPage() {
   const [remove, setRemove] = useState(null);
   const [formValues, setFormValues] = useState(defaultValues);
   const [errors, setErrors] = useState({});
-  const [hasLoadedExisting, setHasLoadedExisting] = useState(false);
 
   const loadItems = async () => {
     setIsLoading(true);
     try {
-      const response = await api.get('/coe/masking-number-setup');
+      const response = await api.get('/coe/dmc-student-app');
       const loadedItems = response.data?.data || [];
       setItems(loadedItems);
-      if (!hasLoadedExisting && loadedItems.length > 0) {
-        setHasLoadedExisting(true);
-        const firstItem = loadedItems[0];
-        setFormValues({
-          name: firstItem.name || '',
-          prefix: firstItem.prefix || '',
-          suffix: firstItem.suffix || '',
-          startNumber: firstItem.startNumber?.toString() || '',
-          endNumber: firstItem.endNumber?.toString() || '',
-          currentNumber: firstItem.currentNumber?.toString() || '',
-          description: firstItem.description || '',
-          status: firstItem.status || 'Active',
-          generationType: firstItem.generationType || 'Sequence',
-        });
-        setEditor(firstItem);
-        setIsFormOpen(true);
-      }
     } catch (error) {
-      toast.error(error?.response?.data?.detail || 'Unable to load masking number settings.');
+      toast.error(error?.response?.data?.detail || 'Unable to load DMC student app settings.');
     } finally {
       setIsLoading(false);
     }
   };
 
+  const loadGlobalStatus = async () => {
+    setIsGlobalLoading(true);
+    try {
+      const response = await api.get('/coe/dmc-student-app/global');
+      const enabled = response.data?.data?.enabled;
+      const value = typeof enabled === 'boolean' ? enabled : false;
+      setGlobalEnabled(value);
+      setSavedGlobalEnabled(value);
+    } catch (error) {
+      toast.error(error?.response?.data?.detail || 'Unable to load global DMC status.');
+    } finally {
+      setIsGlobalLoading(false);
+    }
+  };
+
   useEffect(() => {
     loadItems();
+    loadGlobalStatus();
   }, []);
 
   const resetForm = () => {
@@ -112,7 +114,6 @@ export default function MaskingNumberSetupPage() {
     if (!formValues.name.trim()) nextErrors.name = 'Name is required.';
     if (!formValues.startNumber) nextErrors.startNumber = 'Start Number is required.';
     if (!formValues.endNumber) nextErrors.endNumber = 'End Number is required.';
-    if (!formValues.generationType) nextErrors.generationType = 'Generation Type is required.';
     const start = Number(formValues.startNumber);
     const end = Number(formValues.endNumber);
     if (formValues.startNumber && formValues.endNumber && (!Number.isFinite(start) || !Number.isFinite(end) || start <= 0 || end <= 0)) {
@@ -125,7 +126,7 @@ export default function MaskingNumberSetupPage() {
         nextErrors.currentNumber = 'Current Number must be between Start Number and End Number.';
       }
     }
-    if (formValues.generationType && !['Sequence', 'Random'].includes(formValues.generationType)) {
+    if (formValues.generationType && !generationTypeOptions.includes(formValues.generationType)) {
       nextErrors.generationType = 'Generation Type must be Sequence or Random.';
     }
     setErrors(nextErrors);
@@ -151,16 +152,16 @@ export default function MaskingNumberSetupPage() {
 
     try {
       if (editor) {
-        await api.put(`/coe/masking-number-setup/${editor.id}`, payload);
-        toast.success('Masking number setup updated successfully.');
+        await api.put(`/coe/dmc-student-app/${editor.id}`, payload);
+        toast.success('DMC student app configuration updated successfully.');
       } else {
-        await api.post('/coe/masking-number-setup', payload);
-        toast.success('Masking number setup created successfully.');
+        await api.post('/coe/dmc-student-app', payload);
+        toast.success('DMC student app configuration created successfully.');
       }
       closeForm();
       await loadItems();
     } catch (error) {
-      toast.error(error?.response?.data?.detail || error?.message || 'Unable to save masking number setup.');
+      toast.error(error?.response?.data?.detail || error?.message || 'Unable to save DMC student app settings.');
     } finally {
       setIsSaving(false);
     }
@@ -169,40 +170,54 @@ export default function MaskingNumberSetupPage() {
   const confirmDelete = async () => {
     if (!remove) return;
     try {
-      await api.delete(`/coe/masking-number-setup/${remove.id}`);
-      toast.success('Masking number setup removed successfully.');
+      await api.delete(`/coe/dmc-student-app/${remove.id}`);
+      toast.success('DMC student app configuration removed successfully.');
       setRemove(null);
       await loadItems();
     } catch (error) {
-      toast.error(error?.response?.data?.detail || 'Unable to remove masking number setup.');
+      toast.error(error?.response?.data?.detail || 'Unable to remove DMC student app configuration.');
     }
   };
 
   const toggleStatus = async (item) => {
     const nextStatus = item.status === 'Active' ? 'Inactive' : 'Active';
     try {
-      await api.patch(`/coe/masking-number-setup/${item.id}/status?status_value=${nextStatus}`);
+      await api.patch(`/coe/dmc-student-app/${item.id}/status?status_value=${nextStatus}`);
       setItems((current) => current.map((row) => (row.id === item.id ? { ...row, status: nextStatus } : row)));
-      toast.success(`Masking number setup ${nextStatus.toLowerCase()}.`);
+      toast.success(`DMC student app ${nextStatus.toLowerCase()}.`);
     } catch (error) {
       toast.error(error?.response?.data?.detail || 'Unable to update status.');
     }
   };
 
+  const saveGlobalEnabled = async () => {
+    setIsGlobalSaving(true);
+    try {
+      await api.put('/coe/dmc-student-app/global', { enabled: globalEnabled });
+      setSavedGlobalEnabled(globalEnabled);
+      toast.success('Global DMC visibility updated successfully.');
+    } catch (error) {
+      setGlobalEnabled(savedGlobalEnabled);
+      toast.error(error?.response?.data?.detail || 'Unable to save global DMC status.');
+    } finally {
+      setIsGlobalSaving(false);
+    }
+  };
+
   const emptyState = useMemo(() => (
     <tr>
-      <td colSpan="7" className="py-20 text-center text-sm font-semibold text-slate-500">No masking number settings found.</td>
+      <td colSpan="6" className="py-20 text-center text-sm font-semibold text-slate-500">No DMC student app settings found.</td>
     </tr>
   ), []);
 
   return (
     <div className="min-h-[calc(100vh-7rem)] rounded-[24px] border border-slate-200/80 bg-[linear-gradient(135deg,#f8fafc_0%,#ffffff_55%,#f8fafc_100%)] p-3 shadow-[0_18px_45px_rgba(15,23,42,0.06)] lg:p-5">
       <div className="rounded-[22px] border border-slate-200/70 bg-white/95 p-4 shadow-inner sm:p-6">
-        <Breadcrumb items={[{ label: 'Dashboard', to: '/' }, { label: 'COE Master', to: '/settings/coe' }, { label: 'Masking Number Setup' }]} />
+        <Breadcrumb items={[{ label: 'Dashboard', to: '/' }, { label: 'COE Master', to: '/settings/coe' }, { label: 'DMC Student App Management' }]} />
         <div className="flex flex-col gap-4 border-b border-slate-200 pb-6 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-600">COE Master</p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">Masking Number Setup</h1>
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">DMC on Student App Management</h1>
           </div>
           <button
             type="button"
@@ -225,14 +240,15 @@ export default function MaskingNumberSetupPage() {
             >
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div className="space-y-1">
-                  <p className="text-sm font-semibold text-slate-800">{editor ? 'Edit Masking Number Setup' : 'Create Masking Number Setup'}</p>
-                  <p className="text-sm text-slate-500">Define a masking number series for COE numbering.</p>
+                  <p className="text-sm font-semibold text-slate-800">{editor ? 'Edit DMC Student App Configuration' : 'Create DMC Student App Configuration'}</p>
+                  <p className="text-sm text-slate-500">Define a DMC series for student app numbering.</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <button type="button" onClick={() => setFormValues(defaultValues)} className="inline-flex h-10 items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-50">Reset</button>
                   <button type="button" onClick={closeForm} className="inline-flex h-10 items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-50">Close</button>
                 </div>
               </div>
+
               <form onSubmit={saveItem} className="mt-6 grid gap-4 lg:grid-cols-[1.5fr_1fr]">
                 <label className="grid gap-2 text-sm text-slate-700">
                   <span className="font-semibold uppercase tracking-[0.24em] text-slate-500">Name *</span>
@@ -290,6 +306,28 @@ export default function MaskingNumberSetupPage() {
           )}
         </AnimatePresence>
 
+        <div className="mt-6 rounded-[12px] border border-[#E5E7EB] bg-white px-5 py-4 shadow-sm mb-5">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+              <ERPFixedSwitch
+                checked={globalEnabled}
+                onChange={setGlobalEnabled}
+                label="Global DMC"
+                className="shrink-0"
+              />
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-slate-900">Global DMC</p>
+                <p className="text-sm text-slate-500">Enable or disable DMC visibility on the Student App.</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <Button type="button" onClick={saveGlobalEnabled} isLoading={isGlobalSaving} disabled={isGlobalLoading || isGlobalSaving}>
+                Save
+              </Button>
+            </div>
+          </div>
+        </div>
+
         <div className="mt-6 overflow-x-auto rounded-[24px] border border-slate-200/70 bg-white shadow-sm">
           <table className="min-w-full divide-y divide-slate-200 text-left text-sm text-slate-900">
             <thead className="erp-table-header text-white">
@@ -305,7 +343,7 @@ export default function MaskingNumberSetupPage() {
             <tbody className="divide-y divide-slate-200 bg-white">
               {isLoading ? (
                 <tr>
-                  <td colSpan="7" className="py-20 text-center text-sm text-slate-500">Loading masking number settings...</td>
+                  <td colSpan="7" className="py-20 text-center text-sm text-slate-500">Loading DMC student app settings...</td>
                 </tr>
               ) : items.length === 0 ? (
                 emptyState
@@ -331,7 +369,7 @@ export default function MaskingNumberSetupPage() {
           </table>
         </div>
       </div>
-      <ConfirmDialog open={Boolean(remove)} title="Remove masking number setup?" description="This will soft delete the record and hide it from active lists." onCancel={() => setRemove(null)} onConfirm={confirmDelete} confirmLabel="Remove" />
+      <ConfirmDialog open={Boolean(remove)} title="Remove DMC student app configuration?" description="This will soft delete the record and hide it from active lists." onCancel={() => setRemove(null)} onConfirm={confirmDelete} confirmLabel="Remove" />
     </div>
   );
 }

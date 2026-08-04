@@ -200,7 +200,7 @@ export default function ExamShiftMasterPage() {
 
         <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
           <table className="min-w-full border-collapse text-sm text-slate-900">
-            <thead className="bg-slate-50 text-left text-xs uppercase tracking-[0.2em] text-slate-500">
+            <thead className="erp-table-header text-left text-xs uppercase tracking-[0.2em] text-white">
               <tr>
                 <th className="px-4 py-4">#</th>
                 <th className="px-4 py-4">Shift Name</th>
