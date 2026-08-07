@@ -111,6 +111,8 @@ import LectureAttendancePage from './pages/LectureAttendancePage.jsx';
 import LibraryManagementPage from './pages/LibraryManagementPage.jsx';
 import PlaceholderPage from './pages/PlaceholderPage.jsx';
 import CoeMasterDashboardPage from './pages/CoeMasterDashboardPage.jsx';
+import FeeStructureDashboardPage from './pages/FeeStructureDashboardPage.jsx';
+import FeeHeadManagementPage from './pages/FeeHeadManagementPage.jsx';
 import CoeExamCalendarPage from './pages/CoeExamCalendarPage.jsx';
 import ExamFeeSetupLandingPage from './pages/ExamFeeSetupLandingPage.jsx';
 import ExamFormPreferencesLandingPage from './pages/ExamFormPreferencesLandingPage.jsx';
@@ -209,6 +211,8 @@ import IndividualFacultyReportPage from './pages/IndividualFacultyReportPage.jsx
 import FeedbackSummaryReportPage from './pages/FeedbackSummaryReportPage.jsx';
 import StudentFeedbackPage from './pages/StudentFeedbackPage.jsx';
 import ComingSoonPage from './pages/ComingSoonPage.jsx';
+import FeeStructureModulePage from './pages/FeeStructureModulePage.jsx';
+import FeeHeadGroupPage from './pages/FeeHeadGroupPage.jsx';
 import ProtectedRoute from './components/auth/ProtectedRoute.jsx';
 import AllocateSubjectPage from './pages/AllocateSubjectPage.jsx';
 
@@ -409,11 +413,11 @@ function App() {
               <Route path="examination" element={<ProtectedRoute moduleKey="examination"><ExaminationPage /></ProtectedRoute>} />
               <Route path="examination-attendance" element={<ProtectedRoute moduleKey="examination"><ExaminationAttendancePage /></ProtectedRoute>} />
               <Route path="seating-plan" element={<ProtectedRoute moduleKey="examination"><SeatingPlanPage /></ProtectedRoute>} />
-              <Route path="coe" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={RouteLoadingFallback}><LazyCoeMasterDashboardPage /></Suspense></ProtectedRoute>} />
-              <Route path="coe/masking-number-dashboard" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={RouteLoadingFallback}><LazyMaskingNumberDashboardPage /></Suspense></ProtectedRoute>} />
-              <Route path="coe/masking-number-setup" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={RouteLoadingFallback}><LazyMaskingNumberSetupPage /></Suspense></ProtectedRoute>} />
+              <Route path="coe" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={<RouteLoadingFallback />}><LazyCoeMasterDashboardPage /></Suspense></ProtectedRoute>} />
+              <Route path="coe/masking-number-dashboard" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={<RouteLoadingFallback />}><LazyMaskingNumberDashboardPage /></Suspense></ProtectedRoute>} />
+              <Route path="coe/masking-number-setup" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={<RouteLoadingFallback />}><LazyMaskingNumberSetupPage /></Suspense></ProtectedRoute>} />
               <Route path="coe/masking-number-management" element={<ProtectedRoute moduleKey="settings"><MaskingNumberManagementPage /></ProtectedRoute>} />
-              <Route path="coe/dmc-number-setup" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={RouteLoadingFallback}><LazyDmcNumberSetupPage /></Suspense></ProtectedRoute>} />
+              <Route path="coe/dmc-number-setup" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={<RouteLoadingFallback />}><LazyDmcNumberSetupPage /></Suspense></ProtectedRoute>} />
               <Route path="coe/manage-bundles" element={<ProtectedRoute moduleKey="settings"><ManageBundlesPage /></ProtectedRoute>} />
               <Route path="coe/preferences" element={<ProtectedRoute moduleKey="settings"><CoePreferencePage /></ProtectedRoute>} />
               <Route path="coe/student-dmc" element={<ProtectedRoute moduleKey="settings"><DmcStudentAppPage /></ProtectedRoute>} />
@@ -519,6 +523,10 @@ function App() {
               <Route path="lesson/management" element={<ProtectedRoute moduleKey="lms"><PlaceholderPage title="Lesson Management" /></ProtectedRoute>} />
               <Route path="lesson/subject-wise-report" element={<ProtectedRoute moduleKey="lms"><PlaceholderPage title="Subject Wise Report" /></ProtectedRoute>} />
               <Route path="settings" element={<ProtectedRoute moduleKey="settings"><SettingsPage /></ProtectedRoute>} />
+              <Route path="settings/fee-structure" element={<ProtectedRoute moduleKey="settings"><FeeStructureDashboardPage /></ProtectedRoute>} />
+              <Route path="settings/fee-structure/fee-head" element={<ProtectedRoute moduleKey="settings"><FeeHeadManagementPage /></ProtectedRoute>} />
+              <Route path="settings/fee-structure/fee-head-group" element={<ProtectedRoute moduleKey="settings"><FeeHeadGroupPage /></ProtectedRoute>} />
+              <Route path="settings/fee-structure/:page" element={<ProtectedRoute moduleKey="settings"><FeeStructureModulePage /></ProtectedRoute>} />
               <Route path="settings/coe" element={<ProtectedRoute moduleKey="settings"><CoeMasterDashboardPage /></ProtectedRoute>} />
               <Route path="settings/institute" element={<ProtectedRoute moduleKey="settings"><InstituteSetupPage /></ProtectedRoute>} />
               <Route path="institute-setup" element={<ProtectedRoute moduleKey="settings"><InstituteSetupPage /></ProtectedRoute>} />
@@ -553,14 +561,14 @@ function App() {
               <Route path="settings/institute/academics/attendance-remarks" element={<ProtectedRoute moduleKey="settings"><AttendanceRemarksPage /></ProtectedRoute>} />
               <Route path="settings/institute/preferences" element={<ProtectedRoute moduleKey="settings"><InstitutePreferencePage /></ProtectedRoute>} />
               <Route path="settings/institute/student-fields" element={<ProtectedRoute moduleKey="settings"><StudentFieldsManagementPage /></ProtectedRoute>} />
-              <Route path="settings/institute/student-master" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={RouteLoadingFallback}><LazyStudentMasterSetupPage /></Suspense></ProtectedRoute>} />
-              <Route path="settings/institute/student-master/new" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={RouteLoadingFallback}><LazyStudentMasterSetupPage /></Suspense></ProtectedRoute>} />
-              <Route path="settings/institute/student-master/import" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={RouteLoadingFallback}><LazyStudentMasterSetupPage /></Suspense></ProtectedRoute>} />
-              <Route path="settings/institute/student-master/export" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={RouteLoadingFallback}><LazyStudentMasterSetupPage /></Suspense></ProtectedRoute>} />
-              <Route path="settings/institute/student-master/print" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={RouteLoadingFallback}><LazyStudentMasterSetupPage /></Suspense></ProtectedRoute>} />
-              <Route path="settings/institute/student-master/refresh" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={RouteLoadingFallback}><LazyStudentMasterSetupPage /></Suspense></ProtectedRoute>} />
-              <Route path="settings/institute/student-master/:masterId/edit" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={RouteLoadingFallback}><LazyStudentMasterSetupPage /></Suspense></ProtectedRoute>} />
-              <Route path="settings/institute/student-master/:masterId" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={RouteLoadingFallback}><LazyStudentMasterSetupPage /></Suspense></ProtectedRoute>} />
+              <Route path="settings/institute/student-master" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={<RouteLoadingFallback />}><LazyStudentMasterSetupPage /></Suspense></ProtectedRoute>} />
+              <Route path="settings/institute/student-master/new" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={<RouteLoadingFallback />}><LazyStudentMasterSetupPage /></Suspense></ProtectedRoute>} />
+              <Route path="settings/institute/student-master/import" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={<RouteLoadingFallback />}><LazyStudentMasterSetupPage /></Suspense></ProtectedRoute>} />
+              <Route path="settings/institute/student-master/export" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={<RouteLoadingFallback />}><LazyStudentMasterSetupPage /></Suspense></ProtectedRoute>} />
+              <Route path="settings/institute/student-master/print" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={<RouteLoadingFallback />}><LazyStudentMasterSetupPage /></Suspense></ProtectedRoute>} />
+              <Route path="settings/institute/student-master/refresh" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={<RouteLoadingFallback />}><LazyStudentMasterSetupPage /></Suspense></ProtectedRoute>} />
+              <Route path="settings/institute/student-master/:masterId/edit" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={<RouteLoadingFallback />}><LazyStudentMasterSetupPage /></Suspense></ProtectedRoute>} />
+              <Route path="settings/institute/student-master/:masterId" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={<RouteLoadingFallback />}><LazyStudentMasterSetupPage /></Suspense></ProtectedRoute>} />
 
               <Route path="settings/institute/student-master/student-fields" element={<ProtectedRoute moduleKey="settings"><StudentFieldsPage /></ProtectedRoute>} />
               <Route path="settings/institute/student-master/mandatory-fields" element={<ProtectedRoute moduleKey="settings"><MandatoryFieldsPage /></ProtectedRoute>} />

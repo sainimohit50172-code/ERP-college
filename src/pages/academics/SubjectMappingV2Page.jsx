@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { RefreshCw, Plus, Printer, ChevronRight, ChevronDown, Eye, Trash2 } from 'lucide-react';
 import Breadcrumb from '../../components/ui/Breadcrumb.jsx';
@@ -50,8 +50,7 @@ function Confirm({ open, onCancel, onConfirm, text = 'Are you sure?' }) {
 
 export default function SubjectMappingV2Page() {
   const navigate = useNavigate();
-  const [data, setData] = useState([]);
-  const [filtered, setFiltered] = useState([]);
+  const [data, setData] = useState(() => getMappings());
   const [college, setCollege] = useState('All');
   const [course, setCourse] = useState('All');
   const [semester, setSemester] = useState('All');
@@ -65,12 +64,7 @@ export default function SubjectMappingV2Page() {
   const [toDelete, setToDelete] = useState(null);
   const [toast, setToast] = useState('');
 
-  useEffect(() => {
-    const items = getMappings();
-    setData(items);
-  }, []);
-
-  useEffect(() => {
+  const filtered = useMemo(() => {
     let out = data.slice();
     if (college !== 'All') out = out.filter((r) => r.college === college);
     if (course !== 'All') out = out.filter((r) => r.course === course);
@@ -80,8 +74,7 @@ export default function SubjectMappingV2Page() {
       const q = search.toLowerCase();
       out = out.filter((r) => r.course.toLowerCase().includes(q) || r.college.toLowerCase().includes(q));
     }
-    setFiltered(out);
-    setPage(1);
+    return out;
   }, [data, college, course, semester, section, search]);
 
   const total = filtered.length;
@@ -127,7 +120,7 @@ export default function SubjectMappingV2Page() {
 
         <div className="flex items-center gap-3">
           <div className="hidden sm:flex items-center rounded-2xl border border-slate-200 bg-white px-3 py-2">
-            <input value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Search subject or course" className="w-60 border-none bg-transparent outline-none text-sm text-slate-700" />
+            <input value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} placeholder="Search subject or course" className="w-60 border-none bg-transparent outline-none text-sm text-slate-700" />
           </div>
 
           <button type="button" onClick={handlePrint} className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:shadow hover:scale-[1.02] transition">
@@ -143,19 +136,19 @@ export default function SubjectMappingV2Page() {
         <div className="grid gap-3 grid-cols-1 sm:grid-cols-5">
           <div>
             <label className="text-xs font-semibold text-slate-500">All College</label>
-            <SearchableSelect options={collegeOptions} value={college} onChange={setCollege} placeholder="All" />
+            <SearchableSelect options={collegeOptions} value={college} onChange={(value) => { setCollege(value); setPage(1); }} placeholder="All" />
           </div>
           <div>
             <label className="text-xs font-semibold text-slate-500">All Course</label>
-            <SearchableSelect options={allCourses.map((courseName) => ({ label: courseName, value: courseName }))} value={course} onChange={setCourse} placeholder="All" />
+            <SearchableSelect options={allCourses.map((courseName) => ({ label: courseName, value: courseName }))} value={course} onChange={(value) => { setCourse(value); setPage(1); }} placeholder="All" />
           </div>
           <div>
             <label className="text-xs font-semibold text-slate-500">All Semester</label>
-            <SearchableSelect options={semesterOptions} value={semester} onChange={setSemester} placeholder="All" />
+            <SearchableSelect options={semesterOptions} value={semester} onChange={(value) => { setSemester(value); setPage(1); }} placeholder="All" />
           </div>
           <div>
             <label className="text-xs font-semibold text-slate-500">All Section</label>
-            <SearchableSelect options={sectionOptions} value={section} onChange={setSection} placeholder="All" />
+            <SearchableSelect options={sectionOptions} value={section} onChange={(value) => { setSection(value); setPage(1); }} placeholder="All" />
           </div>
           <div className="flex items-end">
             <button onClick={handleRefresh} className="w-full inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:shadow transition"><RefreshCw className="h-4 w-4" /> Refresh</button>

@@ -191,7 +191,7 @@ export default function MaskingNumberSetupPage() {
 
   const emptyState = useMemo(() => (
     <tr>
-      <td colSpan="7" className="py-20 text-center text-sm font-semibold text-slate-500">No masking number settings found.</td>
+      <td colSpan="9" className="py-20 text-center text-sm font-semibold text-slate-500">No masking number settings found.</td>
     </tr>
   ), []);
 
@@ -291,21 +291,35 @@ export default function MaskingNumberSetupPage() {
         </AnimatePresence>
 
         <div className="mt-6 overflow-x-auto rounded-[24px] border border-slate-200/70 bg-white shadow-sm">
-          <table className="min-w-full divide-y divide-slate-200 text-left text-sm text-slate-900">
-            <thead className="erp-table-header text-white">
+          <table className="min-w-full table-fixed divide-y divide-slate-200 text-left text-sm text-slate-900">
+            <colgroup>
+              <col className="w-12" />
+              <col className="w-[20%]" />
+              <col className="w-[12%]" />
+              <col className="w-[12%]" />
+              <col className="w-[12%]" />
+              <col className="w-[12%]" />
+              <col className="w-[12%]" />
+              <col className="w-[10%]" />
+              <col className="w-[14%]" />
+            </colgroup>
+            <thead className="bg-slate-900 text-xs uppercase tracking-[0.18em] text-white">
               <tr>
-                <th className="whitespace-nowrap px-4 py-4 text-left">#</th>
-                <th className="whitespace-nowrap px-4 py-4 text-left">Name</th>
-                <th className="whitespace-nowrap px-4 py-4 text-left">Range</th>
-                <th className="whitespace-nowrap px-4 py-4 text-left">Current</th>
-                <th className="whitespace-nowrap px-4 py-4 text-left">Status</th>
-                <th className="whitespace-nowrap px-4 py-4 text-left">Actions</th>
+                <th className="whitespace-nowrap border-b border-slate-700 px-4 py-4 font-semibold">#</th>
+                <th className="whitespace-nowrap border-b border-slate-700 px-4 py-4 font-semibold">Name</th>
+                <th className="whitespace-nowrap border-b border-slate-700 px-4 py-4 font-semibold">Prefix</th>
+                <th className="whitespace-nowrap border-b border-slate-700 px-4 py-4 font-semibold">Suffix</th>
+                <th className="whitespace-nowrap border-b border-slate-700 px-4 py-4 font-semibold">Start</th>
+                <th className="whitespace-nowrap border-b border-slate-700 px-4 py-4 font-semibold">End</th>
+                <th className="whitespace-nowrap border-b border-slate-700 px-4 py-4 font-semibold">Current</th>
+                <th className="whitespace-nowrap border-b border-slate-700 px-4 py-4 font-semibold">Status</th>
+                <th className="whitespace-nowrap border-b border-slate-700 px-4 py-4 font-semibold">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 bg-white">
               {isLoading ? (
                 <tr>
-                  <td colSpan="7" className="py-20 text-center text-sm text-slate-500">Loading masking number settings...</td>
+                  <td colSpan="9" className="py-20 text-center text-sm text-slate-500">Loading masking number settings...</td>
                 </tr>
               ) : items.length === 0 ? (
                 emptyState
@@ -314,8 +328,11 @@ export default function MaskingNumberSetupPage() {
                   <tr key={item.id} className="border-t border-slate-200 hover:bg-slate-50 transition">
                     <td className="px-4 py-4 font-medium text-slate-700">{index + 1}</td>
                     <td className="px-4 py-4 text-slate-700">{item.name}</td>
-                    <td className="px-4 py-4 text-slate-700">{`${item.prefix || ''}${item.startNumber} → ${item.endNumber}${item.suffix || ''}`}</td>
-                    <td className="px-4 py-4 text-slate-700">{item.currentNumber}</td>
+                    <td className="px-4 py-4 text-slate-700 whitespace-nowrap">{item.prefix || '—'}</td>
+                    <td className="px-4 py-4 text-slate-700 whitespace-nowrap">{item.suffix || '—'}</td>
+                    <td className="px-4 py-4 text-slate-700 whitespace-nowrap">{item.startNumber}</td>
+                    <td className="px-4 py-4 text-slate-700 whitespace-nowrap">{item.endNumber}</td>
+                    <td className="px-4 py-4 text-slate-700 whitespace-nowrap">{item.currentNumber}</td>
                     <td className="px-4 py-4 text-slate-700"><StatusBadge status={item.status} /></td>
                     <td className="px-4 py-4 text-slate-700">
                       <div className="flex flex-wrap gap-2">

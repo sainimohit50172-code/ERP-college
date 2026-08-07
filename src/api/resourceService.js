@@ -24,6 +24,7 @@ export const normalizeApiListResponse = (response, params = {}, resource = 'stud
   const items = rawItems.map((item) => {
     if (resource === 'students') return mapStudentRecord(item);
     if (resource === 'classrooms') return mapClassroomRecord(item);
+    if (resource === 'transportRoutes') return mapTransportRouteRecord(item);
     return item;
   });
   const page = Number(payload?.page || params.page || 1);
@@ -117,6 +118,23 @@ export const mapClassroomRecord = (record = {}) => ({
   hasAC: record.has_ac ?? record.hasAC ?? false,
 });
 
+export const mapTransportRoutePayload = (payload = {}) => ({
+  ...payload,
+  name: payload.name || '',
+  start_point: payload.start_point ?? payload.startPoint ?? '',
+  end_point: payload.end_point ?? payload.endPoint ?? '',
+  status: payload.status ?? 'Active',
+});
+
+export const mapTransportRouteRecord = (record = {}) => ({
+  ...record,
+  id: record.id,
+  name: record.name || '',
+  startPoint: record.startPoint || record.start_point || '',
+  endPoint: record.endPoint || record.end_point || '',
+  status: record.status || 'Active',
+});
+
 const normalizeListParams = (params = {}) => {
   const normalized = { ...params };
   const requestedPageSize = Number(normalized.pageSize ?? normalized.page_size ?? 10);
@@ -161,6 +179,7 @@ export const createResourceService = (resource) => {
         const payload = unwrapApiResponse(result);
         if (resource === 'students') return mapStudentRecord(payload);
         if (resource === 'classrooms') return mapClassroomRecord(payload);
+        if (resource === 'transportRoutes') return mapTransportRouteRecord(payload);
         return payload;
       }
 
@@ -168,15 +187,23 @@ export const createResourceService = (resource) => {
       const payload = unwrapApiResponse(res.data);
       if (resource === 'students') return mapStudentRecord(payload);
       if (resource === 'classrooms') return mapClassroomRecord(payload);
+      if (resource === 'transportRoutes') return mapTransportRouteRecord(payload);
       return payload;
     },
     create: async (payload) => {
-      const body = resource === 'students' ? mapStudentPayload(payload) : resource === 'classrooms' ? mapClassroomPayload(payload) : payload;
+      const body = resource === 'students'
+        ? mapStudentPayload(payload)
+        : resource === 'classrooms'
+          ? mapClassroomPayload(payload)
+          : resource === 'transportRoutes'
+            ? mapTransportRoutePayload(payload)
+            : payload;
       if (repo && typeof repo.create === 'function') {
         const result = await repo.create(body);
         const payloadResult = unwrapApiResponse(result);
         if (resource === 'students') return mapStudentRecord(payloadResult);
         if (resource === 'classrooms') return mapClassroomRecord(payloadResult);
+        if (resource === 'transportRoutes') return mapTransportRouteRecord(payloadResult);
         return payloadResult;
       }
 
@@ -184,15 +211,23 @@ export const createResourceService = (resource) => {
       const payloadResult = unwrapApiResponse(res.data);
       if (resource === 'students') return mapStudentRecord(payloadResult);
       if (resource === 'classrooms') return mapClassroomRecord(payloadResult);
+      if (resource === 'transportRoutes') return mapTransportRouteRecord(payloadResult);
       return payloadResult;
     },
     update: async (id, payload) => {
-      const body = resource === 'students' ? mapStudentPayload(payload) : resource === 'classrooms' ? mapClassroomPayload(payload) : payload;
+      const body = resource === 'students'
+        ? mapStudentPayload(payload)
+        : resource === 'classrooms'
+          ? mapClassroomPayload(payload)
+          : resource === 'transportRoutes'
+            ? mapTransportRoutePayload(payload)
+            : payload;
       if (repo && typeof repo.update === 'function') {
         const result = await repo.update(id, body);
         const payloadResult = unwrapApiResponse(result);
         if (resource === 'students') return mapStudentRecord(payloadResult);
         if (resource === 'classrooms') return mapClassroomRecord(payloadResult);
+        if (resource === 'transportRoutes') return mapTransportRouteRecord(payloadResult);
         return payloadResult;
       }
 
@@ -200,6 +235,7 @@ export const createResourceService = (resource) => {
       const payloadResult = unwrapApiResponse(res.data);
       if (resource === 'students') return mapStudentRecord(payloadResult);
       if (resource === 'classrooms') return mapClassroomRecord(payloadResult);
+      if (resource === 'transportRoutes') return mapTransportRouteRecord(payloadResult);
       return payloadResult;
     },
     remove: async (id) => {

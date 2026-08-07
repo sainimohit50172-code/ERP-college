@@ -298,7 +298,7 @@ export default function ExaminationModule() {
         </div>
       </div>
 
-      <Modal title="Create exam master" isOpen={masterModalOpen} onClose={() => setMasterModalOpen(false)} footer={<button onClick={handleCreateMaster} variant="primary" className="hover-gradient-border">Save master</button>}>
+      <Modal title="Create exam master" isOpen={masterModalOpen} onClose={() => setMasterModalOpen(false)} footer={<button type="button" onClick={handleCreateMaster} className="hover-gradient-border">Save master</button>}>
         <form className="space-y-4" onSubmit={handleCreateMaster}>
           <FormField label="Type">
             <select value={masterForm.kind} onChange={(event) => setMasterForm((current) => ({ ...current, kind: event.target.value }))} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none">
@@ -310,7 +310,7 @@ export default function ExaminationModule() {
         </form>
       </Modal>
 
-      <Modal title="Schedule exam" isOpen={scheduleModalOpen} onClose={() => setScheduleModalOpen(false)} footer={<button onClick={handleCreateSchedule} variant="primary" className="hover-gradient-border">Save schedule</button>}>
+      <Modal title="Schedule exam" isOpen={scheduleModalOpen} onClose={() => setScheduleModalOpen(false)} footer={<button type="button" onClick={handleCreateSchedule} className="hover-gradient-border">Save schedule</button>}>
         <form className="grid gap-4 lg:grid-cols-2" onSubmit={handleCreateSchedule}>
           <FormField label="Exam name"><input value={scheduleForm.examName} onChange={(event) => setScheduleForm((current) => ({ ...current, examName: event.target.value }))} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none" /></FormField>
           <FormField label="Course"><input value={scheduleForm.course} onChange={(event) => setScheduleForm((current) => ({ ...current, course: event.target.value }))} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none" /></FormField>
@@ -326,7 +326,7 @@ export default function ExaminationModule() {
         </form>
       </Modal>
 
-      <Modal title="Add mark entry" isOpen={markModalOpen} onClose={() => setMarkModalOpen(false)} footer={<button onClick={handleCreateMark} variant="primary" className="hover-gradient-border">Save marks</button>}>
+      <Modal title="Add mark entry" isOpen={markModalOpen} onClose={() => setMarkModalOpen(false)} footer={<button type="button" onClick={handleCreateMark} className="hover-gradient-border">Save marks</button>}>
         <form className="grid gap-4 lg:grid-cols-2" onSubmit={handleCreateMark}>
           <FormField label="Student name"><input value={markForm.studentName} onChange={(event) => setMarkForm((current) => ({ ...current, studentName: event.target.value }))} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none" /></FormField>
           <FormField label="Student ID"><input value={markForm.studentId} onChange={(event) => setMarkForm((current) => ({ ...current, studentId: event.target.value }))} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none" /></FormField>
@@ -342,7 +342,7 @@ export default function ExaminationModule() {
         </form>
       </Modal>
 
-      <Modal title="Create result" isOpen={resultModalOpen} onClose={() => setResultModalOpen(false)} footer={<button onClick={handleCreateResult} variant="primary" className="hover-gradient-border">Save result</button>}>
+      <Modal title="Create result" isOpen={resultModalOpen} onClose={() => setResultModalOpen(false)} footer={<button type="button" onClick={handleCreateResult} className="hover-gradient-border">Save result</button>}>
         <form className="grid gap-4 lg:grid-cols-2" onSubmit={handleCreateResult}>
           <FormField label="Student name"><input value={resultForm.studentName} onChange={(event) => setResultForm((current) => ({ ...current, studentName: event.target.value }))} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none" /></FormField>
           <FormField label="Student ID"><input value={resultForm.studentId} onChange={(event) => setResultForm((current) => ({ ...current, studentId: event.target.value }))} className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none" /></FormField>

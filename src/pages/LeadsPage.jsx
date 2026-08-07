@@ -1,5 +1,6 @@
-﻿import { useState } from 'react';
+﻿import { useEffect, useMemo, useState } from 'react';
 import { Filter, FileText, Plus, Search, Settings, Pencil } from 'lucide-react';
+import { useERP } from '../services/ERPContext.jsx';
 
 const INITIAL_ROWS = [
   {
@@ -77,6 +78,23 @@ const sourceClasses = {
 };
 
 export default function LeadsPage() {
+  const { colleges = [] } = useERP();
+  const collegeOptions = useMemo(() => {
+    const source = Array.isArray(colleges) ? colleges : [];
+    return source.map((college) => {
+      const label = typeof college === 'string' ? college : college.name || college.collegeName || college.label || String(college.id);
+      return { value: label, label };
+    });
+  }, [colleges]);
+
+  const [college, setCollege] = useState('');
+
+  useEffect(() => {
+    if (!college && collegeOptions.length) {
+      setCollege(collegeOptions[0].value);
+    }
+  }, [college, collegeOptions]);
+
   const [searchBy, setSearchBy] = useState('Name');
   const [searchText, setSearchText] = useState('');
   const [globalSearch, setGlobalSearch] = useState(false);
@@ -85,7 +103,6 @@ export default function LeadsPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [alternatePhone, setAlternatePhone] = useState('');
-  const [college, setCollege] = useState('Roorkee College of Smart Computing');
   const [leadSource, setLeadSource] = useState('LIVE CHAT(HU)');
   const [campusVisited, setCampusVisited] = useState('Yes');
   const [addCounselor, setAddCounselor] = useState(false);
@@ -220,11 +237,11 @@ export default function LeadsPage() {
                     onChange={(event) => setCollege(event.target.value)}
                     className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none focus:border-[#1e3a5f] focus:ring-2 focus:ring-[#1e3a5f]/10"
                   >
-                    <option>Roorkee College of Smart Computing</option>
-                    <option>Roorkee College of Engineering</option>
-                    <option>Roorkee College of Business Studies</option>
-                    <option>Roorkee College of Agricultural Sciences</option>
-                    <option>Roorkee College of Allied Health Sciences</option>
+                    {collegeOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div>

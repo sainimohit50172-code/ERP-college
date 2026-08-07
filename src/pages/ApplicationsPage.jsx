@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ChevronRight, FileText, Plus, Printer, RefreshCw, Share, HelpCircle, Settings, Pencil, X, RotateCw } from 'lucide-react';
+import { useERP } from '../services/ERPContext.jsx';
 
 const STAT_CARDS = [
   { title: 'TOTAL', count: 2369 },
@@ -49,6 +50,15 @@ export default function ApplicationsPage() {
   const [searchBy, setSearchBy] = useState('Name');
   const [searchText, setSearchText] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { colleges = [] } = useERP();
+  const collegeOptions = useMemo(() => {
+    const source = Array.isArray(colleges) ? colleges : [];
+    return source.map((college) => {
+      const label = typeof college === 'string' ? college : college.name || college.collegeName || college.label || String(college.id);
+      return { value: label, label };
+    });
+  }, [colleges]);
+
   const [formData, setFormData] = useState({
     date: today,
     college: '',
@@ -166,7 +176,7 @@ export default function ApplicationsPage() {
 
         <div className="mb-6 rounded-3xl bg-[#eff4fb] p-5 text-slate-700 shadow-sm ring-1 ring-slate-200">
           <p className="text-sm leading-6">
-            <span className="font-semibold text-slate-900">Note:</span> Direct export is no longer available. Use 'Generate Report' to create your file, then download it from the 'Download Report' section.
+            <span className="font-semibold text-slate-900">Note:</span> Direct export is no longer available. Use &apos;Generate Report&apos; to create your file, then download it from the &apos;Download Report&apos; section.
           </p>
         </div>
 
@@ -337,9 +347,9 @@ export default function ApplicationsPage() {
                           className={selectClass}
                         >
                           <option value="">Choose college</option>
-                          <option value="roorkee">Roorkee College of Engineering</option>
-                          <option value="allied-health">Allied Health Sciences</option>
-                          <option value="smart-computing">Smart Computing</option>
+                          {collegeOptions.map((option) => (
+                            <option key={option.value} value={option.value}>{option.label}</option>
+                          ))}
                         </select>
                       </div>
                       <div>

@@ -1,24 +1,17 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ChevronLeft, ChevronRight, Edit3, Eye, LoaderCircle, Trash2 } from 'lucide-react';
+import { useERP } from '../services/ERPContext.jsx';
 import Breadcrumb from '../components/ui/Breadcrumb.jsx';
 import ConfirmDialog from '../components/ui/ConfirmDialog.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import { deleteAllocation, getAllocationsByCollege, updateAllocation } from '../services/allocateSubjectService.js';
 
-const COLLEGE_OPTIONS = [
-  'Roorkee College of Smart Computing',
-  'Roorkee College of Engineering',
-  'Roorkee College of Pharmacy',
-  'Roorkee College of Agriculture',
-  'Roorkee College of Management',
-  'Roorkee College of Nursing',
-  'Roorkee College of Allied Health Sciences',
-  'Roorkee College of Education',
-  'Roorkee College of Law',
-  'Roorkee College of Hotel Management',
-];
-
 export default function AllocateSubjectPage() {
+  const { colleges = [] } = useERP();
+  const collegeOptions = useMemo(() => {
+    const source = Array.isArray(colleges) ? colleges : [];
+    return source.map((college) => (typeof college === 'string' ? college : college.name || college.collegeName || college.label || String(college.id)));
+  }, [colleges]);
   const [selectedCollege, setSelectedCollege] = useState('');
   const [rows, setRows] = useState([]);
   const [showTable, setShowTable] = useState(false);
@@ -242,7 +235,7 @@ export default function AllocateSubjectPage() {
                 className="h-10 w-full rounded-[8px] border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none"
               >
                 <option value="">-- Select --</option>
-                {COLLEGE_OPTIONS.map((college) => (
+                {collegeOptions.map((college) => (
                   <option key={college} value={college}>{college}</option>
                 ))}
               </select>

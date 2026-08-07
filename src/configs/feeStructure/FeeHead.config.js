@@ -1,0 +1,91 @@
+export default {
+  key: 'fee-head',
+  title: 'Fee Head',
+  subtitle: 'Manage fee head definitions used across receipts and schedules.',
+  description: 'Create and maintain fee heads used for billing, receipt mapping, and fee structure setup.',
+  resource: 'fee-heads',
+  itemLabel: 'fee head',
+  breadcrumbs: [
+    { label: 'Dashboard', to: '/' },
+    { label: 'Settings', to: '/settings' },
+    { label: 'Fee Structure', to: '/settings/fee-structure' },
+    { label: 'Fee Head' },
+  ],
+  defaultValues: {
+    feeHeadName: '',
+    feeHeadCode: '',
+    feeCategory: '',
+    receiptHead: '',
+    amountType: 'Fixed',
+    isRefundable: 'No',
+    taxApplicable: 'No',
+    status: 'Active',
+    description: '',
+  },
+  searchFields: ['feeHeadName', 'feeHeadCode', 'feeCategory', 'receiptHead'],
+  filters: [
+    {
+      name: 'status',
+      label: 'Status',
+      options: [
+        { value: 'All', label: 'All Statuses' },
+        { value: 'Active', label: 'Active' },
+        { value: 'Inactive', label: 'Inactive' },
+      ],
+    },
+  ],
+  fields: [
+    { name: 'feeHeadName', label: 'Fee Head Name', placeholder: 'Enter fee head name', validation: { required: 'Fee head name is required' } },
+    { name: 'feeHeadCode', label: 'Fee Head Code', placeholder: 'Enter fee head code', validation: { required: 'Fee head code is required' } },
+    { name: 'feeCategory', label: 'Fee Category', placeholder: 'Enter fee category' },
+    { name: 'receiptHead', label: 'Receipt Head', placeholder: 'Enter receipt head' },
+    {
+      name: 'amountType',
+      label: 'Amount Type',
+      type: 'select',
+      options: [
+        { value: 'Fixed', label: 'Fixed' },
+        { value: 'Percentage', label: 'Percentage' },
+      ],
+      validation: { required: 'Amount type is required' },
+    },
+    {
+      name: 'isRefundable',
+      label: 'Refundable',
+      type: 'select',
+      options: [
+        { value: 'Yes', label: 'Yes' },
+        { value: 'No', label: 'No' },
+      ],
+      validation: { required: 'Refundable selection is required' },
+    },
+    {
+      name: 'taxApplicable',
+      label: 'Tax Applicable',
+      type: 'select',
+      options: [
+        { value: 'Yes', label: 'Yes' },
+        { value: 'No', label: 'No' },
+      ],
+      validation: { required: 'Tax applicable selection is required' },
+    },
+    {
+      name: 'status',
+      label: 'Status',
+      type: 'select',
+      options: [
+        { value: 'Active', label: 'Active' },
+        { value: 'Inactive', label: 'Inactive' },
+      ],
+      validation: { required: 'Status is required' },
+    },
+    { name: 'description', label: 'Description', type: 'textarea', fullWidth: true, placeholder: 'Enter fee head description' },
+  ],
+  columns: [
+    { key: 'feeHeadName', label: 'Fee Head' },
+    { key: 'feeHeadCode', label: 'Code' },
+    { key: 'feeCategory', label: 'Category' },
+    { key: 'receiptHead', label: 'Receipt Head' },
+    { key: 'status', label: 'Status' },
+  ],
+};

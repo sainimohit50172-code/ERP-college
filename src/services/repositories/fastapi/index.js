@@ -6,7 +6,7 @@ function createFastApiRepo(resource) {
   const endpoint = getEndpoint(resource);
   return {
     list: async (params = {}) => {
-      const res = await api.get(`/${endpoint}`, { params });
+      const res = await api.get(`/${endpoint}/`, { params });
       return res.data;
     },
     get: async (id) => {
@@ -14,7 +14,7 @@ function createFastApiRepo(resource) {
       return res.data;
     },
     create: async (payload) => {
-      const res = await api.post(`/${endpoint}`, payload);
+      const res = await api.post(`/${endpoint}/`, payload);
       return res.data;
     },
     update: async (id, payload) => {

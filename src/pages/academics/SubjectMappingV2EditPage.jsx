@@ -64,17 +64,18 @@ function Badge({ children, className = '' }) {
 export default function SubjectMappingV2EditPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [mapping, setMapping] = useState(null);
-  const [groups, setGroups] = useState([]);
+  const [mapping] = useState(() => getMapping(id));
+  const [groups, setGroups] = useState(() => {
+    const demo = getMapping(id);
+    if (!demo) return [];
+    return [{ id: `group-${Date.now()}`, title: 'Subject Group 1', subjects: demo.subjects.map((subject, index) => ({ ...subject, sequence: index + 1 })) }];
+  });
 
   useEffect(() => {
     const demo = getMapping(id);
     if (!demo) {
       navigate('/settings/institute/academics/subject-college-mapping-v2', { replace: true });
-      return;
     }
-    setMapping(demo);
-    setGroups([{ id: `group-${Date.now()}`, title: 'Subject Group 1', subjects: demo.subjects.map((subject, index) => ({ ...subject, sequence: index + 1 })) }]);
   }, [id, navigate]);
 
   // Hide the global BackNavigationButton (rendered in RootLayout) for this page only.

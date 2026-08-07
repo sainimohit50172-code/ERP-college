@@ -37,7 +37,7 @@ export default function EditSubjectCollegeMappingPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const mode = location.pathname.includes('/view/') ? 'view' : 'edit';
-  const [mapping, setMapping] = useState(null);
+  const [mapping, setMapping] = useState(() => getMapping(params.id));
   const [search, setSearch] = useState('');
   const [errors, setErrors] = useState({});
 
@@ -45,21 +45,21 @@ export default function EditSubjectCollegeMappingPage() {
     const demo = getMapping(params.id);
     if (!demo) {
       navigate('/settings/institute/academics/subject-college-mapping', { replace: true });
-      return;
     }
-    setMapping(demo);
   }, [params.id, navigate]);
 
+  const activeMapping = mapping ?? getMapping(params.id);
+
   const filteredSubjects = useMemo(() => {
-    if (!mapping) return [];
+    if (!activeMapping) return [];
     const query = search.trim().toLowerCase();
-    if (!query) return mapping.subjects;
-    return mapping.subjects.filter((subject) =>
+    if (!query) return activeMapping.subjects;
+    return activeMapping.subjects.filter((subject) =>
       subject.subject.toLowerCase().includes(query)
       || subject.displayName.toLowerCase().includes(query)
       || subject.teacher.toLowerCase().includes(query),
     );
-  }, [mapping, search]);
+  }, [activeMapping, search]);
 
   const handleFieldChange = (field, value) => {
     setMapping((prev) => prev ? { ...prev, [field]: value } : prev);
@@ -101,12 +101,12 @@ export default function EditSubjectCollegeMappingPage() {
 
   const validate = () => {
     const nextErrors = {};
-    if (!mapping) return nextErrors;
-    if (!mapping.college) nextErrors.college = 'College is required';
-    if (!mapping.course) nextErrors.course = 'Course is required';
-    if (!mapping.semester) nextErrors.semester = 'Semester is required';
-    if (!mapping.section) nextErrors.section = 'Section is required';
-    mapping.subjects.forEach((subject, idx) => {
+    if (!activeMapping) return nextErrors;
+    if (!activeMapping.college) nextErrors.college = 'College is required';
+    if (!activeMapping.course) nextErrors.course = 'Course is required';
+    if (!activeMapping.semester) nextErrors.semester = 'Semester is required';
+    if (!activeMapping.section) nextErrors.section = 'Section is required';
+    activeMapping.subjects.forEach((subject, idx) => {
       if (!subject.subject) nextErrors[`subject-${idx}`] = 'Subject is required';
       if (!subject.teacher) nextErrors[`teacher-${idx}`] = 'Teacher is required';
       if (!Number.isFinite(subject.sequence) || subject.sequence < 1) nextErrors[`sequence-${idx}`] = 'Sequence must be numeric and positive';
@@ -127,7 +127,7 @@ export default function EditSubjectCollegeMappingPage() {
     window.alert(actionText);
   };
 
-  if (!mapping) {
+  if (!activeMapping) {
     return null;
   }
 
@@ -156,7 +156,7 @@ export default function EditSubjectCollegeMappingPage() {
             <div className="text-[12px] font-medium text-slate-500 mb-1">College</div>
             <SearchableSelect
               options={collegeSelectOptions}
-              value={mapping.college}
+              value={activeMapping.college}
               onChange={(value) => handleFieldChange('college', value)}
               placeholder="Select college"
             />
@@ -165,7 +165,7 @@ export default function EditSubjectCollegeMappingPage() {
             <div className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">Select Course</div>
             <SearchableSelect
               options={courseSelectOptions}
-              value={mapping.course}
+              value={activeMapping.course}
               onChange={(value) => handleFieldChange('course', value)}
               placeholder="Select course"
             />
@@ -174,7 +174,7 @@ export default function EditSubjectCollegeMappingPage() {
             <div className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">Semester</div>
             <SearchableSelect
               options={semesterSelectOptions}
-              value={mapping.semester}
+              value={activeMapping.semester}
               onChange={(value) => handleFieldChange('semester', value)}
               placeholder="Select semester"
             />
@@ -183,7 +183,7 @@ export default function EditSubjectCollegeMappingPage() {
             <div className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">Select Section</div>
             <SearchableSelect
               options={sectionSelectOptions}
-              value={mapping.section}
+              value={activeMapping.section}
               onChange={(value) => handleFieldChange('section', value)}
               placeholder="Select section"
             />
@@ -205,7 +205,7 @@ export default function EditSubjectCollegeMappingPage() {
             <div className="text-[12px] font-medium text-slate-500 mb-1">College Teacher</div>
             <TeacherSelect
               options={teacherSelectOptions}
-              value={mapping.collegeTeacher}
+              value={activeMapping.collegeTeacher}
               onChange={(value) => handleFieldChange('collegeTeacher', value)}
             />
           </div>
@@ -213,7 +213,7 @@ export default function EditSubjectCollegeMappingPage() {
             <div className="text-[12px] font-medium text-slate-500 mb-1">Select Coordinator</div>
             <TeacherSelect
               options={coordinatorSelectOptions}
-              value={mapping.coordinator}
+              value={activeMapping.coordinator}
               onChange={(value) => handleFieldChange('coordinator', value)}
             />
           </div>

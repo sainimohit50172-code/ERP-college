@@ -66,6 +66,10 @@ export default function SalarySlipPage() {
     setCurrentPage(1);
   };
 
+  const handleViewSlip = (record) => {
+    console.info('Viewing salary slip', record?.code);
+  };
+
   return (
     <div className="min-h-[calc(100vh-88px)] overflow-hidden bg-[#F8FAFC] py-6 font-sans">
       <div className="space-y-4">

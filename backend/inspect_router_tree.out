@@ -1,0 +1,291 @@
+﻿app.router.routes count: 58
+[0] Route path='/api/v1/openapi.json' name='openapi' methods={'HEAD', 'GET'} prefix=None
+[1] Route path='/docs' name='swagger_ui_html' methods={'HEAD', 'GET'} prefix=None
+[2] Route path='/docs/oauth2-redirect' name='swagger_ui_redirect' methods={'HEAD', 'GET'} prefix=None
+[3] Route path='/redoc' name='redoc_html' methods={'HEAD', 'GET'} prefix=None
+[4] _IncludedRouter path=None name=None methods=None prefix=None
+[5] _IncludedRouter path=None name=None methods=None prefix=None
+[6] _IncludedRouter path=None name=None methods=None prefix=None
+[7] _IncludedRouter path=None name=None methods=None prefix=None
+[8] _IncludedRouter path=None name=None methods=None prefix=None
+[9] _IncludedRouter path=None name=None methods=None prefix=None
+[10] _IncludedRouter path=None name=None methods=None prefix=None
+[11] _IncludedRouter path=None name=None methods=None prefix=None
+[12] _IncludedRouter path=None name=None methods=None prefix=None
+[13] _IncludedRouter path=None name=None methods=None prefix=None
+[14] _IncludedRouter path=None name=None methods=None prefix=None
+[15] _IncludedRouter path=None name=None methods=None prefix=None
+[16] _IncludedRouter path=None name=None methods=None prefix=None
+[17] _IncludedRouter path=None name=None methods=None prefix=None
+[18] _IncludedRouter path=None name=None methods=None prefix=None
+[19] _IncludedRouter path=None name=None methods=None prefix=None
+[20] _IncludedRouter path=None name=None methods=None prefix=None
+[21] _IncludedRouter path=None name=None methods=None prefix=None
+[22] _IncludedRouter path=None name=None methods=None prefix=None
+[23] _IncludedRouter path=None name=None methods=None prefix=None
+[24] _IncludedRouter path=None name=None methods=None prefix=None
+[25] _IncludedRouter path=None name=None methods=None prefix=None
+[26] _IncludedRouter path=None name=None methods=None prefix=None
+[27] _IncludedRouter path=None name=None methods=None prefix=None
+[28] _IncludedRouter path=None name=None methods=None prefix=None
+[29] _IncludedRouter path=None name=None methods=None prefix=None
+[30] _IncludedRouter path=None name=None methods=None prefix=None
+[31] _IncludedRouter path=None name=None methods=None prefix=None
+[32] _IncludedRouter path=None name=None methods=None prefix=None
+[33] _IncludedRouter path=None name=None methods=None prefix=None
+[34] _IncludedRouter path=None name=None methods=None prefix=None
+[35] _IncludedRouter path=None name=None methods=None prefix=None
+[36] _IncludedRouter path=None name=None methods=None prefix=None
+[37] _IncludedRouter path=None name=None methods=None prefix=None
+[38] _IncludedRouter path=None name=None methods=None prefix=None
+[39] _IncludedRouter path=None name=None methods=None prefix=None
+[40] _IncludedRouter path=None name=None methods=None prefix=None
+[41] _IncludedRouter path=None name=None methods=None prefix=None
+[42] _IncludedRouter path=None name=None methods=None prefix=None
+[43] _IncludedRouter path=None name=None methods=None prefix=None
+[44] _IncludedRouter path=None name=None methods=None prefix=None
+[45] _IncludedRouter path=None name=None methods=None prefix=None
+[46] _IncludedRouter path=None name=None methods=None prefix=None
+[47] _IncludedRouter path=None name=None methods=None prefix=None
+[48] _IncludedRouter path=None name=None methods=None prefix=None
+[49] _IncludedRouter path=None name=None methods=None prefix=None
+[50] _IncludedRouter path=None name=None methods=None prefix=None
+[51] _IncludedRouter path=None name=None methods=None prefix=None
+[52] _IncludedRouter path=None name=None methods=None prefix=None
+[53] _IncludedRouter path=None name=None methods=None prefix=None
+[54] Mount path='/uploads' name='uploads' methods=None prefix=None
+[55] APIRoute path='/health' name='health_check' methods={'GET'} prefix=None
+[56] APIRoute path='/api/v1/health' name='health_check_v1' methods={'GET'} prefix=None
+[57] APIRoute path='/api/health' name='health_check_api' methods={'GET'} prefix=None
+
+app.routes count: 58
+[0] Route path='/api/v1/openapi.json' name='openapi' methods={'HEAD', 'GET'} prefix=None
+[1] Route path='/docs' name='swagger_ui_html' methods={'HEAD', 'GET'} prefix=None
+[2] Route path='/docs/oauth2-redirect' name='swagger_ui_redirect' methods={'HEAD', 'GET'} prefix=None
+[3] Route path='/redoc' name='redoc_html' methods={'HEAD', 'GET'} prefix=None
+[4] _IncludedRouter path=None name=None methods=None prefix=None
+[5] _IncludedRouter path=None name=None methods=None prefix=None
+[6] _IncludedRouter path=None name=None methods=None prefix=None
+[7] _IncludedRouter path=None name=None methods=None prefix=None
+[8] _IncludedRouter path=None name=None methods=None prefix=None
+[9] _IncludedRouter path=None name=None methods=None prefix=None
+[10] _IncludedRouter path=None name=None methods=None prefix=None
+[11] _IncludedRouter path=None name=None methods=None prefix=None
+[12] _IncludedRouter path=None name=None methods=None prefix=None
+[13] _IncludedRouter path=None name=None methods=None prefix=None
+[14] _IncludedRouter path=None name=None methods=None prefix=None
+[15] _IncludedRouter path=None name=None methods=None prefix=None
+[16] _IncludedRouter path=None name=None methods=None prefix=None
+[17] _IncludedRouter path=None name=None methods=None prefix=None
+[18] _IncludedRouter path=None name=None methods=None prefix=None
+[19] _IncludedRouter path=None name=None methods=None prefix=None
+[20] _IncludedRouter path=None name=None methods=None prefix=None
+[21] _IncludedRouter path=None name=None methods=None prefix=None
+[22] _IncludedRouter path=None name=None methods=None prefix=None
+[23] _IncludedRouter path=None name=None methods=None prefix=None
+[24] _IncludedRouter path=None name=None methods=None prefix=None
+[25] _IncludedRouter path=None name=None methods=None prefix=None
+[26] _IncludedRouter path=None name=None methods=None prefix=None
+[27] _IncludedRouter path=None name=None methods=None prefix=None
+[28] _IncludedRouter path=None name=None methods=None prefix=None
+[29] _IncludedRouter path=None name=None methods=None prefix=None
+[30] _IncludedRouter path=None name=None methods=None prefix=None
+[31] _IncludedRouter path=None name=None methods=None prefix=None
+[32] _IncludedRouter path=None name=None methods=None prefix=None
+[33] _IncludedRouter path=None name=None methods=None prefix=None
+[34] _IncludedRouter path=None name=None methods=None prefix=None
+[35] _IncludedRouter path=None name=None methods=None prefix=None
+[36] _IncludedRouter path=None name=None methods=None prefix=None
+[37] _IncludedRouter path=None name=None methods=None prefix=None
+[38] _IncludedRouter path=None name=None methods=None prefix=None
+[39] _IncludedRouter path=None name=None methods=None prefix=None
+[40] _IncludedRouter path=None name=None methods=None prefix=None
+[41] _IncludedRouter path=None name=None methods=None prefix=None
+[42] _IncludedRouter path=None name=None methods=None prefix=None
+[43] _IncludedRouter path=None name=None methods=None prefix=None
+[44] _IncludedRouter path=None name=None methods=None prefix=None
+[45] _IncludedRouter path=None name=None methods=None prefix=None
+[46] _IncludedRouter path=None name=None methods=None prefix=None
+[47] _IncludedRouter path=None name=None methods=None prefix=None
+[48] _IncludedRouter path=None name=None methods=None prefix=None
+[49] _IncludedRouter path=None name=None methods=None prefix=None
+[50] _IncludedRouter path=None name=None methods=None prefix=None
+[51] _IncludedRouter path=None name=None methods=None prefix=None
+[52] _IncludedRouter path=None name=None methods=None prefix=None
+[53] _IncludedRouter path=None name=None methods=None prefix=None
+[54] Mount path='/uploads' name='uploads' methods=None prefix=None
+[55] APIRoute path='/health' name='health_check' methods={'GET'} prefix=None
+[56] APIRoute path='/api/v1/health' name='health_check_v1' methods={'GET'} prefix=None
+[57] APIRoute path='/api/health' name='health_check_api' methods={'GET'} prefix=None
+
+TestClient POSTs:
+2026-08-05 12:27:33,211 - college_erp - INFO - POST /api/v1/transports/transport-routes/
+2026-08-05 12:27:34,231 - college_erp - ERROR - Request failed: POST /api/v1/transports/transport-routes/ -> 'status' is an invalid keyword argument for Route
+Traceback (most recent call last):
+  File "D:\Users\pop\Desktop\new pr\backend\app\main.py", line 127, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\starlette\middleware\base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\starlette\middleware\cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 2543, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 1700, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 2598, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 1711, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 1700, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 2598, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 1720, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 1239, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 344, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Users\pop\Desktop\new pr\backend\app\api\v1\shared\router_factory.py", line 268, in create_entity
+    entity = model_class(**filtered_payload)
+  File "<string>", line 4, in __init__
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\state.py", line 596, in _initialize_instance
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\util\langhelpers.py", line 121, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\state.py", line 594, in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\decl_base.py", line 2179, in _declarative_constructor
+    raise TypeError(
+        "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+    )
+TypeError: 'status' is an invalid keyword argument for Route
+POST /api/v1/transports/transport-routes/ EXC 'status' is an invalid keyword argument for Route
+2026-08-05 12:27:34,243 - college_erp - INFO - POST /api/transports/transport-routes/
+2026-08-05 12:27:34,294 - college_erp - ERROR - Request failed: POST /api/transports/transport-routes/ -> 'status' is an invalid keyword argument for Route
+Traceback (most recent call last):
+  File "D:\Users\pop\Desktop\new pr\backend\app\main.py", line 127, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\starlette\middleware\base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\starlette\middleware\cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 2543, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 1700, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 2598, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 1711, in _handle_selected
+    await route.handle(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 1700, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 2598, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 1720, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 1239, in handle
+    await app(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 150, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 136, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 690, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py", line 344, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Users\pop\Desktop\new pr\backend\app\api\v1\shared\router_factory.py", line 268, in create_entity
+    entity = model_class(**filtered_payload)
+  File "<string>", line 4, in __init__
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\state.py", line 596, in _initialize_instance
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\util\langhelpers.py", line 121, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\state.py", line 594, in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pop\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\decl_base.py", line 2179, in _declarative_constructor
+    raise TypeError(
+        "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+    )
+TypeError: 'status' is an invalid keyword argument for Route
+POST /api/transports/transport-routes/ EXC 'status' is an invalid keyword argument for Route
+2026-08-05 12:27:34,302 - college_erp - INFO - POST /api/v1/transports/transport-routes
+2026-08-05 12:27:34,736 - college_erp - INFO - Completed POST /api/v1/transports/transport-routes with 405
+2026-08-05 12:27:34,737 - httpx - INFO - HTTP Request: POST http://testserver/api/v1/transports/transport-routes "HTTP/1.1 405 Method Not Allowed"
+POST /api/v1/transports/transport-routes 405 {"detail":"Method Not Allowed"}
+2026-08-05 12:27:34,739 - college_erp - INFO - POST /api/transports/transport-routes
+2026-08-05 12:27:34,742 - college_erp - INFO - Completed POST /api/transports/transport-routes with 405
+2026-08-05 12:27:34,743 - httpx - INFO - HTTP Request: POST http://testserver/api/transports/transport-routes "HTTP/1.1 405 Method Not Allowed"
+POST /api/transports/transport-routes 405 {"detail":"Method Not Allowed"}
+2026-08-05 12:27:34,744 - college_erp - INFO - POST /api/v1/transport-routes/
+2026-08-05 12:27:34,750 - college_erp - INFO - Completed POST /api/v1/transport-routes/ with 404
+2026-08-05 12:27:34,751 - httpx - INFO - HTTP Request: POST http://testserver/api/v1/transport-routes/ "HTTP/1.1 404 Not Found"
+POST /api/v1/transport-routes/ 404 {"detail":"Not Found"}
+2026-08-05 12:27:34,753 - college_erp - INFO - POST /api/transport-routes/
+2026-08-05 12:27:34,758 - college_erp - INFO - Completed POST /api/transport-routes/ with 404
+2026-08-05 12:27:34,759 - httpx - INFO - HTTP Request: POST http://testserver/api/transport-routes/ "HTTP/1.1 404 Not Found"
+POST /api/transport-routes/ 404 {"detail":"Not Found"}
+2026-08-05 12:27:34,761 - college_erp - INFO - POST /api/v1/transports/transport-vehicles/
+2026-08-05 12:27:34,766 - college_erp - INFO - Completed POST /api/v1/transports/transport-vehicles/ with 422
+2026-08-05 12:27:34,767 - httpx - INFO - HTTP Request: POST http://testserver/api/v1/transports/transport-vehicles/ "HTTP/1.1 422 Unprocessable Entity"
+POST /api/v1/transports/transport-vehicles/ 422 {"success":false,"message":"Validation error","data":[{"loc":["body","vehicle_number"],"msg":"Field required","type":"missing"},{"loc":["body","vehicle_type"],"msg":"Field required","type":"missing"}]}
+2026-08-05 12:27:34,768 - college_erp - INFO - POST /api/transports/transport-vehicles/
+2026-08-05 12:27:34,772 - college_erp - INFO - Completed POST /api/transports/transport-vehicles/ with 422
+2026-08-05 12:27:34,773 - httpx - INFO - HTTP Request: POST http://testserver/api/transports/transport-vehicles/ "HTTP/1.1 422 Unprocessable Entity"
+POST /api/transports/transport-vehicles/ 422 {"success":false,"message":"Validation error","data":[{"loc":["body","vehicle_number"],"msg":"Field required","type":"missing"},{"loc":["body","vehicle_type"],"msg":"Field required","type":"missing"}]}

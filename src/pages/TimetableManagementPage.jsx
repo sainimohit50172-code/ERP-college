@@ -2,6 +2,7 @@
 import { FaCog, FaCopy, FaFileExport, FaPlus, FaPrint, FaRedo, FaUserTie, FaTimes, FaPen } from 'react-icons/fa';
 import Breadcrumb from '../components/ui/Breadcrumb.jsx';
 import { useResourceList } from '../hooks/useResourceHooks';
+import { useERP } from '../services/ERPContext.jsx';
 
 const PAGE_SIZE_OPTIONS = [5, 10, 20];
 const defaultFilters = {
@@ -12,8 +13,8 @@ const defaultFilters = {
   status: 'All',
 };
 
-const filterOptions = {
-  college: ['All', 'Roorkee College of Smart Computing'],
+const COLLEGE_FILTER_FALLBACK = ['Roorkee College of Smart Computing'];
+const BASE_FILTER_OPTIONS = {
   course: ['All', 'B.Tech. Hons. CSE', 'BCA', 'BCA AI-ML', 'MCA'],
   semester: ['All', 'Sem 3', 'Sem 5'],
   section: ['All', 'A', 'B', 'C'],
@@ -169,6 +170,13 @@ function createBlankSchedule(lectureCount = 7) {
 }
 
 export default function TimetableManagementPage() {
+  const { colleges = [] } = useERP();
+  const filterOptions = useMemo(() => {
+    const source = colleges.length ? colleges : COLLEGE_FILTER_FALLBACK;
+    const collegeOptions = ['All', ...source.map((college) => (typeof college === 'string' ? college : college.name || college.collegeName || college.label || String(college.id)))];
+    return { college: collegeOptions, ...BASE_FILTER_OPTIONS };
+  }, [colleges]);
+
   const { data: timetablesData = { items: [] } } = useResourceList('timetables', { page: 1, pageSize: 200 });
   const dataItems = Array.isArray(timetablesData?.items) && timetablesData.items.length > 0 ? timetablesData.items : defaultRows;
   const [rows, setRows] = useState(dataItems);

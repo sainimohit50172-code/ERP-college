@@ -8,6 +8,7 @@ import Button from '../components/ui/Button.jsx';
 import ConfirmDialog from '../components/ui/ConfirmDialog.jsx';
 import ERPFixedSwitch from '../components/ui/ERPFixedSwitch.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
+import { normalizeApiCollection } from '../utils/normalizeApiCollection.js';
 
 const defaultValues = {
   name: '',
@@ -42,7 +43,7 @@ export default function DmcStudentAppPage() {
     setIsLoading(true);
     try {
       const response = await api.get('/coe/dmc-student-app');
-      const loadedItems = response.data?.data || [];
+      const loadedItems = normalizeApiCollection(response.data?.data ?? response.data ?? []);
       setItems(loadedItems);
     } catch (error) {
       toast.error(error?.response?.data?.detail || 'Unable to load DMC student app settings.');
@@ -55,7 +56,8 @@ export default function DmcStudentAppPage() {
     setIsGlobalLoading(true);
     try {
       const response = await api.get('/coe/dmc-student-app/global');
-      const enabled = response.data?.data?.enabled;
+      const payload = response.data?.data ?? response.data ?? {};
+      const enabled = typeof payload?.enabled === 'boolean' ? payload.enabled : false;
       const value = typeof enabled === 'boolean' ? enabled : false;
       setGlobalEnabled(value);
       setSavedGlobalEnabled(value);

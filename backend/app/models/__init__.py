@@ -35,10 +35,7 @@ from app.models.employees.models import (
 )
 from app.models.examinations.models import Exam, ExamResult
 from app.models.exam_calendar.models import ExamCalendar
-from app.models.exam_form_preferences.models import ExamFormHeaderFooter, ExamFormPreference
-from app.models.exam_form_preferences.settings_models import CoeExamFormPreference, CoeExamFormPreferenceSetting
-from app.models.exam_form_preferences.headers_footers import CoeExamFormHeaderFooter
-from app.models.exam_fee_setup import CoeAdmitCardPreferences, CoeFeeHead, CoeReceiptConfiguration, CoeMaskingNumberSetup, DmcStudentApp
+from app.models.exam_fee_setup import CoeFeeHeadGroup
 from app.models.finance.models import (
     Budget,
     ChartAccount,
@@ -91,16 +88,6 @@ __all__ = [
     "EmailVerification",
     "Employee",
     "ExamCalendar",
-    "ExamFormHeaderFooter",
-    "ExamFormPreference",
-    "CoeExamFormPreference",
-    "CoeExamFormPreferenceSetting",
-    "CoeExamFormHeaderFooter",
-    "CoeReceiptConfiguration",
-    "CoeFeeHead",
-    "CoeAdmitCardPreferences",
-    "CoeMaskingNumberSetup",
-    "DmcStudentApp",
     "Exam",
     "ExamResult",
     "Fine",
@@ -149,4 +136,5 @@ __all__ = [
     "Supplier",
     "Visitor",
     "Warehouse",
+    "CoeFeeHeadGroup",
 ]

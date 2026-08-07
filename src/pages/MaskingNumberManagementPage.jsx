@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Plus, RefreshCw, Sparkles, Trash2 } from 'lucide-react';
+import { useERP } from '../services/ERPContext.jsx';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useResourceList } from '../hooks/useResourceHooks.js';
@@ -30,26 +31,47 @@ const AUTO_FORM_DEFAULTS = {
   description: '',
 };
 
+const EDIT_FORM_DEFAULTS = {
+  collegeId: '',
+  subjectId: '',
+  name: '',
+  prefix: '',
+  suffix: '',
+  generationType: 'Sequence',
+  startNumber: '',
+  endNumber: '',
+  currentNumber: '',
+  description: '',
+  status: 'Active',
+};
+
 export default function MaskingNumberManagementPage() {
   const navigate = useNavigate();
-  const { data: collegesData = {} } = useResourceList('colleges', { page: 1, pageSize: 200 });
+  const { colleges = [] } = useERP();
   const { data: subjectsData = {} } = useResourceList('subjects', { page: 1, pageSize: 200 });
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [remove, setRemove] = useState(null);
   const [showAutoModal, setShowAutoModal] = useState(false);
   const [isSavingAuto, setIsSavingAuto] = useState(false);
+  const [isSavingEdit, setIsSavingEdit] = useState(false);
+  const [editItem, setEditItem] = useState(null);
+  const [editForm, setEditForm] = useState(EDIT_FORM_DEFAULTS);
+  const [editErrors, setEditErrors] = useState({});
   const [filter, setFilter] = useState({ college: '', subject: '', status: 'all', search: '' });
   const [autoForm, setAutoForm] = useState(AUTO_FORM_DEFAULTS);
   const [autoErrors, setAutoErrors] = useState({});
 
   const collegeOptions = useMemo(() => [
     { value: '', label: 'All colleges' },
-    ...(collegesData?.items || []).map((college) => ({
-      value: String(college.id ?? college.name ?? ''),
-      label: college.name || college.collegeName || college.label || `College ${college.id}`,
-    })),
-  ], [collegesData]);
+    ...colleges.map((college) => {
+      const label = typeof college === 'string' ? college : college.name || college.collegeName || college.label || String(college.id);
+      return {
+        value: String(label),
+        label,
+      };
+    }),
+  ], [colleges]);
 
   const subjectOptions = useMemo(() => [
     { value: '', label: 'All subjects' },
@@ -177,6 +199,86 @@ export default function MaskingNumberManagementPage() {
     return `${autoForm.prefix || ''}${startNumber} → ${endNumber}${autoForm.suffix || ''}`;
   };
 
+  const openEditModal = (item) => {
+    setEditItem(item);
+    setEditForm({
+      collegeId: item.collegeId?.toString() || item.college?.toString() || '',
+      subjectId: item.subjectId?.toString() || item.subject?.toString() || '',
+      name: item.name || '',
+      prefix: item.prefix || '',
+      suffix: item.suffix || '',
+      generationType: item.generationType || 'Sequence',
+      startNumber: item.startNumber?.toString() || '',
+      endNumber: item.endNumber?.toString() || '',
+      currentNumber: item.currentNumber?.toString() || '',
+      description: item.description || '',
+      status: item.status || 'Active',
+    });
+    setEditErrors({});
+  };
+
+  const closeEditModal = () => {
+    setEditItem(null);
+    setEditForm(EDIT_FORM_DEFAULTS);
+    setEditErrors({});
+  };
+
+  const handleEditInput = (field, value) => {
+    setEditForm((current) => ({ ...current, [field]: value }));
+    setEditErrors((current) => ({ ...current, [field]: undefined }));
+  };
+
+  const validateEditForm = () => {
+    const nextErrors = {};
+    if (!editForm.name.trim()) nextErrors.name = 'Name is required.';
+    if (!editForm.startNumber) nextErrors.startNumber = 'Start number is required.';
+    if (!editForm.endNumber) nextErrors.endNumber = 'End number is required.';
+    const start = Number(editForm.startNumber);
+    const end = Number(editForm.endNumber);
+    if (editForm.startNumber && editForm.endNumber && (!Number.isFinite(start) || !Number.isFinite(end) || start <= 0 || end <= 0)) {
+      nextErrors.startNumber = nextErrors.startNumber || 'Start and End numbers must be valid positive values.';
+    }
+    if (start > end) nextErrors.endNumber = 'End number must be greater than or equal to Start number.';
+    if (editForm.currentNumber) {
+      const current = Number(editForm.currentNumber);
+      if (!Number.isFinite(current) || current < start || current > end) {
+        nextErrors.currentNumber = 'Current number must be between Start and End.';
+      }
+    }
+    setEditErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  };
+
+  const saveEditItem = async () => {
+    if (!editItem) return;
+    if (!validateEditForm()) return;
+
+    setIsSavingEdit(true);
+    const payload = {
+      name: editForm.name.trim(),
+      prefix: editForm.prefix.trim() || null,
+      suffix: editForm.suffix.trim() || null,
+      startNumber: Number(editForm.startNumber),
+      endNumber: Number(editForm.endNumber),
+      currentNumber: editForm.currentNumber ? Number(editForm.currentNumber) : undefined,
+      description: editForm.description.trim() || null,
+      status: editForm.status,
+      generationType: editForm.generationType,
+    };
+
+    try {
+      const response = await api.put(`/coe/masking-number-setup/${editItem.id}`, payload);
+      const updatedItem = response.data?.data || { ...editItem, ...payload };
+      setItems((current) => current.map((item) => (item.id === editItem.id ? updatedItem : item)));
+      toast.success('Masking number setup updated successfully.');
+      closeEditModal();
+    } catch (error) {
+      toast.error(error?.response?.data?.detail || error?.message || 'Unable to update masking number setup.');
+    } finally {
+      setIsSavingEdit(false);
+    }
+  };
+
   return (
     <div className="min-h-[calc(100vh-7rem)] rounded-[24px] border border-slate-200/80 bg-[linear-gradient(135deg,#f8fafc_0%,#ffffff_55%,#f8fafc_100%)] p-3 shadow-[0_18px_45px_rgba(15,23,42,0.06)] lg:p-5">
       <div className="rounded-[22px] border border-slate-200/70 bg-white/95 p-4 shadow-inner sm:p-6">
@@ -287,33 +389,49 @@ export default function MaskingNumberManagementPage() {
 
         <div className="mt-6 overflow-hidden rounded-[24px] border border-slate-200/70 bg-white shadow-sm">
           <div className="overflow-x-auto">
-            <table className="min-w-full border-separate text-left text-sm text-slate-900" style={{ borderSpacing: '0 1rem' }}>
-              <thead className="erp-table-header text-white">
+            <table className="min-w-full table-fixed divide-y divide-slate-200 text-left text-sm text-slate-900">
+              <colgroup>
+                <col className="w-12" />
+                <col className="w-[18%]" />
+                <col className="w-[12%]" />
+                <col className="w-[12%]" />
+                <col className="w-[12%]" />
+                <col className="w-[12%]" />
+                <col className="w-[10%]" />
+                <col className="w-[14%]" />
+              </colgroup>
+              <thead className="bg-slate-900 text-xs uppercase tracking-[0.18em] text-white">
                 <tr>
-                  <th className="whitespace-nowrap px-4 py-4 text-left text-xs uppercase tracking-[0.24em]">#</th>
-                  <th className="whitespace-nowrap px-4 py-4 text-left text-xs uppercase tracking-[0.24em]">Name</th>
-                  <th className="whitespace-nowrap px-4 py-4 text-left text-xs uppercase tracking-[0.24em]">Range</th>
-                  <th className="whitespace-nowrap px-4 py-4 text-left text-xs uppercase tracking-[0.24em]">Current</th>
-                  <th className="whitespace-nowrap px-4 py-4 text-left text-xs uppercase tracking-[0.24em]">Status</th>
-                  <th className="whitespace-nowrap px-4 py-4 text-left text-xs uppercase tracking-[0.24em]">Actions</th>
+                  <th className="whitespace-nowrap border-b border-slate-700 px-4 py-4 font-semibold">#</th>
+                  <th className="whitespace-nowrap border-b border-slate-700 px-4 py-4 font-semibold">Name</th>
+                  <th className="whitespace-nowrap border-b border-slate-700 px-4 py-4 font-semibold">Prefix</th>
+                  <th className="whitespace-nowrap border-b border-slate-700 px-4 py-4 font-semibold">Suffix</th>
+                  <th className="whitespace-nowrap border-b border-slate-700 px-4 py-4 font-semibold">Start</th>
+                  <th className="whitespace-nowrap border-b border-slate-700 px-4 py-4 font-semibold">End</th>
+                  <th className="whitespace-nowrap border-b border-slate-700 px-4 py-4 font-semibold">Current</th>
+                  <th className="whitespace-nowrap border-b border-slate-700 px-4 py-4 font-semibold">Status</th>
+                  <th className="whitespace-nowrap border-b border-slate-700 px-4 py-4 font-semibold">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white">
                 {isLoading ? (
                   <tr>
-                    <td colSpan="6" className="py-20 text-center text-sm text-slate-500">Loading masking number settings...</td>
+                    <td colSpan="9" className="py-20 text-center text-sm text-slate-500">Loading masking number settings...</td>
                   </tr>
                 ) : filteredItems.length === 0 ? (
                   <tr>
-                    <td colSpan="6" className="py-20 text-center text-sm font-semibold text-slate-500">No masking number settings found.</td>
+                    <td colSpan="9" className="py-20 text-center text-sm font-semibold text-slate-500">No masking number settings found.</td>
                   </tr>
                 ) : (
                   filteredItems.map((item, index) => (
                     <tr key={item.id} className="border-y border-slate-200 transition hover:bg-slate-50">
                       <td className="px-4 py-4 font-semibold text-slate-700">{index + 1}</td>
                       <td className="px-4 py-4 text-slate-700">{item.name}</td>
-                      <td className="px-4 py-4 text-slate-700">{`${item.prefix || ''}${item.startNumber} → ${item.endNumber}${item.suffix || ''}`}</td>
-                      <td className="px-4 py-4 text-slate-700">{item.currentNumber}</td>
+                      <td className="px-4 py-4 text-slate-700 whitespace-nowrap">{item.prefix || '—'}</td>
+                      <td className="px-4 py-4 text-slate-700 whitespace-nowrap">{item.suffix || '—'}</td>
+                      <td className="px-4 py-4 text-slate-700 whitespace-nowrap">{item.startNumber}</td>
+                      <td className="px-4 py-4 text-slate-700 whitespace-nowrap">{item.endNumber}</td>
+                      <td className="px-4 py-4 text-slate-700 whitespace-nowrap">{item.currentNumber}</td>
                       <td className="px-4 py-4 text-slate-700"><StatusBadge status={item.status} /></td>
                       <td className="px-4 py-4">
                         <div className="flex flex-wrap gap-2">
@@ -323,6 +441,13 @@ export default function MaskingNumberManagementPage() {
                             className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50"
                           >
                             {item.status === 'Active' ? 'Deactivate' : 'Activate'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => openEditModal(item)}
+                            className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50"
+                          >
+                            Edit
                           </button>
                           <button
                             type="button"
@@ -341,6 +466,122 @@ export default function MaskingNumberManagementPage() {
           </div>
         </div>
       </div>
+
+      <Modal
+        title="Edit Masking Number Setup"
+        isOpen={Boolean(editItem)}
+        onClose={closeEditModal}
+        footer={(
+          <>
+            <Button variant="secondary" onClick={closeEditModal}>
+              Cancel
+            </Button>
+            <Button variant="primary" isLoading={isSavingEdit} onClick={saveEditItem}>
+              Save changes
+            </Button>
+          </>
+        )}
+      >
+        {editItem ? (
+          <div className="grid gap-4 lg:grid-cols-2">
+            <label className="grid gap-2 text-sm text-slate-700">
+              <span className="font-semibold uppercase tracking-[0.24em] text-slate-500">Name *</span>
+              <input
+                type="text"
+                value={editForm.name}
+                onChange={(event) => handleEditInput('name', event.target.value)}
+                className="h-10 w-full rounded-[8px] border border-slate-200 bg-slate-50 px-3 text-sm text-slate-900 outline-none focus:border-emerald-500"
+              />
+              {editErrors.name && <p className="text-xs text-rose-600">{editErrors.name}</p>}
+            </label>
+            <label className="grid gap-2 text-sm text-slate-700">
+              <span className="font-semibold uppercase tracking-[0.24em] text-slate-500">Generation Type</span>
+              <select
+                value={editForm.generationType}
+                onChange={(event) => handleEditInput('generationType', event.target.value)}
+                className="h-10 w-full rounded-[8px] border border-slate-200 bg-slate-50 px-3 text-sm text-slate-900 outline-none focus:border-emerald-500"
+              >
+                <option value="Sequence">Sequence</option>
+                <option value="Random">Random</option>
+              </select>
+            </label>
+            <label className="grid gap-2 text-sm text-slate-700">
+              <span className="font-semibold uppercase tracking-[0.24em] text-slate-500">Prefix</span>
+              <input
+                type="text"
+                value={editForm.prefix}
+                onChange={(event) => handleEditInput('prefix', event.target.value)}
+                className="h-10 w-full rounded-[8px] border border-slate-200 bg-slate-50 px-3 text-sm text-slate-900 outline-none focus:border-emerald-500"
+              />
+            </label>
+            <label className="grid gap-2 text-sm text-slate-700">
+              <span className="font-semibold uppercase tracking-[0.24em] text-slate-500">Suffix</span>
+              <input
+                type="text"
+                value={editForm.suffix}
+                onChange={(event) => handleEditInput('suffix', event.target.value)}
+                className="h-10 w-full rounded-[8px] border border-slate-200 bg-slate-50 px-3 text-sm text-slate-900 outline-none focus:border-emerald-500"
+              />
+            </label>
+            <label className="grid gap-2 text-sm text-slate-700">
+              <span className="font-semibold uppercase tracking-[0.24em] text-slate-500">Start Number *</span>
+              <input
+                type="number"
+                min="1"
+                value={editForm.startNumber}
+                onChange={(event) => handleEditInput('startNumber', event.target.value)}
+                className="h-10 w-full rounded-[8px] border border-slate-200 bg-slate-50 px-3 text-sm text-slate-900 outline-none focus:border-emerald-500"
+              />
+              {editErrors.startNumber && <p className="text-xs text-rose-600">{editErrors.startNumber}</p>}
+            </label>
+            <label className="grid gap-2 text-sm text-slate-700">
+              <span className="font-semibold uppercase tracking-[0.24em] text-slate-500">End Number *</span>
+              <input
+                type="number"
+                min="1"
+                value={editForm.endNumber}
+                onChange={(event) => handleEditInput('endNumber', event.target.value)}
+                className="h-10 w-full rounded-[8px] border border-slate-200 bg-slate-50 px-3 text-sm text-slate-900 outline-none focus:border-emerald-500"
+              />
+              {editErrors.endNumber && <p className="text-xs text-rose-600">{editErrors.endNumber}</p>}
+            </label>
+            <label className="grid gap-2 text-sm text-slate-700">
+              <span className="font-semibold uppercase tracking-[0.24em] text-slate-500">Current Number</span>
+              <input
+                type="number"
+                min="1"
+                value={editForm.currentNumber}
+                onChange={(event) => handleEditInput('currentNumber', event.target.value)}
+                className="h-10 w-full rounded-[8px] border border-slate-200 bg-slate-50 px-3 text-sm text-slate-900 outline-none focus:border-emerald-500"
+              />
+              {editErrors.currentNumber && <p className="text-xs text-rose-600">{editErrors.currentNumber}</p>}
+            </label>
+            <label className="lg:col-span-2 grid gap-2 text-sm text-slate-700">
+              <span className="font-semibold uppercase tracking-[0.24em] text-slate-500">Description</span>
+              <textarea
+                rows="4"
+                value={editForm.description}
+                onChange={(event) => handleEditInput('description', event.target.value)}
+                className="w-full rounded-[8px] border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none focus:border-emerald-500"
+              />
+            </label>
+            <label className="lg:col-span-2 grid gap-2 text-sm text-slate-700">
+              <span className="font-semibold uppercase tracking-[0.24em] text-slate-500">Status</span>
+              <select
+                value={editForm.status}
+                onChange={(event) => handleEditInput('status', event.target.value)}
+                className="h-10 w-full rounded-[8px] border border-slate-200 bg-slate-50 px-3 text-sm text-slate-900 outline-none focus:border-emerald-500"
+              >
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+                <option value="Draft">Draft</option>
+              </select>
+            </label>
+          </div>
+        ) : (
+          <p className="text-sm text-slate-600">Select a row to edit.</p>
+        )}
+      </Modal>
 
       <Modal
         title="Auto Generate Masking Numbers"

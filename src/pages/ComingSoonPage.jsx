@@ -32,7 +32,7 @@ export default function ComingSoonPage() {
       </div>
 
       <p className="max-w-md text-sm text-slate-500">
-        We're working hard to bring you this feature. Check back soon for updates!
+        We&apos;re working hard to bring you this feature. Check back soon for updates!
       </p>
 
       <div className="mt-4 flex items-center gap-2 text-sm font-medium text-blue-600">

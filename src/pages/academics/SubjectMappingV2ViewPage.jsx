@@ -16,15 +16,13 @@ function Badge({ children, bg, color }) {
 export default function SubjectMappingV2ViewPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [mapping, setMapping] = useState(null);
+  const [mapping] = useState(() => getMapping(id));
 
   useEffect(() => {
     const demo = getMapping(id);
     if (!demo) {
       navigate('/settings/institute/academics/subject-college-mapping-v2', { replace: true });
-      return;
     }
-    setMapping(demo);
   }, [id, navigate]);
 
   if (!mapping) {

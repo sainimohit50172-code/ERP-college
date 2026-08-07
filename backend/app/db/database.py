@@ -93,6 +93,47 @@ def _ensure_dmc_student_app_schema() -> None:
         logger.warning("Error checking DMC student app schema: %s", exc)
 
 
+def _ensure_user_schema() -> None:
+    if not str(engine.url).startswith("sqlite"):
+        return
+    try:
+        inspector = inspect(engine)
+        if "users" not in inspector.get_table_names():
+            return
+        column_names = [column["name"] for column in inspector.get_columns("users")]
+        with engine.connect() as conn:
+            if "mobile_number" not in column_names:
+                logger.warning("Adding missing mobile_number column to users")
+                conn.execute(text("ALTER TABLE users ADD COLUMN mobile_number VARCHAR(20)"))
+            if "is_mobile_verified" not in column_names:
+                logger.warning("Adding missing is_mobile_verified column to users")
+                conn.execute(text("ALTER TABLE users ADD COLUMN is_mobile_verified BOOLEAN NOT NULL DEFAULT 0"))
+            conn.commit()
+    except OperationalError as exc:
+        logger.warning("Unable to ensure the users schema: %s", exc)
+    except Exception as exc:
+        logger.warning("Error checking users schema: %s", exc)
+
+
+def _ensure_transport_route_schema() -> None:
+    if not str(engine.url).startswith("sqlite"):
+        return
+    try:
+        inspector = inspect(engine)
+        if "routes" not in inspector.get_table_names():
+            return
+        column_names = [column["name"] for column in inspector.get_columns("routes")]
+        if "status" not in column_names:
+            logger.warning("Adding missing status column to routes")
+            with engine.connect() as conn:
+                conn.execute(text("ALTER TABLE routes ADD COLUMN status VARCHAR(20) NOT NULL DEFAULT 'Active'"))
+                conn.commit()
+    except OperationalError as exc:
+        logger.warning("Unable to ensure the transport route schema: %s", exc)
+    except Exception as exc:
+        logger.warning("Error checking transport route schema: %s", exc)
+
+
 def _create_engine(url: str):
     if url.startswith("sqlite:"):
         sqlite_path = _sqlite_db_path(url)
@@ -134,6 +175,25 @@ def _create_engine(url: str):
     return engine
 
 engine = _create_engine(settings.database_url)
+from sqlalchemy import event
+
+
+# Ensure SQLite enforces foreign key constraints on every connection
+if str(engine.url).startswith("sqlite"):
+    @event.listens_for(engine, "connect")
+    def _enable_sqlite_foreign_keys(dbapi_con, connection_record):
+        try:
+            dbapi_con.execute("PRAGMA foreign_keys=ON")
+        except Exception:
+            pass
+
+    # Also set PRAGMA on an immediate connection so external checks see it enabled now.
+    try:
+        with engine.connect() as _conn:
+            _conn.execute(text("PRAGMA foreign_keys=ON"))
+            _conn.commit()
+    except Exception:
+        pass
 
 # Ensure the schema exists before any repository uses the database.
 try:
@@ -143,6 +203,8 @@ except ImportError:
 Base.metadata.create_all(engine)
 _ensure_dmc_student_app_schema()
 _ensure_coe_preference_settings_schema()
+_ensure_user_schema()
+_ensure_transport_route_schema()
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, future=True)
 

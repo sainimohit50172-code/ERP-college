@@ -4,6 +4,7 @@ import Breadcrumb from '../components/ui/Breadcrumb.jsx';
 import Button from '../components/ui/Button.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import CircleAvatar from '../components/ui/CircleAvatar.jsx';
+import { useERP } from '../services/ERPContext.jsx';
 
 const studentRecords = [
   {
@@ -167,15 +168,6 @@ const filterTypeOptions = [
   { value: 'semesterWise', label: 'Semester Wise' },
 ];
 
-const collegeOptions = [
-  { value: 'ALL', label: 'ALL' },
-  { value: 'ROORKEE COLLEGE OF SMART COMPUTING', label: 'ROORKEE COLLEGE OF SMART COMPUTING' },
-  { value: 'ROORKEE COLLEGE OF ENGINEERING', label: 'ROORKEE COLLEGE OF ENGINEERING' },
-  { value: 'ROORKEE COLLEGE OF BUSINESS STUDIES', label: 'ROORKEE COLLEGE OF BUSINESS STUDIES' },
-  { value: 'ROORKEE COLLEGE OF AGRICULTURAL SCIENCES', label: 'ROORKEE COLLEGE OF AGRICULTURAL SCIENCES' },
-  { value: 'ROORKEE COLLEGE OF ALLIED HEALTH SCIENCES', label: 'ROORKEE COLLEGE OF ALLIED HEALTH SCIENCES' },
-];
-
 const semesterOptions = [
   { value: 'Sem 1', label: 'Sem 1' },
   { value: 'Sem 3', label: 'Sem 3' },
@@ -223,7 +215,7 @@ const awakeStatusOptions = [
 ];
 
 const DEFAULT_FILTERS = {
-  college: 'ALL, ROORKEE COLLEGE ...',
+  college: 'ALL',
   semester: ['Sem 1'],
   feeCategory: 'ALL',
   status: 'ACTIVE',
@@ -237,6 +229,17 @@ const DEFAULT_FILTERS = {
 };
 
 export default function StudentCertificatesPage() {
+  const { colleges = [] } = useERP();
+  const collegeOptions = useMemo(() => [
+    { value: 'ALL', label: 'All colleges' },
+    ...((Array.isArray(colleges) ? colleges : []).map((college) => {
+      const name = typeof college === 'string'
+        ? college
+        : college.name || college.collegeName || college.label || `College ${college.id}`;
+      return { value: name, label: name };
+    })),
+  ], [colleges]);
+
   const [searchType, setSearchType] = useState('name');
   const [searchTerm, setSearchTerm] = useState('');
   const [rollFilter, setRollFilter] = useState('');

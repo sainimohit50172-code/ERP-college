@@ -6,6 +6,7 @@ import Button from '../components/ui/Button.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import TablePagination from '../components/tables/TablePagination.jsx';
 import CircleAvatar from '../components/ui/CircleAvatar.jsx';
+import { useERP } from '../services/ERPContext.jsx';
 
 const feedbackRecords = [
   {
@@ -109,14 +110,7 @@ const statusOptions = [
   { value: 'Pending', label: 'Pending' },
 ];
 
-const collegeOptions = [
-  { value: 'ALL', label: 'All colleges' },
-  { value: 'Roorkee College of Smart Computing', label: 'Roorkee College of Smart Computing' },
-  { value: 'Roorkee College of Engineering', label: 'Roorkee College of Engineering' },
-  { value: 'Roorkee College of Business Studies', label: 'Roorkee College of Business Studies' },
-  { value: 'Roorkee College of Agricultural Sciences', label: 'Roorkee College of Agricultural Sciences' },
-  { value: 'Roorkee College of Allied Health Sciences', label: 'Roorkee College of Allied Health Sciences' },
-];
+
 
 const admissionCategoryOptions = [
   { value: 'ALL', label: 'All Categories' },
@@ -170,6 +164,15 @@ export default function StudentFeedbackPage() {
   const [draftFilters, setDraftFilters] = useState(() => ({ ...DEFAULT_FILTERS }));
   const [page, setPage] = useState(1);
   const [pageSize] = useState(5);
+  const { colleges = [] } = useERP();
+
+  const collegeOptions = useMemo(() => [
+    { value: 'ALL', label: 'All colleges' },
+    ...((Array.isArray(colleges) ? colleges : []).map((college) => {
+      const name = typeof college === 'string' ? college : college.name || college.collegeName || college.label || `College ${college.id}`;
+      return { value: name, label: name };
+    })),
+  ], [colleges]);
 
   const filteredRecords = useMemo(() => {
     const query = searchTerm.trim().toLowerCase();

@@ -63,7 +63,7 @@ export function useCreateResource(resource) {
   return useMutation({
     mutationFn: (payload) => service.create(payload),
     onSuccess: (data) => {
-      qc.invalidateQueries([resource]);
+      qc.invalidateQueries({ queryKey: [resource], exact: false });
       recordAuditEvent({
         action: 'Create',
         moduleKey: resource,
@@ -83,7 +83,7 @@ export function useUpdateResource(resource) {
   return useMutation({
     mutationFn: ({ id, payload }) => service.update(id, payload),
     onSuccess: (data, variables) => {
-      qc.invalidateQueries([resource]);
+      qc.invalidateQueries({ queryKey: [resource], exact: false });
       recordAuditEvent({
         action: 'Update',
         moduleKey: resource,
@@ -103,7 +103,7 @@ export function useDeleteResource(resource) {
   return useMutation({
     mutationFn: (id) => service.remove(id),
     onSuccess: (data, id) => {
-      qc.invalidateQueries([resource]);
+      qc.invalidateQueries({ queryKey: [resource], exact: false });
       recordAuditEvent({
         action: 'Delete',
         moduleKey: resource,

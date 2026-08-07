@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useERP } from '../services/ERPContext.jsx';
 import { Filter, HelpCircle } from 'lucide-react';
 import ViewButton from '../components/ui/ViewButton.jsx';
 import ConfirmDialog from '../components/ui/ConfirmDialog.jsx';
@@ -210,13 +211,6 @@ const DEMO_STUDENTS = [
   },
 ];
 
-const COLLEGES = [
-  'All Colleges',
-  'Roorkee College of Smart Computing',
-  'Global College',
-  'State University',
-];
-
 const COURSES = ['All Courses', 'B.Tech CSE', 'B.Tech ECE', 'B.Tech Mechanical', 'MBA', 'BCA'];
 const SEMESTERS = ['All Semesters', '2', '4', '6'];
 const SECTIONS = ['All Sections', 'A', 'B', 'C'];
@@ -302,6 +296,12 @@ export default function StudentSessionManagementPage() {
     startDate: filterStartDate,
     endDate: filterEndDate,
   });
+
+  const { colleges = [] } = useERP();
+  const collegeOptions = useMemo(() => {
+    const source = Array.isArray(colleges) ? colleges : [];
+    return ['All Colleges', ...source.map((college) => (typeof college === 'string' ? college : college.name || college.collegeName || college.label || String(college.id)))];
+  }, [colleges]);
 
   useEffect(() => {
     let isMounted = true;
@@ -745,7 +745,7 @@ export default function StudentSessionManagementPage() {
                 onChange={(e) => setDraftFilters({ ...draftFilters, college: e.target.value })}
                 className="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none focus:border-[#1e3a5f] focus:ring-2 focus:ring-[#1e3a5f]/10"
               >
-                {COLLEGES.map((col) => (
+                {collegeOptions.map((col) => (
                   <option key={col} value={col}>
                     {col}
                   </option>

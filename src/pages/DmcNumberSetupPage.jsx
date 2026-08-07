@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Plus, Pencil, Trash2 } from 'lucide-react';
+import { useERP } from '../services/ERPContext.jsx';
+import { ChevronDown, ChevronUp, Plus, Trash2 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import api from '../api/axios.js';
 import Breadcrumb from '../components/ui/Breadcrumb.jsx';
 import Button from '../components/ui/Button.jsx';
 import ConfirmDialog from '../components/ui/ConfirmDialog.jsx';
-import StatusBadge from '../components/ui/StatusBadge.jsx';
 
 const defaultValues = {
   seriesName: '',
@@ -79,6 +79,15 @@ export default function DmcNumberSetupPage() {
     setIsFormOpen(true);
   };
 
+  const { colleges = [] } = useERP();
+  const collegeOptions = useMemo(() => {
+    const source = Array.isArray(colleges) ? colleges : [];
+    return source.map((college) => {
+      const label = typeof college === 'string' ? college : college.name || college.collegeName || college.label || String(college.id);
+      return { value: label, label };
+    });
+  }, [colleges]);
+
   const closeForm = () => {
     setIsFormOpen(false);
     resetForm();
@@ -87,6 +96,18 @@ export default function DmcNumberSetupPage() {
   const handleInput = (field, value) => {
     setFormValues((current) => ({ ...current, [field]: value }));
     setErrors((current) => ({ ...current, [field]: undefined }));
+  };
+
+  const changeCurrentNumber = (delta) => {
+    setFormValues((current) => {
+      const currentValue = Number(current.currentNumber || 0);
+      const nextValue = currentValue + delta;
+      return {
+        ...current,
+        currentNumber: String(nextValue < 0 ? 0 : nextValue),
+      };
+    });
+    setErrors((current) => ({ ...current, currentNumber: undefined }));
   };
 
   const validateForm = () => {
@@ -137,13 +158,22 @@ export default function DmcNumberSetupPage() {
     };
 
     try {
+      let savedItem = null;
+
       if (editor) {
-        await api.put(`/coe/dmc-number-setup/${editor.id}`, payload);
+        const response = await api.put(`/coe/dmc-number-setup/${editor.id}`, payload);
+        savedItem = response.data?.data || { ...editor, ...payload };
+        setItems((current) => current.map((item) => (item.id === editor.id ? savedItem : item)));
         toast.success('DMC number setup updated successfully.');
       } else {
-        await api.post('/coe/dmc-number-setup', payload);
+        const response = await api.post('/coe/dmc-number-setup', payload);
+        savedItem = response.data?.data;
+        if (savedItem) {
+          setItems((current) => [savedItem, ...current]);
+        }
         toast.success('DMC number setup created successfully.');
       }
+
       closeForm();
       await loadItems();
     } catch (error) {
@@ -186,7 +216,7 @@ export default function DmcNumberSetupPage() {
 
   const emptyState = useMemo(() => (
     <tr>
-      <td colSpan="12" className="py-20 text-center text-sm font-semibold text-slate-500">No DMC number setups found.</td>
+      <td colSpan="10" className="py-20 text-center text-sm font-semibold text-slate-500">No DMC number setups found.</td>
     </tr>
   ), []);
 
@@ -226,38 +256,87 @@ export default function DmcNumberSetupPage() {
               transition={{ duration: 0.25 }}
               className="mt-6 rounded-[24px] border border-slate-200 bg-slate-100/80 p-4 shadow-sm"
             >
-              <form onSubmit={saveItem} className="grid grid-cols-1 gap-3 rounded-[24px] bg-slate-50 p-4 shadow-sm sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr_0.75fr_0.75fr_64px] xl:grid-cols-[1.4fr_1.1fr_1fr_1fr_0.8fr_0.8fr_64px]">
-                <label className="grid gap-2 text-xs uppercase tracking-[0.24em] text-slate-500">
+              <form onSubmit={saveItem} className="grid grid-cols-1 gap-2 rounded-[24px] bg-slate-50 p-3 shadow-sm sm:grid-cols-2 lg:grid-cols-[1fr_0.8fr_0.8fr_0.8fr_0.7fr_0.7fr_64px] xl:grid-cols-[0.95fr_0.75fr_0.75fr_0.75fr_0.7fr_0.7fr_64px]">
+                <label className="grid gap-1.5 text-[0.65rem] uppercase tracking-[0.24em] text-slate-500">
                   Select Exam Calendar
-                  <input value={formValues.academicSessionId} onChange={(event) => handleInput('academicSessionId', event.target.value)} placeholder="Select Exam Calendar" className="h-12 rounded-2xl border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none focus:border-blue-500" />
+                  <div className="relative">
+                    <select
+                      value={formValues.academicSessionId}
+                      onChange={(event) => handleInput('academicSessionId', event.target.value)}
+                      className="w-full h-10 rounded-xl border border-slate-200 bg-white px-2 pr-7 text-xs text-slate-900 outline-none appearance-none focus:border-blue-500 whitespace-pre-wrap break-words"
+                      style={{ whiteSpace: 'pre-wrap' }}
+                    >
+                      <option value="">Select Exam Calendar</option>
+                      <option value="1">END TERM EXAMINATION
+EVEN SEMESTER 2025-26</option>
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-2 flex items-center text-slate-500">
+                      <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                  </div>
                 </label>
-                <label className="grid gap-2 text-xs uppercase tracking-[0.24em] text-slate-500">
+                <label className="grid gap-1.5 text-[0.65rem] uppercase tracking-[0.24em] text-slate-500">
                   Select Exam Type
-                  <input value={formValues.status} onChange={(event) => handleInput('status', event.target.value)} placeholder="Select Exam Type" className="h-12 rounded-2xl border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none focus:border-blue-500" />
+                  <div className="relative">
+                    <select
+                      value={formValues.status}
+                      onChange={(event) => handleInput('status', event.target.value)}
+                      className="w-full h-10 rounded-xl border border-slate-200 bg-white px-2 pr-7 text-xs text-slate-900 outline-none appearance-none focus:border-blue-500"
+                    >
+                      <option value="">Select Exam Type</option>
+                      <option value="Regular">☐ Regular</option>
+                      <option value="Reappear">☐ Reappear</option>
+                      <option value="Special">☐ Special</option>
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-2 flex items-center text-slate-500">
+                      <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                  </div>
                 </label>
-                <label className="grid gap-2 text-xs uppercase tracking-[0.24em] text-slate-500">
+                <label className="grid gap-1.5 text-[0.65rem] uppercase tracking-[0.24em] text-slate-500">
                   Select College
-                  <input value={formValues.collegeId} onChange={(event) => handleInput('collegeId', event.target.value)} placeholder="Select College" className="h-12 rounded-2xl border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none focus:border-blue-500" />
+                  <select
+                    value={formValues.collegeId}
+                    onChange={(event) => handleInput('collegeId', event.target.value)}
+                    className="w-full h-10 rounded-xl border border-slate-200 bg-white px-2 text-xs text-slate-900 outline-none focus:border-blue-500"
+                  >
+                    <option value="">All</option>
+                    {collegeOptions.map((option) => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
+                  </select>
                 </label>
-                <label className="grid gap-2 text-xs uppercase tracking-[0.24em] text-slate-500">
+                <label className="grid gap-1.5 text-[0.65rem] uppercase tracking-[0.24em] text-slate-500">
                   Enter Prefix
-                  <input value={formValues.prefix} onChange={(event) => handleInput('prefix', event.target.value)} placeholder="Enter Prefix" className="h-12 rounded-2xl border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none focus:border-blue-500" />
+                  <input value={formValues.prefix} onChange={(event) => handleInput('prefix', event.target.value)} placeholder="Enter Prefix" className="h-10 rounded-xl border border-slate-200 bg-white px-2 text-xs placeholder:text-slate-400 text-slate-900 outline-none focus:border-blue-500" />
                 </label>
-                <label className="grid gap-2 text-xs uppercase tracking-[0.24em] text-slate-500">
+                <label className="grid gap-1.5 text-[0.65rem] uppercase tracking-[0.24em] text-slate-500">
                   Number
-                  <input value={formValues.currentNumber || '0'} onChange={(event) => handleInput('currentNumber', event.target.value)} placeholder="0" type="number" min="0" className="h-12 rounded-2xl border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none focus:border-blue-500" />
+                  <div className="relative flex h-10 items-center rounded-xl border border-slate-200 bg-white px-2">
+                    <button type="button" onClick={() => changeCurrentNumber(1)} className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-slate-700 transition hover:bg-slate-100">
+                      <ChevronUp className="h-3.5 w-3.5" />
+                    </button>
+                    <input value={formValues.currentNumber || '0'} onChange={(event) => handleInput('currentNumber', event.target.value)} placeholder="0" type="number" min="0" className="mx-2 w-full border-none bg-transparent p-0 text-center text-xs text-slate-900 outline-none focus:ring-0" />
+                    <button type="button" onClick={() => changeCurrentNumber(-1)} className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-slate-700 transition hover:bg-slate-100">
+                      <ChevronDown className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
                 </label>
-                <label className="grid gap-2 text-xs uppercase tracking-[0.24em] text-slate-500">
+                <label className="grid gap-1.5 text-[0.65rem] uppercase tracking-[0.24em] text-slate-500">
                   Enter Suffix
-                  <input value={formValues.description} onChange={(event) => handleInput('description', event.target.value)} placeholder="Enter Suffix" className="h-12 rounded-2xl border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none focus:border-blue-500" />
+                  <input value={formValues.description} onChange={(event) => handleInput('description', event.target.value)} placeholder="Enter Suffix" className="h-10 rounded-xl border border-slate-200 bg-white px-2 text-xs placeholder:text-slate-400 text-slate-900 outline-none focus:border-blue-500" />
                 </label>
                 <div className="flex items-center justify-end">
                   <button type="button" onClick={closeForm} className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50">
                     <Trash2 className="h-5 w-5" />
                   </button>
                 </div>
-                <div className="col-span-full flex flex-wrap items-center justify-between gap-3 pt-3 sm:justify-end">
-                  <Button type="submit" isLoading={isSaving} className="min-w-[160px]">{editor ? 'Update Detail' : 'Save Detail'}</Button>
+                <div className="col-span-full flex flex-wrap items-center justify-center gap-3 pt-3">
+                  <Button type="submit" isLoading={isSaving} className="w-full max-w-[190px]">{editor ? 'Update Detail' : 'Save Detail'}</Button>
                 </div>
               </form>
             </motion.div>
@@ -265,47 +344,48 @@ export default function DmcNumberSetupPage() {
         </AnimatePresence>
 
         <div className="mt-6 overflow-x-auto rounded-[24px] border border-slate-200/70 bg-white shadow-sm">
-          <table className="min-w-full divide-y divide-slate-200 text-left text-sm text-slate-900">
-            <thead className="erp-table-header text-white">
-              <tr>
-                <th className="whitespace-nowrap rounded-tl-[24px] px-4 py-4 text-left">☐</th>
-                <th className="whitespace-nowrap px-4 py-4 text-left">S.No.</th>
-                <th className="whitespace-nowrap px-4 py-4 text-left">Series Name</th>
-                <th className="whitespace-nowrap px-4 py-4 text-left">Prefix</th>
-                <th className="whitespace-nowrap px-4 py-4 text-left">Starting No.</th>
-                <th className="whitespace-nowrap px-4 py-4 text-left">Ending No.</th>
-                <th className="whitespace-nowrap px-4 py-4 text-left">Current No.</th>
-                <th className="whitespace-nowrap px-4 py-4 text-left">Digit Length</th>
-                <th className="whitespace-nowrap px-4 py-4 text-left">Status</th>
-                <th className="whitespace-nowrap px-4 py-4 text-left">Created Date</th>
-                <th className="whitespace-nowrap rounded-tr-[24px] px-4 py-4 text-left">Actions</th>
+          <table className="min-w-full divide-y divide-slate-200 text-sm text-slate-900">
+            <thead className="bg-slate-900 text-white">
+              <tr className="text-left text-[0.65rem] uppercase tracking-[0.16em] text-slate-200">
+                <th className="whitespace-nowrap px-4 py-3">S.No.</th>
+                <th className="whitespace-nowrap px-4 py-3">Series Name</th>
+                <th className="whitespace-nowrap px-4 py-3">Prefix</th>
+                <th className="whitespace-nowrap px-4 py-3">Starting No.</th>
+                <th className="whitespace-nowrap px-4 py-3">Ending No.</th>
+                <th className="whitespace-nowrap px-4 py-3">Current No.</th>
+                <th className="whitespace-nowrap px-4 py-3">Digit Length</th>
+                <th className="whitespace-nowrap px-4 py-3">Status</th>
+                <th className="whitespace-nowrap px-4 py-3">Created Date</th>
+                <th className="whitespace-nowrap px-4 py-3">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 bg-white">
               {isLoading ? (
                 <tr>
-                  <td colSpan="11" className="py-20 text-center text-sm text-slate-500">Loading DMC number settings...</td>
+                  <td colSpan="10" className="py-14 text-center text-sm text-slate-500">Loading DMC number settings...</td>
                 </tr>
               ) : items.length === 0 ? (
                 emptyState
               ) : (
                 items.map((item, index) => (
-                  <tr key={item.id} className="border-t border-slate-200 hover:bg-slate-50 transition">
-                    <td className="px-4 py-4 text-center"><input type="checkbox" className="h-4 w-4 rounded border-slate-300" /></td>
-                    <td className="px-4 py-4 font-medium text-slate-700">{index + 1}</td>
-                    <td className="px-4 py-4 text-slate-700">{item.seriesName}</td>
-                    <td className="px-4 py-4 text-slate-700">{item.prefix || '—'}</td>
-                    <td className="px-4 py-4 text-slate-700">{item.startingNumber}</td>
-                    <td className="px-4 py-4 text-slate-700">{item.endingNumber}</td>
-                    <td className="px-4 py-4 text-slate-700">{item.currentNumber}</td>
-                    <td className="px-4 py-4 text-slate-700">{item.digitLength}</td>
-                    <td className="px-4 py-4 text-slate-700"><StatusBadge status={item.status} /></td>
-                    <td className="px-4 py-4 text-slate-700 text-xs">{item.createdAt ? new Date(item.createdAt).toLocaleDateString() : '—'}</td>
-                    <td className="px-4 py-4 text-slate-700">
+                  <tr key={item.id} className={`${index % 2 === 0 ? 'bg-white' : 'bg-slate-50'}`}>
+                    <td className="whitespace-nowrap px-4 py-3 font-medium text-slate-700">{index + 1}</td>
+                    <td className="px-4 py-3 text-slate-700">{item.seriesName || '—'}</td>
+                    <td className="px-4 py-3 text-slate-700">{item.prefix || '—'}</td>
+                    <td className="px-4 py-3 text-slate-700">{item.startingNumber ?? '—'}</td>
+                    <td className="px-4 py-3 text-slate-700">{item.endingNumber ?? '—'}</td>
+                    <td className="px-4 py-3 text-slate-700">{item.currentNumber ?? '—'}</td>
+                    <td className="px-4 py-3 text-slate-700">{item.digitLength ?? '—'}</td>
+                    <td className="px-4 py-3">
+                      <span className={`inline-flex rounded-full px-2.5 py-1 text-[0.65rem] font-semibold ${item.status === 'Active' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-700'}`}>
+                        {item.status || '—'}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-slate-700">{item.createdAt ? new Date(item.createdAt).toLocaleDateString() : '—'}</td>
+                    <td className="px-4 py-3 text-slate-700">
                       <div className="flex flex-wrap gap-2">
-                        <button type="button" onClick={() => openEdit(item)} className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50"><Pencil className="mr-1 inline h-3.5 w-3.5" />Edit</button>
-                        <button type="button" onClick={() => toggleStatus(item)} className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50">{item.status === 'Active' ? 'Deactivate' : 'Activate'}</button>
-                        <button type="button" onClick={() => setRemove(item)} className="rounded-2xl border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-700 transition hover:bg-rose-100"><Trash2 className="mr-1 inline h-3.5 w-3.5" />Delete</button>
+                        <button type="button" onClick={() => openEdit(item)} className="rounded-2xl border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-50">Edit</button>
+                        <button type="button" onClick={() => setRemove(item)} className="rounded-2xl border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700 transition hover:bg-rose-100">Delete</button>
                       </div>
                     </td>
                   </tr>

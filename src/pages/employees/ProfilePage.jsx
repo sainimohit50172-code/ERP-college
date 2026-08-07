@@ -222,7 +222,7 @@ export default function ProfilePage() {
         toast.error(err?.message || 'Unable to update profile. Please try again.');
       }
       // keep full error in console for debugging
-      // eslint-disable-next-line no-console
+       
       console.error('Profile update error:', err);
     }
   };

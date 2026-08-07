@@ -79,7 +79,7 @@ export default function RemarkSetupListPage() {
     }));
     setEditStates((current) => ({
       ...current,
-      [id]: !Boolean(current[id]),
+      [id]: !current[id],
     }));
   };
 

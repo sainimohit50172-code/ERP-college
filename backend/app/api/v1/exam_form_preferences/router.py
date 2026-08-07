@@ -81,8 +81,9 @@ async def create_exam_form_preference(payload: ExamFormPreferenceCreate, service
 
 
 @router.get("/exam-form-preferences/search", response_model=APIResponse[PaginationResponse[ExamFormPreferenceDetail]])
-async def search_exam_form_preferences(query: str = Query(..., min_length=1), page: int = Query(1, ge=1), page_size: int = Query(10, ge=1, le=100), service: ExamFormService = Depends(preference_service)):
-    return await list_records(service, page, page_size, query, None, None, None, "created_at", "desc", ExamFormPreferenceDetail)
+async def search_exam_form_preferences(query: Optional[str] = Query(None, min_length=1), page: int = Query(1, ge=1), page_size: int = Query(10, ge=1, le=100), service: ExamFormService = Depends(preference_service)):
+    search_query = query or ""
+    return await list_records(service, page, page_size, search_query, None, None, None, "created_at", "desc", ExamFormPreferenceDetail)
 
 
 @router.get("/exam-form-preferences/{entity_id}", response_model=APIResponse[ExamFormPreferenceDetail])
@@ -126,8 +127,9 @@ async def create_exam_form_header_footer(payload: ExamFormHeaderFooterCreate, se
 
 
 @router.get("/exam-form-headers-footers/search", response_model=APIResponse[PaginationResponse[ExamFormHeaderFooterDetail]])
-async def search_exam_form_headers_footers(query: str = Query(..., min_length=1), page: int = Query(1, ge=1), page_size: int = Query(10, ge=1, le=100), service: ExamFormService = Depends(header_footer_service)):
-    return await list_records(service, page, page_size, query, None, None, None, "created_at", "desc", ExamFormHeaderFooterDetail)
+async def search_exam_form_headers_footers(query: Optional[str] = Query(None, min_length=1), page: int = Query(1, ge=1), page_size: int = Query(10, ge=1, le=100), service: ExamFormService = Depends(header_footer_service)):
+    search_query = query or ""
+    return await list_records(service, page, page_size, search_query, None, None, None, "created_at", "desc", ExamFormHeaderFooterDetail)
 
 
 @router.get("/exam-form-headers-footers/{entity_id}", response_model=APIResponse[ExamFormHeaderFooterDetail])
@@ -205,8 +207,9 @@ async def create_coe_exam_form_preference(payload: CoeExamFormPreferenceCreate, 
 
 
 @coe_router.get("/exam-form-preferences/search", response_model=APIResponse[PaginationResponse[CoeExamFormPreferenceDetail]])
-async def search_coe_exam_form_preferences(query: str = Query(..., min_length=1), page: int = Query(1, ge=1), page_size: int = Query(10, ge=1, le=100), service: ExamFormService = Depends(coe_preference_service)):
-    return await list_records(service, page, page_size, query, None, None, None, "created_at", "desc", CoeExamFormPreferenceDetail)
+async def search_coe_exam_form_preferences(query: Optional[str] = Query(None, min_length=1), page: int = Query(1, ge=1), page_size: int = Query(10, ge=1, le=100), service: ExamFormService = Depends(coe_preference_service)):
+    search_query = query or ""
+    return await list_records(service, page, page_size, search_query, None, None, None, "created_at", "desc", CoeExamFormPreferenceDetail)
 
 
 @coe_router.get("/exam-form-preferences/{entity_id}", response_model=APIResponse[CoeExamFormPreferenceDetail])

@@ -1,63 +1,7 @@
-﻿import { useEffect, useRef, useState } from 'react';
+﻿import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowRight, ChevronDown, HelpCircle, Upload } from 'lucide-react';
 import Breadcrumb from '../components/ui/Breadcrumb.jsx';
-
-const collegeOptions = [
-  {
-    id: 'college-1',
-    title: 'ROORKEE COLLEGE OF SMART COMPUTING',
-    subtitle: 'BCA AI-ML',
-    extra: 'SEM 3 - B',
-  },
-  {
-    id: 'college-2',
-    title: 'ROORKEE COLLEGE OF SMART COMPUTING',
-    subtitle: 'BCA',
-    extra: 'SEM 3 - A',
-  },
-  {
-    id: 'college-3',
-    title: 'ROORKEE COLLEGE OF SMART COMPUTING',
-    subtitle: 'MCA',
-    extra: 'SEM 3 - A',
-  },
-  {
-    id: 'college-4',
-    title: 'ROORKEE COLLEGE OF SMART COMPUTING',
-    subtitle: 'B.TECH. HONS. CSE',
-    extra: 'SEM 3 - C',
-  },
-  {
-    id: 'college-5',
-    title: 'ROORKEE COLLEGE OF SMART COMPUTING',
-    subtitle: 'B.TECH. HONS. CSE',
-    extra: 'SEM 3 - A',
-  },
-  {
-    id: 'college-6',
-    title: 'ROORKEE COLLEGE OF SMART COMPUTING',
-    subtitle: 'B.TECH. HONS. CSE',
-    extra: 'SEM 3 - B',
-  },
-  {
-    id: 'college-7',
-    title: 'ROORKEE COLLEGE OF SMART COMPUTING',
-    subtitle: 'BCA',
-    extra: 'SEM 5 - A',
-  },
-  {
-    id: 'college-8',
-    title: 'ROORKEE COLLEGE OF SMART COMPUTING',
-    subtitle: 'B.SC. COMPUTER SCIENCE (DATA SCIENCE)',
-    extra: 'SEM 3 - A',
-  },
-  {
-    id: 'college-9',
-    title: 'ROORKEE COLLEGE OF SMART COMPUTING',
-    subtitle: 'BCA AI-ML',
-    extra: 'SEM 3 - A',
-  },
-];
+import { useERP } from '../services/ERPContext.jsx';
 
 const subjectOptions = [
   'Mathematics-I',
@@ -151,12 +95,44 @@ function Dropdown({ label, selected, options, onSelect, renderOption }) {
 }
 
 export default function SubjectAssignmentPage() {
+  const { colleges = [] } = useERP();
+  const collegeOptions = useMemo(() => {
+    const source = Array.isArray(colleges) ? colleges : [];
+
+    return source.map((college, index) => {
+      const title = typeof college === 'string'
+        ? college
+        : college.name || college.collegeName || college.label || `College ${college.id ?? index + 1}`;
+      return {
+        id: String(college.id ?? `college-${index + 1}`),
+        title,
+        subtitle: typeof college === 'string' ? 'College' : college.subtitle || 'College',
+        extra: typeof college === 'string' ? '' : college.extra || '',
+      };
+    });
+  }, [colleges]);
+
   const [selectedCollege, setSelectedCollege] = useState(collegeOptions[0]);
   const [selectedSubject, setSelectedSubject] = useState(subjectOptions[0]);
   const [selectedEmployee, setSelectedEmployee] = useState(employeeOptions[0]);
   const [showSubjectsColumn, setShowSubjectsColumn] = useState(false);
   const [activeCollege, setActiveCollege] = useState(collegeOptions[0]);
   const [selectedUploadFileName, setSelectedUploadFileName] = useState('');
+
+  useEffect(() => {
+    if (!collegeOptions.length) return;
+
+    const hasSelectedCollege = selectedCollege && collegeOptions.some((option) => option.id === selectedCollege.id);
+    const hasActiveCollege = activeCollege && collegeOptions.some((option) => option.id === activeCollege.id);
+
+    if (!hasSelectedCollege) {
+      setSelectedCollege(collegeOptions[0]);
+    }
+    if (!hasActiveCollege) {
+      setActiveCollege(collegeOptions[0]);
+    }
+  }, [collegeOptions, selectedCollege, activeCollege]);
+
   const uploadInputRef = useRef(null);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import Breadcrumb from '../../components/ui/Breadcrumb.jsx';
@@ -7,7 +7,7 @@ import { useResourceList, useCreateResource, useUpdateResource, useDeleteResourc
 export default function AttendanceMarksSetupPage() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize] = useState(10);
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({ id: null, name: '', configs: [] });
   const [editingId, setEditingId] = useState(null);
@@ -189,7 +189,7 @@ export default function AttendanceMarksSetupPage() {
                     </div>
                   ))}
                   {(form.configs || []).length === 0 && (
-                    <div className="text-sm text-slate-500 mt-2">No config rows yet. Click "Add Row" to define marks rules.</div>
+                    <div className="text-sm text-slate-500 mt-2">No config rows yet. Click the Add Row button to define marks rules.</div>
                   )}
                 </div>
               </div>

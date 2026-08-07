@@ -1,0 +1,123 @@
+total routes: 58
+[0] Route path='/api/v1/openapi.json' name='openapi' methods={'HEAD', 'GET'}
+[1] Route path='/docs' name='swagger_ui_html' methods={'HEAD', 'GET'}
+[2] Route path='/docs/oauth2-redirect' name='swagger_ui_redirect' methods={'HEAD', 'GET'}
+[3] Route path='/redoc' name='redoc_html' methods={'HEAD', 'GET'}
+[4] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[5] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[6] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[7] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[8] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[9] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[10] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[11] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[12] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[13] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[14] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[15] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[16] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[17] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[18] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[19] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[20] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[21] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[22] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[23] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[24] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[25] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[26] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[27] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[28] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[29] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[30] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[31] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[32] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[33] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[34] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[35] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[36] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[37] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[38] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[39] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[40] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[41] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[42] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[43] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[44] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[45] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[46] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[47] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[48] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[49] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[50] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[51] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[52] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[53] _IncludedRouter path=None name=None methods=None
+  included prefix=None router_prefix=None
+[54] Mount path='/uploads' name='uploads' methods=None
+[55] APIRoute path='/health' name='health_check' methods={'GET'}
+[56] APIRoute path='/api/v1/health' name='health_check_v1' methods={'GET'}
+[57] APIRoute path='/api/health' name='health_check_api' methods={'GET'}
+
+--- transport matches in app.routes ---
+
+--- transport matches in nested routers ---
+
+--- test client checks ---
+CLIENT /api/v1/transports/transport-routes/ EXC 'status' is an invalid keyword argument for Route
+CLIENT /api/transports/transport-routes/ EXC 'status' is an invalid keyword argument for Route
+CLIENT /api/v1/transports/transport-routes 405 '{"detail":"Method Not Allowed"}'
+CLIENT /api/transports/transport-routes 405 '{"detail":"Method Not Allowed"}'
+CLIENT /api/v1/transport-routes/ 404 '{"detail":"Not Found"}'
+CLIENT /api/transport-routes/ 404 '{"detail":"Not Found"}'
+CLIENT /api/v1/transports/transport-vehicles/ 422 '{"success":false,"message":"Validation error","data":[{"loc":["body","vehicle_number"],"msg":"Field required","type":"missing"},{"loc":["body","vehicle_type"],"msg":"Field required","type":"missing"}]}'
+CLIENT /api/transports/transport-vehicles/ 422 '{"success":false,"message":"Validation error","data":[{"loc":["body","vehicle_number"],"msg":"Field required","type":"missing"},{"loc":["body","vehicle_type"],"msg":"Field required","type":"missing"}]}'

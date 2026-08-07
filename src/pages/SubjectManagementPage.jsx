@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useERP } from '../services/ERPContext.jsx';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button.jsx';
 import DataTable from '../components/ui/DataTable.jsx';
@@ -203,6 +204,7 @@ export default function SubjectManagementPage() {
 }
 
 function CompactInlineForm({ onCancel = () => {}, onSave = () => {} }) {
+  const { colleges = [] } = useERP();
   const [form, setForm] = useState({
     name: '',
     code: '',
@@ -218,14 +220,10 @@ function CompactInlineForm({ onCancel = () => {}, onSave = () => {} }) {
     'SCHOLASTIC','CO-SCHOLASTIC','DISCIPLINE','SKILL','MAJOR','MINOR','MDC','SEC','VAC','AEC','VOC'
   ].map((v) => ({ value: v, label: v }));
 
-  const COLLEGE_OPTIONS = [
-    'All',
-    'Roorkee College of Agricultural Sciences',
-    'Roorkee College of Allied Health Sciences',
-    'Roorkee College of Business Studies',
-    'Roorkee College of Engineering',
-    'Roorkee College of Smart Computing',
-  ].map((v) => ({ value: v, label: v }));
+  const COLLEGE_OPTIONS = useMemo(() => {
+    const source = Array.isArray(colleges) ? colleges : [];
+    return source.map((value) => ({ value: typeof value === 'string' ? value : value.name || value.collegeName || value.label || value.id, label: typeof value === 'string' ? value : value.name || value.collegeName || value.label || value.id }));
+  }, [colleges]);
 
   const MODE_OPTIONS = ['THEORY','PRACTICAL'].map((v) => ({ value: v, label: v }));
 

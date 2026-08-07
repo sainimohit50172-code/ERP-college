@@ -81,7 +81,7 @@ export default function LibraryDashboard() {
                   <BookOpen className="h-6 w-6 text-violet-600" />
                 </motion.div>
                 <div>
-                  <div className="text-sm text-slate-600">Today's Issued Books</div>
+                  <div className="text-sm text-slate-600">Today&apos;s Issued Books</div>
                   <div className="mt-1 text-2xl font-bold">-</div>
                 </div>
                 <div className="ml-auto">
@@ -94,7 +94,7 @@ export default function LibraryDashboard() {
                   <Book className="h-6 w-6 text-violet-600" />
                 </motion.div>
                 <div>
-                  <div className="text-sm text-slate-600">Today's Returned Books</div>
+                  <div className="text-sm text-slate-600">Today&apos;s Returned Books</div>
                   <div className="mt-1 text-2xl font-bold">-</div>
                 </div>
                 <div className="ml-auto">

@@ -280,7 +280,7 @@ export default function HumanResourceDashboard() {
               onClick={() => document.getElementById('todays-attendance')?.scrollIntoView({ behavior: 'smooth' })}
               className="text-left w-full rounded-[18px] border border-slate-100 bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 shadow-sm cursor-pointer hover:shadow-md transition"
             >
-              <p className="text-sm text-slate-600">Yesterday's Attendance</p>
+              <p className="text-sm text-slate-600">Yesterday&apos;s Attendance</p>
               <div className="mt-4 text-3xl font-bold text-slate-900">0</div>
             </button>
 
@@ -360,7 +360,7 @@ export default function HumanResourceDashboard() {
             <div id="todays-attendance">
               <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold">Today's Employee Attendance</h3>
+                  <h3 className="text-lg font-semibold">Today&apos;s Employee Attendance</h3>
                 </div>
                 <div className="flex flex-wrap items-center gap-2 hover-gradient-border">
                   <label className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Select</label>

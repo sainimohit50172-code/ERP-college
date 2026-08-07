@@ -4,6 +4,13 @@ from app.schemas.exam_fee_setup.receipt_configuration import (
     ReceiptConfigurationUpdate,
 )
 from app.schemas.exam_fee_setup.fee_head import FeeHeadCreate, FeeHeadDetail, FeeHeadUpdate
+from app.schemas.exam_fee_setup.fee_head_group import (
+    FeeHeadGroupCreate,
+    FeeHeadGroupDetail,
+    FeeHeadGroupDetailCreate,
+    FeeHeadGroupDetailItem,
+    FeeHeadGroupUpdate,
+)
 from app.schemas.exam_fee_setup.admit_card_preferences import AdmitCardPreferencesDetail, AdmitCardPreferencesUpdate
 from app.schemas.exam_fee_setup.masking_number_setup import (
     CoeMaskingNumberSetupCreate,
@@ -33,6 +40,11 @@ __all__ = [
     "FeeHeadCreate",
     "FeeHeadUpdate",
     "FeeHeadDetail",
+    "FeeHeadGroupCreate",
+    "FeeHeadGroupDetail",
+    "FeeHeadGroupDetailCreate",
+    "FeeHeadGroupDetailItem",
+    "FeeHeadGroupUpdate",
     "AdmitCardPreferencesUpdate",
     "AdmitCardPreferencesDetail",
     "CoeMaskingNumberSetupCreate",

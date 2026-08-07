@@ -41,6 +41,7 @@ class Route(Base):
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     start_point: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
     end_point: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    status: Mapped[str] = mapped_column(Enum("Active", "Inactive", name="route_status"), nullable=False, default="Active")
     distance_km: Mapped[Optional[int]] = mapped_column(default=0, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
 

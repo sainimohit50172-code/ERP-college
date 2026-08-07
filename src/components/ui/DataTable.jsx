@@ -2,6 +2,7 @@ import { useMemo, useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, Download, Edit3, Eye, Printer, Trash2 } from 'lucide-react';
 import EmptyState from './EmptyState.jsx';
 import LoadingOverlay from './LoadingOverlay.jsx';
+import ERPTable from './ERPTable.jsx';
 
 // Debounce hook for search input
 function useDebounce(value, delay = 300) {
@@ -240,7 +241,7 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
           style={tableMaxHeight ? { maxHeight: tableMaxHeight, overflowY: 'auto' } : undefined}
         >
           <div className="w-full overflow-x-auto">
-            <table id={tableId} className="min-w-full border-separate text-[10px] text-slate-900" style={{ borderSpacing: '1px 0', tableLayout: 'fixed' }}>
+            <ERPTable id={tableId} className="border-separate text-[10px] text-slate-900" style={{ borderSpacing: '1px 0', tableLayout: 'fixed' }}>
               <colgroup>
               {columnsDefinition.map((column) => {
                 const minW = getColumnMinWidth(column);
@@ -352,7 +353,7 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
                 </tr>
               ))}
             </tbody>
-          </table>
+            </ERPTable>
         </div>
       </div>
       )}

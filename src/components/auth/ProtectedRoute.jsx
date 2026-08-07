@@ -18,7 +18,7 @@ export default function ProtectedRoute({ moduleKey, action = 'view', children })
   const hasLoadedPermissions = auth?.loadingPermissions === false || auth?.permissionsStatus === 'ready' || auth?.permissionsStatus === 'denied' || auth?.permissionsStatus === 'error';
   const explicitPermissionDenied = auth?.permissionsStatus === 'denied';
   const permissionLoadErrorWithoutCache = auth?.permissionsStatus === 'error' && !hasPermissions;
-  const canAccess = Boolean(moduleKey) ? hasPermission(permissions, moduleKey, action) : true;
+  const canAccess = moduleKey ? hasPermission(permissions, moduleKey, action) : true;
 
   if (import.meta.env.DEV) {
     console.debug('[ProtectedRoute]', {

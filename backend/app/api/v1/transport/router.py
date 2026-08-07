@@ -1,3 +1,5 @@
+from fastapi import APIRouter
+
 from app.api.v1.shared.router_factory import build_crud_router
 from app.api.v1.shared.dependencies import (
     get_transport_repository,
@@ -38,19 +40,11 @@ class TransportAssignmentBulkUpdate(TransportAssignmentUpdate):
     id: int
 
 
-# Parent router for transports
-router = build_crud_router(
-    prefix="/transports",
-    tags=["transports"],
-    repository_dependency=get_transport_entity_repository,
-    service_dependency=get_transport_entity_service,
-    model_class=Vehicle,
-    create_schema=VehicleCreate,
-    update_schema=VehicleUpdate,
-    detail_schema=VehicleDetail,
-    list_schema=VehicleListItem,
-    bulk_update_schema=VehicleBulkUpdate,
-)
+# Parent router for nested transport resource collections.
+# Keep this lightweight so more specific nested routes such as
+# `/transports/transport-routes` are not shadowed by the parent
+# generic `/{entity_id}` CRUD matcher.
+router = APIRouter(prefix="/transports", tags=["transports"])
 
 
 # Sub-routers

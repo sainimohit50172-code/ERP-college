@@ -129,7 +129,7 @@ export default function AttendanceRemarksPage() {
     }));
     setEditStates((current) => ({
       ...current,
-      [id]: !Boolean(current[id]),
+      [id]: !current[id],
     }));
   };
 

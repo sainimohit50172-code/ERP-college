@@ -57,8 +57,8 @@ export function AuthProvider({ children }) {
 
     return defaultAuth;
   });
-  const [sessionExpiry, setSessionExpiry] = useState(Date.now() + SESSION_TIMEOUT_MS);
-  const [inactivityExpiry, setInactivityExpiry] = useState(Date.now() + INACTIVITY_TIMEOUT_MS);
+  const [sessionExpiry, setSessionExpiry] = useState(() => Date.now() + SESSION_TIMEOUT_MS);
+  const [inactivityExpiry, setInactivityExpiry] = useState(() => Date.now() + INACTIVITY_TIMEOUT_MS);
   const [rememberMe, setRememberMe] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);

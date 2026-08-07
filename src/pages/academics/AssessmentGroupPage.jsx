@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { Plus, Trash2, Edit3, ToggleLeft, ToggleRight } from 'lucide-react';
 import Breadcrumb from '../../components/ui/Breadcrumb.jsx';
 import Button from '../../components/ui/Button.jsx';
@@ -36,6 +37,7 @@ export default function AssessmentGroupPage() {
   const createMutation = useCreateResource('assessmentGroup');
   const updateMutation = useUpdateResource('assessmentGroup');
   const deleteMutation = useDeleteResource('assessmentGroup');
+  const qc = useQueryClient();
 
   useEffect(() => { document.title = 'AssessmentGroup - Academics'; }, []);
 
@@ -140,8 +142,8 @@ export default function AssessmentGroupPage() {
                 const { default: api } = await import('../../api/axios.js');
                 const resp = await api.post(`/assessment-group/${idToCopy}/copy`);
                 if (!resp || resp.status >= 400) throw new Error('Copy failed');
-                // reload list
-                window.location.reload();
+                // invalidate list so it refreshes via React Query
+                qc.invalidateQueries({ queryKey: ['assessmentGroup'], exact: false });
               } catch (err) { console.error(err); alert('Copy failed'); }
             }}>Copy</Button>
             <Button variant="primary" onClick={openCreate}><Plus className="h-4 w-4" /> Add New AssessmentGroup</Button>
@@ -205,24 +207,24 @@ export default function AssessmentGroupPage() {
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium">Result Declared</span>
                   <button type="button" className="ml-2 mt-0 inline-flex items-center rounded-full px-2 py-1" onClick={() => { /* read-only summary */ }}>
-                    { !!form.items.find((i) => i.result_declared) ? <ToggleRight className="h-5 w-5 text-emerald-600" /> : <ToggleLeft className="h-5 w-5 text-slate-400" /> }
+                    { form.items.find((i) => i.result_declared) ? <ToggleRight className="h-5 w-5 text-emerald-600" /> : <ToggleLeft className="h-5 w-5 text-slate-400" /> }
                   </button>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium">Include In Total</span>
-                  <button type="button" className="ml-2 inline-flex items-center rounded-full px-2 py-1">{ !!form.items.find((i) => i.include_in_total) ? <ToggleRight className="h-5 w-5 text-emerald-600" /> : <ToggleLeft className="h-5 w-5 text-slate-400" /> }</button>
+                  <button type="button" className="ml-2 inline-flex items-center rounded-full px-2 py-1">{ form.items.find((i) => i.include_in_total) ? <ToggleRight className="h-5 w-5 text-emerald-600" /> : <ToggleLeft className="h-5 w-5 text-slate-400" /> }</button>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium">Display Value</span>
-                  <button type="button" className="ml-2 inline-flex items-center rounded-full px-2 py-1">{ !!form.items.find((i) => i.display_value) ? <ToggleRight className="h-5 w-5 text-emerald-600" /> : <ToggleLeft className="h-5 w-5 text-slate-400" /> }</button>
+                  <button type="button" className="ml-2 inline-flex items-center rounded-full px-2 py-1">{ form.items.find((i) => i.display_value) ? <ToggleRight className="h-5 w-5 text-emerald-600" /> : <ToggleLeft className="h-5 w-5 text-slate-400" /> }</button>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium">Show Graph</span>
-                  <button type="button" className="ml-2 inline-flex items-center rounded-full px-2 py-1">{ !!form.items.find((i) => i.show_graph) ? <ToggleRight className="h-5 w-5 text-emerald-600" /> : <ToggleLeft className="h-5 w-5 text-slate-400" /> }</button>
+                  <button type="button" className="ml-2 inline-flex items-center rounded-full px-2 py-1">{ form.items.find((i) => i.show_graph) ? <ToggleRight className="h-5 w-5 text-emerald-600" /> : <ToggleLeft className="h-5 w-5 text-slate-400" /> }</button>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium">Passing Required</span>
-                  <button type="button" className="ml-2 inline-flex items-center rounded-full px-2 py-1">{ !!form.items.find((i) => i.passing_required) ? <ToggleRight className="h-5 w-5 text-emerald-600" /> : <ToggleLeft className="h-5 w-5 text-slate-400" /> }</button>
+                  <button type="button" className="ml-2 inline-flex items-center rounded-full px-2 py-1">{ form.items.find((i) => i.passing_required) ? <ToggleRight className="h-5 w-5 text-emerald-600" /> : <ToggleLeft className="h-5 w-5 text-slate-400" /> }</button>
                 </div>
               </div>
           </div>

@@ -26,6 +26,7 @@ import {
   CalendarCheck,
   FileCheck2,
   UsersRound,
+  WalletCards,
 } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import HaridwarLogo from '../../assets/haridwar-logo.svg';
@@ -36,6 +37,7 @@ const MENU_ITEMS = [
   { id: 'admission', label: 'Admission', to: '/admissions', icon: Link2 },
   { id: 'student', label: 'Student', to: '/students', icon: UserCircle },
   { id: 'fee', label: 'Fee', to: '/fees', icon: FileText },
+  { id: 'fee-structure', label: 'Fee Structure', to: '/settings/fee-structure', icon: WalletCards },
   { id: 'attendance', label: 'Attendance', to: '/attendance/students', icon: CalendarCheck },
   { id: 'examination', label: 'Examination', to: '/examination', icon: FileCheck2 },
   { id: 'coe', label: 'COE', to: '/settings/coe', icon: Building },

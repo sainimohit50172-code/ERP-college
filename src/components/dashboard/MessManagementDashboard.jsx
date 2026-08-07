@@ -59,7 +59,7 @@ export default function MessManagementDashboard() {
           <div className="rounded-[21px] bg-white p-6 shadow-sm">
             <div className="flex items-center justify-between gap-4 hover-gradient-border">
               <div>
-                <h2 className="text-xl font-semibold text-slate-900">Today's Meal Distribution</h2>
+                <h2 className="text-xl font-semibold text-slate-900">Today&apos;s Meal Distribution</h2>
                 <p className="mt-1 text-sm text-slate-500">Live tracking for morning and evening meals.</p>
               </div>
               <button type="button" className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md hover-gradient-border" onClick={() => window.alert('View meal details clicked')}>

@@ -7,14 +7,40 @@ from sqlalchemy import select, func
 from app.api.v1.auth.router import router as auth_router
 from app.api.v1.admissions.router import router as admissions_router
 from app.api.v1.attendance.router import router as attendance_router
-from app.api.v1.coe.router import router as coe_router
 from app.api.v1.audit.router import router as audit_router
+from app.api.v1.coe.router import router as coe_router
 from app.api.v1.employees.router import router as employees_router
 from app.api.v1.leave.router import router as leave_router
 from app.api.v1.examinations.router import router as examinations_router
 from app.api.v1.exam_calendar.router import router as exam_calendar_router
-from app.api.v1.exam_fee_setup.router import router as exam_fee_setup_router
-from app.api.v1.exam_form_preferences.router import router as exam_form_preferences_router
+from app.api.v1.exam_fee_setup.router import (
+    router as exam_fee_setup_router,
+    list_fee_heads,
+    search_fee_heads,
+    create_fee_head,
+    get_fee_head,
+    update_fee_head,
+    delete_fee_head,
+    update_fee_head_status,
+    list_fee_head_groups,
+    search_fee_head_groups,
+    create_fee_head_group,
+    get_fee_head_group,
+    update_fee_head_group,
+    delete_fee_head_group,
+)
+from app.api.v1.exam_form_preferences.router import (
+    router as exam_form_preferences_router,
+    coe_router as exam_form_preferences_coe_router,
+    get_coe_exam_form_preference_settings,
+    update_coe_exam_form_preference_settings,
+    list_coe_exam_form_preferences,
+    create_coe_exam_form_preference,
+    search_coe_exam_form_preferences,
+    get_coe_exam_form_preference,
+    update_coe_exam_form_preference,
+    delete_coe_exam_form_preference,
+)
 from app.api.v1.fees.router import router as fees_router
 from app.api.v1.finance.router import router as finance_router
 from app.api.v1.hostel.router import router as hostel_router
@@ -30,6 +56,7 @@ from app.api.v1.academic.router import router as academic_router
 from app.api.v1.teachers.router import router as teachers_router
 from app.api.v1.compat.router import router as compat_router
 from app.api.v1.shared.exceptions import register_exception_handlers
+from app.api.v1.fallback.router import router as fallback_router
 
 import os
 from app.core.config import get_settings
@@ -68,9 +95,9 @@ def create_default_admin() -> None:
             
             # Create admin user
             admin_user = User(
-                email="admin@collegeerp.local",
+                email="admin@example.com",
                 username="admin",
-                hashed_password=get_password_hash("Admin@123"),
+                hashed_password=get_password_hash("Admin123"),
                 full_name="System Administrator",
                 is_active=True,
                 is_superuser=True,
@@ -100,21 +127,9 @@ app = FastAPI(
     openapi_url=f"{settings.api_v1_str}/openapi.json",
 )
 
-# Determine whether to enable a permissive origin regex for Vercel-hosted frontends.
-vercel_allow_regex = None
-# Only enable a permissive vercel wildcard regex when explicitly requested via env var.
-# This avoids guessing or hardcoding domains. Set VERCEL_ALLOW_WILDCARD=true in the backend env to enable.
-try:
-    vercel_allow = os.environ.get('VERCEL_ALLOW_WILDCARD', '')
-    if isinstance(vercel_allow, str) and vercel_allow.lower() in ('1', 'true', 'yes'):
-        vercel_allow_regex = r"https?://([^.]+\.)*vercel\.app"
-except Exception:
-    vercel_allow_regex = None
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
-    allow_origin_regex=vercel_allow_regex,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -133,18 +148,26 @@ async def log_requests(request: Request, call_next):
 
 register_exception_handlers(app)
 
+
+def register_existing_route_if_missing(app_instance, path, endpoint, methods):
+    if any(getattr(route, "path", None) == path for route in app_instance.routes):
+        return
+    app_instance.add_api_route(path, endpoint, methods=list(methods))
+
+
 routers = [
     auth_router,
     admissions_router,
     attendance_router,
-    coe_router,
     audit_router,
+    coe_router,
     employees_router,
     leave_router,
     examinations_router,
     exam_calendar_router,
     exam_fee_setup_router,
     exam_form_preferences_router,
+    exam_form_preferences_coe_router,
     fees_router,
     finance_router,
     hostel_router,
@@ -165,6 +188,53 @@ for router in routers:
     app.include_router(router, prefix=settings.api_v1_str)
     app.include_router(router, prefix="/api")
 
+app.include_router(fallback_router, prefix=settings.api_v1_str)
+app.include_router(fallback_router, prefix="/api")
+
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/exam-form-preferences/settings", get_coe_exam_form_preference_settings, ["GET"])
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/exam-form-preferences/settings", update_coe_exam_form_preference_settings, ["PUT"])
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/exam-form-preferences", list_coe_exam_form_preferences, ["GET"])
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/exam-form-preferences", create_coe_exam_form_preference, ["POST"])
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/exam-form-preferences/search", search_coe_exam_form_preferences, ["GET"])
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/exam-form-preferences/{{entity_id}}", get_coe_exam_form_preference, ["GET"])
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/exam-form-preferences/{{entity_id}}", update_coe_exam_form_preference, ["PUT"])
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/exam-form-preferences/{{entity_id}}", delete_coe_exam_form_preference, ["DELETE"])
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/fee-heads", list_fee_heads, ["GET"])
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/fee-heads", create_fee_head, ["POST"])
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/fee-heads/{{entity_id}}", get_fee_head, ["GET"])
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/fee-heads/{{entity_id}}", update_fee_head, ["PUT"])
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/fee-heads/{{entity_id}}", delete_fee_head, ["DELETE"])
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/fee-heads/{{entity_id}}/status", update_fee_head_status, ["PATCH"])
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/fee-heads/search", search_fee_heads, ["GET"])
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/fee-head-groups", list_fee_head_groups, ["GET"])
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/fee-head-groups", create_fee_head_group, ["POST"])
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/fee-head-groups/{{entity_id}}", get_fee_head_group, ["GET"])
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/fee-head-groups/{{entity_id}}", update_fee_head_group, ["PUT"])
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/fee-head-groups/{{entity_id}}", delete_fee_head_group, ["DELETE"])
+register_existing_route_if_missing(app, f"{settings.api_v1_str}/coe/fee-head-groups/search", search_fee_head_groups, ["GET"])
+
+register_existing_route_if_missing(app, "/api/coe/exam-form-preferences/settings", get_coe_exam_form_preference_settings, ["GET"])
+register_existing_route_if_missing(app, "/api/coe/exam-form-preferences/settings", update_coe_exam_form_preference_settings, ["PUT"])
+register_existing_route_if_missing(app, "/api/coe/exam-form-preferences", list_coe_exam_form_preferences, ["GET"])
+register_existing_route_if_missing(app, "/api/coe/exam-form-preferences", create_coe_exam_form_preference, ["POST"])
+register_existing_route_if_missing(app, "/api/coe/exam-form-preferences/search", search_coe_exam_form_preferences, ["GET"])
+register_existing_route_if_missing(app, "/api/coe/exam-form-preferences/{entity_id}", get_coe_exam_form_preference, ["GET"])
+register_existing_route_if_missing(app, "/api/coe/exam-form-preferences/{entity_id}", update_coe_exam_form_preference, ["PUT"])
+register_existing_route_if_missing(app, "/api/coe/exam-form-preferences/{entity_id}", delete_coe_exam_form_preference, ["DELETE"])
+register_existing_route_if_missing(app, "/api/coe/fee-heads", list_fee_heads, ["GET"])
+register_existing_route_if_missing(app, "/api/coe/fee-heads", create_fee_head, ["POST"])
+register_existing_route_if_missing(app, "/api/coe/fee-heads/{entity_id}", get_fee_head, ["GET"])
+register_existing_route_if_missing(app, "/api/coe/fee-heads/{entity_id}", update_fee_head, ["PUT"])
+register_existing_route_if_missing(app, "/api/coe/fee-heads/{entity_id}", delete_fee_head, ["DELETE"])
+register_existing_route_if_missing(app, "/api/coe/fee-heads/{entity_id}/status", update_fee_head_status, ["PATCH"])
+register_existing_route_if_missing(app, "/api/coe/fee-heads/search", search_fee_heads, ["GET"])
+register_existing_route_if_missing(app, "/api/coe/fee-head-groups", list_fee_head_groups, ["GET"])
+register_existing_route_if_missing(app, "/api/coe/fee-head-groups", create_fee_head_group, ["POST"])
+register_existing_route_if_missing(app, "/api/coe/fee-head-groups/{entity_id}", get_fee_head_group, ["GET"])
+register_existing_route_if_missing(app, "/api/coe/fee-head-groups/{entity_id}", update_fee_head_group, ["PUT"])
+register_existing_route_if_missing(app, "/api/coe/fee-head-groups/{entity_id}", delete_fee_head_group, ["DELETE"])
+register_existing_route_if_missing(app, "/api/coe/fee-head-groups/search", search_fee_head_groups, ["GET"])
+
 # Mount uploads static directory so saved images can be served
 from fastapi.staticfiles import StaticFiles
 # Use absolute path relative to this file to avoid CWD issues
@@ -177,34 +247,21 @@ if not any(getattr(m, "path", None) == "/uploads" for m in getattr(app, "user_mi
 
 @app.get("/health")
 async def health_check():
-    return {"status": "ok"}
+    return {"status": "ok", "service": settings.app_name}
 
 
 @app.get("/api/v1/health")
 async def health_check_v1():
-    return {"status": "ok", "version": settings.app_version}
-
-
-@app.get("/api/health")
-async def health_check_api():
-    return {"status": "ok", "version": settings.app_version}
+    return {"status": "ok", "service": settings.app_name, "version": settings.app_version}
 
 
 @app.on_event("startup")
 async def startup_event():
-    logger.info("FastAPI startup event triggered")
+    logger.info("Starting %s", settings.app_name)
     initialize_database()
     create_default_admin()
-    logger.info("FastAPI startup complete and ready to accept requests")
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
     logger.info("Shutting down %s", settings.app_name)
-
-
-if __name__ == "__main__":
-    import uvicorn
-
-    logger.info("Launching backend app on http://127.0.0.1:8000")
-    uvicorn.run(app, host="127.0.0.1", port=8000, log_level="info")

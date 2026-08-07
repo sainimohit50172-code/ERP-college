@@ -1,14 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Plus, Download, Filter, X } from 'lucide-react';
 import ViewButton from '../components/ui/ViewButton.jsx';
-
-const collegeOptions = [
-  'Roorkee College of Smart Computing',
-  'Roorkee College of Engineering',
-  'Roorkee College of Business Studies',
-  'Roorkee College of Agricultural Sciences',
-  'Roorkee College of Allied Health Sciences',
-];
+import { useERP } from '../services/ERPContext.jsx';
 
 const counselorOptions = ['Chitarekha Khara', 'Amit Sharma', 'Neha Verma', 'Priya Singh'];
 const statusOptions = ['Pending', 'Completed', 'Overdue'];
@@ -159,12 +152,21 @@ export default function FollowUpsPage() {
   const [filterStartDate, setFilterStartDate] = useState('');
   const [filterEndDate, setFilterEndDate] = useState('');
 
+  const { colleges = [] } = useERP();
+  const collegeOptions = useMemo(() => {
+    const source = Array.isArray(colleges) ? colleges : [];
+    return source.map((college) => {
+      if (typeof college === 'string') return college;
+      return college.name || college.collegeName || college.label || `College ${college.id}`;
+    });
+  }, [colleges]);
+
   const [newRow, setNewRow] = useState({
     applicationNumber: '',
     applicationDate: '',
     name: '',
     phone: '',
-    college: collegeOptions[0],
+    college: '',
     stream: '',
     counselor: counselorOptions[0],
     createdAt: '',
@@ -173,6 +175,12 @@ export default function FollowUpsPage() {
     status: 'Pending',
     completionRemark: '',
   });
+
+  useEffect(() => {
+    if (collegeOptions.length && (!newRow.college || !collegeOptions.includes(newRow.college))) {
+      setNewRow((current) => ({ ...current, college: collegeOptions[0] }));
+    }
+  }, [collegeOptions, newRow.college]);
 
   const counts = useMemo(() => {
     const all = rows.length;

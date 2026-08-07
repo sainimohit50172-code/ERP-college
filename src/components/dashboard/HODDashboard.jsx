@@ -84,7 +84,7 @@ export default function HODDashboard() {
 
                   <button onClick={() => setJoiningModalOpen(true)} className="w-full rounded-2xl bg-gradient-to-br from-teal-50 to-teal-100 p-4 text-left hover:shadow-md transition">
                     <div className="text-sm text-slate-600">New Joinings</div>
-                    <div className="mt-2 text-2xl font-bold">Today's Joining</div>
+                    <div className="mt-2 text-2xl font-bold">Today&apos;s Joining</div>
                     <div className="mt-3 flex items-center gap-6 text-sm text-slate-700 hover-gradient-border">
                       <div>Male: -</div>
                       <div>Female: -</div>
@@ -124,7 +124,7 @@ export default function HODDashboard() {
 
           <div className="p-[1px] rounded-[22px]" style={{ background: 'linear-gradient(90deg,#06b6d4 0%,#3b82f6 33%,#7c3aed 66%,#f97316 100%)' }}>
             <div className="rounded-[21px] bg-white p-4 shadow-sm">
-              <h3 className="text-base font-semibold">Yesterday's Attendance</h3>
+              <h3 className="text-base font-semibold">Yesterday&apos;s Attendance</h3>
               <div className="mt-4 flex items-center justify-center p-6 hover-gradient-border">
                 <div className="text-center">
                   <div className="text-3xl font-bold">Present: 0</div>
@@ -197,7 +197,7 @@ export default function HODDashboard() {
 
           <div id="todays-attendance">
             <div className="mb-4 flex items-center justify-between hover-gradient-border">
-              <h3 className="text-lg font-semibold">Today's Employee Attendance</h3>
+              <h3 className="text-lg font-semibold">Today&apos;s Employee Attendance</h3>
               <div className="flex items-center gap-2 hover-gradient-border">
                 <input placeholder="Search..." className="rounded-3xl border border-slate-200/80 bg-slate-50 px-3 py-1 text-xs hover-gradient-border" />
                 <button className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700 hover-gradient-border"><Download className="h-4 w-4"/> Export</button>

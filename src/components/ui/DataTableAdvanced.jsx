@@ -4,6 +4,7 @@ import { useReactToPrint } from 'react-to-print';
 import { CSVLink } from 'react-csv';
 import LoadingOverlay from './LoadingOverlay.jsx';
 import EmptyState from './EmptyState.jsx';
+import ERPTable from './ERPTable.jsx';
 
 function getSortedRows(rows, sortColumn, sortDirection) {
   if (!sortColumn) return rows;
@@ -162,7 +163,7 @@ export default function DataTableAdvanced({
         <EmptyState title="No matching records" description="Try a different search term or change the filters." />
       ) : (
         <div className="overflow-x-auto rounded-[20px] border border-slate-200/70 no-hover-border">
-          <table ref={tableRef} className="w-full text-left text-[11px] text-slate-900" style={{ tableLayout: 'fixed' }}>
+          <ERPTable ref={tableRef} className="w-full text-left text-[11px] text-slate-900" style={{ tableLayout: 'fixed' }}>
             <colgroup>
               {columns.map((column) => {
                 const width = getColumnMinWidth(column);
@@ -239,7 +240,7 @@ export default function DataTableAdvanced({
                 </tr>
               ))}
             </tbody>
-          </table>
+          </ERPTable>
         </div>
       )}
 

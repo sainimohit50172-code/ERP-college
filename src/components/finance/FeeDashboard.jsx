@@ -136,7 +136,7 @@ export default function FeeDashboard() {
                 <div className="text-center">
                   <div className="mb-3 text-5xl">📋</div>
                   <p className="font-medium text-slate-600">No Data Found</p>
-                  <p className="mt-1 text-sm text-slate-500">We couldn't find your data</p>
+                  <p className="mt-1 text-sm text-slate-500">We couldn&apos;t find your data</p>
                 </div>
               </div>
             </div>

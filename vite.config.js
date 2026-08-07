@@ -29,13 +29,22 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5173,
-    strictPort: false,
+    strictPort: true,
     hmr: {
       host: 'localhost',
       protocol: 'ws',
     },
     // Enable the dev proxy with a safe local fallback so the login page can reach the backend during development.
-    proxy: { '/api': { target: backendTarget, changeOrigin: true, secure: false } },
+    // Rewrite `/api/*` -> `/api/v1/*` so unversioned frontend calls continue to work
+    // while the backend exposes versioned routes under `API_V1_STR`.
+    proxy: {
+      '/api': {
+        target: backendTarget,
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, '/api/v1'),
+      },
+    },
   },
   build: {
     chunkSizeWarningLimit: 1000,

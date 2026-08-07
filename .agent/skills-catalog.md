@@ -1,6 +1,6 @@
 # AI Agent Skills — Full Catalog
 
-> Auto-generated. Total: **2001 skills** across **115 categories**.
+> Auto-generated. Total: **2005 skills** across **115 categories**.
 > When asked "what skill should I use?", browse this file and suggest the most relevant skill IDs.
 > Install a skill: `Ctrl+Shift+/` → search for the skill ID → press Enter.
 
@@ -229,7 +229,7 @@ Chat widget, Messages, PromptInput, Avatar, LLM _(risk: unknown)_
 - **runaway-guard**: Cost-safety discipline for paid AI / inference APIs: treat $-cost as a third complexity dimension alongside time and space. Forces a written per-run $-cap, per-day $-cap, max-iterations bound, concurrency limit, and a matching provider-dashboard hard cap BEFORE any call site is written. _(risk: safe)_
 - **train-sentence-transformers**: Train or fine-tune sentence-transformers models across `SentenceTransformer` (bi-encoder; dense or static embedding model; for retrieval, similarity, clustering, classification, paraphrase mining, dedup, multimodal), `CrossEncoder` (reranker; pair scoring for two-stage retrieval / pair... _(risk: critical)_
 - **trl-training**: Train and fine-tune transformer language models using TRL (Transformers Reinforcement Learning). Supports SFT, DPO, GRPO, KTO, RLOO and Reward Model training via CLI commands. _(risk: critical)_
-- **unified-ai-gateway**: Operate and evaluate Unified AI System through eight governed MCP tools while preserving fake-provider, authorization, and evidence boundaries. _(risk: critical)_
+- **unified-ai-gateway**: Operate and evaluate Unified AI System through nine governed MCP tools, including provider-free prompt enhancement, while preserving fake-provider, authorization, and evidence boundaries. _(risk: critical)_
 - **unslop-commit**: Rewrites commit messages so they sound like a careful human engineer wrote them. Strips AI/marketing slop ("comprehensive solution", "robust implementation", "leverage", "enhance", "seamlessly", "This commit..."). Keeps Conventional Commits format. Subject ≤72 chars (aim ≤50),... _(risk: critical)_
 - **unslop-file**: Humanize natural-language memory files (CLAUDE.md, todos, preferences, docs) by removing AI-isms and adding burstiness while preserving every code block, URL, path, command, and heading exactly. Two modes: --deterministic (fast, regex-based, no API) and LLM (default, calls Claude for... _(risk: critical)_
 
@@ -1576,6 +1576,7 @@ pageflip, 组件设计, 组件模式 _(risk: unknown)_
 - **competitor-analysis**: Research competitors with Browserbase discovery, enrichment lanes, screenshots, matrices, and HTML reports. _(risk: safe)_
 - **linkedin-content-generator**: AI-powered LinkedIn content suite: generate posts, carousels, newsletters, and 30-day calendars with niche-specific SEO rules and a reinforcement-learning personal memory system. _(risk: safe)_
 - **linkedin-post-writer**: Draft LinkedIn posts from 16 tested hook formulas mapped to engagement goals (comments, reposts, likes, saves), with 2026 algorithm formatting rules and an AI-tell scrub pass before publishing.
+- **outreachagent**: Operate reply-aware cold outbound email workflows for AI agents with inboxes, contacts, templates, pacing, approvals, webhooks, and delivery metrics. _(risk: critical)_
 - **seo-drift**: Snapshot a site's SEO state and detect ranking, indexation, metadata, canonical, robots, schema, and on-page regressions over time. _(risk: safe)_
 - **socialclaw**: Agent-first social media publishing skill — schedule and publish posts across 13 platforms (X, LinkedIn, Instagram, Facebook Pages, TikTok, Discord, Telegram, YouTube, Reddit, WordPress, Pinterest) via a single workspace API key. _(risk: critical)_
 - **taisly-social-media-posting**: Use Taisly Agent Kit to prepare and publish approved short-form video posts across TikTok, Instagram Reels, YouTube Shorts, X, and Facebook. _(risk: critical)_
@@ -1644,7 +1645,9 @@ strategy and planning.
 - **fal-workflow**: Generate workflow JSON files for chaining AI models _(risk: safe)_
 - **videodb**: Video and audio perception, indexing, and editing. Ingest files/URLs/live streams, build visual/spoken indexes, search with timestamps, edit timelines, add overlays/subtitles, generate media, and create real-time alerts. _(risk: safe)_
 - **videodb-skills**: Upload, stream, search, edit, transcribe, and generate AI video and audio using the VideoDB SDK. _(risk: safe)_
+- **generate-nanobanana**: Generate and edit images/video with Google's Gemini media models (Nano Banana 2/Pro, Gemini Omni Flash), with cost-approval gates, reference-image support, and a prompt/output log per call. _(risk: critical)_
 - **image-generator**: Generate and edit images using Gemini's Nano Banana Pro model (gemini-3-pro-image-preview). Use this skill when the user asks you to generate images, create visuals, edit photos, create logos, generate product mockups, or perform any image generation/editing task. _(risk: safe)_
+- **video-router**: Route a video-production brief to generation, deterministic composition, supplied-footage editing, or an automatic cross-modal plan before production begins.
 
 ## media-processing
 
@@ -1799,6 +1802,7 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 - **before-you-build**: Review product risk before coding by checking demand, alternatives, channels, switching costs, and failure signals. _(risk: safe)_
 - **idea-autopsy**: Autopsy a business idea before you build it: kill-list check, five hard filters, a free-AI one-prompt test, live ad-market verification, and a verdict with a named kill-pattern. _(risk: critical)_
 - **product-decision-agent**: 中文产品决策 Agent。用于需求优先级、Roadmap、增长、留存、运营、数据异常、A/B Test、项目延期和跨团队协作；先判断事实、阶段、核心阻塞与主导机制，再给出下一步、停止清单和切换条件。默认中文，不引用原文或讲历史。 _(risk: safe)_
+- **shopify-review-triage**: Turn public 1-3-star Shopify App Store review rows into a P0-P3 triage brief: incident risk, repeated friction, pricing confusion, feature requests, and an explicit needs-human-read bucket.
 
 ## product-management
 

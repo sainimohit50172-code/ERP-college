@@ -9,15 +9,18 @@ import PageHeader from './PageHeader.jsx';
 export default function GenericCrudPage({
   title,
   subtitle,
+  description,
   resource,
   itemLabel = 'record',
   initialValues,
+  defaultValues,
   fields = [],
   columns = [],
 }) {
+  const defaultFormValues = initialValues || defaultValues || {};
   const [showModal, setShowModal] = useState(false);
   const [editItem, setEditItem] = useState(null);
-  const [formValues, setFormValues] = useState(initialValues || {});
+  const [formValues, setFormValues] = useState(defaultFormValues);
 
   const { data, isLoading } = useResourceList(resource, { page: 1, pageSize: 200 });
   const items = data?.items || [];
@@ -65,7 +68,7 @@ export default function GenericCrudPage({
     ]);
   }, [columns, items]);
 
-  const resetForm = () => setFormValues(initialValues || {});
+  const resetForm = () => setFormValues(defaultFormValues);
 
   const openCreate = () => {
     setEditItem(null);
@@ -75,7 +78,7 @@ export default function GenericCrudPage({
 
   const openEdit = (item) => {
     setEditItem(item);
-    setFormValues({ ...(initialValues || {}), ...item });
+    setFormValues({ ...defaultFormValues, ...item });
     setShowModal(true);
   };
 
@@ -117,7 +120,7 @@ export default function GenericCrudPage({
       <PageHeader
         title={title}
         subtitle={subtitle}
-        description={`Manage ${itemLabel} records, add new entries and keep actions in sync with the shared ERP data layer.`}
+        description={description || `Manage ${itemLabel} records, add new entries and keep actions in sync with the shared ERP data layer.`}
         action={
           <button
             type="button"

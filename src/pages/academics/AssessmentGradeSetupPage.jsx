@@ -19,7 +19,7 @@ export default function AssessmentGradeSetupPage() {
   const [form, setForm] = useState({ id: null, name: '', code: '', grade_band: '', min_score: '', max_score: '', grade_point: '', status: 'Active', description: '' });
   const [editingId, setEditingId] = useState(null);
 
-  const { data: gradeSetupData = {}, isLoading, isError, error } = useResourceList('assessmentGradeSetups', { page: 1, pageSize: 200 });
+  const { data: gradeSetupData = {} } = useResourceList('assessmentGradeSetups', { page: 1, pageSize: 200 });
   const createGradeSetup = useCreateResource('assessmentGradeSetups');
   const updateGradeSetup = useUpdateResource('assessmentGradeSetups');
   const deleteGradeSetup = useDeleteResource('assessmentGradeSetups');
@@ -44,9 +44,20 @@ export default function AssessmentGradeSetupPage() {
     });
   }, [query, rows, statusFilter, createdDateFilter]);
 
-  useEffect(() => {
+  const handleQueryChange = (event) => {
+    setQuery(event.target.value);
     setPage(1);
-  }, [query, statusFilter, createdDateFilter, rows.length]);
+  };
+
+  const handleStatusChange = (event) => {
+    setStatusFilter(event.target.value);
+    setPage(1);
+  };
+
+  const handleDateChange = (event) => {
+    setCreatedDateFilter(event.target.value);
+    setPage(1);
+  };
 
   const pageCount = Math.max(1, Math.ceil(filteredRows.length / pageSize));
   const displayedRows = filteredRows.slice((page - 1) * pageSize, page * pageSize);
@@ -204,11 +215,11 @@ export default function AssessmentGradeSetupPage() {
             <h2 className="mt-2 text-xl font-semibold text-slate-900">{filteredRows.length} entries</h2>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search grade setup..." className="h-11 min-w-[240px] rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500" />
-            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="h-11 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500">
+            <input value={query} onChange={handleQueryChange} placeholder="Search grade setup..." className="h-11 min-w-[240px] rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500" />
+            <select value={statusFilter} onChange={handleStatusChange} className="h-11 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500">
               {STATUS_OPTIONS.map((status) => <option key={status} value={status}>{status}</option>)}
             </select>
-            <input type="date" value={createdDateFilter} onChange={(e) => setCreatedDateFilter(e.target.value)} className="h-11 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500" />
+            <input type="date" value={createdDateFilter} onChange={handleDateChange} className="h-11 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500" />
           </div>
         </div>
 
