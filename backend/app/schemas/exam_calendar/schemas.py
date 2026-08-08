@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import date, datetime
 from typing import Optional
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class ExamCalendarBase(BaseModel):
@@ -19,6 +19,12 @@ class ExamCalendarBase(BaseModel):
     end_date: Optional[date] = Field(alias="endDate", default=None)
     created_by: Optional[str] = Field(alias="createdBy", default=None, max_length=128)
     created_date: Optional[date] = Field(alias="createdDate", default=None)
+
+    @model_validator(mode="after")
+    def validate_date_range(self):
+        if self.start_date is not None and self.end_date is not None and self.start_date > self.end_date:
+            raise ValueError("startDate must be on or before endDate")
+        return self
 
 
 class ExamCalendarCreate(ExamCalendarBase):

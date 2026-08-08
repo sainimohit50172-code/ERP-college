@@ -16,19 +16,23 @@ export default function FeeStructureModulePage() {
     return <Navigate to="/settings/fee-structure" replace />;
   }
 
+  const content = (
+    <>
+      <Breadcrumb
+        items={moduleConfig.breadcrumbs ?? [
+          { label: 'Dashboard', to: '/' },
+          { label: 'Settings', to: '/settings' },
+          { label: 'Fee Structure', to: '/settings/fee-structure' },
+          { label: moduleConfig.title },
+        ]}
+      />
+      <GenericCrudPage {...moduleConfig} description={moduleConfig.description} />
+    </>
+  );
+
   return (
-    <div className="min-h-[calc(100vh-7rem)] rounded-[24px] border border-slate-200/80 bg-[linear-gradient(135deg,#f8fafc_0%,#ffffff_55%,#f8fafc_100%)] p-3 shadow-[0_18px_45px_rgba(15,23,42,0.06)] lg:p-5">
-      <div className="rounded-[22px] border border-slate-200/70 bg-white/95 p-4 shadow-inner sm:p-6">
-        <Breadcrumb
-          items={moduleConfig.breadcrumbs ?? [
-            { label: 'Dashboard', to: '/' },
-            { label: 'Settings', to: '/settings' },
-            { label: 'Fee Structure', to: '/settings/fee-structure' },
-            { label: moduleConfig.title },
-          ]}
-        />
-        <GenericCrudPage {...moduleConfig} description={moduleConfig.description} />
-      </div>
+    <div className="space-y-6 px-4 pb-6 sm:px-0">
+      {content}
     </div>
   );
 }

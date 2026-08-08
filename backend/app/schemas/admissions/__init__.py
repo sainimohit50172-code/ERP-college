@@ -1,3 +1,10 @@
+from app.schemas.admissions.category_schemas import (
+    AdmissionCategoryCreate,
+    AdmissionCategoryDetail,
+    AdmissionCategoryListItem,
+    AdmissionCategoryResponse,
+    AdmissionCategoryUpdate,
+)
 from app.schemas.admissions.schemas import (
     AdmissionCreate,
     AdmissionDetail,
@@ -7,6 +14,11 @@ from app.schemas.admissions.schemas import (
 )
 
 __all__ = [
+    "AdmissionCategoryCreate",
+    "AdmissionCategoryDetail",
+    "AdmissionCategoryListItem",
+    "AdmissionCategoryResponse",
+    "AdmissionCategoryUpdate",
     "AdmissionCreate",
     "AdmissionDetail",
     "AdmissionListItem",

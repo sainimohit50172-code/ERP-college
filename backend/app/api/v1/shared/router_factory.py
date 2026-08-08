@@ -1,8 +1,11 @@
+import csv
+import io
 import inspect
+import re
 from typing import Any, Callable, Generic, List, Optional, Type, TypeVar
 
-from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends, File, HTTPException, Request, UploadFile, status
+from pydantic import BaseModel, ValidationError
 from sqlalchemy import func, select
 from sqlalchemy.orm import class_mapper
 
@@ -87,6 +90,72 @@ def build_crud_router(
                 return allowed
         return value
 
+    def _to_snake_case(value: str) -> str:
+        if not isinstance(value, str):
+            return value
+        value = value.strip()
+        value = value.replace(' ', '_').replace('-', '_')
+        value = re.sub(r'(.)([A-Z][a-z]+)', r'\1_\2', value)
+        value = re.sub(r'([a-z0-9])([A-Z])', r'\1_\2', value)
+        return re.sub(r'__+', '_', value).lower()
+
+    async def _read_import_rows(file: UploadFile) -> list[dict[str, Any]]:
+        raw_data = await file.read()
+        filename = (file.filename or '').lower()
+
+        if filename.endswith('.csv'):
+            text = raw_data.decode('utf-8-sig', errors='replace')
+            reader = csv.DictReader(io.StringIO(text), skipinitialspace=True)
+            rows = []
+            for row in reader:
+                cleaned = {
+                    _to_snake_case(str(key)): (value.strip() if isinstance(value, str) else value)
+                    for key, value in row.items()
+                    if key and str(key).strip()
+                }
+                if any(value not in (None, '') for value in cleaned.values()):
+                    rows.append(cleaned)
+            return rows
+
+        if filename.endswith('.xlsx'):
+            try:
+                import openpyxl
+            except ImportError as exc:
+                raise HTTPException(
+                    status_code=status.HTTP_501_NOT_IMPLEMENTED,
+                    detail='Excel import requires openpyxl on the backend.',
+                ) from exc
+            workbook = openpyxl.load_workbook(io.BytesIO(raw_data), data_only=True)
+            sheet = workbook.active
+            rows = []
+            header_row = next(sheet.iter_rows(min_row=1, max_row=1, values_only=True), None)
+            if not header_row:
+                return rows
+            headers = [str(value).strip() if value is not None else '' for value in header_row]
+            for row in sheet.iter_rows(min_row=2, values_only=True):
+                cleaned = {}
+                for header, cell_value in zip(headers, row):
+                    if not header or not str(header).strip():
+                        continue
+                    value = cell_value
+                    if isinstance(value, str):
+                        value = value.strip()
+                    cleaned[_to_snake_case(str(header))] = value
+                if any(value not in (None, '') for value in cleaned.values()):
+                    rows.append(cleaned)
+            return rows
+
+        if filename.endswith('.xls'):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail='Legacy .xls format is not supported. Please save the file as .xlsx or .csv.',
+            )
+
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail='Unsupported file type. Please upload a CSV or XLSX file.',
+        )
+
     def _orm_to_dict_for_schema(obj, schema_type: type[BaseModel]):
         data = _orm_to_dict(obj)
         # Fill missing schema fields from object attributes (synonyms/properties)
@@ -114,7 +183,7 @@ def build_crud_router(
         return data
 
     @router.get(
-        "/",
+        "",
         response_model=APIResponse[PaginationResponse[list_schema]],
         summary=f"List {tags[0]}",
         description=f"Retrieve a paginated list of {tags[0]} records.",
@@ -134,7 +203,7 @@ def build_crud_router(
         return APIResponse(data=response)
 
     @router.post(
-        "/",
+        "",
         response_model=APIResponse[detail_schema],
         status_code=status.HTTP_201_CREATED,
         summary=f"Create {entity_label}",
@@ -142,6 +211,7 @@ def build_crud_router(
     )
     async def create_entity(
         payload: Any,
+        request: Request,
         repository: BaseRepository[Any] = Depends(repository_dependency),
         service: Any = Depends(service_dependency),
     ):
@@ -204,12 +274,17 @@ def build_crud_router(
             method = getattr(service, method_name)
             method_signature = inspect.signature(method)
             if any(param.kind == inspect.Parameter.VAR_KEYWORD for param in method_signature.parameters.values()):
-                return await method(**payload_data)
+                kwargs = dict(payload_data)
+                if 'request' in method_signature.parameters:
+                    kwargs['request'] = request
+                return await method(**kwargs)
             filtered_payload = {
                 key: value
                 for key, value in payload_data.items()
                 if key in method_signature.parameters
             }
+            if 'request' in method_signature.parameters:
+                filtered_payload['request'] = request
             return await method(**filtered_payload)
 
         service_result = None
@@ -235,6 +310,8 @@ def build_crud_router(
             service_result = await _call_service_method("create_request")
         elif hasattr(service, "allocate_vehicle"):
             service_result = await _call_service_method("allocate_vehicle")
+        elif hasattr(service, "create"):
+            service_result = await _call_service_method("create")
 
         if isinstance(service_result, dict):
             payload_data = service_result
@@ -270,6 +347,9 @@ def build_crud_router(
         return APIResponse(data=detail_schema.model_validate(_orm_to_dict_for_schema(created, detail_schema)), message="Created")
 
     create_entity.__annotations__["payload"] = create_schema
+
+    if extra_routes is not None:
+        extra_routes(router)
 
     @router.get(
         "/{entity_id}",
@@ -460,6 +540,56 @@ def build_crud_router(
 
     bulk_create_entities.__annotations__["payload"] = list[create_schema]
 
+    @router.post(
+        "/import",
+        response_model=APIResponse[list[list_schema]],
+        summary=f"Import {tags[0]} from spreadsheet",
+        description=f"Import multiple {tags[0]} records from a CSV or XLSX upload.",
+    )
+    async def import_entities(
+        file: UploadFile = File(...),
+        repository: BaseRepository[Any] = Depends(repository_dependency),
+    ):
+        rows = await _read_import_rows(file)
+        if not rows:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Uploaded file contains no data rows.")
+
+        entities = []
+        repo_session = getattr(repository, "session", None)
+
+        for index, row in enumerate(rows, start=2):
+            try:
+                payload_obj = create_schema.model_validate(row)
+            except ValidationError as exc:
+                error_messages = [f"{err['loc'][0]}: {err['msg']}" for err in exc.errors()]
+                raise HTTPException(
+                    status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                    detail=f"Invalid data on row {index}: {'; '.join(error_messages)}",
+                )
+
+            item_data = payload_obj.model_dump()
+            filtered = {}
+            for key, value in item_data.items():
+                if _is_relationship_attribute(model_class, key):
+                    fk_id = _resolve_relationship(key, value, repo_session)
+                    if fk_id is not None:
+                        try:
+                            prop = class_mapper(model_class).get_property(key)
+                            local_cols = list(prop.local_columns)
+                            if local_cols:
+                                fk_name = local_cols[0].key
+                                filtered[fk_name] = fk_id
+                        except Exception:
+                            continue
+                    continue
+                filtered[key] = _normalize_enum_value(key, value)
+            entities.append(model_class(**filtered))
+
+        created = await repository.bulk_create(entities)
+        return APIResponse(data=[list_schema.model_validate(_orm_to_dict_for_schema(item, list_schema)) for item in created], message="Imported")
+
+    bulk_create_entities.__annotations__["payload"] = list[create_schema]
+
     @router.patch(
         "/bulk",
         response_model=APIResponse[list[list_schema]],
@@ -499,8 +629,5 @@ def build_crud_router(
     ):
         deleted_count = await repository.bulk_delete(payload.ids)
         return APIResponse(data={"deleted": deleted_count}, message="Bulk deleted")
-
-    if extra_routes is not None:
-        extra_routes(router)
 
     return router

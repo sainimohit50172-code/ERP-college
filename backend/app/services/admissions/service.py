@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
-from app.repositories.interfaces.admissions import AdmissionRepository
+from app.repositories.interfaces.admissions import AdmissionCategoryRepository, AdmissionRepository
 
 
 class AdmissionServiceError(Exception):
@@ -27,3 +27,8 @@ class AdmissionService:
             raise AdmissionServiceError("Applicant name is required")
 
         return AdmissionDTO(id=None, applicant_name=applicant_name, email=email, status=status)
+
+
+class AdmissionCategoryService:
+    def __init__(self, admission_category_repository: AdmissionCategoryRepository) -> None:
+        self._admission_category_repository = admission_category_repository

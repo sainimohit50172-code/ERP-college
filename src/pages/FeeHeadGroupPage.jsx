@@ -161,7 +161,7 @@ export default function FeeHeadGroupPage() {
   };
 
   const handleNext = () => {
-    navigate('/settings/fee-structure');
+    navigate('/settings/fee-structure/fee-category');
   };
 
   return (

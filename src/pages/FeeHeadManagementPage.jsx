@@ -56,7 +56,7 @@ export default function FeeHeadManagementPage() {
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [dragSourceId, setDragSourceId] = useState(null);
   const [originalOrder, setOriginalOrder] = useState([]);
-  const { register, handleSubmit, reset, watch, formState: { errors } } = useForm({ defaultValues: DEFAULT_FORM_VALUES });
+  const { register, handleSubmit, reset, formState: { errors } } = useForm({ defaultValues: DEFAULT_FORM_VALUES });
 
   const loadFeeHeads = async () => {
     setIsLoading(true);
@@ -225,21 +225,21 @@ export default function FeeHeadManagementPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-7rem)] rounded-[24px] border border-slate-200/80 bg-[linear-gradient(135deg,#f8fafc_0%,#ffffff_55%,#f8fafc_100%)] p-3 shadow-[0_18px_45px_rgba(15,23,42,0.06)] lg:p-5">
-      <div className="rounded-[22px] border border-slate-200/70 bg-white/95 p-4 shadow-inner sm:p-6">
+    <div className="space-y-6 px-4 pb-6 sm:px-0">
+      <div className="space-y-6">
         <Breadcrumb items={[{ label: 'Dashboard', to: '/' }, { label: 'Fee Structure', to: '/settings/fee-structure' }, { label: 'Fee Head' }]} />
 
-        <div className="mb-8 flex flex-col gap-4 rounded-[24px] border border-slate-200/70 bg-slate-50 px-6 py-5 shadow-sm sm:flex-row sm:items-end sm:justify-between">
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-600">Fee Structure</p>
             <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">Fee Head</h1>
           </div>
-          <Button type="button" onClick={openCreate} className="inline-flex items-center gap-2 px-5 py-3 text-sm font-semibold">
+          <Button type="button" onClick={openCreate} className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500">
             <Plus className="h-4 w-4" /> New Fee Head
           </Button>
         </div>
 
-        <div className="mb-5 rounded-[24px] border border-slate-200/70 bg-white p-5 shadow-[0_10px_36px_rgba(15,23,42,0.05)]">
+        <div className="mb-5 rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm">
           <div className="mb-4 grid gap-3 lg:grid-cols-[1fr_auto]">
             <div className="flex flex-wrap gap-3">
               {FILTER_OPTIONS.map((filter) => (

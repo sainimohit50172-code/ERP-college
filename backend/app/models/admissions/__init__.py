@@ -1,3 +1,3 @@
-from app.models.admissions.models import Admission
+from app.models.admissions.models import Admission, AdmissionCategory
 
-__all__ = ["Admission"]
+__all__ = ["Admission", "AdmissionCategory"]

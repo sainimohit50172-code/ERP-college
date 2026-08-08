@@ -1,6 +1,7 @@
 from fastapi import Depends
 
 from app.db.database import get_db
+from app.repositories.mysql.admission_categories import MySQLAdmissionCategoryRepository
 from app.repositories.mysql.admissions import MySQLAdmissionRepository
 from app.repositories.mysql.auth import MySQLAuthRepository
 from app.repositories.mysql.attendance import MySQLAttendanceRepository
@@ -32,7 +33,7 @@ from app.repositories.mysql.academic import (
     MySQLAssessmentGroupRepository,
     MySQLAttendanceMarksSetupRepository,
 )
-from app.services.admissions.service import AdmissionService
+from app.services.admissions.service import AdmissionCategoryService, AdmissionService
 from app.services.attendance.service import AttendanceService
 from app.services.audit.service import AuditService
 from app.services.auth.service import AuthService
@@ -55,6 +56,10 @@ from app.repositories.mysql.helpdesk import (
     MySQLTicketAttachmentRepository,
     MySQLTicketRepository,
 )
+
+
+def get_admission_category_repository(db=Depends(get_db)):
+    return MySQLAdmissionCategoryRepository(db)
 
 
 def get_admission_repository(db=Depends(get_db)):
@@ -275,6 +280,10 @@ def get_assessment_group_repository(db=Depends(get_db)):
 
 def get_auth_repository(db=Depends(get_db)):
     return MySQLAuthRepository(db)
+
+
+def get_admission_category_service(repo=Depends(get_admission_category_repository)):
+    return AdmissionCategoryService(repo)
 
 
 def get_admission_service(repo=Depends(get_admission_repository)):

@@ -23,7 +23,7 @@ from app.models.academic.models import (
     Semester,
     Subject,
 )
-from app.models.admissions.models import Admission
+from app.models.admissions.models import Admission, AdmissionCategory
 from app.models.attendance.models import AttendanceRecord
 from app.models.audit.models import AuditLog
 from app.models.employees.models import (

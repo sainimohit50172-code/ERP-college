@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE = '/api';
+const DEFAULT_API_BASE = '/api/v1';
 
 function isProductionEnvironment(env = {}) {
   if (typeof import.meta !== 'undefined' && import.meta && import.meta.env) {

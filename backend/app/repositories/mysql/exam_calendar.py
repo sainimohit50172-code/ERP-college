@@ -24,9 +24,11 @@ class MySQLExamCalendarRepository(MySQLRepository[ExamCalendar], ExamCalendarRep
         except SQLAlchemyError as exc:
             raise RepositoryError(str(exc)) from exc
 
-    async def get_all(self) -> List[ExamCalendar]:
+    async def get_all(self, include_deleted: bool = False) -> List[ExamCalendar]:
         try:
-            stmt = select(ExamCalendar).where(ExamCalendar.deleted_at.is_(None))
+            stmt = select(ExamCalendar)
+            if not include_deleted:
+                stmt = stmt.where(ExamCalendar.deleted_at.is_(None))
             result = await self._execute(stmt)
             return list(result.scalars().all())
         except SQLAlchemyError as exc:

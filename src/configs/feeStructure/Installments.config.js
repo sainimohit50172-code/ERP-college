@@ -12,6 +12,8 @@ export default {
     { label: 'Installments' },
   ],
   defaultValues: { installmentName: '', installmentCount: 1, status: 'Active', description: '' },
+  inlineForm: true,
+  createButtonLabel: 'New Installment',
   searchFields: ['installmentName'],
   filters: [
     {

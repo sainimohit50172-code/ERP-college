@@ -107,7 +107,7 @@ function getSortedRows(rows, columns, sortKey, direction) {
   });
 }
 
-export default function DataTable({ columns, rows, loading = false, placeholder = 'Search...', initialPageSize = 10, hideHeader = false, hideControls = false, headerClassName = '', tableMaxHeight, tableId, onEdit = () => {}, onDelete = () => {}, onRowClick = null, query: externalQuery, onQueryChange }) {
+export default function DataTable({ columns, rows, loading = false, placeholder = 'Search...', initialPageSize = 10, hideHeader = false, hideControls = false, headerClassName = '', tableMaxHeight, tableId, onEdit = () => {}, onDelete = () => {}, onRowClick = null, query: externalQuery, onQueryChange, toolbarActions = [] }) {
   const columnsDefinition = useMemo(() => normalizeColumns(columns), [columns]);
   const [query, setQuery] = useState(externalQuery ?? '');
   const [sortKey, setSortKey] = useState(null);
@@ -187,6 +187,9 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
             <p className="mt-1 text-xs text-slate-500">Search, sort, paginate, export, and print your records.</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
+            {toolbarActions.map((action, index) => (
+              <span key={index}>{action}</span>
+            ))}
             <button type="button" onClick={downloadCsv} className="btn btn-secondary inline-flex items-center gap-2">
               <Download className="h-4 w-4" /> CSV
             </button>

@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Eye, Filter, Plus, Trash2, X } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { CSVLink } from 'react-csv';
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { useResourceList, useCreateResource, useUpdateResource, useDeleteResource } from '../hooks/useResourceHooks.js';
@@ -256,23 +256,34 @@ export default function CoeExamCalendarPage() {
 
   const csvExportData = useMemo(() => [exportColumns, ...exportRows], [exportRows]);
 
-  const handleExportExcel = () => {
+  const handleExportExcel = async () => {
     if (!filteredExams.length) {
       toast.info('No data available to export.');
       return;
     }
 
-    const workbook = XLSX.utils.book_new();
-    const worksheetData = [
-      ['Exam Calendar Report'],
-      [],
-      exportColumns,
-      ...exportRows,
-    ];
-    const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Exam Calendar');
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Exam Calendar');
 
-    XLSX.writeFile(workbook, `Exam_Calendar_${new Date().toISOString().slice(0, 10)}.xlsx`);
+    worksheet.addRow(['Exam Calendar Report']);
+    worksheet.addRow([]);
+    worksheet.addRow(exportColumns);
+    exportRows.forEach((row) => {
+      worksheet.addRow(row);
+    });
+
+    worksheet.columns = exportColumns.map(() => ({ width: 20 }));
+    worksheet.getRow(1).font = { bold: true };
+    worksheet.getRow(3).font = { bold: true };
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `Exam_Calendar_${new Date().toISOString().slice(0, 10)}.xlsx`;
+    anchor.click();
+    URL.revokeObjectURL(url);
   };
 
   const handleExportCsv = () => {

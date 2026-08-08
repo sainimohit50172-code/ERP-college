@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Test authentication hardening - verify security fixes."""
 
-import requests
+import httpx
 import json
 
 def test_protected_endpoints():
@@ -14,7 +14,7 @@ def test_protected_endpoints():
     
     # Test 1: /me without Bearer token
     print("\n[TEST 1] GET /me without Bearer token")
-    response = requests.get(f"{base_url}/me")
+    response = httpx.get(f"{base_url}/me")
     print(f"Status Code: {response.status_code}")
     assert response.status_code == 401, f"Expected 401, got {response.status_code}"
     print("✅ PASS: Returns 401 for unauthenticated request")
@@ -22,14 +22,14 @@ def test_protected_endpoints():
     # Test 2: /me with invalid Bearer token
     print("\n[TEST 2] GET /me with invalid Bearer token")
     headers = {"Authorization": "Bearer invalid_token_xyz"}
-    response = requests.get(f"{base_url}/me", headers=headers)
+    response = httpx.get(f"{base_url}/me", headers=headers)
     print(f"Status Code: {response.status_code}")
     assert response.status_code == 401, f"Expected 401, got {response.status_code}"
     print("✅ PASS: Returns 401 for invalid token")
     
     # Test 3: /me with valid Bearer token
     print("\n[TEST 3] GET /me with valid Bearer token")
-    login_resp = requests.post(f"{base_url}/login", json={
+    login_resp = httpx.post(f"{base_url}/login", json={
         "email": "admin@example.com",
         "password": "Admin123"
     })
@@ -37,7 +37,7 @@ def test_protected_endpoints():
     token = login_resp.json()["data"]["access_token"]
     
     headers = {"Authorization": f"Bearer {token}"}
-    response = requests.get(f"{base_url}/me", headers=headers)
+    response = httpx.get(f"{base_url}/me", headers=headers)
     print(f"Status Code: {response.status_code}")
     assert response.status_code == 200, f"Expected 200, got {response.status_code}"
     
@@ -48,14 +48,14 @@ def test_protected_endpoints():
     
     # Test 4: Verify /logout requires authentication
     print("\n[TEST 4] POST /logout without Bearer token")
-    response = requests.post(f"{base_url}/logout")
+    response = httpx.post(f"{base_url}/logout")
     print(f"Status Code: {response.status_code}")
     assert response.status_code == 401, f"Expected 401, got {response.status_code}"
     print("✅ PASS: Returns 401 for unauthenticated logout")
     
     # Test 5: Verify /change-password requires authentication
     print("\n[TEST 5] POST /change-password without Bearer token")
-    response = requests.post(f"{base_url}/change-password", json={
+    response = httpx.post(f"{base_url}/change-password", json={
         "current_password": "Admin123",
         "new_password": "NewPassword123"
     })
@@ -65,7 +65,7 @@ def test_protected_endpoints():
     
     # Test 6: Verify /register is public
     print("\n[TEST 6] POST /register without Bearer token")
-    response = requests.post(f"{base_url}/register", json={
+    response = httpx.post(f"{base_url}/register", json={
         "email": f"test{hash('test')}@example.com",
         "username": f"testuser{hash('test')}",
         "password": "TestPassword123",
@@ -78,7 +78,7 @@ def test_protected_endpoints():
     
     # Test 7: Verify /login is public
     print("\n[TEST 7] POST /login without Bearer token")
-    response = requests.post(f"{base_url}/login", json={
+    response = httpx.post(f"{base_url}/login", json={
         "email": "admin@example.com",
         "password": "Admin123"
     })
@@ -92,7 +92,7 @@ def test_protected_endpoints():
     test_email = f"test{random.randint(10000, 99999)}@example.com"
     test_username = f"testuser{random.randint(10000, 99999)}"
     
-    response = requests.post(f"{base_url}/register", json={
+    response = httpx.post(f"{base_url}/register", json={
         "email": test_email,
         "username": test_username,
         "password": "TestPassword123",

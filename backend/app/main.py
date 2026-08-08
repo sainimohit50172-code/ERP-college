@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import select, func
 
 from app.api.v1.auth.router import router as auth_router
-from app.api.v1.admissions.router import router as admissions_router
+from app.api.v1.admissions.router import router as admissions_router, admission_categories_router
 from app.api.v1.attendance.router import router as attendance_router
 from app.api.v1.audit.router import router as audit_router
 from app.api.v1.coe.router import router as coe_router
@@ -158,6 +158,7 @@ def register_existing_route_if_missing(app_instance, path, endpoint, methods):
 routers = [
     auth_router,
     admissions_router,
+    admission_categories_router,
     attendance_router,
     audit_router,
     coe_router,

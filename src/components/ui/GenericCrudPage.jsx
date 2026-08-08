@@ -1,7 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useRef } from 'react';
 import { Edit3, Eye, Plus, Trash2 } from 'lucide-react';
 import { toast } from 'react-toastify';
-import { useResourceList, useCreateResource, useUpdateResource, useDeleteResource } from '../../hooks/useResourceHooks';
+import { useResourceList, useCreateResource, useUpdateResource, useDeleteResource, useBulkImport } from '../../hooks/useResourceHooks';
 import DataTable from './DataTable.jsx';
 import Modal from './Modal.jsx';
 import PageHeader from './PageHeader.jsx';
@@ -16,9 +16,12 @@ export default function GenericCrudPage({
   defaultValues,
   fields = [],
   columns = [],
+  inlineForm = false,
+  createButtonLabel,
 }) {
   const defaultFormValues = initialValues || defaultValues || {};
   const [showModal, setShowModal] = useState(false);
+  const [showInlineForm, setShowInlineForm] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [formValues, setFormValues] = useState(defaultFormValues);
 
@@ -27,6 +30,8 @@ export default function GenericCrudPage({
   const createMutation = useCreateResource(resource);
   const updateMutation = useUpdateResource(resource);
   const deleteMutation = useDeleteResource(resource);
+  const bulkImportMutation = useBulkImport(resource);
+  const uploadInputRef = useRef(null);
 
   const tableColumns = useMemo(() => [...columns.map((column) => column.label), 'Actions'], [columns]);
   const tableRows = useMemo(() => {
@@ -70,21 +75,91 @@ export default function GenericCrudPage({
 
   const resetForm = () => setFormValues(defaultFormValues);
 
+  const handleFileChange = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      await bulkImportMutation.mutateAsync(formData);
+      toast.success(`Uploaded ${file.name} successfully`);
+      event.target.value = null;
+    } catch (error) {
+      toast.error(error?.message || 'Failed to upload excel file');
+    }
+  };
+
+  const importableResources = new Set([
+    'installments',
+    'students',
+    'courses',
+    'departments',
+    'academic-years',
+    'semesters',
+    'subjects',
+    'sections',
+  ]);
+
+  const renderUploadButton = () => {
+    if (!importableResources.has(resource)) {
+      return null;
+    }
+
+    return (
+      <>
+        <input
+          ref={uploadInputRef}
+          type="file"
+          accept=".csv,.xlsx"
+          onChange={handleFileChange}
+          className="hidden"
+        />
+        <button
+          type="button"
+          onClick={() => uploadInputRef.current?.click()}
+          className="btn btn-secondary inline-flex items-center gap-2"
+        >
+          Upload Excel
+        </button>
+      </>
+    );
+  };
+
   const openCreate = () => {
     setEditItem(null);
     resetForm();
-    setShowModal(true);
+    if (inlineForm) {
+      setShowInlineForm(true);
+      setShowModal(false);
+    } else {
+      setShowModal(true);
+    }
   };
 
   const openEdit = (item) => {
     setEditItem(item);
     setFormValues({ ...defaultFormValues, ...item });
-    setShowModal(true);
+    if (inlineForm) {
+      setShowInlineForm(true);
+      setShowModal(false);
+    } else {
+      setShowModal(true);
+    }
+  };
+
+  const closeForm = () => {
+    setShowModal(false);
+    setShowInlineForm(false);
+    setEditItem(null);
+    resetForm();
   };
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormValues((current) => ({ ...current, [name]: value }));
+    const { name, value, type } = event.target;
+    const nextValue = type === 'number' ? (value === '' ? '' : Number(value)) : value;
+    setFormValues((current) => ({ ...current, [name]: nextValue }));
   };
 
   const handleSubmit = async (event) => {
@@ -97,9 +172,7 @@ export default function GenericCrudPage({
         await createMutation.mutateAsync(formValues);
         toast.success(`${itemLabel} created`);
       }
-      setShowModal(false);
-      resetForm();
-      setEditItem(null);
+      closeForm();
     } catch (error) {
       toast.error(error?.message || `Could not save ${itemLabel}`);
     }
@@ -127,26 +200,111 @@ export default function GenericCrudPage({
             onClick={openCreate}
             className="inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border"
           >
-            <Plus className="h-4 w-4" /> Add {itemLabel}
+            <Plus className="h-4 w-4" /> {createButtonLabel || `Add ${itemLabel}`}
           </button>
         }
       />
 
+      {inlineForm && showInlineForm && (
+        <div className="rounded-[24px] border border-slate-200/70 bg-white/95 p-5 shadow-sm">
+          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-lg font-semibold text-slate-950">{editItem ? `Edit ${itemLabel}` : `New ${itemLabel}`}</h2>
+              <p className="text-sm text-slate-500">Fill in the details and save the installment plan.</p>
+            </div>
+            <button
+              type="button"
+              onClick={closeForm}
+              className="inline-flex items-center justify-center rounded-3xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+            >
+              Cancel
+            </button>
+          </div>
+          <form id="generic-crud-form" onSubmit={handleSubmit} className="grid gap-4 md:grid-cols-2">
+            {fields.map((field) => (
+              <div key={field.name} className={field.fullWidth ? 'md:col-span-2' : ''}>
+                <label className="mb-2 block text-sm font-medium text-slate-700">{field.label}</label>
+                {field.type === 'select' ? (
+                  <select
+                    name={field.name}
+                    value={formValues[field.name] ?? ''}
+                    onChange={handleChange}
+                    className="w-full rounded-2xl border border-slate-200/80 bg-slate-50 px-3 py-3 text-sm text-slate-900 outline-none hover-gradient-border"
+                  >
+                    {field.options?.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                ) : field.type === 'textarea' ? (
+                  <textarea
+                    name={field.name}
+                    value={formValues[field.name] ?? ''}
+                    onChange={handleChange}
+                    rows={4}
+                    className="w-full rounded-2xl border border-slate-200/80 bg-slate-50 px-3 py-3 text-sm text-slate-900 outline-none hover-gradient-border"
+                  />
+                ) : (
+                  <input
+                    name={field.name}
+                    type={field.type || 'text'}
+                    value={formValues[field.name] ?? ''}
+                    onChange={handleChange}
+                    placeholder={field.placeholder || ''}
+                    className="w-full rounded-2xl border border-slate-200/80 bg-slate-50 px-3 py-3 text-sm text-slate-900 outline-none hover-gradient-border"
+                  />
+                )}
+              </div>
+            ))}
+            <div className="md:col-span-2 flex flex-col gap-3 sm:flex-row sm:justify-end">
+              <button
+                type="button"
+                onClick={closeForm}
+                className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="rounded-2xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 hover-gradient-border"
+              >
+                Save {itemLabel}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
       <div className="rounded-[24px] border border-slate-200/70 bg-white/95 p-4 shadow-sm">
-        <DataTable columns={tableColumns} rows={tableRows} loading={isLoading} placeholder={`Search ${itemLabel} records...`} />
+        <DataTable
+          columns={tableColumns}
+          rows={tableRows}
+          loading={isLoading}
+          placeholder={`Search ${itemLabel} records...`}
+          toolbarActions={renderUploadButton() ? [renderUploadButton()] : []}
+        />
       </div>
+
+      {resource === 'admission-categories' && (
+        <div className="mt-6 flex justify-center">
+          <button
+            type="button"
+            onClick={() => window.location.assign('/settings/fee-structure/fee-category')}
+            className="inline-flex items-center justify-center rounded-3xl bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
+          >
+            Next
+          </button>
+        </div>
+      )}
 
       <Modal
         title={editItem ? `Edit ${itemLabel}` : `Add ${itemLabel}`}
         isOpen={showModal}
-        onClose={() => {
-          setShowModal(false);
-          setEditItem(null);
-          resetForm();
-        }}
+        onClose={closeForm}
         footer={
           <>
-            <button type="button" onClick={() => { setShowModal(false); setEditItem(null); resetForm(); }} className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700">
+            <button type="button" onClick={closeForm} className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700">
               Cancel
             </button>
             <button type="submit" form="generic-crud-form" className="rounded-2xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover-gradient-border">
