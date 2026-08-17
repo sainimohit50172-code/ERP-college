@@ -68,6 +68,12 @@ import MedicalRecordsPage from './pages/student-master/MedicalRecordsPage.jsx';
 import StatusTypesPage from './pages/student-master/StatusTypesPage.jsx';
 import DepartmentManagementPage from './pages/DepartmentManagementPage.jsx';
 import DesignationManagementPage from './pages/DesignationManagementPage.jsx';
+import HRMSetupPage from './pages/HRMSetupPage.jsx';
+import HRMDepartmentSettingPage from './pages/HRMDepartmentSettingPage.jsx';
+import HRMLeaveGroupPage from './pages/HRMLeaveGroupPage.jsx';
+import HRMLeaveCyclePage from './pages/HRMLeaveCyclePage.jsx';
+import HRMLeavePreferencePage from './pages/HRMLeavePreferencePage.jsx';
+import HRMSocialCategoryPage from './pages/HRMSocialCategoryPage.jsx';
 import OrganizationManagementPage from './pages/OrganizationManagementPage.jsx';
 import HRDocumentsPage from './pages/HRDocumentsPage.jsx';
 import EmployeeProfilePage from './pages/EmployeeProfilePage.jsx';
@@ -529,6 +535,13 @@ function App() {
               <Route path="settings/fee-structure/:page" element={<ProtectedRoute moduleKey="settings"><FeeStructureModulePage /></ProtectedRoute>} />
               <Route path="settings/coe" element={<ProtectedRoute moduleKey="settings"><CoeMasterDashboardPage /></ProtectedRoute>} />
               <Route path="settings/institute" element={<ProtectedRoute moduleKey="settings"><InstituteSetupPage /></ProtectedRoute>} />
+              <Route path="settings/hrm" element={<ProtectedRoute moduleKey="settings"><HRMSetupPage /></ProtectedRoute>} />
+              <Route path="settings/hrm/department" element={<ProtectedRoute moduleKey="settings"><HRMDepartmentSettingPage /></ProtectedRoute>} />
+              <Route path="settings/hrm/social-category" element={<ProtectedRoute moduleKey="settings"><HRMSocialCategoryPage /></ProtectedRoute>} />
+              <Route path="settings/hrm/designations" element={<ProtectedRoute moduleKey="settings"><DesignationManagementPage /></ProtectedRoute>} />
+              <Route path="settings/hrm/leave-group" element={<ProtectedRoute moduleKey="settings"><HRMLeaveGroupPage /></ProtectedRoute>} />
+              <Route path="settings/hrm/leave-cycle" element={<ProtectedRoute moduleKey="settings"><HRMLeaveCyclePage /></ProtectedRoute>} />
+              <Route path="settings/hrm/leave-preference" element={<ProtectedRoute moduleKey="settings"><HRMLeavePreferencePage /></ProtectedRoute>} />
               <Route path="institute-setup" element={<ProtectedRoute moduleKey="settings"><InstituteSetupPage /></ProtectedRoute>} />
               <Route path="settings/institute/profile" element={<ProtectedRoute moduleKey="settings"><InstituteProfilePage /></ProtectedRoute>} />
               <Route path="settings/institute/sessions" element={<ProtectedRoute moduleKey="settings"><AcademicSessionListPage /></ProtectedRoute>} />
@@ -560,6 +573,11 @@ function App() {
               <Route path="settings/institute/academics/result-setup-list" element={<ProtectedRoute moduleKey="settings"><ResultSetupListPage /></ProtectedRoute>} />
               <Route path="settings/institute/academics/attendance-remarks" element={<ProtectedRoute moduleKey="settings"><AttendanceRemarksPage /></ProtectedRoute>} />
               <Route path="settings/institute/preferences" element={<ProtectedRoute moduleKey="settings"><InstitutePreferencePage /></ProtectedRoute>} />
+              <Route path="settings/institute/template-preference" element={<ProtectedRoute moduleKey="settings"><InstitutePreferencePage /></ProtectedRoute>} />
+              <Route path="settings/institute/permission-groups" element={<ProtectedRoute moduleKey="settings"><PermissionMatrixPage /></ProtectedRoute>} />
+              <Route path="settings/institute/web-tabs" element={<ProtectedRoute moduleKey="settings"><PlaceholderPage title="Web Tabs" /></ProtectedRoute>} />
+              <Route path="settings/institute/compliance-certificate-names" element={<ProtectedRoute moduleKey="settings"><PlaceholderPage title="Compliance Certificate Names" /></ProtectedRoute>} />
+              <Route path="settings/institute/compliance-certificate" element={<ProtectedRoute moduleKey="settings"><PlaceholderPage title="Compliance Certificate" /></ProtectedRoute>} />
               <Route path="settings/institute/student-fields" element={<ProtectedRoute moduleKey="settings"><StudentFieldsManagementPage /></ProtectedRoute>} />
               <Route path="settings/institute/student-master" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={<RouteLoadingFallback />}><LazyStudentMasterSetupPage /></Suspense></ProtectedRoute>} />
               <Route path="settings/institute/student-master/new" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={<RouteLoadingFallback />}><LazyStudentMasterSetupPage /></Suspense></ProtectedRoute>} />

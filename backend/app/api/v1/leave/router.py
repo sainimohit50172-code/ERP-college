@@ -10,11 +10,57 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.api.v1.auth.router import get_current_user
+from app.api.v1.shared.dependencies import get_leave_cycle_repository, get_leave_group_repository, get_leave_preference_repository
+from app.api.v1.shared.router_factory import build_crud_router
 from app.db.database import get_db
-from app.models.employees.models import Employee, LeaveRequest, LeaveType
+from app.models.employees.models import Employee, LeaveCycle, LeaveGroup, LeavePreference, LeaveRequest, LeaveType
+from app.schemas.employees.schemas import LeaveCycleCreate, LeaveCycleDetail, LeaveCycleListItem, LeaveCycleUpdate, LeaveGroupCreate, LeaveGroupDetail, LeaveGroupListItem, LeaveGroupUpdate, LeavePreferenceCreate, LeavePreferenceDetail, LeavePreferenceListItem, LeavePreferenceUpdate
 from app.schemas.shared.base import APIResponse, PaginationResponse
 
 router = APIRouter(tags=["leave"])
+
+leave_group_router = build_crud_router(
+    prefix="/leave-groups",
+    tags=["leave-groups"],
+    repository_dependency=get_leave_group_repository,
+    service_dependency=lambda: None,
+    model_class=LeaveGroup,
+    create_schema=LeaveGroupCreate,
+    update_schema=LeaveGroupUpdate,
+    detail_schema=LeaveGroupDetail,
+    list_schema=LeaveGroupListItem,
+    bulk_update_schema=LeaveGroupUpdate,
+)
+
+leave_cycle_router = build_crud_router(
+    prefix="/leave-cycles",
+    tags=["leave-cycles"],
+    repository_dependency=get_leave_cycle_repository,
+    service_dependency=lambda: None,
+    model_class=LeaveCycle,
+    create_schema=LeaveCycleCreate,
+    update_schema=LeaveCycleUpdate,
+    detail_schema=LeaveCycleDetail,
+    list_schema=LeaveCycleListItem,
+    bulk_update_schema=LeaveCycleUpdate,
+)
+
+leave_preference_router = build_crud_router(
+    prefix="/leave-preferences",
+    tags=["leave-preferences"],
+    repository_dependency=get_leave_preference_repository,
+    service_dependency=lambda: None,
+    model_class=LeavePreference,
+    create_schema=LeavePreferenceCreate,
+    update_schema=LeavePreferenceUpdate,
+    detail_schema=LeavePreferenceDetail,
+    list_schema=LeavePreferenceListItem,
+    bulk_update_schema=LeavePreferenceUpdate,
+)
+
+# The leave master routers are registered explicitly by the app entry point so the
+# concrete CRUD routes are always available before the generic fallback catches
+# unknown resource paths.
 
 
 class LeaveTypePayload(BaseModel):

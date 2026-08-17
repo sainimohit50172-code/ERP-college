@@ -10,7 +10,12 @@ from app.api.v1.attendance.router import router as attendance_router
 from app.api.v1.audit.router import router as audit_router
 from app.api.v1.coe.router import router as coe_router
 from app.api.v1.employees.router import router as employees_router
-from app.api.v1.leave.router import router as leave_router
+from app.api.v1.leave.router import (
+    router as leave_router,
+    leave_group_router,
+    leave_cycle_router,
+    leave_preference_router,
+)
 from app.api.v1.examinations.router import router as examinations_router
 from app.api.v1.exam_calendar.router import router as exam_calendar_router
 from app.api.v1.exam_fee_setup.router import (
@@ -155,6 +160,25 @@ def register_existing_route_if_missing(app_instance, path, endpoint, methods):
     app_instance.add_api_route(path, endpoint, methods=list(methods))
 
 
+def register_router_routes(app_instance, router_instance, prefix: str):
+    for route in getattr(router_instance, "routes", []):
+        if not getattr(route, "path", None):
+            continue
+        route_path = f"{prefix}{route.path}"
+        if any(getattr(existing_route, "path", None) == route_path for existing_route in app_instance.routes):
+            continue
+        app_instance.add_api_route(
+            route_path,
+            route.endpoint,
+            methods=list(getattr(route, "methods", []) or []),
+            name=getattr(route, "name", None),
+            include_in_schema=getattr(route, "include_in_schema", True),
+            status_code=getattr(route, "status_code", None),
+            response_model=getattr(route, "response_model", None),
+            tags=getattr(route, "tags", None),
+        )
+
+
 routers = [
     auth_router,
     admissions_router,
@@ -188,6 +212,15 @@ routers = [
 for router in routers:
     app.include_router(router, prefix=settings.api_v1_str)
     app.include_router(router, prefix="/api")
+
+# Register leave master CRUD routes explicitly to prevent the generic fallback from
+# intercepting /api/v1/leave-groups, /api/v1/leave-cycles, and /api/v1/leave-preferences.
+register_router_routes(app, leave_group_router, settings.api_v1_str)
+register_router_routes(app, leave_group_router, "/api")
+register_router_routes(app, leave_cycle_router, settings.api_v1_str)
+register_router_routes(app, leave_cycle_router, "/api")
+register_router_routes(app, leave_preference_router, settings.api_v1_str)
+register_router_routes(app, leave_preference_router, "/api")
 
 app.include_router(fallback_router, prefix=settings.api_v1_str)
 app.include_router(fallback_router, prefix="/api")

@@ -36,14 +36,13 @@ export function useResourceList(resource, params = {}) {
         return await service.list(params);
       } catch (error) {
         console.warn(`Failed to fetch ${resource} from API:`, error?.message);
-        // Return empty data on error - component will use fallback/demo data
         return { items: [], total: 0, page: params.page || 1, pageSize: params.pageSize || 10, pages: 0 };
       }
     },
-    enabled: backendReady,
+    enabled: true,
     keepPreviousData: true,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 30 * 60 * 1000, // 30 minutes (formerly cacheTime)
+    staleTime: 5 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
     retry: 1,
     retryDelay: 500,
   });

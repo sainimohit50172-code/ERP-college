@@ -145,7 +145,7 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
     return sortedRows.slice(startIndex, startIndex + pageSize);
   }, [currentPage, pageSize, sortedRows]);
 
-  const headerClasses = `sticky top-0 border-b-2 border-slate-300 ${headerClassName || 'erp-table-header'} h-[56px] font-semibold`;
+  const headerClasses = `sticky top-0 border-b-2 border-[#0a2e1a] bg-[#0a2e1a] text-white ${headerClassName || 'erp-table-header'} h-[56px] font-semibold`;
 
   const csvContent = useMemo(() => {
     const header = columnsDefinition.map((column) => column.label);
@@ -262,8 +262,8 @@ export default function DataTable({ columns, rows, loading = false, placeholder 
                   return (
                     <th
                       key={column.key}
-                      className={`whitespace-nowrap break-words px-4 py-3 font-semibold uppercase tracking-[0.02em] align-middle border-r border-transparent ${isAction ? 'action-header' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''} ${textAlign === 'left' ? 'text-left' : textAlign === 'right' ? 'text-right' : 'text-center'}`}
-                      style={{ minWidth: width !== 'auto' ? width : undefined, width: widthStyle, textAlign, height: '56px' }}
+                      className={`whitespace-nowrap break-words px-4 py-3 font-semibold uppercase tracking-[0.02em] align-middle border-r border-white bg-[#0a2e1a] text-white ${isAction ? 'action-header' : ''} ${column.key ? String(column.key).toLowerCase() + '-cell' : ''} ${textAlign === 'left' ? 'text-left' : textAlign === 'right' ? 'text-right' : 'text-center'}`}
+                      style={{ minWidth: width !== 'auto' ? width : undefined, width: widthStyle, textAlign, height: '56px', backgroundColor: '#0a2e1a', color: '#ffffff', borderRightColor: '#ffffff' }}
                     >
                       <button
                         type="button"

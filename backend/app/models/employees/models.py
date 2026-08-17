@@ -100,6 +100,54 @@ class LeaveRequest(Base):
     approver: Mapped[Optional[Employee]] = relationship(foreign_keys=[approver_id], lazy="selectin")
 
 
+class LeaveGroup(Base):
+    __tablename__ = "leave_groups"
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    code: Mapped[str] = mapped_column(String(64), nullable=False, unique=True)
+    name: Mapped[str] = mapped_column(String(128), nullable=False)
+    description: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    annual_allocation_days: Mapped[Optional[int]] = mapped_column(BigInteger, nullable=True)
+    carry_forward_days: Mapped[Optional[int]] = mapped_column(BigInteger, nullable=True)
+    status: Mapped[str] = mapped_column(String(32), nullable=False, default="Active")
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class LeaveCycle(Base):
+    __tablename__ = "leave_cycles"
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    code: Mapped[str] = mapped_column(String(64), nullable=False, unique=True)
+    name: Mapped[str] = mapped_column(String(128), nullable=False)
+    description: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    start_month: Mapped[int] = mapped_column(BigInteger, nullable=False, default=1)
+    end_month: Mapped[int] = mapped_column(BigInteger, nullable=False, default=12)
+    status: Mapped[str] = mapped_column(String(32), nullable=False, default="Active")
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class LeavePreference(Base):
+    __tablename__ = "leave_preferences"
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    employee_id: Mapped[Optional[int]] = mapped_column(BigInteger, ForeignKey("employees.id"), nullable=True)
+    leave_group_id: Mapped[Optional[int]] = mapped_column(BigInteger, ForeignKey("leave_groups.id"), nullable=True)
+    leave_cycle_id: Mapped[Optional[int]] = mapped_column(BigInteger, ForeignKey("leave_cycles.id"), nullable=True)
+    preferred_leave_type: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    carry_forward_limit: Mapped[Optional[int]] = mapped_column(BigInteger, nullable=True)
+    special_leave_days: Mapped[Optional[int]] = mapped_column(BigInteger, nullable=True)
+    status: Mapped[str] = mapped_column(String(32), nullable=False, default="Active")
+    notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    employee: Mapped[Optional[Employee]] = relationship(lazy="selectin")
+    leave_group: Mapped[Optional[LeaveGroup]] = relationship(lazy="selectin")
+    leave_cycle: Mapped[Optional[LeaveCycle]] = relationship(lazy="selectin")
+
+
 class PayrollRun(Base):
     __tablename__ = "payroll_runs"
 

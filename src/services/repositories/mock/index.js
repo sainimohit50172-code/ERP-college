@@ -85,6 +85,164 @@ const stockMovements = createMockResourceRepo('stockMovements', []);
 const assetAssignments = createMockResourceRepo('assetAssignments', []);
 const maintenanceRequests = createMockResourceRepo('maintenanceRequests', []);
 
+const salaryStructures = createMockResourceRepo('salaryStructures', [
+  {
+    id: 'salary-struct-001',
+    name: 'Standard Academic Staff',
+    frequency: 'Monthly',
+    basicSalary: 68000,
+    hraPercent: 20,
+    daPercent: 5,
+    specialAllowancePercent: 12,
+    overtimeRate: 900,
+    providentFundPercent: 12,
+    esiPercent: 0.75,
+    professionalTaxAmount: 200,
+    incomeTaxPercent: 5,
+    active: true,
+  },
+  {
+    id: 'salary-struct-002',
+    name: 'Lab Technician Structure',
+    frequency: 'Monthly',
+    basicSalary: 52000,
+    hraPercent: 18,
+    daPercent: 5,
+    specialAllowancePercent: 10,
+    overtimeRate: 750,
+    providentFundPercent: 12,
+    esiPercent: 0.75,
+    professionalTaxAmount: 180,
+    incomeTaxPercent: 4,
+    active: true,
+  },
+  {
+    id: 'salary-struct-003',
+    name: 'Support Staff Structure',
+    frequency: 'Monthly',
+    basicSalary: 36000,
+    hraPercent: 15,
+    daPercent: 4,
+    specialAllowancePercent: 8,
+    overtimeRate: 500,
+    providentFundPercent: 12,
+    esiPercent: 0.75,
+    professionalTaxAmount: 150,
+    incomeTaxPercent: 3,
+    active: true,
+  },
+]);
+
+const salaryRevisions = createMockResourceRepo('salaryRevisions', [
+  {
+    id: 'salary-revision-001',
+    employeeName: 'Riya Sharma',
+    employeeId: 'EMP-2024-101',
+    effectiveDate: '2026-08-01',
+    newBasicSalary: 72000,
+    period: '2026-08',
+    status: 'Approved',
+  },
+  {
+    id: 'salary-revision-002',
+    employeeName: 'Amit Verma',
+    employeeId: 'EMP-2024-205',
+    effectiveDate: '2026-09-01',
+    newBasicSalary: 58000,
+    period: '2026-09',
+    status: 'Pending',
+  },
+]);
+
+const payrollRuns = createMockResourceRepo('payrollRuns', [
+  {
+    id: 'payroll-run-001',
+    employeeName: 'Riya Sharma',
+    employeeId: 'EMP-2024-101',
+    period: '2026-08',
+    grossSalary: 95000,
+    totalDeductions: 12850,
+    netSalary: 82150,
+    status: 'Processed',
+    frequency: 'Monthly',
+    approvedLeaveDays: 2,
+    attendanceDays: 28,
+  },
+  {
+    id: 'payroll-run-002',
+    employeeName: 'Amit Verma',
+    employeeId: 'EMP-2024-205',
+    period: '2026-08',
+    grossSalary: 72000,
+    totalDeductions: 10660,
+    netSalary: 61340,
+    status: 'Review',
+    frequency: 'Monthly',
+    approvedLeaveDays: 1,
+    attendanceDays: 29,
+  },
+  {
+    id: 'payroll-run-003',
+    employeeName: 'Neha Singh',
+    employeeId: 'EMP-2024-118',
+    period: '2026-08',
+    grossSalary: 64000,
+    totalDeductions: 9450,
+    netSalary: 54550,
+    status: 'Draft',
+    frequency: 'Monthly',
+    approvedLeaveDays: 0,
+    attendanceDays: 30,
+  },
+]);
+
+const payslips = createMockResourceRepo('payslips', [
+  {
+    id: 'payslip-001',
+    employeeName: 'Riya Sharma',
+    employeeId: 'EMP-2024-101',
+    period: '2026-08',
+    grossSalary: 95000,
+    netSalary: 82150,
+    deductions: 12850,
+    status: 'Approved',
+  },
+  {
+    id: 'payslip-002',
+    employeeName: 'Amit Verma',
+    employeeId: 'EMP-2024-205',
+    period: '2026-08',
+    grossSalary: 72000,
+    netSalary: 61340,
+    deductions: 10660,
+    status: 'Generated',
+  },
+]);
+
+const taxComponents = createMockResourceRepo('taxComponents', [
+  {
+    id: 'tax-001',
+    name: 'Income Tax',
+    type: 'Deduction',
+    value: '5%',
+    status: 'Active',
+  },
+  {
+    id: 'tax-002',
+    name: 'Professional Tax',
+    type: 'Deduction',
+    value: '₹200',
+    status: 'Active',
+  },
+  {
+    id: 'tax-003',
+    name: 'Provident Fund',
+    type: 'Deduction',
+    value: '12%',
+    status: 'Active',
+  },
+]);
+
 export default {
   vendors,
   examCalendars,
@@ -93,4 +251,9 @@ export default {
   stockMovements,
   assetAssignments,
   maintenanceRequests,
+  salaryStructures,
+  salaryRevisions,
+  payrollRuns,
+  payslips,
+  taxComponents,
 };

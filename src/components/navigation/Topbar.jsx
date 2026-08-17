@@ -57,7 +57,7 @@ const quickActions = [
   { title: 'Library Setup', subtitle: 'Library Details', route: '/library', icon: '📚', color: '#f59e0b' },
   { title: 'Advanced Setup', subtitle: 'Advanced Settings', route: '/settings', icon: '⚙️', color: '#6366f1' },
   { title: 'Admission Setup', subtitle: 'Admission Details', route: '/admissions', icon: '🎯', color: '#ec4899' },
-  { title: 'HRM Setup', subtitle: 'HRM Settings', route: '/employees', icon: '👥', color: '#14b8a6' },
+  { title: 'HRM Setup', subtitle: 'HRM Settings', route: '/settings/hrm', icon: '👥', color: '#14b8a6' },
   { title: 'Analytics Setup', subtitle: 'Analytics Details', route: '/reports', icon: '📊', color: '#f97316' },
   { title: 'Communication', subtitle: 'Communication Setting', route: '/notifications', icon: '💬', color: '#06b6d4' },
   { title: 'COE Master', subtitle: 'COE Master Setup', route: '/settings/coe', icon: '🏫', color: '#ef4444' },

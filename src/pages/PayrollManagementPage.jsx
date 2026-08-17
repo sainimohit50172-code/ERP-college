@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react';
-import { CheckCircle2, Edit3, Lock, FileText, Send } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Edit3, Lock, FileText, Send, Trash2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useResourceList } from '../hooks/useResourceHooks';
+import createResourceService from '../api/resourceService.js';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
 import DataTable from '../components/ui/DataTable.jsx';
 import Modal from '../components/ui/Modal.jsx';
@@ -13,12 +15,16 @@ import { createSalaryStructure, updateSalaryStructure } from '../services/salary
 import { createSalaryRevision, updateSalaryRevision } from '../services/salaryRevisionService.js';
 import { createPayrollRun, updatePayrollRun, submitPayrollRun, approvePayrollRun, lockPayrollRun, calculatePayrollBreakdown } from '../services/payrollService.js';
 import { createPayslip, buildPayslipPreview } from '../services/payslipService.js';
+import { createTaxComponent, updateTaxComponent } from '../services/taxService.js';
 
 const formDefaults = {
   name: '',
   employeeName: '',
   employeeId: '',
   frequency: 'Monthly',
+  type: '',
+  value: '',
+  status: 'Active',
   basicSalary: 50000,
   hraPercent: 20,
   daPercent: 5,
@@ -49,6 +55,7 @@ function downloadBlob(blob, filename) {
 
 export default function PayrollManagementPage() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { auth } = useAuth();
   const [activeSection, setActiveSection] = useState('overview');
   const [searchTerm, setSearchTerm] = useState('');
@@ -59,6 +66,7 @@ export default function PayrollManagementPage() {
   const [editingStructure, setEditingStructure] = useState(null);
   const [editingRevision, setEditingRevision] = useState(null);
   const [editingPayroll, setEditingPayroll] = useState(null);
+  const [editingTax, setEditingTax] = useState(null);
   const [form, setForm] = useState(formDefaults);
   const [busyMessage, setBusyMessage] = useState('');
 
@@ -161,6 +169,9 @@ export default function PayrollManagementPage() {
       await approvePayrollRun(payroll.id, { remarks: 'Approved from payroll module' });
     } else if (action === 'lock') {
       await lockPayrollRun(payroll.id);
+    } else if (action === 'delete') {
+      const resource = createResourceService('payrollRuns');
+      await resource.remove(payroll.id);
     } else if (action === 'edit') {
       setEditingPayroll(payroll);
       setForm({ ...formDefaults, ...payroll, employeeName: payroll.employeeName, employeeId: payroll.employeeId, period: payroll.period || '' });
@@ -168,6 +179,53 @@ export default function PayrollManagementPage() {
       return;
     }
     queryClient.invalidateQueries(['payrollRuns']);
+  };
+
+  const deleteSalaryStructure = async (structure) => {
+    const resource = createResourceService('salaryStructures');
+    await resource.remove(structure.id);
+    queryClient.invalidateQueries(['salaryStructures']);
+  };
+
+  const deleteSalaryRevision = async (revision) => {
+    const resource = createResourceService('salaryRevisions');
+    await resource.remove(revision.id);
+    queryClient.invalidateQueries(['salaryRevisions']);
+  };
+
+  const deleteTaxComponent = async (component) => {
+    const resource = createResourceService('taxComponents');
+    await resource.remove(component.id);
+    queryClient.invalidateQueries(['taxComponents']);
+  };
+
+  const handleTaxSubmit = async (event) => {
+    event.preventDefault();
+    setBusyMessage('Saving tax component…');
+    const payload = {
+      name: form.name,
+      type: form.type,
+      value: form.value,
+      status: form.status,
+    };
+
+    if (editingTax) {
+      await updateTaxComponent(editingTax.id, payload);
+    } else {
+      await createTaxComponent(payload);
+    }
+
+    queryClient.invalidateQueries(['taxComponents']);
+    setBusyMessage('');
+    setIsTaxModalOpen(false);
+    setEditingTax(null);
+    setForm({ ...formDefaults, employeeId: auth?.user?.id || '', employeeName: auth?.user?.name || '' });
+  };
+
+  const deletePayslip = async (payslip) => {
+    const resource = createResourceService('payslips');
+    await resource.remove(payslip.id);
+    queryClient.invalidateQueries(['payslips']);
   };
 
   const exportPayroll = (format = 'csv') => {
@@ -187,32 +245,59 @@ export default function PayrollManagementPage() {
   }), [filteredPayrollRuns]);
 
   return (
-    <div className="space-y-6">
-      <SectionHeader
-        title="Payroll management"
-        subtitle="Salary structures, revisions, payroll runs, payslips, tax configuration, and reporting."
-        action={
-          <div className="flex flex-wrap items-center gap-3">
-            <button type="button" onClick={() => setIsStructureModalOpen(true)} className="rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700">Salary structures</button>
-            <button type="button" onClick={() => setIsRevisionModalOpen(true)} className="rounded-3xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400">Salary revision</button>
-            <button type="button" onClick={() => setIsPayrollModalOpen(true)} className="rounded-3xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">Generate payroll</button>
-          </div>
-        }
-      />
-
-      {busyMessage ? <div className="rounded-3xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{busyMessage}</div> : null}
-
-      <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-4 shadow-sm">
-        <div className="flex flex-wrap gap-2">
-          {['overview', 'runs', 'structures', 'tax', 'payslips'].map((tab) => (
-            <button key={tab} type="button" onClick={() => setActiveSection(tab)} className={`rounded-2xl border px-4 py-2 text-sm font-medium transition ${activeSection === tab ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-100'}`}>
-              {tab === 'overview' ? 'Overview' : tab === 'runs' ? 'Payroll Runs' : tab === 'structures' ? 'Structures' : tab === 'tax' ? 'Tax' : 'Payslips'}
+    <div className="min-h-screen bg-[#eef1f4] p-2 sm:p-3">
+      <div className="rounded-[20px] border border-slate-200 bg-[#f3f4f6] p-1.5 shadow-[0_8px_20px_rgba(15,23,42,0.04)]">
+        <div className="rounded-[16px] border border-slate-200 bg-white/90 p-2.5 sm:p-3">
+          <div className="mb-3 flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-700 shadow-sm transition hover:bg-slate-50"
+              aria-label="Go back"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
             </button>
-          ))}
-        </div>
-      </div>
 
-      {activeSection === 'overview' && (
+            <div className="flex flex-wrap items-center gap-1.5 text-xs text-slate-500 sm:gap-2">
+              <button type="button" onClick={() => navigate('/')} className="transition hover:text-slate-700">Dashboard</button>
+              <span>›</span>
+              <button type="button" onClick={() => navigate('/settings/hrm')} className="transition hover:text-slate-700">HRM Master</button>
+              <span>›</span>
+              <span className="font-medium text-slate-700">Payroll Management</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+            <div className="space-y-0.5">
+              <h1 className="text-[1.55rem] font-semibold leading-tight tracking-[-0.02em] text-slate-900 sm:text-[1.85rem]">
+                Payroll Management
+              </h1>
+              <p className="text-[0.65rem] font-normal leading-tight text-slate-500 sm:text-[0.7rem]">
+                Salary Structures, Payroll Runs & Tax Controls
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+              <button type="button" onClick={() => setIsStructureModalOpen(true)} className="rounded-2xl bg-[#0a2e1a] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#051f0f] sm:px-3.5 sm:py-2 sm:text-sm">Salary structures</button>
+              <button type="button" onClick={() => setIsRevisionModalOpen(true)} className="rounded-2xl bg-[#0a2e1a] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#051f0f] sm:px-3.5 sm:py-2 sm:text-sm">Salary revision</button>
+              <button type="button" onClick={() => setIsPayrollModalOpen(true)} className="rounded-2xl border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 sm:px-3.5 sm:py-2 sm:text-sm">Generate payroll</button>
+            </div>
+          </div>
+        </div>
+
+        {busyMessage ? <div className="mt-3 rounded-3xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm text-emerald-700">{busyMessage}</div> : null}
+
+        <div className="mt-3 rounded-[20px] border border-slate-200 bg-slate-50 p-2.5 shadow-sm">
+          <div className="flex flex-wrap gap-1.5">
+            {['overview', 'runs', 'structures', 'tax', 'payslips'].map((tab) => (
+              <button key={tab} type="button" onClick={() => setActiveSection(tab)} className={`rounded-2xl border px-3 py-1.5 text-xs font-medium transition sm:text-sm ${activeSection === tab ? 'border-[#0a2e1a] bg-[#0a2e1a] text-white' : 'border-slate-200 bg-white text-slate-700 hover:bg-[#0a2e1a] hover:text-white'}`}>
+                {tab === 'overview' ? 'Overview' : tab === 'runs' ? 'Payroll Runs' : tab === 'structures' ? 'Structures' : tab === 'tax' ? 'Tax' : 'Payslips'}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {activeSection === 'overview' && (
         <div className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
             <div className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-sm"><p className="text-xs uppercase tracking-[0.24em] text-slate-500">Payroll due</p><p className="mt-3 text-2xl font-semibold text-slate-950">{payrollSummary.due}</p></div>
@@ -235,15 +320,53 @@ export default function PayrollManagementPage() {
           <div className="flex flex-wrap items-center gap-3 rounded-[20px] border border-slate-200 bg-white p-4 shadow-sm">
             <input type="search" value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="Search payroll run" className="w-full max-w-md rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none" />
             <button type="button" onClick={() => exportPayroll('csv')} className="rounded-3xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700">Export CSV</button>
+            <button type="button" className="rounded-3xl bg-[#0a2e1a] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#051f0f]">Upload Excel</button>
           </div>
-          <DataTable columns={[
-            { label: 'Employee', key: 'employeeName', sortable: true },
-            { label: 'Period', key: 'period', sortable: true },
-            { label: 'Gross', key: 'grossSalary', sortable: true, render: (value) => `₹${Number(value || 0).toLocaleString()}` },
-            { label: 'Net', key: 'netSalary', sortable: true, render: (value) => `₹${Number(value || 0).toLocaleString()}` },
-            { label: 'Status', key: 'status', sortable: true, render: (value) => <StatusBadge status={value} /> },
-            { label: 'Actions', key: 'actions', sortable: false, render: (_value, row) => <div className="flex flex-wrap gap-2"><IconActionButton icon={Send} title="Submit payroll" ariaLabel="Submit payroll" variant="primary" className="h-8 w-8" onClick={() => processPayrollAction(row, 'submit')} /><IconActionButton icon={CheckCircle2} title="Approve payroll" ariaLabel="Approve payroll" variant="success" className="h-8 w-8" onClick={() => processPayrollAction(row, 'approve')} /><IconActionButton icon={Lock} title="Lock payroll" ariaLabel="Lock payroll" className="h-8 w-8" onClick={() => processPayrollAction(row, 'lock')} /><IconActionButton icon={Edit3} title="Edit payroll" ariaLabel="Edit payroll" className="h-8 w-8" onClick={() => processPayrollAction(row, 'edit')} /><IconActionButton icon={FileText} title="Create payslip" ariaLabel="Create payslip" className="h-8 w-8" onClick={() => handlePayslipCreate(row)} /></div> },
-          ]} rows={filteredPayrollRuns} initialPageSize={8} placeholder="Search payroll" />
+
+          <div className="grid gap-4">
+            {filteredPayrollRuns.length === 0 ? (
+              <div className="rounded-[20px] border border-slate-200 bg-white p-6 text-center text-sm text-slate-500 shadow-sm">
+                No payroll runs found.
+              </div>
+            ) : (
+              filteredPayrollRuns.map((payroll) => (
+                <div key={payroll.id} className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-sm">
+                  <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                    <div>
+                      <div className="flex items-center gap-3">
+                        <h3 className="text-lg font-semibold text-slate-900">{payroll.employeeName}</h3>
+                        <StatusBadge status={payroll.status} />
+                      </div>
+                      <p className="mt-1 text-sm text-slate-600">{payroll.period} · {payroll.employeeId}</p>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      <IconActionButton icon={Send} title="Submit payroll" ariaLabel="Submit payroll" variant="primary" className="h-8 w-8" onClick={() => processPayrollAction(payroll, 'submit')} />
+                      <IconActionButton icon={CheckCircle2} title="Approve payroll" ariaLabel="Approve payroll" variant="success" className="h-8 w-8" onClick={() => processPayrollAction(payroll, 'approve')} />
+                      <IconActionButton icon={Lock} title="Lock payroll" ariaLabel="Lock payroll" className="h-8 w-8" onClick={() => processPayrollAction(payroll, 'lock')} />
+                      <IconActionButton icon={Edit3} title="Edit payroll" ariaLabel="Edit payroll" className="h-8 w-8" onClick={() => processPayrollAction(payroll, 'edit')} />
+                      <IconActionButton icon={FileText} title="Create payslip" ariaLabel="Create payslip" className="h-8 w-8" onClick={() => handlePayslipCreate(payroll)} />
+                    </div>
+                  </div>
+
+                  <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3">
+                      <p className="text-[10px] uppercase tracking-[0.2em] text-slate-500">Gross</p>
+                      <p className="mt-2 text-lg font-semibold text-slate-900">₹{Number(payroll.grossSalary || 0).toLocaleString()}</p>
+                    </div>
+                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3">
+                      <p className="text-[10px] uppercase tracking-[0.2em] text-slate-500">Deductions</p>
+                      <p className="mt-2 text-lg font-semibold text-slate-900">₹{Number(payroll.totalDeductions || 0).toLocaleString()}</p>
+                    </div>
+                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3">
+                      <p className="text-[10px] uppercase tracking-[0.2em] text-slate-500">Net Salary</p>
+                      <p className="mt-2 text-lg font-semibold text-slate-900">₹{Number(payroll.netSalary || 0).toLocaleString()}</p>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       )}
 
@@ -252,13 +375,35 @@ export default function PayrollManagementPage() {
           <div className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-sm">
             <h3 className="text-lg font-semibold text-slate-950">Salary structures</h3>
             <div className="mt-4 space-y-3">
-              {salaryStructures.map((structure) => <div key={structure.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-4"><div className="flex items-center justify-between"><p className="font-semibold text-slate-900">{structure.name}</p><span className="rounded-full bg-white px-3 py-1 text-sm">{structure.frequency}</span></div><p className="mt-2 text-sm text-slate-600">Basic: ₹{Number(structure.basicSalary || 0).toLocaleString()} · HRA {structure.hraPercent}% · PF {structure.providentFundPercent}%</p></div>)}
+              {salaryStructures.map((structure) => (
+              <div key={structure.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="font-semibold text-slate-900">{structure.name}</p>
+                  <div className="flex items-center gap-2">
+                    <button type="button" onClick={() => { setEditingStructure(structure); setForm({ ...formDefaults, ...structure }); setIsStructureModalOpen(true); }} className="rounded-full border border-slate-200 bg-white p-2 text-slate-700 hover:bg-slate-100"><Edit3 className="h-3.5 w-3.5" /></button>
+                    <button type="button" onClick={() => deleteSalaryStructure(structure)} className="rounded-full border border-slate-200 bg-white p-2 text-red-600 hover:bg-red-50"><Trash2 className="h-3.5 w-3.5" /></button>
+                  </div>
+                </div>
+                <p className="mt-2 text-sm text-slate-600">Basic: ₹{Number(structure.basicSalary || 0).toLocaleString()} · HRA {structure.hraPercent}% · PF {structure.providentFundPercent}%</p>
+              </div>
+            ))}
             </div>
           </div>
           <div className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-sm">
             <h3 className="text-lg font-semibold text-slate-950">Salary revisions</h3>
             <div className="mt-4 space-y-3">
-              {salaryRevisions.map((revision) => <div key={revision.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-4"><p className="font-semibold text-slate-900">{revision.employeeName}</p><p className="mt-2 text-sm text-slate-600">Effective {revision.effectiveDate || revision.period} · ₹{Number(revision.newBasicSalary || 0).toLocaleString()}</p></div>)}
+              {salaryRevisions.map((revision) => (
+                <div key={revision.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="font-semibold text-slate-900">{revision.employeeName}</p>
+                    <div className="flex items-center gap-2">
+                      <button type="button" onClick={() => { setEditingRevision(revision); setForm({ ...formDefaults, ...revision, employeeName: revision.employeeName, period: revision.effectiveDate || revision.period || '' }); setIsRevisionModalOpen(true); }} className="rounded-full border border-slate-200 bg-white p-2 text-slate-700 hover:bg-slate-100"><Edit3 className="h-3.5 w-3.5" /></button>
+                      <button type="button" onClick={() => deleteSalaryRevision(revision)} className="rounded-full border border-slate-200 bg-white p-2 text-red-600 hover:bg-red-50"><Trash2 className="h-3.5 w-3.5" /></button>
+                    </div>
+                  </div>
+                  <p className="mt-2 text-sm text-slate-600">Effective {revision.effectiveDate || revision.period} · ₹{Number(revision.newBasicSalary || 0).toLocaleString()}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -266,9 +411,23 @@ export default function PayrollManagementPage() {
 
       {activeSection === 'tax' && (
         <div className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-sm">
-          <h3 className="text-lg font-semibold text-slate-950">Tax configuration</h3>
+          <div className="flex items-center justify-between gap-2">
+            <h3 className="text-lg font-semibold text-slate-950">Tax configuration</h3>
+            <button type="button" onClick={() => { setEditingTax(null); setForm({ ...formDefaults, employeeId: auth?.user?.id || '', employeeName: auth?.user?.name || '' }); setIsTaxModalOpen(true); }} className="rounded-2xl bg-[#0a2e1a] px-3 py-2 text-sm font-semibold text-white transition hover:bg-[#051f0f]">Add component</button>
+          </div>
           <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-            {taxComponents.map((component) => <div key={component.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-4"><p className="font-semibold text-slate-900">{component.name}</p><p className="mt-2 text-sm text-slate-600">{component.type} · {component.value}</p></div>)}
+            {taxComponents.map((component) => (
+              <div key={component.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="font-semibold text-slate-900">{component.name}</p>
+                  <div className="flex items-center gap-2">
+                    <button type="button" onClick={() => { setEditingTax(component); setForm({ ...formDefaults, ...component, name: component.name, type: component.type, value: component.value, status: component.status || 'Active' }); setIsTaxModalOpen(true); }} className="rounded-full border border-slate-200 bg-white p-2 text-slate-700 hover:bg-slate-100"><Edit3 className="h-3.5 w-3.5" /></button>
+                    <button type="button" onClick={() => deleteTaxComponent(component)} className="rounded-full border border-slate-200 bg-white p-2 text-red-600 hover:bg-red-50"><Trash2 className="h-3.5 w-3.5" /></button>
+                  </div>
+                </div>
+                <p className="mt-2 text-sm text-slate-600">{component.type} · {component.value}</p>
+              </div>
+            ))}
           </div>
         </div>
       )}
@@ -277,7 +436,16 @@ export default function PayrollManagementPage() {
         <div className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-sm">
           <h3 className="text-lg font-semibold text-slate-950">Payslips</h3>
           <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-            {payslips.map((payslip) => <div key={payslip.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-4"><p className="font-semibold text-slate-900">{payslip.employeeName}</p><p className="mt-2 text-sm text-slate-600">{payslip.period} · Net ₹{Number(payslip.netSalary || 0).toLocaleString()}</p><button type="button" onClick={() => downloadBlob(new Blob([JSON.stringify(payslip)], { type: 'application/json' }), `${payslip.id}.json`)} className="mt-3 rounded-3xl border border-slate-300 bg-white px-3 py-2 text-sm">Download</button></div>)}
+            {payslips.map((payslip) => (
+              <div key={payslip.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="font-semibold text-slate-900">{payslip.employeeName}</p>
+                  <button type="button" onClick={() => deletePayslip(payslip)} className="rounded-full border border-slate-200 bg-white p-2 text-red-600 hover:bg-red-50"><Trash2 className="h-3.5 w-3.5" /></button>
+                </div>
+                <p className="mt-2 text-sm text-slate-600">{payslip.period} · Net ₹{Number(payslip.netSalary || 0).toLocaleString()}</p>
+                <button type="button" onClick={() => downloadBlob(new Blob([JSON.stringify(payslip)], { type: 'application/json' }), `${payslip.id}.json`)} className="mt-3 rounded-3xl border border-slate-300 bg-white px-3 py-2 text-sm">Download</button>
+              </div>
+            ))}
           </div>
         </div>
       )}
@@ -313,13 +481,15 @@ export default function PayrollManagementPage() {
         </form>
       </Modal>
 
-      <Modal title="Add tax component" isOpen={isTaxModalOpen} onClose={() => { setIsTaxModalOpen(false); resetForm(); }} footer={<button type="button" onClick={() => {}} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400">Save component</button>}>
-        <form className="space-y-4">
-          <FormField label="Component name"><input className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none hover-gradient-border" /></FormField>
-          <FormField label="Type"><input className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none hover-gradient-border" /></FormField>
-          <FormField label="Value"><input className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none hover-gradient-border" /></FormField>
+      <Modal title={editingTax ? 'Update tax component' : 'Add tax component'} isOpen={isTaxModalOpen} onClose={() => { setIsTaxModalOpen(false); setEditingTax(null); resetForm(); }} footer={<button type="button" onClick={handleTaxSubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400">Save component</button>}>
+        <form className="space-y-4" onSubmit={handleTaxSubmit}>
+          <FormField label="Component name"><input value={form.name} onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none hover-gradient-border" /></FormField>
+          <FormField label="Type"><input value={form.type} onChange={(event) => setForm((current) => ({ ...current, type: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none hover-gradient-border" /></FormField>
+          <FormField label="Value"><input value={form.value} onChange={(event) => setForm((current) => ({ ...current, value: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none hover-gradient-border" /></FormField>
+          <FormField label="Status"><select value={form.status} onChange={(event) => setForm((current) => ({ ...current, status: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none"><option>Active</option><option>Inactive</option></select></FormField>
         </form>
       </Modal>
     </div>
+  </div>
   );
 }

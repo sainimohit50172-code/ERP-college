@@ -19,10 +19,18 @@ export function getBackend() {
 
 export function getRepository(name) {
   const backend = getBackend();
-  if (backend === 'fastapi') {
-    return fastapiRepos[name] || mockRepos[name];
+  const mockRepo = mockRepos[name];
+  const fastApiRepo = fastapiRepos[name];
+
+  if (mockRepo) {
+    return mockRepo;
   }
-  return mockRepos[name] || fastapiRepos[name];
+
+  if (backend === 'fastapi') {
+    return fastApiRepo || mockRepo;
+  }
+
+  return fastApiRepo || mockRepo;
 }
 
 export default { getRepository, getBackend };

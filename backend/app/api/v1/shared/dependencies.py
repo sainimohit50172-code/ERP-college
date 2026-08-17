@@ -6,6 +6,7 @@ from app.repositories.mysql.admissions import MySQLAdmissionRepository
 from app.repositories.mysql.auth import MySQLAuthRepository
 from app.repositories.mysql.attendance import MySQLAttendanceRepository
 from app.repositories.mysql.audit import MySQLAuditRepository
+from app.repositories.mysql.base import MySQLRepository
 from app.repositories.mysql.employees import MySQLEmployeeRepository
 from app.repositories.mysql.examinations import MySQLExaminationRepository
 from app.repositories.mysql.exam_calendar import MySQLExamCalendarRepository
@@ -72,6 +73,21 @@ def get_student_repository(db=Depends(get_db)):
 
 def get_employee_repository(db=Depends(get_db)):
     return MySQLEmployeeRepository(db)
+
+
+def get_leave_group_repository(db=Depends(get_db)):
+    from app.models.employees import LeaveGroup
+    return MySQLRepository(db, LeaveGroup)
+
+
+def get_leave_cycle_repository(db=Depends(get_db)):
+    from app.models.employees import LeaveCycle
+    return MySQLRepository(db, LeaveCycle)
+
+
+def get_leave_preference_repository(db=Depends(get_db)):
+    from app.models.employees import LeavePreference
+    return MySQLRepository(db, LeavePreference)
 
 
 def get_attendance_repository(db=Depends(get_db)):

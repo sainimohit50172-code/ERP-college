@@ -31,13 +31,13 @@ const setupCards = [
   { title: 'Institute Preference', description: 'Preference Section', icon: Settings2, route: '/settings/institute/preferences' },
   { title: 'Student Fields', description: 'Preference Section', icon: UsersRound, route: '/settings/institute/student-fields' },
   { title: 'Student Master Setup', description: 'Student Master Setup', icon: GraduationCap, route: '/settings/institute/student-master' },
-  { title: 'Template Preference', description: 'Template Preference Section', icon: FileCog },
-  { title: 'Permission Groups', description: 'Permission Group Section', icon: ShieldCheck },
+  { title: 'Template Preference', description: 'Template Preference Section', icon: FileCog, route: '/settings/institute/preferences' },
+  { title: 'Permission Groups', description: 'Permission Group Section', icon: ShieldCheck, route: '/permissions' },
   { title: 'Student Session Management', description: 'Student Session Management', icon: CalendarClock, route: '/students/session' },
-  { title: 'Web Tabs', description: 'Web Tabs', icon: Globe },
-  { title: 'Compliance Certificate Names', description: 'Compliance Certificate Names Setup', icon: BadgeCheck },
-  { title: 'Compliance Certificate', description: 'Compliance Certificate', icon: ScrollText },
-  { title: 'Feedback From Student', description: 'Feedback From Student', icon: MessageSquareMore },
+  { title: 'Web Tabs', description: 'Web Tabs', icon: Globe, route: '/settings/institute/web-tabs' },
+  { title: 'Compliance Certificate Names', description: 'Compliance Certificate Names Setup', icon: BadgeCheck, route: '/settings/institute/compliance-certificate-names' },
+  { title: 'Compliance Certificate', description: 'Compliance Certificate', icon: ScrollText, route: '/settings/institute/compliance-certificate' },
+  { title: 'Feedback From Student', description: 'Feedback From Student', icon: MessageSquareMore, route: '/feedback' },
 ];
 
 export default function InstituteSetupPage() {

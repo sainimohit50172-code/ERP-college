@@ -43,6 +43,18 @@ const coeModules = [
     route: '/coe/masking-number-dashboard',
   },
   {
+    title: 'Masking Number Setup',
+    subtitle: 'Masking Number Configuration',
+    icon: Hash,
+    route: '/coe/masking-number-setup',
+  },
+  {
+    title: 'Masking Number Management',
+    subtitle: 'Masking Number Operations',
+    icon: Hash,
+    route: '/coe/masking-number-management',
+  },
+  {
     title: 'Manage Bundles',
     subtitle: 'Bundle Management',
     icon: Boxes,
@@ -59,6 +71,24 @@ const coeModules = [
     subtitle: 'Manage DMC Number Series',
     icon: FileDigit,
     route: '/coe/dmc-number-setup',
+  },
+  {
+    title: 'DMC Student App',
+    subtitle: 'Student DMC Management',
+    icon: FileDigit,
+    route: '/coe/student-dmc',
+  },
+  {
+    title: 'Exam Fee Receipt',
+    subtitle: 'Receipt Configuration',
+    icon: WalletCards,
+    route: '/coe/exam-fee-setup/receipt',
+  },
+  {
+    title: 'Fee Head Configuration',
+    subtitle: 'Fee Head Setup',
+    icon: WalletCards,
+    route: '/coe/exam-fee-setup/fee-head',
   },
 ];
 

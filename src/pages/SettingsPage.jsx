@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
-import { Bell, ShieldCheck, MoonStar, SlidersHorizontal, KeyRound, Building, WalletCards } from 'lucide-react';
+import { Bell, ShieldCheck, MoonStar, SlidersHorizontal, KeyRound, Building, WalletCards, Users } from 'lucide-react';
 
 const cards = [
   { title: 'Security', description: 'Manage sign-in preferences, MFA reminders, and access policies.', href: '/change-password', icon: ShieldCheck },
   { title: 'Notifications', description: 'Control how alerts are delivered across admissions, attendance, and finance.', href: '/notifications', icon: Bell },
   { title: 'Institute Setup', description: 'Configure your institution modules, academic settings, and fee structure.', href: '/settings/institute', icon: Building },
+  { title: 'HRM Setup', description: 'Access HR master data, department setup, payroll, leave, and workforce configuration.', href: '/settings/hrm', icon: Users },
   { title: 'Fee Structure', description: 'Manage fee heads, installments, concessions, and receipts.', href: '/settings/fee-structure', icon: WalletCards },
   { title: 'Appearance', description: 'Switch between light and dark themes for the workspace.', href: '/settings', icon: MoonStar },
   { title: 'Preferences', description: 'Tune the dashboard experience and default module views.', href: '/settings', icon: SlidersHorizontal },
