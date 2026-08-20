@@ -1,11 +1,10 @@
 import { useMemo, useState } from 'react';
-import { ArrowLeft, CheckCircle2, Edit3, Lock, FileText, Send, Trash2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { ArrowLeft, CalendarDays, CheckCircle2, Download, Edit3, FileDown, Filter, Lock, FileText, Plus, RefreshCcw, Send, SlidersHorizontal, Trash2 } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
+import { jsPDF } from 'jspdf';
 import { useResourceList } from '../hooks/useResourceHooks';
 import createResourceService from '../api/resourceService.js';
-import SectionHeader from '../components/ui/SectionHeader.jsx';
-import DataTable from '../components/ui/DataTable.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import FormField from '../components/forms/FormField.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
@@ -16,6 +15,8 @@ import { createSalaryRevision, updateSalaryRevision } from '../services/salaryRe
 import { createPayrollRun, updatePayrollRun, submitPayrollRun, approvePayrollRun, lockPayrollRun, calculatePayrollBreakdown } from '../services/payrollService.js';
 import { createPayslip, buildPayslipPreview } from '../services/payslipService.js';
 import { createTaxComponent, updateTaxComponent } from '../services/taxService.js';
+import { hasPermission } from '../services/rbac.js';
+import { loadPayrollSettings } from '../services/payrollSettings.js';
 
 const formDefaults = {
   name: '',
@@ -24,7 +25,6 @@ const formDefaults = {
   frequency: 'Monthly',
   type: '',
   value: '',
-  status: 'Active',
   basicSalary: 50000,
   hraPercent: 20,
   daPercent: 5,
@@ -53,12 +53,35 @@ function downloadBlob(blob, filename) {
   window.URL.revokeObjectURL(url);
 }
 
+function downloadPayslipPdf(payslip) {
+  const lines = [
+    ['Employee', payslip.employeeName || 'Employee'],
+    ['Employee ID', payslip.employeeId || '-'],
+    ['Period', payslip.period || '-'],
+    ['Gross salary', `INR ${Number(payslip.grossSalary || 0).toLocaleString()}`],
+    ['Deductions', `INR ${Number(payslip.deductions || 0).toLocaleString()}`],
+    ['Net salary', `INR ${Number(payslip.netSalary || 0).toLocaleString()}`],
+    ['Status', payslip.status || 'Draft'],
+  ];
+  const pdf = new jsPDF();
+  pdf.setFontSize(18);
+  pdf.text('Employee Payslip', 20, 20);
+  pdf.setFontSize(11);
+  lines.forEach(([label, value], index) => pdf.text(`${label}: ${value}`, 20, 38 + index * 10));
+  pdf.save(`${payslip.employeeId || payslip.id || 'payslip'}-${payslip.period || 'current'}.pdf`);
+}
+
 export default function PayrollManagementPage() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const location = useLocation();
   const { auth } = useAuth();
+  const payrollSettings = loadPayrollSettings();
+  const isPayrollMaster = location.pathname === '/payroll-master';
   const [activeSection, setActiveSection] = useState('overview');
   const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All');
+  const [periodFilter, setPeriodFilter] = useState('All');
   const [isStructureModalOpen, setIsStructureModalOpen] = useState(false);
   const [isRevisionModalOpen, setIsRevisionModalOpen] = useState(false);
   const [isPayrollModalOpen, setIsPayrollModalOpen] = useState(false);
@@ -70,24 +93,30 @@ export default function PayrollManagementPage() {
   const [form, setForm] = useState(formDefaults);
   const [busyMessage, setBusyMessage] = useState('');
 
-  const { data: structuresData } = useResourceList('salaryStructures', { page: 1, pageSize: 200 });
-  const { data: revisionsData } = useResourceList('salaryRevisions', { page: 1, pageSize: 200 });
-  const { data: payrollData } = useResourceList('payrollRuns', { page: 1, pageSize: 200 });
-  const { data: payslipsData } = useResourceList('payslips', { page: 1, pageSize: 200 });
-  const { data: taxData } = useResourceList('taxComponents', { page: 1, pageSize: 200 });
+  const { data: structuresData } = useResourceList('salaryStructures', { page: 1, pageSize: 100 });
+  const { data: revisionsData } = useResourceList('salaryRevisions', { page: 1, pageSize: 100 });
+  const { data: payrollData } = useResourceList('payrollRuns', { page: 1, pageSize: 100 });
+  const { data: payslipsData } = useResourceList('payslips', { page: 1, pageSize: 100 });
+  const { data: taxData } = useResourceList('taxComponents', { page: 1, pageSize: 100 });
 
   const salaryStructures = structuresData?.items || [];
   const salaryRevisions = revisionsData?.items || [];
-  const payrollRuns = payrollData?.items || [];
+  const payrollRuns = useMemo(() => payrollData?.items || [], [payrollData]);
   const payslips = payslipsData?.items || [];
   const taxComponents = taxData?.items || [];
 
   const filteredPayrollRuns = useMemo(() => payrollRuns.filter((payroll) => {
     const term = searchTerm.toLowerCase();
-    return [payroll.employeeName, payroll.period, payroll.status].filter(Boolean).some((value) => String(value).toLowerCase().includes(term));
-  }), [payrollRuns, searchTerm]);
+    const matchesSearch = [payroll.employeeName, payroll.employeeId, payroll.period, payroll.status].filter(Boolean).some((value) => String(value).toLowerCase().includes(term));
+    const matchesStatus = statusFilter === 'All' || (payroll.status || 'Draft') === statusFilter;
+    const matchesPeriod = periodFilter === 'All' || String(payroll.period || '').startsWith(periodFilter);
+    return matchesSearch && matchesStatus && matchesPeriod;
+  }), [payrollRuns, periodFilter, searchTerm, statusFilter]);
 
-  const resetForm = () => setForm({ ...formDefaults, employeeId: auth?.user?.id || '', employeeName: auth?.user?.name || '' });
+  const resetRunFilters = () => { setSearchTerm(''); setStatusFilter('All'); setPeriodFilter('All'); };
+  const payrollPeriods = useMemo(() => [...new Set(payrollRuns.map((payroll) => payroll.period).filter(Boolean))].sort().reverse(), [payrollRuns]);
+
+  const resetForm = () => setForm({ ...formDefaults, frequency: payrollSettings.frequency, employeeId: auth?.user?.id || '', employeeName: auth?.user?.name || '' });
 
   const handleStructureSubmit = async (event) => {
     event.preventDefault();
@@ -123,6 +152,10 @@ export default function PayrollManagementPage() {
 
   const handlePayrollSubmit = async (event) => {
     event.preventDefault();
+    if (!form.employeeName.trim() || !form.period) {
+      setBusyMessage('Employee and payroll period are required.');
+      return;
+    }
     setBusyMessage('Generating payroll…');
     const breakdown = calculatePayrollBreakdown({
       salaryStructure: form,
@@ -132,6 +165,7 @@ export default function PayrollManagementPage() {
       bonusAmount: Number(form.bonusAmount || 0),
       incentiveAmount: Number(form.incentiveAmount || 0),
       frequency: form.frequency,
+      payrollSettings,
     });
     const payload = {
       ...form,
@@ -141,7 +175,7 @@ export default function PayrollManagementPage() {
       totalDeductions: breakdown.totalDeductions,
       netSalary: breakdown.netSalary,
       breakdown,
-      status: editingPayroll ? form.status : 'Draft',
+      status: editingPayroll ? form.status : payrollSettings.approvalRequired ? 'Draft' : 'Processed',
     };
     if (editingPayroll) {
       await updatePayrollRun(editingPayroll.id, payload);
@@ -157,12 +191,20 @@ export default function PayrollManagementPage() {
 
   const handlePayslipCreate = async (payroll) => {
     setBusyMessage('Creating payslip…');
-    await createPayslip(buildPayslipPreview(payroll));
+    const payslip = await createPayslip(buildPayslipPreview(payroll));
     queryClient.invalidateQueries(['payslips']);
+    downloadPayslipPdf(payslip);
     setBusyMessage('');
   };
 
   const processPayrollAction = async (payroll, action) => {
+    const permissionAction = action === 'edit' ? 'edit' : action === 'delete' ? 'delete' : action === 'submit' || action === 'approve' || action === 'lock' ? 'approve' : 'view';
+    if (!hasPermission(auth?.permissions || {}, 'payroll', permissionAction)) return;
+    const status = payroll.status || 'Draft';
+    if (action === 'submit' && status !== 'Draft') return;
+    if (action === 'approve' && !['Review', 'HR Approval', 'Finance Approval'].includes(status)) return;
+    if (action === 'lock' && status !== 'Processed') return;
+    if (action === 'edit' && ['Locked', 'Processed'].includes(status)) return;
     if (action === 'submit') {
       await submitPayrollRun(payroll.id);
     } else if (action === 'approve') {
@@ -245,52 +287,32 @@ export default function PayrollManagementPage() {
   }), [filteredPayrollRuns]);
 
   return (
-    <div className="min-h-screen bg-[#eef1f4] p-2 sm:p-3">
-      <div className="rounded-[20px] border border-slate-200 bg-[#f3f4f6] p-1.5 shadow-[0_8px_20px_rgba(15,23,42,0.04)]">
-        <div className="rounded-[16px] border border-slate-200 bg-white/90 p-2.5 sm:p-3">
-          <div className="mb-3 flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-700 shadow-sm transition hover:bg-slate-50"
-              aria-label="Go back"
-            >
-              <ArrowLeft className="h-3.5 w-3.5" />
-            </button>
-
-            <div className="flex flex-wrap items-center gap-1.5 text-xs text-slate-500 sm:gap-2">
-              <button type="button" onClick={() => navigate('/')} className="transition hover:text-slate-700">Dashboard</button>
-              <span>›</span>
-              <button type="button" onClick={() => navigate('/settings/hrm')} className="transition hover:text-slate-700">HRM Master</button>
-              <span>›</span>
-              <span className="font-medium text-slate-700">Payroll Management</span>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+    <div className="min-h-[calc(100vh-7rem)] overflow-hidden rounded-[24px] border border-slate-200/80 bg-[linear-gradient(135deg,#f8fafc_0%,#ffffff_55%,#f8fafc_100%)] p-2.5 shadow-[0_18px_45px_rgba(15,23,42,0.06)] sm:p-3 lg:p-4">
+      <div className="flex h-full flex-col rounded-[22px] border border-slate-200/70 bg-white/90 p-3 shadow-inner sm:p-4 lg:p-5">
+        <div className="mb-5 border-b border-slate-200/80 pb-4">
+          <div className="mb-3 flex items-center gap-2 text-[10px] text-slate-500"><button type="button" onClick={() => navigate(-1)} aria-label="Go back" title="Go back" className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"><ArrowLeft className="h-3.5 w-3.5" /></button><button type="button" onClick={() => navigate('/')} className="transition hover:text-emerald-700">Dashboard</button><span>›</span><button type="button" onClick={() => navigate('/settings/hrm')} className="transition hover:text-emerald-700">HRM Master</button><span>›</span><span className="font-semibold text-slate-700">{isPayrollMaster ? 'Payroll Master' : 'Payroll Management'}</span></div>
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div className="space-y-0.5">
-              <h1 className="text-[1.55rem] font-semibold leading-tight tracking-[-0.02em] text-slate-900 sm:text-[1.85rem]">
-                Payroll Management
-              </h1>
-              <p className="text-[0.65rem] font-normal leading-tight text-slate-500 sm:text-[0.7rem]">
-                Salary Structures, Payroll Runs & Tax Controls
-              </p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-600">Payroll &amp; HRM</p>
+              <h1 className="mt-1 text-[20px] font-semibold tracking-tight text-slate-900 sm:text-[24px]">{isPayrollMaster ? 'Payroll Master' : 'Payroll Management'}</h1>
+              <p className="mt-1 text-[11px] text-slate-400">{isPayrollMaster ? 'Manage payroll cycles, approvals, salary controls and employee payslips.' : 'Salary structures, payroll runs, tax controls and payslips in one workspace.'}</p>
             </div>
 
             <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-              <button type="button" onClick={() => setIsStructureModalOpen(true)} className="rounded-2xl bg-[#0a2e1a] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#051f0f] sm:px-3.5 sm:py-2 sm:text-sm">Salary structures</button>
-              <button type="button" onClick={() => setIsRevisionModalOpen(true)} className="rounded-2xl bg-[#0a2e1a] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#051f0f] sm:px-3.5 sm:py-2 sm:text-sm">Salary revision</button>
-              <button type="button" onClick={() => setIsPayrollModalOpen(true)} className="rounded-2xl border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 sm:px-3.5 sm:py-2 sm:text-sm">Generate payroll</button>
+              <button type="button" onClick={() => window.print()} className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-[10px] font-semibold text-slate-700 hover:bg-slate-100"><FileDown className="h-3.5 w-3.5" /> Print</button>
+              <button type="button" onClick={() => setIsStructureModalOpen(true)} className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-[10px] font-semibold text-slate-700 hover:bg-slate-100"><Plus className="h-3.5 w-3.5" /> Salary Structure</button>
+              <button type="button" onClick={() => setIsRevisionModalOpen(true)} className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-[10px] font-semibold text-slate-700 hover:bg-slate-100"><SlidersHorizontal className="h-3.5 w-3.5" /> Salary Revision</button>
+              <button type="button" onClick={() => { resetForm(); setIsPayrollModalOpen(true); }} className="inline-flex items-center gap-1.5 rounded-lg bg-[#0f5132] px-3 py-2 text-[10px] font-semibold text-white hover:bg-[#0d432b]"><CalendarDays className="h-3.5 w-3.5" /> Generate Payroll</button>
             </div>
           </div>
         </div>
 
-        {busyMessage ? <div className="mt-3 rounded-3xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm text-emerald-700">{busyMessage}</div> : null}
+        {busyMessage ? <div className="mb-4 rounded-[14px] border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-xs text-emerald-700">{busyMessage}</div> : null}
 
-        <div className="mt-3 rounded-[20px] border border-slate-200 bg-slate-50 p-2.5 shadow-sm">
-          <div className="flex flex-wrap gap-1.5">
+        <div className="mb-5 rounded-[16px] border border-slate-200 bg-slate-50 p-2.5 shadow-sm">
+          <div className="flex flex-wrap gap-2">
             {['overview', 'runs', 'structures', 'tax', 'payslips'].map((tab) => (
-              <button key={tab} type="button" onClick={() => setActiveSection(tab)} className={`rounded-2xl border px-3 py-1.5 text-xs font-medium transition sm:text-sm ${activeSection === tab ? 'border-[#0a2e1a] bg-[#0a2e1a] text-white' : 'border-slate-200 bg-white text-slate-700 hover:bg-[#0a2e1a] hover:text-white'}`}>
+              <button key={tab} type="button" onClick={() => setActiveSection(tab)} className={`rounded-lg border px-3 py-1.5 text-[10px] font-semibold transition ${activeSection === tab ? 'border-[#0f5132] bg-[#0f5132] text-white' : 'border-slate-200 bg-white text-slate-700 hover:bg-emerald-50 hover:text-[#0f5132]'}`}>
                 {tab === 'overview' ? 'Overview' : tab === 'runs' ? 'Payroll Runs' : tab === 'structures' ? 'Structures' : tab === 'tax' ? 'Tax' : 'Payslips'}
               </button>
             ))}
@@ -317,54 +339,24 @@ export default function PayrollManagementPage() {
 
       {activeSection === 'runs' && (
         <div className="space-y-4">
-          <div className="flex flex-wrap items-center gap-3 rounded-[20px] border border-slate-200 bg-white p-4 shadow-sm">
-            <input type="search" value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="Search payroll run" className="w-full max-w-md rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none" />
-            <button type="button" onClick={() => exportPayroll('csv')} className="rounded-3xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700">Export CSV</button>
-            <button type="button" className="rounded-3xl bg-[#0a2e1a] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#051f0f]">Upload Excel</button>
+          <div className="rounded-[16px] border border-slate-200 bg-white p-3 shadow-sm">
+            <div className="mb-3 flex items-center gap-2 text-xs font-semibold text-slate-800"><Filter className="h-3.5 w-3.5" /> Payroll Run Filters</div>
+            <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-4">
+              <label htmlFor="payroll-run-search" className="text-[10px] font-semibold text-slate-600">Employee or period<input id="payroll-run-search" name="payroll_run_search" type="search" value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="Search payroll run..." className="mt-1 h-[24px] w-full rounded-md border border-slate-200 bg-white px-2 text-[10px] font-normal text-slate-700 outline-none focus:border-emerald-400" /></label>
+              <label htmlFor="payroll-run-status" className="text-[10px] font-semibold text-slate-600">Status<select id="payroll-run-status" name="payroll_run_status" value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)} className="mt-1 h-[24px] w-full rounded-md border border-slate-200 bg-white px-2 text-[10px] font-normal text-slate-700 outline-none focus:border-emerald-400"><option>All</option><option>Draft</option><option>Review</option><option>HR Approval</option><option>Finance Approval</option><option>Locked</option><option>Processed</option></select></label>
+              <label htmlFor="payroll-run-period" className="text-[10px] font-semibold text-slate-600">Payroll period<select id="payroll-run-period" name="payroll_run_period" value={periodFilter} onChange={(event) => setPeriodFilter(event.target.value)} className="mt-1 h-[24px] w-full rounded-md border border-slate-200 bg-white px-2 text-[10px] font-normal text-slate-700 outline-none focus:border-emerald-400"><option>All</option>{payrollPeriods.map((period) => <option key={period}>{period}</option>)}</select></label>
+              <div className="flex items-end justify-end gap-2"><button type="button" onClick={() => exportPayroll('csv')} className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[10px] font-semibold text-slate-700 hover:bg-slate-100"><Download className="h-3 w-3" /> Export CSV</button><button type="button" onClick={resetRunFilters} className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[10px] font-semibold text-slate-700 hover:bg-slate-100"><RefreshCcw className="h-3 w-3" /> Reset</button></div>
+            </div>
           </div>
 
-          <div className="grid gap-4">
+          <div className="overflow-hidden rounded-[16px] border border-slate-200 bg-white shadow-sm">
+            <div className="flex items-center justify-between border-b border-slate-200 px-3 py-2.5"><div className="flex items-center gap-2 text-xs font-semibold text-slate-800"><CalendarDays className="h-3.5 w-3.5" /> Payroll Runs</div><span className="text-[10px] text-slate-500">{filteredPayrollRuns.length} records</span></div>
             {filteredPayrollRuns.length === 0 ? (
-              <div className="rounded-[20px] border border-slate-200 bg-white p-6 text-center text-sm text-slate-500 shadow-sm">
+              <div className="p-12 text-center text-xs text-slate-500">
                 No payroll runs found.
               </div>
             ) : (
-              filteredPayrollRuns.map((payroll) => (
-                <div key={payroll.id} className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-sm">
-                  <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                    <div>
-                      <div className="flex items-center gap-3">
-                        <h3 className="text-lg font-semibold text-slate-900">{payroll.employeeName}</h3>
-                        <StatusBadge status={payroll.status} />
-                      </div>
-                      <p className="mt-1 text-sm text-slate-600">{payroll.period} · {payroll.employeeId}</p>
-                    </div>
-
-                    <div className="flex flex-wrap gap-2">
-                      <IconActionButton icon={Send} title="Submit payroll" ariaLabel="Submit payroll" variant="primary" className="h-8 w-8" onClick={() => processPayrollAction(payroll, 'submit')} />
-                      <IconActionButton icon={CheckCircle2} title="Approve payroll" ariaLabel="Approve payroll" variant="success" className="h-8 w-8" onClick={() => processPayrollAction(payroll, 'approve')} />
-                      <IconActionButton icon={Lock} title="Lock payroll" ariaLabel="Lock payroll" className="h-8 w-8" onClick={() => processPayrollAction(payroll, 'lock')} />
-                      <IconActionButton icon={Edit3} title="Edit payroll" ariaLabel="Edit payroll" className="h-8 w-8" onClick={() => processPayrollAction(payroll, 'edit')} />
-                      <IconActionButton icon={FileText} title="Create payslip" ariaLabel="Create payslip" className="h-8 w-8" onClick={() => handlePayslipCreate(payroll)} />
-                    </div>
-                  </div>
-
-                  <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-[10px] uppercase tracking-[0.2em] text-slate-500">Gross</p>
-                      <p className="mt-2 text-lg font-semibold text-slate-900">₹{Number(payroll.grossSalary || 0).toLocaleString()}</p>
-                    </div>
-                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-[10px] uppercase tracking-[0.2em] text-slate-500">Deductions</p>
-                      <p className="mt-2 text-lg font-semibold text-slate-900">₹{Number(payroll.totalDeductions || 0).toLocaleString()}</p>
-                    </div>
-                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-[10px] uppercase tracking-[0.2em] text-slate-500">Net Salary</p>
-                      <p className="mt-2 text-lg font-semibold text-slate-900">₹{Number(payroll.netSalary || 0).toLocaleString()}</p>
-                    </div>
-                  </div>
-                </div>
-              ))
+              <div className="overflow-x-auto"><table className="min-w-[980px] w-full border-collapse text-center text-[10px]"><thead><tr className="bg-[#0f5132] text-white"><th className="border-r border-white/30 px-3 py-2.5 font-semibold">Employee</th><th className="border-r border-white/30 px-3 py-2.5 font-semibold">Period</th><th className="border-r border-white/30 px-3 py-2.5 font-semibold">Gross</th><th className="border-r border-white/30 px-3 py-2.5 font-semibold">Deductions</th><th className="border-r border-white/30 px-3 py-2.5 font-semibold">Net Salary</th><th className="border-r border-white/30 px-3 py-2.5 font-semibold">Status</th><th className="px-3 py-2.5 font-semibold">Actions</th></tr></thead><tbody>{filteredPayrollRuns.map((payroll) => <tr key={payroll.id} className="border-b border-slate-200 text-slate-700 odd:bg-slate-50/50 hover:bg-emerald-50/30"><td className="border-r border-white px-3 py-2 text-left font-semibold text-slate-900">{payroll.employeeName || payroll.employeeId || 'Employee'}</td><td className="border-r border-white px-3 py-2">{payroll.period || '-'}</td><td className="border-r border-white px-3 py-2">₹{Number(payroll.grossSalary || 0).toLocaleString()}</td><td className="border-r border-white px-3 py-2">₹{Number(payroll.totalDeductions || 0).toLocaleString()}</td><td className="border-r border-white px-3 py-2 font-semibold text-slate-900">₹{Number(payroll.netSalary || 0).toLocaleString()}</td><td className="border-r border-white px-3 py-2"><StatusBadge status={payroll.status} /></td><td className="px-3 py-2"><div className="flex justify-center gap-1"><IconActionButton icon={Send} title="Submit payroll" ariaLabel="Submit payroll" variant="primary" className="h-6 w-6" onClick={() => processPayrollAction(payroll, 'submit')} /><IconActionButton icon={CheckCircle2} title="Approve payroll" ariaLabel="Approve payroll" variant="success" className="h-6 w-6" onClick={() => processPayrollAction(payroll, 'approve')} /><IconActionButton icon={Lock} title="Lock payroll" ariaLabel="Lock payroll" className="h-6 w-6" onClick={() => processPayrollAction(payroll, 'lock')} /><IconActionButton icon={Edit3} title="Edit payroll" ariaLabel="Edit payroll" className="h-6 w-6" onClick={() => processPayrollAction(payroll, 'edit')} /><IconActionButton icon={FileText} title="Create payslip" ariaLabel="Create payslip" className="h-6 w-6" onClick={() => handlePayslipCreate(payroll)} /></div></td></tr>)}</tbody></table></div>
             )}
           </div>
         </div>
@@ -443,7 +435,7 @@ export default function PayrollManagementPage() {
                   <button type="button" onClick={() => deletePayslip(payslip)} className="rounded-full border border-slate-200 bg-white p-2 text-red-600 hover:bg-red-50"><Trash2 className="h-3.5 w-3.5" /></button>
                 </div>
                 <p className="mt-2 text-sm text-slate-600">{payslip.period} · Net ₹{Number(payslip.netSalary || 0).toLocaleString()}</p>
-                <button type="button" onClick={() => downloadBlob(new Blob([JSON.stringify(payslip)], { type: 'application/json' }), `${payslip.id}.json`)} className="mt-3 rounded-3xl border border-slate-300 bg-white px-3 py-2 text-sm">Download</button>
+                <button type="button" onClick={() => downloadPayslipPdf(payslip)} className="mt-3 rounded-3xl border border-slate-300 bg-white px-3 py-2 text-sm">Download PDF</button>
               </div>
             ))}
           </div>

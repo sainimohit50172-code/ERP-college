@@ -12,7 +12,6 @@ class LibraryItemBase(BaseModel):
 
     title: str = Field(min_length=1, max_length=200)
     author: Optional[str] = Field(default=None, max_length=200)
-    category: Optional[str] = Field(default=None, max_length=100)
     available_copies: int = Field(default=0, ge=0)
 
 

@@ -247,23 +247,35 @@ export default function StudentFieldsManagementPage() {
 
         <div className="mt-5 grid gap-3 lg:grid-cols-[1.2fr_0.8fr]">
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-            <label className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-500 hover-gradient-border">
+            <label htmlFor="student-fields-search" className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-500 hover-gradient-border">
               <Search className="h-4 w-4 text-slate-400" />
-              <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search field" className="w-full border-none bg-transparent outline-none" />
+              <input id="student-fields-search" name="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search field" className="w-full border-none bg-transparent outline-none" />
             </label>
-            <select value={sectionFilter} onChange={(event) => setSectionFilter(event.target.value)} className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 outline-none transition hover-gradient-border">
-              {sectionOptions.map((option) => <option key={option} value={option}>{option}</option>)}
-            </select>
-            <select value={typeFilter} onChange={(event) => setTypeFilter(event.target.value)} className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 outline-none transition hover-gradient-border">
-              {typeOptions.map((option) => <option key={option} value={option}>{option}</option>)}
-            </select>
+            <label htmlFor="student-fields-section">
+              <span className="sr-only">Filter by section</span>
+              <select id="student-fields-section" name="sectionFilter" value={sectionFilter} onChange={(event) => setSectionFilter(event.target.value)} className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 outline-none transition hover-gradient-border">
+                {sectionOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+              </select>
+            </label>
+            <label htmlFor="student-fields-type">
+              <span className="sr-only">Filter by type</span>
+              <select id="student-fields-type" name="typeFilter" value={typeFilter} onChange={(event) => setTypeFilter(event.target.value)} className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 outline-none transition hover-gradient-border">
+                {typeOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+              </select>
+            </label>
             <div className="grid grid-cols-2 gap-3">
-              <select value={mandatoryFilter} onChange={(event) => setMandatoryFilter(event.target.value)} className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 outline-none transition hover-gradient-border">
-                {mandatoryOptions.map((option) => <option key={option} value={option}>{option}</option>)}
-              </select>
-              <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)} className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 outline-none transition hover-gradient-border">
-                {statusOptions.map((option) => <option key={option} value={option}>{option}</option>)}
-              </select>
+              <label htmlFor="student-fields-mandatory">
+                <span className="sr-only">Filter by mandatory</span>
+                <select id="student-fields-mandatory" name="mandatoryFilter" value={mandatoryFilter} onChange={(event) => setMandatoryFilter(event.target.value)} className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 outline-none transition hover-gradient-border">
+                  {mandatoryOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+              </label>
+              <label htmlFor="student-fields-status">
+                <span className="sr-only">Filter by status</span>
+                <select id="student-fields-status" name="statusFilter" value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)} className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 outline-none transition hover-gradient-border">
+                  {statusOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+              </label>
             </div>
           </div>
           <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-4">

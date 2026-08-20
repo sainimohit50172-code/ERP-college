@@ -291,21 +291,21 @@ export default function AttendanceModule({
             </div>
 
             <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              <FormField label="Academic year">
+              <FormField label="Academic year" id="attendance-academic-year">
                 <input name="academicYear" value={sessionValues.academicYear || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
               </FormField>
-              <FormField label="Campus">
+              <FormField label="Campus" id="attendance-campus">
                 <input name="campus" value={sessionValues.campus || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
               </FormField>
-              <FormField label="Department">
+              <FormField label="Department" id="attendance-department">
                 <input name="department" value={sessionValues.department || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
               </FormField>
               {scope === 'student' && (
                 <>
-                  <FormField label="Course">
+                  <FormField label="Course" id="attendance-course">
                     <input name="course" value={sessionValues.course || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
                   </FormField>
-                  <FormField label="Semester">
+                  <FormField label="Semester" id="attendance-semester">
                     <input name="semester" value={sessionValues.semester || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
                   </FormField>
                   <FormField label="Section">
@@ -313,16 +313,16 @@ export default function AttendanceModule({
                   </FormField>
                 </>
               )}
-              <FormField label={scope === 'student' ? 'Subject' : scope === 'teacher' ? 'Subject' : scope === 'employee' ? 'Shift' : 'Post'}>
+              <FormField label={scope === 'student' ? 'Subject' : scope === 'teacher' ? 'Subject' : scope === 'employee' ? 'Shift' : 'Post'} id={`attendance-${scope === 'employee' ? 'shift' : 'subject'}`}>
                 <input name={scope === 'student' ? 'subject' : scope === 'teacher' ? 'subject' : scope === 'employee' ? 'shift' : 'post'} value={scope === 'student' ? sessionValues.subject || '' : scope === 'teacher' ? sessionValues.subject || '' : scope === 'employee' ? sessionValues.shift || '' : sessionValues.post || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
               </FormField>
-              <FormField label={scope === 'student' ? 'Faculty' : scope === 'teacher' ? 'Faculty' : scope === 'employee' ? 'Employee' : 'Guard'}>
+              <FormField label={scope === 'student' ? 'Faculty' : scope === 'teacher' ? 'Faculty' : scope === 'employee' ? 'Employee' : 'Guard'} id={`attendance-${scope === 'employee' ? 'employee-name' : scope === 'student' || scope === 'teacher' ? 'faculty' : 'guard-name'}`}>
                 <input name={scope === 'student' ? 'faculty' : scope === 'teacher' ? 'faculty' : scope === 'employee' ? 'employeeName' : 'guardName'} value={scope === 'student' ? sessionValues.faculty || '' : scope === 'teacher' ? sessionValues.faculty || '' : scope === 'employee' ? sessionValues.employeeName || '' : sessionValues.guardName || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
               </FormField>
-              <FormField label="Date">
+              <FormField label="Date" id="attendance-date">
                 <input type="date" name="date" value={sessionValues.date || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
               </FormField>
-              <FormField label="Time slot">
+              <FormField label="Time slot" id="attendance-time-slot">
                 <input name="timeSlot" value={sessionValues.timeSlot || ''} onChange={handleFieldChange} className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none focus:border-sky-400 hover-gradient-border" />
               </FormField>
             </div>

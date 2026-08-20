@@ -1,13 +1,14 @@
 import { useMemo, useState } from 'react';
-import { CheckCircle2, XCircle, Edit3, Send, Ban, FileText } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, XCircle, Edit3, Send, Ban, FileText } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { useResourceList } from '../hooks/useResourceHooks';
-import SectionHeader from '../components/ui/SectionHeader.jsx';
 import DataTable from '../components/ui/DataTable.jsx';
 import Modal from '../components/ui/Modal.jsx';
 import FormField from '../components/forms/FormField.jsx';
 import StatusBadge from '../components/ui/StatusBadge.jsx';
 import IconActionButton from '../components/ui/IconActionButton.jsx';
+import Breadcrumb from '../components/ui/Breadcrumb.jsx';
 import { useAuth } from '../services/AuthContext.jsx';
 import { createLeavePolicy, updateLeavePolicy } from '../services/leavePolicyService.js';
 import { createLeaveRequest, updateLeaveRequest, submitLeaveRequest, approveLeaveRequest, rejectLeaveRequest, cancelLeaveRequest } from '../services/leaveRequestService.js';
@@ -71,6 +72,7 @@ function toExcelXml(rows, headers) {
 }
 
 export default function LeaveManagementPage() {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { auth } = useAuth();
   const [activeSection, setActiveSection] = useState('overview');
@@ -227,25 +229,41 @@ export default function LeaveManagementPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <SectionHeader
-        title="Leave management"
-        subtitle="Enterprise leave policies, balances, approvals, and holiday operations."
-        action={
-          <div className="flex flex-wrap items-center gap-3">
-            <button type="button" onClick={() => setIsPolicyModalOpen(true)} className="rounded-3xl bg-slate-800/80 px-4 py-3 text-sm text-slate-200 transition hover:bg-slate-700">Configure policies</button>
-            <button type="button" onClick={() => setIsRequestModalOpen(true)} className="rounded-3xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400">Apply leave</button>
-            <button type="button" onClick={() => setIsHolidayModalOpen(true)} className="rounded-3xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">Manage holidays</button>
+    <div className="min-h-[calc(100vh-7rem)] overflow-hidden rounded-[24px] border border-slate-200/80 bg-[linear-gradient(135deg,#f8fafc_0%,#ffffff_55%,#f8fafc_100%)] p-2.5 shadow-[0_18px_45px_rgba(15,23,42,0.06)] sm:p-3 lg:p-4">
+      <div className="flex h-full flex-col rounded-[22px] border border-slate-200/70 bg-white/90 p-3 shadow-inner sm:p-4 lg:p-5">
+        <div className="mb-5 border-b border-slate-200/80 pb-4">
+          <div className="mb-3 flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-slate-50 p-2 text-slate-600 transition-all hover:bg-slate-100 hover:text-slate-900"
+              title="Go back"
+              aria-label="Go back"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </button>
+            <Breadcrumb items={[{ label: 'Dashboard', to: '/' }, { label: 'Institute Setup', to: '/settings/institute' }, { label: 'HRM Master', to: '/settings/hrm' }, { label: 'Leave Management' }]} />
           </div>
-        }
-      />
+          <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-emerald-600">HRM Master</p>
+              <h1 className="mt-1 text-[16px] font-medium tracking-tight text-slate-900">Leave Management | HRM Master</h1>
+              <p className="mt-1 text-xs font-normal text-slate-400">Manage leave policies, balances, approvals, and holiday operations.</p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <button type="button" onClick={() => setIsPolicyModalOpen(true)} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100">Configure policies</button>
+                <button type="button" onClick={() => setIsRequestModalOpen(true)} className="rounded-lg bg-[#0f5132] px-3 py-2 text-xs font-semibold text-white transition hover:bg-[#0d432b]">Apply leave</button>
+              <button type="button" onClick={() => setIsHolidayModalOpen(true)} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100">Manage holidays</button>
+            </div>
+          </div>
+        </div>
 
-      {busyMessage ? <div className="rounded-3xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{busyMessage}</div> : null}
+      {busyMessage ? <div className="mb-5 rounded-[16px] border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{busyMessage}</div> : null}
 
-      <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-4 shadow-sm">
+      <div className="mb-5 rounded-[16px] border border-slate-200 bg-slate-50 p-3">
         <div className="flex flex-wrap gap-2">
           {['overview', 'requests', 'balances', 'calendar', 'reports'].map((tab) => (
-            <button key={tab} type="button" onClick={() => setActiveSection(tab)} className={`rounded-2xl border px-4 py-2 text-sm font-medium transition ${activeSection === tab ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-100'}`}>
+            <button key={tab} type="button" onClick={() => setActiveSection(tab)} className={`rounded-lg border px-3 py-1.5 text-xs font-semibold transition ${activeSection === tab ? 'border-[#0f5132] bg-[#0f5132] text-white' : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-100'}`}>
               {tab === 'overview' ? 'Overview' : tab === 'requests' ? 'Requests' : tab === 'balances' ? 'Balances' : tab === 'calendar' ? 'Calendar' : 'Reports'}
             </button>
           ))}
@@ -294,8 +312,8 @@ export default function LeaveManagementPage() {
       {activeSection === 'requests' && (
         <div className="space-y-4">
           <div className="flex flex-wrap items-center gap-3 rounded-[20px] border border-slate-200 bg-white p-4 shadow-sm">
-            <input type="search" value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="Search by employee or leave type" className="w-full max-w-md rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none" />
-            <select value={requestStatusFilter} onChange={(event) => setRequestStatusFilter(event.target.value)} className="rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none">
+            <input id="leave-request-search" name="leave_request_search" type="search" value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="Search by employee or leave type" className="w-full max-w-md rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none" />
+            <select id="leave-request-status-filter" name="leave_request_status_filter" value={requestStatusFilter} onChange={(event) => setRequestStatusFilter(event.target.value)} className="rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none">
               {requestStatuses.map((status) => <option key={status} value={status}>{status}</option>)}
             </select>
             <button type="button" onClick={bulkApprove} className="rounded-3xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100 hover-gradient-border">Bulk approve</button>
@@ -413,24 +431,26 @@ export default function LeaveManagementPage() {
         </div>
       )}
 
+      </div>
+
       <Modal title={editingPolicy ? 'Update leave policy' : 'Create leave policy'} isOpen={isPolicyModalOpen} onClose={() => { setIsPolicyModalOpen(false); resetPolicyForm(); }} footer={<button type="button" onClick={handlePolicySubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 hover-gradient-border">Save policy</button>}>
         <form className="space-y-4" onSubmit={handlePolicySubmit}>
           <FormField label="Leave type">
-            <input value={policyForm.leaveType} onChange={(event) => setPolicyForm((current) => ({ ...current, leaveType: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
+            <input id="leave-policy-type" name="leave_policy_type" value={policyForm.leaveType} onChange={(event) => setPolicyForm((current) => ({ ...current, leaveType: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
           </FormField>
           <FormField label="Annual allocation">
-            <input type="number" value={policyForm.annualAllocation} onChange={(event) => setPolicyForm((current) => ({ ...current, annualAllocation: Number(event.target.value) }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
+            <input id="leave-policy-annual-allocation" name="leave_policy_annual_allocation" type="number" value={policyForm.annualAllocation} onChange={(event) => setPolicyForm((current) => ({ ...current, annualAllocation: Number(event.target.value) }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
           </FormField>
           <FormField label="Carry forward">
-            <input type="number" value={policyForm.carryForward} onChange={(event) => setPolicyForm((current) => ({ ...current, carryForward: Number(event.target.value) }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
+            <input id="leave-policy-carry-forward" name="leave_policy_carry_forward" type="number" value={policyForm.carryForward} onChange={(event) => setPolicyForm((current) => ({ ...current, carryForward: Number(event.target.value) }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
           </FormField>
           <FormField label="Maximum consecutive days">
-            <input type="number" value={policyForm.maxConsecutiveDays} onChange={(event) => setPolicyForm((current) => ({ ...current, maxConsecutiveDays: Number(event.target.value) }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
+            <input id="leave-policy-max-consecutive-days" name="leave_policy_max_consecutive_days" type="number" value={policyForm.maxConsecutiveDays} onChange={(event) => setPolicyForm((current) => ({ ...current, maxConsecutiveDays: Number(event.target.value) }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
           </FormField>
-          <label className="flex items-center gap-3 text-sm text-slate-700"><input type="checkbox" checked={policyForm.encashmentEligible} onChange={(event) => setPolicyForm((current) => ({ ...current, encashmentEligible: event.target.checked }))} /> Encashment eligible</label>
-          <label className="flex items-center gap-3 text-sm text-slate-700"><input type="checkbox" checked={policyForm.probationRestricted} onChange={(event) => setPolicyForm((current) => ({ ...current, probationRestricted: event.target.checked }))} /> Probation restricted</label>
+          <label htmlFor="leave-policy-encashment" className="flex items-center gap-3 text-sm text-slate-700"><input id="leave-policy-encashment" name="leave_policy_encashment" type="checkbox" checked={policyForm.encashmentEligible} onChange={(event) => setPolicyForm((current) => ({ ...current, encashmentEligible: event.target.checked }))} /> Encashment eligible</label>
+          <label htmlFor="leave-policy-probation" className="flex items-center gap-3 text-sm text-slate-700"><input id="leave-policy-probation" name="leave_policy_probation" type="checkbox" checked={policyForm.probationRestricted} onChange={(event) => setPolicyForm((current) => ({ ...current, probationRestricted: event.target.checked }))} /> Probation restricted</label>
           <FormField label="Gender restriction">
-            <input value={policyForm.genderRestriction} onChange={(event) => setPolicyForm((current) => ({ ...current, genderRestriction: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
+            <input id="leave-policy-gender-restriction" name="leave_policy_gender_restriction" value={policyForm.genderRestriction} onChange={(event) => setPolicyForm((current) => ({ ...current, genderRestriction: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
           </FormField>
         </form>
       </Modal>
@@ -438,29 +458,29 @@ export default function LeaveManagementPage() {
       <Modal title={editingRequest ? 'Update leave request' : 'Apply leave'} isOpen={isRequestModalOpen} onClose={() => { setIsRequestModalOpen(false); resetRequestForm(); }} footer={<button type="button" onClick={handleRequestSubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 hover-gradient-border">Save request</button>}>
         <form className="space-y-4" onSubmit={handleRequestSubmit}>
           <FormField label="Employee name">
-            <input value={requestForm.employeeName} onChange={(event) => setRequestForm((current) => ({ ...current, employeeName: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
+            <input id="leave-request-employee-name" name="leave_request_employee_name" value={requestForm.employeeName} onChange={(event) => setRequestForm((current) => ({ ...current, employeeName: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
           </FormField>
           <FormField label="Leave type">
-            <select value={requestForm.leaveType} onChange={(event) => setRequestForm((current) => ({ ...current, leaveType: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none">
+            <select id="leave-request-type" name="leave_request_type" value={requestForm.leaveType} onChange={(event) => setRequestForm((current) => ({ ...current, leaveType: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none">
               {['Casual Leave', 'Sick Leave', 'Earned Leave', 'Maternity Leave', 'Paternity Leave', 'Compensatory Off', 'Unpaid Leave', 'Work From Home', 'Custom Leave Types'].map((option) => <option key={option} value={option}>{option}</option>)}
             </select>
           </FormField>
           <div className="grid gap-4 sm:grid-cols-2">
             <FormField label="Start date">
-              <input type="date" value={requestForm.startDate} onChange={(event) => setRequestForm((current) => ({ ...current, startDate: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
+              <input id="leave-request-start-date" name="leave_request_start_date" type="date" value={requestForm.startDate} onChange={(event) => setRequestForm((current) => ({ ...current, startDate: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
             </FormField>
             <FormField label="End date">
-              <input type="date" value={requestForm.endDate} onChange={(event) => setRequestForm((current) => ({ ...current, endDate: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
+              <input id="leave-request-end-date" name="leave_request_end_date" type="date" value={requestForm.endDate} onChange={(event) => setRequestForm((current) => ({ ...current, endDate: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
             </FormField>
           </div>
           <FormField label="Days">
-            <input type="number" value={requestForm.days} onChange={(event) => setRequestForm((current) => ({ ...current, days: Number(event.target.value) }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
+            <input id="leave-request-days" name="leave_request_days" type="number" value={requestForm.days} onChange={(event) => setRequestForm((current) => ({ ...current, days: Number(event.target.value) }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
           </FormField>
           <FormField label="Reason">
-            <textarea value={requestForm.reason} onChange={(event) => setRequestForm((current) => ({ ...current, reason: event.target.value }))} className="min-h-24 w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
+            <textarea id="leave-request-reason" name="leave_request_reason" value={requestForm.reason} onChange={(event) => setRequestForm((current) => ({ ...current, reason: event.target.value }))} className="min-h-24 w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
           </FormField>
           <FormField label="Supporting documents">
-            <input value={requestForm.supportingDocuments} onChange={(event) => setRequestForm((current) => ({ ...current, supportingDocuments: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
+            <input id="leave-request-supporting-documents" name="leave_request_supporting_documents" value={requestForm.supportingDocuments} onChange={(event) => setRequestForm((current) => ({ ...current, supportingDocuments: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
           </FormField>
         </form>
       </Modal>
@@ -468,13 +488,13 @@ export default function LeaveManagementPage() {
       <Modal title={editingHoliday ? 'Update holiday' : 'Add holiday'} isOpen={isHolidayModalOpen} onClose={() => { setIsHolidayModalOpen(false); resetHolidayForm(); }} footer={<button type="button" onClick={handleHolidaySubmit} className="rounded-3xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 hover-gradient-border">Save holiday</button>}>
         <form className="space-y-4" onSubmit={handleHolidaySubmit}>
           <FormField label="Holiday title">
-            <input value={holidayForm.title} onChange={(event) => setHolidayForm((current) => ({ ...current, title: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
+            <input id="leave-holiday-title" name="leave_holiday_title" value={holidayForm.title} onChange={(event) => setHolidayForm((current) => ({ ...current, title: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
           </FormField>
           <FormField label="Date">
-            <input type="date" value={holidayForm.date} onChange={(event) => setHolidayForm((current) => ({ ...current, date: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
+            <input id="leave-holiday-date" name="leave_holiday_date" type="date" value={holidayForm.date} onChange={(event) => setHolidayForm((current) => ({ ...current, date: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
           </FormField>
           <FormField label="Type">
-            <input value={holidayForm.type} onChange={(event) => setHolidayForm((current) => ({ ...current, type: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
+            <input id="leave-holiday-type" name="leave_holiday_type" value={holidayForm.type} onChange={(event) => setHolidayForm((current) => ({ ...current, type: event.target.value }))} className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" />
           </FormField>
         </form>
       </Modal>

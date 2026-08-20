@@ -599,9 +599,11 @@ export default function CourseManagementPage() {
                 ['eligibility', 'Eligibility'],
                 ['credits', 'Credits'],
               ].map(([field, label]) => (
-                <label key={field} className="text-sm font-medium text-slate-700">
+                <label key={field} htmlFor={`course-${field}`} className="text-sm font-medium text-slate-700">
                   {label}
                   <input
+                    id={`course-${field}`}
+                    name={field}
                     value={form[field]}
                     onChange={(event) => setForm((current) => ({ ...current, [field]: event.target.value }))}
                     className="mt-1.5 w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-700 outline-none hover-gradient-border"

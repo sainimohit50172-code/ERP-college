@@ -21,8 +21,29 @@ function buildLibraryContext(payload = {}) {
   return normalizeAcademicContext(payload, defaultLibraryContext);
 }
 
+function toLibraryBookPayload(payload = {}) {
+  return {
+    title: String(payload.title || '').trim(),
+    author: payload.author ? String(payload.author).trim() : null,
+    available_copies: Math.max(0, Number(payload.available_copies ?? payload.availableCopies ?? payload.copies ?? 1)),
+  };
+}
+
+function fromLibraryBookRecord(record = {}) {
+  const availableCopies = Number(record.availableCopies ?? record.available_copies ?? 0);
+  return {
+    ...record,
+    availableCopies,
+    available_copies: availableCopies,
+    copies: Number(record.copies ?? record.total_copies ?? availableCopies),
+    totalCopies: Number(record.totalCopies ?? record.total_copies ?? record.copies ?? availableCopies),
+    status: record.status || (availableCopies > 0 ? 'Available' : 'Issued'),
+  };
+}
+
 export async function listLibraryBooks(params = {}) {
-  return libraryBooksService.list(params);
+  const response = await libraryBooksService.list(params);
+  return { ...response, items: (response.items || []).map(fromLibraryBookRecord) };
 }
 
 function computeDueDate(fromDate = null, loanDays = 14) {
@@ -33,28 +54,16 @@ function computeDueDate(fromDate = null, loanDays = 14) {
 }
 
 export async function createBookRecord(payload) {
-  const book = normalizeEntityPayload(
-    {
-      ...payload,
-      status: payload.status || 'Available',
-      copies: Number(payload.copies || payload.availableCopies || 1),
-      availableCopies: Number(payload.availableCopies || payload.copies || 1),
-      lostCopies: Number(payload.lostCopies || 0),
-      damagedCopies: Number(payload.damagedCopies || 0),
-      metadata: payload.metadata || { source: 'library' },
-    },
-    { fallbackContext: buildLibraryContext(payload) },
-  );
-
-  const created = await libraryBooksService.create(book);
+  const created = await libraryBooksService.create(toLibraryBookPayload(payload));
+  const normalizedCreated = fromLibraryBookRecord(created);
   recordAuditEvent({
     action: 'Create',
     moduleKey: 'library',
-    description: `Book created: ${created.title}`,
-    resourceId: created.id,
-    metadata: { isbn: created.isbn, status: created.status },
+    description: `Book created: ${normalizedCreated.title}`,
+    resourceId: normalizedCreated.id,
+    metadata: { availableCopies: normalizedCreated.availableCopies, status: normalizedCreated.status },
   });
-  return created;
+  return normalizedCreated;
 }
 
 // Renew an issued book (by issue record id)
@@ -65,7 +74,7 @@ export async function renewBook(issueId, { loanDays = 14, maxRenewals = 2, user 
   const renewCount = Number(issue.renewals || 0);
   if (renewCount >= maxRenewals) throw new Error('Renewal limit reached');
   // if reserved by others, not eligible
-  const reservations = await reservationsService.list({ page: 1, pageSize: 200 });
+  const reservations = await reservationsService.list({ page: 1, pageSize: 100 });
   const queue = (reservations.items || []).filter((r) => r.bookId === issue.bookId && r.status === 'Queued');
   const firstInQueue = queue.length ? queue[0] : null;
   if (firstInQueue && String(firstInQueue.memberId) !== String(issue.memberId)) throw new Error('Book reserved by another member');
@@ -78,23 +87,10 @@ export async function renewBook(issueId, { loanDays = 14, maxRenewals = 2, user 
 }
 
 export async function updateBookRecord(id, payload) {
-  const book = normalizeEntityPayload(
-    {
-      ...payload,
-      id,
-      status: payload.status || 'Available',
-      copies: Number(payload.copies || payload.availableCopies || 1),
-      availableCopies: Number(payload.availableCopies || payload.copies || 1),
-      lostCopies: Number(payload.lostCopies || 0),
-      damagedCopies: Number(payload.damagedCopies || 0),
-      metadata: payload.metadata || { source: 'library' },
-    },
-    { fallbackContext: buildLibraryContext(payload) },
-  );
-
-  const updated = await libraryBooksService.update(id, book);
-  recordAuditEvent({ action: 'Update', moduleKey: 'library', description: `Book updated: ${id}`, resourceId: id, metadata: { status: updated.status } });
-  return updated;
+  const updated = await libraryBooksService.update(id, toLibraryBookPayload(payload));
+  const normalizedUpdated = fromLibraryBookRecord(updated);
+  recordAuditEvent({ action: 'Update', moduleKey: 'library', description: `Book updated: ${id}`, resourceId: id, metadata: { availableCopies: normalizedUpdated.availableCopies } });
+  return normalizedUpdated;
 }
 
 export async function deleteBookRecord(id) {
@@ -156,7 +152,7 @@ export async function returnBook(id, payload = {}) {
 export async function createReservation({ bookId, memberId, expiresInDays = 3, user = null } = {}) {
   const book = await libraryBooksService.get(bookId);
   if (!book) throw new Error('Book not found');
-  const reservations = await reservationsService.list({ page: 1, pageSize: 200 });
+  const reservations = await reservationsService.list({ page: 1, pageSize: 100 });
   const existing = (reservations.items || []).filter((r) => r.bookId === bookId && r.memberId === memberId && r.status !== 'Cancelled');
   if (existing.length) return existing[0];
   const status = (book.availableCopies || 0) > 0 ? 'Available' : 'Queued';
@@ -175,7 +171,7 @@ export async function cancelReservation(reservationId, { user = null } = {}) {
 }
 
 export async function processReservations(bookId) {
-  const reservations = await reservationsService.list({ page: 1, pageSize: 200 });
+  const reservations = await reservationsService.list({ page: 1, pageSize: 100 });
   const queue = (reservations.items || []).filter((r) => r.bookId === bookId && r.status === 'Queued');
   if (!queue.length) return null;
   const nxt = queue[0];

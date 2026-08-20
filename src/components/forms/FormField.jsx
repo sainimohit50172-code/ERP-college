@@ -13,13 +13,15 @@ export default function FormField({
   htmlFor,
   id,
 }) {
-  const fieldId = id || htmlFor;
+  const generatedFieldId = React.useId().replace(/:/g, '');
+  const childId = React.isValidElement(children) ? children.props.id : undefined;
+  const fieldId = id || htmlFor || childId || `form-field-${generatedFieldId}`;
   const hintId = fieldId ? `${fieldId}-hint` : undefined;
   const errorId = fieldId ? `${fieldId}-error` : undefined;
 
   const content = React.isValidElement(children)
     ? React.cloneElement(children, {
-        id: children.props.id || fieldId,
+        id: childId || fieldId,
         'aria-invalid': children.props['aria-invalid'] ?? Boolean(error),
         'aria-describedby': [children.props['aria-describedby'], hint && !error ? hintId : undefined, error ? errorId : undefined]
           .filter(Boolean)

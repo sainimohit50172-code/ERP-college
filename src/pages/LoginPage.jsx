@@ -236,11 +236,13 @@ export default function LoginPage() {
           {mode === 'login' ? (
             <form className="space-y-4 text-slate-900" onSubmit={handleSubmit(onSubmit)}>
               <div className="space-y-1.5">
-                <label className="block text-xs font-medium text-slate-700 uppercase">Username or email</label>
+                <label htmlFor="login-username" className="block text-xs font-medium text-slate-700 uppercase">Username or email</label>
                 <div className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-3 py-2.5 focus-within:ring-2 focus-within:ring-sky-500/20">
                   <FaUser className="text-slate-400 text-xs" />
                   <input
+                    id="login-username"
                     type="text"
+                    autoComplete="username"
                     placeholder="Enter your username or email"
                     className="w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400 hover-gradient-border"
                     {...register('username', { required: 'Username is required' })}
@@ -250,11 +252,13 @@ export default function LoginPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-medium text-slate-700 uppercase">Password</label>
+                <label htmlFor="login-password" className="block text-xs font-medium text-slate-700 uppercase">Password</label>
                 <div className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-3 py-2.5 focus-within:ring-2 focus-within:ring-sky-500/20">
                   <FaLock className="text-slate-400 text-xs" />
                   <input
+                    id="login-password"
                     type={showPassword ? 'text' : 'password'}
+                    autoComplete="current-password"
                     placeholder="Enter your password"
                     className="w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400 hover-gradient-border"
                     {...register('password', { required: 'Password is required' })}

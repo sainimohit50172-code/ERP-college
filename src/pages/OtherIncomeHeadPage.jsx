@@ -207,24 +207,24 @@ export default function OtherIncomeHeadPage() {
         )}
       >
         <form id="other-income-head-form" onSubmit={handleSubmit} className="grid gap-4">
-          <label className="grid gap-1 text-sm font-medium text-slate-700">
+          <label htmlFor="income-name" className="grid gap-1 text-sm font-medium text-slate-700">
             Income Head
-            <input value={formValues.name} onChange={(event) => setFormValues((current) => ({ ...current, name: event.target.value }))} className="rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-[#183452]" />
+            <input id="income-name" name="name" value={formValues.name} onChange={(event) => setFormValues((current) => ({ ...current, name: event.target.value }))} className="rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-[#183452]" />
           </label>
-          <label className="grid gap-1 text-sm font-medium text-slate-700">
+          <label htmlFor="income-code" className="grid gap-1 text-sm font-medium text-slate-700">
             Code
-            <input value={formValues.code} onChange={(event) => setFormValues((current) => ({ ...current, code: event.target.value }))} className="rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-[#183452]" />
+            <input id="income-code" name="code" value={formValues.code} onChange={(event) => setFormValues((current) => ({ ...current, code: event.target.value }))} className="rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-[#183452]" />
           </label>
-          <label className="grid gap-1 text-sm font-medium text-slate-700">
+          <label htmlFor="income-status" className="grid gap-1 text-sm font-medium text-slate-700">
             Status
-            <select value={formValues.status} onChange={(event) => setFormValues((current) => ({ ...current, status: event.target.value }))} className="rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-[#183452]">
+            <select id="income-status" name="status" value={formValues.status} onChange={(event) => setFormValues((current) => ({ ...current, status: event.target.value }))} className="rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-[#183452]">
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
             </select>
           </label>
-          <label className="grid gap-1 text-sm font-medium text-slate-700">
+          <label htmlFor="income-description" className="grid gap-1 text-sm font-medium text-slate-700">
             Description
-            <textarea rows="3" value={formValues.description} onChange={(event) => setFormValues((current) => ({ ...current, description: event.target.value }))} className="rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-[#183452]" />
+            <textarea id="income-description" name="description" rows="3" value={formValues.description} onChange={(event) => setFormValues((current) => ({ ...current, description: event.target.value }))} className="rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-[#183452]" />
           </label>
         </form>
       </Modal>

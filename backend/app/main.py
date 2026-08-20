@@ -165,12 +165,17 @@ def register_router_routes(app_instance, router_instance, prefix: str):
         if not getattr(route, "path", None):
             continue
         route_path = f"{prefix}{route.path}"
-        if any(getattr(existing_route, "path", None) == route_path for existing_route in app_instance.routes):
+        route_methods = set(getattr(route, "methods", []) or [])
+        if any(
+            getattr(existing_route, "path", None) == route_path
+            and route_methods.issubset(set(getattr(existing_route, "methods", []) or []))
+            for existing_route in app_instance.routes
+        ):
             continue
         app_instance.add_api_route(
             route_path,
             route.endpoint,
-            methods=list(getattr(route, "methods", []) or []),
+            methods=list(route_methods),
             name=getattr(route, "name", None),
             include_in_schema=getattr(route, "include_in_schema", True),
             status_code=getattr(route, "status_code", None),
@@ -209,18 +214,16 @@ routers = [
     compat_router,
 ]
 
+# Register concrete leave master routes before compatibility/fallback routes.
+# The fallback exposes a dynamic /{resource} path and would otherwise capture
+# leave-groups requests before the real CRUD endpoints can handle them.
+for leave_master_router in (leave_group_router, leave_cycle_router, leave_preference_router):
+    register_router_routes(app, leave_master_router, settings.api_v1_str)
+    register_router_routes(app, leave_master_router, "/api")
+
 for router in routers:
     app.include_router(router, prefix=settings.api_v1_str)
     app.include_router(router, prefix="/api")
-
-# Register leave master CRUD routes explicitly to prevent the generic fallback from
-# intercepting /api/v1/leave-groups, /api/v1/leave-cycles, and /api/v1/leave-preferences.
-register_router_routes(app, leave_group_router, settings.api_v1_str)
-register_router_routes(app, leave_group_router, "/api")
-register_router_routes(app, leave_cycle_router, settings.api_v1_str)
-register_router_routes(app, leave_cycle_router, "/api")
-register_router_routes(app, leave_preference_router, settings.api_v1_str)
-register_router_routes(app, leave_preference_router, "/api")
 
 app.include_router(fallback_router, prefix=settings.api_v1_str)
 app.include_router(fallback_router, prefix="/api")

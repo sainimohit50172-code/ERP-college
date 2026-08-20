@@ -47,11 +47,13 @@ export default function ForgotPasswordPage() {
         ) : (
           <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-700">Email address</label>
+              <label htmlFor="forgot-password-email" className="mb-2 block text-sm font-medium text-slate-700">Email address</label>
               <div className="flex items-center gap-3 rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 focus-within:border-emerald-400">
                 <Mail className="h-4 w-4 text-slate-400" />
                 <input
+                  id="forgot-password-email"
                   type="email"
+                  autoComplete="email"
                   placeholder="your.email@example.com"
                   {...register('email', { required: 'Email is required' })}
                   className="w-full bg-transparent text-slate-900 outline-none hover-gradient-border"

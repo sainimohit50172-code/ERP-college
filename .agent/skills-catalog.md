@@ -1,6 +1,6 @@
 # AI Agent Skills — Full Catalog
 
-> Auto-generated. Total: **2005 skills** across **115 categories**.
+> Auto-generated. Total: **2025 skills** across **116 categories**.
 > When asked "what skill should I use?", browse this file and suggest the most relevant skill IDs.
 > Install a skill: `Ctrl+Shift+/` → search for the skill ID → press Enter.
 
@@ -14,6 +14,7 @@
 
 ## agent-evaluation
 
+- **agent-evaluation-reporting**: Use when summarizing agent evaluations where autonomous, assisted, failed, timed-out, or invalid outcomes must remain distinct and comparable.
 - **run-deep-swe**: Run reproducible DeepSWE coding-agent benchmark evaluations through OpenRouter and mini-swe-agent. _(risk: critical)_
 
 ## agent-orchestration
@@ -261,9 +262,10 @@ Chat widget, Messages, PromptInput, Avatar, LLM _(risk: unknown)_
 
 - **pakistan-payments-stack**: Design and implement production-grade Pakistani payment integrations (JazzCash, Easypaisa, bank/PSP rails, optional Raast) for SaaS with PKR billing, webhook reliability, and reconciliation. _(risk: safe)_
 - **2slides-ppt-generator**: AI-powered presentation generation via the 2slides API — create slides from text, match a reference image style, summarize documents into decks, add AI voice narration, and export pages/audio. Use for any "make slides", "create a deck", or "slides from this document" request. _(risk: safe)_
-- **riffkit**: Riff a winning TikTok into your own short video — study a proven video's emotion formula and regenerate it with your product, character, and language (EN/ES). Also makes UGC ad creative. _(risk: critical)_
+- **riffkit**: Riff a winning TikTok into your own short video — study a proven video's emotion formula and regenerate it with your product, character, and language (9 supported). Also makes UGC ad creative. _(risk: critical)_
 - **sendblue-api**: Send and receive iMessage, SMS, and RCS from application code via the Sendblue HTTP API — text, media, group messages, send styles, reactions, typing indicators, status callbacks, and inbound webhooks. _(risk: critical)_
 - **sendblue-cli**: Send iMessage and SMS from the shell via the @sendblue/cli npm package — outbound sends, contact management, and account setup with no API client or webhook server required. _(risk: critical)_
+- **us-property-data**: Use when a task needs real U.S. residential property data: valuation, listings, price or tax history, schools, or a zillow.com URL. _(risk: safe)_
 - **youtube-full**: Fetch YouTube transcripts, search videos, browse channels, and extract playlists via TranscriptAPI — no yt-dlp, no Google API key, works from any cloud server. _(risk: safe)_
 
 ## app-builder
@@ -460,7 +462,7 @@ applications.
 - **api-onboarding**: Reduce time-to-first-API-call (TTFAC) by optimizing every step of the developer onboarding journey. This skill covers authentication simplification, sandbox environments, interactive documentation, and identifying and eliminating common failure points. Trigger phrases: "API... _(risk: critical)_
 - **api-sdk-generator**: Generates client SDK code, API wrapper libraries, request/response models, and language-specific usage patterns for any REST API. Use whenever the user asks to "generate an SDK", "write a client library", "create API wrappers", "generate TypeScript types from my API", "write a Python... _(risk: critical)_
 - **atlas-contract**: Goal-integrity skill. Use for backend/API/persistence, preserve/do-not-change, tests/validation, mocks, rework, multi-part requests. Emits Goal Contracts, Deviation Notices, Phase Checks, Final Audits. Skip for Q&A or trivial edits. _(risk: critical)_
-- **cohesivity**: Provision backend infra through Cohesivity (cohesivity.ai): Postgres, hosting, auth, storage, and AI model APIs over one HTTP API. Use when a .cohesivity file exists or a project needs a backend. _(risk: critical)_
+- **cohesivity**: Provision headless backend services for AI agents through Cohesivity: hosting, databases, storage, LLMs, and third-party APIs over one HTTP API. Use when a trusted .cohesivity file exists or the user approves a new backend. _(risk: critical)_
 - **hono**: Build ultra-fast web APIs and full-stack apps with Hono — runs on Cloudflare Workers, Deno, Bun, Node.js, and any WinterCG-compatible runtime. _(risk: safe)_
 - **neon-functions**: Long-running, serverless Node.js HTTP functions deployed onto your Neon branch, with DATABASE_URL injected automatically and compute that runs next to your data. Use when a user wants to host an API, an AI agent with long streaming responses, a WebSocket or server-sent-events (SSE)... _(risk: critical)_
 - **openapi-spec-generator**: Generate complete, production-ready OpenAPI 3.x and Swagger 2.0 specifications from natural language descriptions, code, or partial specs. Use this skill whenever the user mentions OpenAPI, Swagger, API spec, REST API documentation, YAML/JSON API schema, endpoint documentation, API... _(risk: critical)_
@@ -845,6 +847,7 @@ market, solution, financials, and strategy
 - **interactive-portfolio**: Expert in building portfolios that actually land jobs and clients - not just showing work, but creating memorable experiences. Covers developer portfolios, designer portfolios, creative portfolios,... _(risk: unknown)_
 - **scroll-experience**: Expert in building immersive scroll-driven experiences - parallax storytelling, scroll animations, interactive narratives, and cinematic web experiences. Like NY Times interactives, Apple product p... _(risk: unknown)_
 - **article-illustrations**: Generate hand-drawn 16:9 article illustrations with the Grav character IP, sparse annotations, and absurd but clear visual metaphors. _(risk: safe)_
+- **liuguang-banlan-ui**: Builds two parameterized UI modes—流光溢彩白 (iridescent white) and 五彩斑斓黑 (colorful black)—with OKLCH, WebGL/CSS fallback, vision gating, screenshot QA, and total/per-color intensity reports. Use when a UI request names either mode or needs measured color parameters. _(risk: critical)_
 - **modellix**: Integrate the Modellix API/CLI for async AI image, video, and speech generation or transcription (model run --wait, task download). _(risk: critical)_
 
 ## data
@@ -1109,6 +1112,7 @@ api docs, reference,... _(risk: unknown)_
 - **code-showcase-testing-patterns**: Jest testing patterns, factory functions, mocking strategies, and TDD workflow. Use when writing unit tests, creating test factories, or following TDD red-green-refactor cycle. _(risk: critical)_
 - **code-simplification**: Simplifies code for clarity. Use when refactoring code for clarity without changing behavior. Use when code works but is harder to read, maintain, or extend than it should be. Use when reviewing code that has accumulated unnecessary complexity. _(risk: critical)_
 - **codebase-to-wordpress-converter**: Expert skill for converting any codebase (React/HTML/Next.js) into a pixel-perfect, SEO-optimized, and dynamic WordPress theme. _(risk: safe)_
+- **cross-platform-contract-propagation-audit**: Use when auditing whether a field, enum, flag, or API contract propagates consistently across storage, services, clients, analytics, and tests. _(risk: safe)_
 - **debugging-and-error-recovery**: Guides systematic root-cause debugging. Use when tests fail, builds break, behavior doesn't match expectations, or you encounter any unexpected error. Use when you need a systematic approach to finding and fixing the root cause rather than guessing. _(risk: critical)_
 - **debugging-code**: Interactively debug source code — set breakpoints, step through execution line by line, inspect live variable state, evaluate expressions against the running program, and navigate the call stack to trace root causes. Use when a program crashes, raises unexpected exceptions, produces... _(risk: critical)_
 - **debugging-toolkit**: Use when working with debugging toolkit smart debug (Alias for debugging-toolkit-smart-debug)
@@ -1140,7 +1144,10 @@ api docs, reference,... _(risk: unknown)_
 - **tree-ring-memory**: Use Tree Ring Memory for local-first AI-agent memory lifecycle work: recall, evidence, audit, forgetting, and consolidation without transcript dumping. _(risk: safe)_
 - **triage**: Move issues and external PRs through a state machine of triage roles — categorise, verify, grill if needed, and write agent-ready briefs. _(risk: safe)_
 - **unship**: Compare AI agent-made UI variants locally in a real app, then keep one and clean up unused temporary code. _(risk: critical)_
+- **using-lwc**: Use when project decisions, code structure, research, incidents, or verified context must survive future coding-agent sessions through LWC memory and graph indexes. _(risk: critical)_
 - **wp-site-health-auditor**: Turns a WordPress Site Health report into a risk-tiered, backup-first fix plan with exact WP-CLI/PHP snippets. Use for site health, recommended improvements, or critical issue reports. _(risk: critical)_
+- **agent-harness-fault-injection**: Use when an agent workflow needs deterministic recovery evidence for sandbox, MCP/tool, worker, checkpoint, memory, or orchestration failures. _(risk: safe)_
+- **boost-asio-pro**: Use when writing asynchronous C++ networking code with Boost.Asio or standalone Asio — TCP/UDP servers and clients, SSL/TLS, timers, strands, composed async ops. Covers io_context, co_spawn, awaitable, async_read/async_write, asio::spawn, yield_context, and pre-C++20 callback styles. _(risk: safe)_
 
 ## development-and-testing
 
@@ -1307,6 +1314,7 @@ makepad Markdown, makepad Html, TextFlow, rich... _(risk: unknown)_
 - **webapp-testing**: Toolkit for interacting with and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing browser screenshots, and viewing browse... _(risk: unknown)_
 - **zod-validation-expert**: Expert in Zod — TypeScript-first schema validation. Covers parsing, custom errors, refinements, type inference, and integration with React Hook Form, Next.js, and tRPC. _(risk: safe)_
 - **zustand-store-ts**: Create Zustand stores with TypeScript, subscribeWithSelector middleware, and proper state/action separation. Use when building React state management, creating global stores, or implementing reacti... _(risk: unknown)_
+- **anti-ui-slop**: Stop coding agents from shipping generic UI with UIZZE's 800,000+ real web and iOS screens, product-specific contracts, required states, and a hard finish gate. _(risk: safe)_
 - **astro**: Build content-focused websites with Astro — zero JS by default, islands architecture, multi-framework components, and Markdown/MDX support. _(risk: safe)_
 - **design-it**: Routes frontend design tasks to 48 specific UI styles. Triggers for websites, app screens, or UI components requesting a specific aesthetic. _(risk: safe)_
 - **design-taste-frontend**: Use when building high-agency frontend interfaces with strict design taste, calibrated color, responsive layout, and motion rules. _(risk: safe)_
@@ -1334,6 +1342,7 @@ makepad Markdown, makepad Html, TextFlow, rich... _(risk: unknown)_
 - **review-animations**: Use when reviewing animation and motion code against a strict craft, performance, accessibility, and interaction-quality bar. _(risk: safe)_
 - **stitch-design-taste**: Use when generating Google Stitch DESIGN.md systems for premium typography, color, layout, motion intent, and anti-generic UI rules. _(risk: safe)_
 - **sveltekit**: Build full-stack web applications with SvelteKit — file-based routing, SSR, SSG, API routes, and form actions in one framework. _(risk: safe)_
+- **ui-slop-score**: Score a rendered web or iOS screen for generic UI risk before it ships. Use when a user asks whether a UI looks generic or needs an honest pre-merge visual review. _(risk: safe)_
 
 ## fullstack
 
@@ -1645,6 +1654,7 @@ strategy and planning.
 - **fal-workflow**: Generate workflow JSON files for chaining AI models _(risk: safe)_
 - **videodb**: Video and audio perception, indexing, and editing. Ingest files/URLs/live streams, build visual/spoken indexes, search with timestamps, edit timelines, add overlays/subtitles, generate media, and create real-time alerts. _(risk: safe)_
 - **videodb-skills**: Upload, stream, search, edit, transcribe, and generate AI video and audio using the VideoDB SDK. _(risk: safe)_
+- **atlas-cloud-media**: Generate Atlas Cloud images and videos through its asynchronous media API with schema-first model selection and credential-safe polling. _(risk: safe)_
 - **generate-nanobanana**: Generate and edit images/video with Google's Gemini media models (Nano Banana 2/Pro, Gemini Omni Flash), with cost-approval gates, reference-image support, and a prompt/output log per call. _(risk: critical)_
 - **image-generator**: Generate and edit images using Gemini's Nano Banana Pro model (gemini-3-pro-image-preview). Use this skill when the user asks you to generate images, create visuals, edit photos, create logos, generate product mockups, or perform any image generation/editing task. _(risk: safe)_
 - **video-router**: Route a video-production brief to generation, deterministic composition, supplied-footage editing, or an automatic cross-modal plan before production begins.
@@ -1830,6 +1840,7 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 - **ask-matt**: Ask which skill or flow fits your situation. A router over the user-invoked skills in this repo. _(risk: safe)_
 - **brain-to-docs**: Interview the user to turn project vision and decisions into README and ADR documentation. _(risk: critical)_
 - **codex-profiles**: Use codex-profiles to run Codex CLI or Codex Desktop with isolated CODEX_HOME profiles for separate accounts, projects, and local state. _(risk: critical)_
+- **compile-knowledge**: Compile durable, non-obvious findings into an interlinked markdown knowledge store — atomic files, [[wiki-links]], a maintained index — so an agent gets smarter across sessions instead of relearning the same facts. _(risk: safe)_
 - **context-kit**: Evaluate, adapt, and safely install Context Kit personal context artifacts for Claude Code or adjacent agent workflows. _(risk: critical)_
 - **daily-gift**: Relationship-aware daily gift engine with five-stage creative pipeline — editorial judgment, synthesis, concept generation, visual strategy, and rendering in H5, image, or video _(risk: critical)_
 - **faf-wizard**: Done-for-you .faf generator. One-click AI context for any project - new, legacy, or famous. Auto-detects stack, scores readiness, works everywhere. _(risk: safe)_
@@ -1908,15 +1919,18 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 - **wiki-qa**: Answers questions about a code repository using source file analysis. Use when the user asks a question about how something works, wants to understand a component, or needs help navigating the code... _(risk: unknown)_
 - **wiki-researcher**: Conducts multi-turn iterative deep research on specific topics within a codebase with zero tolerance for shallow analysis. Use when the user wants an in-depth investigation, needs to understand how... _(risk: unknown)_
 - **deepapi**: Use DeepAPI for supported scraping, research, and email workflows with explicit credentials and approval. _(risk: critical)_
+- **dsh-deepread**: Use for evidence-first reading of articles, books, PDFs, web pages, or document sets, with knowledge maps and Feynman checks. _(risk: safe)_
 - **fact-check-x-complete**: Compare claims from one or more AI answers, verify their citations against public primary sources, and produce an evidence-linked fact-check report without installing a bundled browser runtime. _(risk: critical)_
 - **gemini-deep-research**: Run autonomous multi-step research with Google's Gemini Deep Research Agent: kick off a query, poll progress, and collect a cited report for market analysis or literature reviews. _(risk: critical)_
 - **ii-commons**: Deterministic search across arXiv, PubMed/PMC, and US policy corpora with daily freshness cutoffs. _(risk: safe)_
 - **news-sentiment-engine**: Multi-source RSS news aggregation with Claude-powered sentiment analysis and structured briefing output _(risk: critical)_
 - **papers-skill**: Skill for academic research workflows: search Semantic Scholar (200M+ papers), inspect citations, download arXiv PDFs, and extract PDF text. Bundles a self-contained Python CLI. _(risk: safe)_
+- **people-data**: Research LinkedIn professional profiles and public business-contact data, including email/phone lookup, people search, and YouTube channel business-email discovery. _(risk: safe)_
 - **pi-web-search**: Give Pi Agents a safe web-search and fetch workflow using the installed pi-web-access package. _(risk: safe)_
 - **research-prompt**: Turn vague research needs into one precise deep-research prompt with context and output criteria. _(risk: safe)_
 - **survey-generator**: Generate source-backed AI/ML survey paper artifacts with curated bibliographies and Fireworks/Kimi HTML rendering. _(risk: safe)_
 - **youtube-transcript**: Fetch YouTube transcripts through DeepAPI or local fallback tooling and save clean text output. _(risk: safe)_
+- **multi-source-search**: Cross-validate web research and produce an offline-checkable evidence ledger with explicit source diversity, confidence, conflicts, and gaps. _(risk: safe)_
 
 ## rust
 
@@ -2125,6 +2139,9 @@ calculations
 - **workflow-patterns**: Use this skill when implementing tasks according to Conductor's TDD workflow, handling phase checkpoints, managing git commits for tasks, or understanding the verification protocol. _(risk: unknown)_
 - **writing-plans**: Use when you have a spec or requirements for a multi-step task, before touching code _(risk: unknown)_
 - **ab-testing**: When the user wants to plan, design, or implement an A/B test or experiment, or build a growth experimentation program. Also use when the user mentions "A/B test," "split test," "experiment," "test this change," "variant copy," "multivariate test," "hypothesis," "should I test this,"... _(risk: critical)_
+- **agent-qa-authoring**: Create, edit, validate, and run Agent QA tests, suites, and hooks through MCP or CLI while preserving canonical IDs and schema contracts. _(risk: critical)_
+- **agent-qa-debug-fix**: Debug, patch, and verify failed Agent QA runs from MCP evidence, artifacts, logs, and local code without hiding product or infrastructure defects. _(risk: critical)_
+- **agent-qa-result-triage**: Triage failed Agent QA runs with MCP evidence, artifacts, logs, fixed failure categories, confidence, and actionable next steps. _(risk: safe)_
 - **android-ui-journey-testing**: XML-specified Android UI journey testing, interactive step execution, assertion verification, and JSON outcome reporting. _(risk: critical)_
 - **brooks-test**: Test quality review drawing on twelve classic engineering books — with primary focus on xUnit Test Patterns, The Art of Unit Testing, How Google Tests Software, and Working Effectively with Legacy Code — that diagnoses structural problems in an existing test suite: brittleness, mock... _(risk: safe)_
 - **browser-testing-with-devtools**: Test browser apps with Chrome DevTools MCP by inspecting live DOM, console logs, network traffic, screenshots, accessibility, and performance traces. _(risk: critical)_
@@ -2144,6 +2161,10 @@ calculations
 ## tools
 
 - **android-cli**: Orchestrates Android development tasks including project creation, deployment, SDK management, and environment diagnostics using the `android` command-line tool. _(risk: critical)_
+
+## travel
+
+- **travel-planner**: 旅行/行程规划需求时使用:规划去某地旅行、X天X城、带老人孩子、自驾、假期安排等。产出逐日行程表、预算估算(经济/舒适/奢华三档)、交通住宿建议、景点美食清单。必须先问预算,预算未确认只输出问题清单;事实数据带来源和查询日期。 _(risk: safe)_
 
 ## uncategorized
 
@@ -2380,6 +2401,8 @@ calculations
 - **wp-guard**: Review generated or changed WordPress plugins, themes, and blocks for security, internationalization, performance, and API correctness. _(risk: offensive)_
 - **xvary-stock-research**: Thesis-driven equity analysis from public SEC EDGAR and market data; /analyze, /score, /compare workflows with bundled Python tools (Claude Code, Cursor, Codex). _(risk: safe)_
 - **yield-intelligence**: Passive income portfolio analysis — activate when user asks about dividend yields, Treasury rates, REIT income, monthly passive income goals, or portfolio yield optimization. Scans 4 asset classes, ranks by risk-adjusted return, and builds allocations targeting a specific monthly income. _(risk: safe)_
+- **audit-agent-run-evidence**: Use when an agent, harness, gateway, MCP workflow, or multi-step automation claims completion and the available traces, checkpoints, approvals, tool calls, or deployment records must be judged without trusting self-reported success. _(risk: safe)_
+- **review-multi-agent-orchestration**: Use when a supervisor, swarm, graph, planner-worker system, or parallel agent workflow needs review for task boundaries, shared state, branch joins, retries, cancellation, context handoffs, budgets, deadlocks, or human escalation before implementation or production rollout. _(risk: safe)_
 
 ## video
 

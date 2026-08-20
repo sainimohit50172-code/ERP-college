@@ -250,11 +250,13 @@ function CompactInlineForm({ onCancel = () => {}, onSave = () => {} }) {
       <div className="w-full rounded-md border border-slate-100 p-3" style={{ boxShadow: 'none' }}>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
           <div>
-            <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Enter Name" className="h-10 rounded-[6px] border border-slate-200 px-3" />
+            <label htmlFor="subject-name" className="sr-only">Subject Name</label>
+            <input id="subject-name" name="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Enter Name" className="h-10 rounded-[6px] border border-slate-200 px-3" />
             {errors.name && <p className="mt-1 text-sm text-rose-400">{errors.name}</p>}
           </div>
           <div>
-            <input value={form.code} onChange={(e) => setForm({ ...form, code: e.target.value })} placeholder="Enter Code" className="h-10 rounded-[6px] border border-slate-200 px-3" />
+            <label htmlFor="subject-code" className="sr-only">Subject Code</label>
+            <input id="subject-code" name="code" value={form.code} onChange={(e) => setForm({ ...form, code: e.target.value })} placeholder="Enter Code" className="h-10 rounded-[6px] border border-slate-200 px-3" />
             {errors.code && <p className="mt-1 text-sm text-rose-400">{errors.code}</p>}
           </div>
           <div>
@@ -279,10 +281,12 @@ function CompactInlineForm({ onCancel = () => {}, onSave = () => {} }) {
 
         <div className="mt-3 grid grid-cols-1 md:grid-cols-4 gap-3 items-center">
           <div>
-            <input value={form.course} onChange={(e) => setForm({ ...form, course: e.target.value })} placeholder="Select Course" className="h-10 rounded-[6px] border border-slate-200 px-3" />
+            <label htmlFor="subject-course" className="sr-only">Course</label>
+            <input id="subject-course" name="course" value={form.course} onChange={(e) => setForm({ ...form, course: e.target.value })} placeholder="Select Course" className="h-10 rounded-[6px] border border-slate-200 px-3" />
           </div>
           <div>
-            <input type="number" value={form.credits} onChange={(e) => setForm({ ...form, credits: Number(e.target.value) })} placeholder="Credit Value" className="h-10 rounded-[6px] border border-slate-200 px-3" />
+            <label htmlFor="subject-credits" className="sr-only">Credits</label>
+            <input id="subject-credits" name="credits" type="number" value={form.credits} onChange={(e) => setForm({ ...form, credits: Number(e.target.value) })} placeholder="Credit Value" className="h-10 rounded-[6px] border border-slate-200 px-3" />
           </div>
           <div>
             <SearchableSelect

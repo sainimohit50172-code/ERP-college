@@ -39,7 +39,7 @@ export function useResourceList(resource, params = {}) {
         return { items: [], total: 0, page: params.page || 1, pageSize: params.pageSize || 10, pages: 0 };
       }
     },
-    enabled: true,
+    enabled: backendReady,
     keepPreviousData: true,
     staleTime: 5 * 60 * 1000,
     gcTime: 30 * 60 * 1000,
@@ -55,6 +55,33 @@ export function useResourceDetails(resource, id) {
   return useQuery({ queryKey: [resource, 'details', id], queryFn: () => service.get(id), enabled: !!id });
 }
 
+function getItemIdentifier(item = {}) {
+  return item.id ?? item._id ?? item.uuid ?? null;
+}
+
+function syncCachedListWithItem(queryClient, resource, nextItem) {
+  if (!nextItem || typeof nextItem !== 'object') return;
+
+  queryClient.setQueriesData({ queryKey: [resource], exact: false }, (current) => {
+    if (!current) return current;
+
+    const items = Array.isArray(current?.items) ? current.items : Array.isArray(current) ? current : [];
+    const nextItems = items.some((item) => String(getItemIdentifier(item)) === String(getItemIdentifier(nextItem)))
+      ? items.map((item) => (String(getItemIdentifier(item)) === String(getItemIdentifier(nextItem)) ? { ...item, ...nextItem } : item))
+      : [nextItem, ...items];
+
+    if (Array.isArray(current)) {
+      return nextItems;
+    }
+
+    return {
+      ...current,
+      items: nextItems,
+      total: Number.isFinite(Number(current?.total)) ? Math.max(Number(current.total), nextItems.length) : nextItems.length,
+    };
+  });
+}
+
 export function useCreateResource(resource) {
   const service = createResourceService(resource);
   const qc = useQueryClient();
@@ -62,6 +89,7 @@ export function useCreateResource(resource) {
   return useMutation({
     mutationFn: (payload) => service.create(payload),
     onSuccess: (data) => {
+      syncCachedListWithItem(qc, resource, data);
       qc.invalidateQueries({ queryKey: [resource], exact: false });
       recordAuditEvent({
         action: 'Create',
@@ -82,6 +110,8 @@ export function useUpdateResource(resource) {
   return useMutation({
     mutationFn: ({ id, payload }) => service.update(id, payload),
     onSuccess: (data, variables) => {
+      const merged = { ...(variables?.payload || {}), ...(data || {}) };
+      syncCachedListWithItem(qc, resource, merged);
       qc.invalidateQueries({ queryKey: [resource], exact: false });
       recordAuditEvent({
         action: 'Update',

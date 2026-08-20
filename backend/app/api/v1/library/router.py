@@ -1,3 +1,5 @@
+from fastapi import APIRouter
+
 from app.api.v1.shared.router_factory import build_crud_router
 from app.api.v1.shared.dependencies import (
     get_library_repository,
@@ -59,7 +61,7 @@ class FineBulkUpdate(FineUpdate):
 
 
 # Parent router that aggregates all library-related routers
-router = build_crud_router(
+library_items_router = build_crud_router(
     prefix="/libraries",
     tags=["libraries"],
     repository_dependency=get_library_entity_repository,
@@ -75,7 +77,7 @@ router = build_crud_router(
 
 # Sub-routers for books, copies, issues, reservations and fines
 book_router = build_crud_router(
-    prefix="/library-books",
+    prefix="/libraries/library-books",
     tags=["library-books"],
     repository_dependency=get_library_repository,
     service_dependency=get_library_service,
@@ -88,7 +90,7 @@ book_router = build_crud_router(
 )
 
 copy_router = build_crud_router(
-    prefix="/library-copies",
+    prefix="/libraries/library-copies",
     tags=["library-copies"],
     repository_dependency=get_book_copy_repository,
     service_dependency=get_book_copy_service,
@@ -101,7 +103,7 @@ copy_router = build_crud_router(
 )
 
 issue_router = build_crud_router(
-    prefix="/library-issues",
+    prefix="/libraries/library-issues",
     tags=["library-issues"],
     repository_dependency=get_book_issue_repository,
     service_dependency=get_book_issue_service,
@@ -114,7 +116,7 @@ issue_router = build_crud_router(
 )
 
 reservation_router = build_crud_router(
-    prefix="/library-reservations",
+    prefix="/libraries/library-reservations",
     tags=["library-reservations"],
     repository_dependency=get_reservation_repository,
     service_dependency=get_reservation_service,
@@ -127,7 +129,7 @@ reservation_router = build_crud_router(
 )
 
 fine_router = build_crud_router(
-    prefix="/library-fines",
+    prefix="/libraries/library-fines",
     tags=["library-fines"],
     repository_dependency=get_fine_repository,
     service_dependency=get_fine_service,
@@ -140,5 +142,11 @@ fine_router = build_crud_router(
 )
 
 
-for r in [book_router, copy_router, issue_router, reservation_router, fine_router]:
-    router.include_router(r)
+router = APIRouter(tags=["libraries"])
+
+# Register specific resource prefixes before the generic /{entity_id} routes
+# from the library-items CRUD router. Otherwise FastAPI parses "library-books"
+# as an integer entity_id and returns a misleading 422 validation error.
+for resource_router in [book_router, copy_router, issue_router, reservation_router, fine_router]:
+    router.include_router(resource_router)
+router.include_router(library_items_router)

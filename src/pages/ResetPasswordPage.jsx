@@ -58,11 +58,13 @@ export default function ResetPasswordPage() {
           <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
             {!token && <p className="rounded-2xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-700">The password reset link is invalid or missing a token. Please request a new reset email.</p>}
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-700">New password</label>
+              <label htmlFor="reset-password" className="mb-2 block text-sm font-medium text-slate-700">New password</label>
               <div className="flex items-center gap-3 rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 focus-within:border-emerald-400">
                 <Key className="h-4 w-4 text-slate-400" />
                 <input
+                  id="reset-password"
                   type={showPassword ? 'text' : 'password'}
+                  autoComplete="new-password"
                   placeholder="New password"
                   {...register('password', { required: 'Password is required', minLength: { value: 8, message: 'Minimum 8 characters' } })}
                   className="w-full bg-transparent text-slate-900 outline-none hover-gradient-border"
@@ -74,11 +76,13 @@ export default function ResetPasswordPage() {
               {errors.password && <p className="mt-2 text-sm text-rose-500">{errors.password.message}</p>}
             </div>
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-700">Confirm password</label>
+              <label htmlFor="reset-password-confirm" className="mb-2 block text-sm font-medium text-slate-700">Confirm password</label>
               <div className="flex items-center gap-3 rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 focus-within:border-emerald-400">
                 <ShieldCheck className="h-4 w-4 text-slate-400" />
                 <input
+                  id="reset-password-confirm"
                   type={showConfirmPassword ? 'text' : 'password'}
+                  autoComplete="new-password"
                   placeholder="Confirm password"
                   {...register('confirmPassword', { required: 'Confirmation is required', validate: (value) => value === password || 'Passwords must match' })}
                   className="w-full bg-transparent text-slate-900 outline-none"

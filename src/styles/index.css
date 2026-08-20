@@ -216,55 +216,45 @@ button, input, textarea, select {
 .bg-primary-navy-dark { background-color: var(--primary-navy-dark); }
 .border-primary-navy { border-color: var(--primary-navy); }
 
-/* Shared gradient hover border refinement for interactive controls and cards only */
+/* Keep hover feedback limited to controls and avoid layout-shifting borders or gradients. */
+button:not([disabled]),
+input:not([type='hidden']),
+select,
+textarea,
+[role='button'] {
+  transition: transform 0.15s ease;
+}
+
+button:not([disabled]):hover,
+input:not([type='hidden']):hover,
+select:hover,
+textarea:hover,
+[role='button']:hover {
+  transform: scale(1.02);
+}
+
 .hover-gradient-border,
 .hover-gradient-border-target,
-button:not(.no-hover-border),
-input:not([type='hidden']):not(.no-hover-border),
-select:not(.no-hover-border),
-textarea:not(.no-hover-border),
-[role='button']:not(.no-hover-border),
-[role='option']:not(.no-hover-border),
-[role='menuitem']:not(.no-hover-border),
-a[href]:not(.no-hover-border),
-[data-hover-interactive='true']:not(.no-hover-border),
-.erp-card-action:not(.no-hover-border) {
-  --hover-gradient-radius: 14px;
-  transition: border 0.35s ease, border-image-source 0.35s ease, box-shadow 0.35s ease, background-color 0.35s ease, border-radius 0.35s ease;
-}
-
-.hover-gradient-border:hover,
-.hover-gradient-border:focus-visible,
-.hover-gradient-border-target:hover,
-.hover-gradient-border-target:focus-visible,
-button:not(.no-hover-border):hover,
-button:not(.no-hover-border):focus-visible,
-input:not([type='hidden']):not(.no-hover-border):hover,
-input:not([type='hidden']):not(.no-hover-border):focus-visible,
-select:not(.no-hover-border):hover,
-select:not(.no-hover-border):focus-visible,
-textarea:not(.no-hover-border):hover,
-textarea:not(.no-hover-border):focus-visible,
-[role='button']:not(.no-hover-border):hover,
-[role='button']:not(.no-hover-border):focus-visible,
-[role='option']:not(.no-hover-border):hover,
-[role='option']:not(.no-hover-border):focus-visible,
-[role='menuitem']:not(.no-hover-border):hover,
-[role='menuitem']:not(.no-hover-border):focus-visible,
-a[href]:not(.no-hover-border):hover,
-a[href]:not(.no-hover-border):focus-visible,
-[data-hover-interactive='true']:not(.no-hover-border):hover,
-[data-hover-interactive='true']:not(.no-hover-border):focus-visible,
-.erp-card-action:not(.no-hover-border):hover,
-.erp-card-action:not(.no-hover-border):focus-visible {
-  border: 2px solid transparent !important;
-  border-image: linear-gradient(135deg, #16a34a, #2563eb, #84cc16, #facc15, #fb7185, #16a34a) 1 !important;
-  border-image-slice: 1 !important;
-  border-radius: var(--hover-gradient-radius) !important;
-}
-
 .no-hover-border {
   border-image: none !important;
+  transition: none;
+}
+
+.hover-gradient-border:not(button):not(input):not(select):not(textarea):not([role='button']):hover,
+.hover-gradient-border-target:not(button):not(input):not(select):not(textarea):not([role='button']):hover {
+  transform: none !important;
+  box-shadow: inherit !important;
+  border-image: none !important;
+}
+
+.hover-gradient-border:is(button, input, select, textarea, [role='button']),
+.hover-gradient-border-target:is(button, input, select, textarea, [role='button']) {
+  transition: transform 0.15s ease;
+}
+
+.hover-gradient-border:is(button, input, select, textarea, [role='button']):hover,
+.hover-gradient-border-target:is(button, input, select, textarea, [role='button']):hover {
+  transform: scale(1.02);
 }
 
 /* Shared ERP card interaction utilities */
@@ -272,12 +262,6 @@ a[href]:not(.no-hover-border):focus-visible,
 .erp-card-dark,
 .erp-card-action {
   @apply rounded-[24px] border border-slate-200/70 bg-white/95 p-4 shadow-sm transition-transform duration-200 ease-out;
-}
-.erp-card:hover,
-.erp-card-dark:hover,
-.erp-card-action:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
 }
 .erp-card {
   @apply cursor-pointer;
@@ -346,27 +330,6 @@ table td {
 
 .student-list-table td {
   white-space: normal !important;
-}
-
-table tbody tr {
-  transition: all .25s ease;
-}
-
-table tbody tr:hover {
-  background-color: transparent !important;
-  border: 2px solid transparent;
-  border-radius: 0.85rem;
-  background-image:
-    linear-gradient(transparent, transparent),
-    linear-gradient(90deg, #16a34a 0%, #3b82f6 35%, #f59e0b 70%, #ef4444 100%);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  box-shadow: 0 0 14px rgba(59, 130, 246, 0.12), 0 0 24px rgba(245, 158, 11, 0.08), 0 0 34px rgba(239, 68, 68, 0.06);
-}
-
-table tbody tr:hover td,
-table tbody tr:hover th {
-  background-color: transparent !important;
 }
 
 /* Override Tailwind emerald utilities for primary action buttons to use #16a34a */
@@ -593,7 +556,7 @@ table td span {
   display: block;
 }
 .erp-table-header {
-  background-color: #16a34a !important;
+  background-color: #0f381e !important;
   color: #ffffff;
   font-weight: 700;
   min-height: 50px;
@@ -857,7 +820,7 @@ input, textarea, select {
 .btn:active { transform: translateY(0); }
 .btn[disabled], .btn:disabled { opacity: 0.56; cursor: not-allowed; transform: none; }
 .btn.loading { pointer-events: none; opacity: 0.9; }
-.btn-success { background-color: #059669; }
+.btn-success { background-color: rgb(14, 69, 34) }
 
 /* Modal improvements: ensure escape/cancel are consistent */
 .modal { background: white; border-radius: 0.75rem; box-shadow: 0 10px 30px rgba(2,6,23,0.12); }
@@ -877,7 +840,7 @@ input, textarea, select {
 table[data-erp-table] thead th,
 .erp-content-wrapper table thead th,
 table thead th {
-  background-color: #16a34a !important;
+  background-color: rgb(14, 69, 34) !important;
   color: #ffffff !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;

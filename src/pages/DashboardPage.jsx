@@ -82,8 +82,8 @@ export default function DashboardPage () {
   ];
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden bg-[linear-gradient(135deg,#f0fdf4_0%,#f8fafc_40%,#f0f9ff_100%)] p-0">
-      <div className="w-full p-3 sm:p-4 lg:p-6">
+    <div className="min-h-screen w-full overflow-x-hidden bg-white p-0">
+      <div className="w-full p-2 sm:p-3 lg:p-4">
         <div className="flex flex-col gap-3 rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:p-5">
           <div>
             <div className="text-xl font-bold text-slate-900 sm:text-2xl">Hello, Admin 👋</div>

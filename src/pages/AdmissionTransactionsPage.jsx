@@ -569,8 +569,10 @@ export default function AdmissionTransactionsPage() {
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="block text-xs uppercase tracking-[0.24em] text-slate-500">Application Number</label>
+                <label htmlFor="app-number" className="block text-xs uppercase tracking-[0.24em] text-slate-500">Application Number</label>
                 <input
+                  id="app-number"
+                  name="applicationNumber"
                   type="text"
                   value={newTransaction.applicationNumber}
                   onChange={(event) => setNewTransaction((prev) => ({ ...prev, applicationNumber: event.target.value }))}
@@ -578,8 +580,10 @@ export default function AdmissionTransactionsPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs uppercase tracking-[0.24em] text-slate-500">Student Name</label>
+                <label htmlFor="student-name-txn" className="block text-xs uppercase tracking-[0.24em] text-slate-500">Student Name</label>
                 <input
+                  id="student-name-txn"
+                  name="studentName"
                   type="text"
                   value={newTransaction.studentName}
                   onChange={(event) => setNewTransaction((prev) => ({ ...prev, studentName: event.target.value }))}
@@ -587,8 +591,10 @@ export default function AdmissionTransactionsPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs uppercase tracking-[0.24em] text-slate-500">College</label>
+                <label htmlFor="college-txn" className="block text-xs uppercase tracking-[0.24em] text-slate-500">College</label>
                 <input
+                  id="college-txn"
+                  name="college"
                   type="text"
                   value={newTransaction.college}
                   onChange={(event) => setNewTransaction((prev) => ({ ...prev, college: event.target.value }))}
@@ -596,8 +602,10 @@ export default function AdmissionTransactionsPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs uppercase tracking-[0.24em] text-slate-500">Course</label>
+                <label htmlFor="course-txn" className="block text-xs uppercase tracking-[0.24em] text-slate-500">Course</label>
                 <input
+                  id="course-txn"
+                  name="course"
                   type="text"
                   value={newTransaction.course}
                   onChange={(event) => setNewTransaction((prev) => ({ ...prev, course: event.target.value }))}
@@ -605,8 +613,10 @@ export default function AdmissionTransactionsPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs uppercase tracking-[0.24em] text-slate-500">Amount</label>
+                <label htmlFor="amount-txn" className="block text-xs uppercase tracking-[0.24em] text-slate-500">Amount</label>
                 <input
+                  id="amount-txn"
+                  name="amount"
                   type="number"
                   value={newTransaction.amount}
                   onChange={(event) => setNewTransaction((prev) => ({ ...prev, amount: Number(event.target.value) }))}
@@ -614,8 +624,10 @@ export default function AdmissionTransactionsPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs uppercase tracking-[0.24em] text-slate-500">Payment Mode</label>
+                <label htmlFor="payment-mode-txn" className="block text-xs uppercase tracking-[0.24em] text-slate-500">Payment Mode</label>
                 <select
+                  id="payment-mode-txn"
+                  name="paymentMode"
                   value={newTransaction.paymentMode}
                   onChange={(event) => setNewTransaction((prev) => ({ ...prev, paymentMode: event.target.value }))}
                   className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-200"

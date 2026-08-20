@@ -213,25 +213,31 @@ export default function LiabilityHeadsPage() {
         )}
       >
         <form id="liability-head-form" onSubmit={handleSubmit} className="grid gap-4">
-          <label className="grid gap-1 text-sm font-medium text-slate-700">
+          <label htmlFor="liability-name" className="grid gap-1 text-sm font-medium text-slate-700">
             Liability Head
             <input
+              id="liability-name"
+              name="name"
               value={formValues.name}
               onChange={(event) => setFormValues((current) => ({ ...current, name: event.target.value }))}
               className="rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-[#183452]"
             />
           </label>
-          <label className="grid gap-1 text-sm font-medium text-slate-700">
+          <label htmlFor="liability-code" className="grid gap-1 text-sm font-medium text-slate-700">
             Code
             <input
+              id="liability-code"
+              name="code"
               value={formValues.code}
               onChange={(event) => setFormValues((current) => ({ ...current, code: event.target.value }))}
               className="rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-[#183452]"
             />
           </label>
-          <label className="grid gap-1 text-sm font-medium text-slate-700">
+          <label htmlFor="liability-status" className="grid gap-1 text-sm font-medium text-slate-700">
             Status
             <select
+              id="liability-status"
+              name="status"
               value={formValues.status}
               onChange={(event) => setFormValues((current) => ({ ...current, status: event.target.value }))}
               className="rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-[#183452]"
@@ -240,9 +246,11 @@ export default function LiabilityHeadsPage() {
               <option value="Inactive">Inactive</option>
             </select>
           </label>
-          <label className="grid gap-1 text-sm font-medium text-slate-700">
+          <label htmlFor="liability-description" className="grid gap-1 text-sm font-medium text-slate-700">
             Description
             <textarea
+              id="liability-description"
+              name="description"
               rows="3"
               value={formValues.description}
               onChange={(event) => setFormValues((current) => ({ ...current, description: event.target.value }))}

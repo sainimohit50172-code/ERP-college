@@ -384,8 +384,10 @@ export default function AttendanceManagementPage() {
             <form onSubmit={handleAddSubmit} className="mt-6 space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700">Policy Name *</label>
+                  <label htmlFor="attendance-policy-name" className="block text-sm font-medium text-slate-700">Policy Name *</label>
                   <input
+                    id="attendance-policy-name"
+                    name="policyName"
                     type="text"
                     value={form.policyName}
                     onChange={(e) => setForm({ ...form, policyName: e.target.value })}
@@ -395,8 +397,8 @@ export default function AttendanceManagementPage() {
                   {formErrors.policyName && <p className="mt-1 text-xs text-rose-600">{formErrors.policyName}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700">Department *</label>
-                  <select value={form.department} onChange={(e) => setForm({ ...form, department: e.target.value })} className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 outline-none hover-gradient-border">
+                  <label htmlFor="attendance-department" className="block text-sm font-medium text-slate-700">Department *</label>
+                  <select id="attendance-department" name="department" value={form.department} onChange={(e) => setForm({ ...form, department: e.target.value })} className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 outline-none hover-gradient-border">
                     <option>All Departments</option>
                     <option>Engineering</option>
                     <option>Management</option>

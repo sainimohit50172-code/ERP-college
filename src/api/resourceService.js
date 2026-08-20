@@ -170,7 +170,7 @@ export const createResourceService = (resource) => {
         return normalizeApiListResponse(result, params, resource);
       }
 
-      const res = await api.get(`/${endpoint}/`, { params: requestParams });
+      const res = await api.get(`/${endpoint}`, { params: requestParams });
       return normalizeApiListResponse(res, params, resource);
     },
     get: async (id) => {
@@ -207,7 +207,7 @@ export const createResourceService = (resource) => {
         return payloadResult;
       }
 
-      const res = await api.post(`/${endpoint}/`, body);
+      const res = await api.post(`/${endpoint}`, body);
       const payloadResult = unwrapApiResponse(res.data);
       if (resource === 'students') return mapStudentRecord(payloadResult);
       if (resource === 'classrooms') return mapClassroomRecord(payloadResult);

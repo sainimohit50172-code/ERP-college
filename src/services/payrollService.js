@@ -12,34 +12,46 @@ export function calculatePayrollBreakdown({
   bonusAmount = 0,
   incentiveAmount = 0,
   frequency = 'Monthly',
+  payrollSettings = {},
 }) {
   const basic = Number(salaryStructure.basicSalary || 0);
   const hra = Number((basic * ((salaryStructure.hraPercent || 0) / 100)).toFixed(2));
   const da = Number((basic * ((salaryStructure.daPercent || 0) / 100)).toFixed(2));
   const specialAllowance = Number((basic * ((salaryStructure.specialAllowancePercent || 0) / 100)).toFixed(2));
   const overtime = Number((Number(salaryStructure.overtimeRate || 0) * Number(overtimeHours || 0)).toFixed(2));
-  const grossEarnings = basic + hra + da + specialAllowance + overtime + Number(bonusAmount || 0) + Number(incentiveAmount || 0);
   const monthlyDays = frequency === 'Weekly' ? 7 : frequency === 'Daily' ? 1 : 30;
-  const daysWorked = Math.max(0, monthlyDays - Number(approvedLeaveDays || 0));
-  const effectiveDays = Math.max(1, attendanceDays || daysWorked || monthlyDays);
-  const dailyEquivalent = basic / Math.max(1, monthlyDays);
-  const leaveDeduction = Number((dailyEquivalent * Number(approvedLeaveDays || 0)).toFixed(2));
+  const configuredWorkingDays = Number(payrollSettings.workingDays || 0);
+  const cycleDays = configuredWorkingDays > 0 && frequency === 'Monthly' ? configuredWorkingDays : monthlyDays;
+  const effectiveAttendanceDays = Math.min(cycleDays, Math.max(0, Number(attendanceDays || cycleDays)));
+  const dailyEquivalent = basic / Math.max(1, cycleDays);
+  const unpaidLeaveDays = Math.min(effectiveAttendanceDays, Math.max(0, Number(approvedLeaveDays || 0)));
+  const payableDays = Math.max(0, effectiveAttendanceDays - unpaidLeaveDays);
+  const attendanceFactor = payableDays / Math.max(1, cycleDays);
+  const payableBasic = basic * attendanceFactor;
+  const payableHra = hra * attendanceFactor;
+  const payableDa = da * attendanceFactor;
+  const payableSpecialAllowance = specialAllowance * attendanceFactor;
+  const payableOvertime = payrollSettings.overtimeEnabled === false ? 0 : overtime;
+  const payableBonus = payrollSettings.bonusEnabled === false ? 0 : Number(bonusAmount || 0);
+  const payableIncentive = payrollSettings.bonusEnabled === false ? 0 : Number(incentiveAmount || 0);
+  const grossEarnings = payableBasic + payableHra + payableDa + payableSpecialAllowance + payableOvertime + payableBonus + payableIncentive;
+  const leaveDeduction = Number((dailyEquivalent * unpaidLeaveDays).toFixed(2));
   const lop = leaveDeduction;
-  const providentFund = Number((basic * ((salaryStructure.providentFundPercent || 0) / 100)).toFixed(2));
-  const esi = Number((grossEarnings * ((salaryStructure.esiPercent || 0) / 100)).toFixed(2));
-  const professionalTax = Number(Number(salaryStructure.professionalTaxAmount || 0).toFixed(2));
+  const providentFund = payrollSettings.pfEnabled === false ? 0 : Number((payableBasic * ((salaryStructure.providentFundPercent || 0) / 100)).toFixed(2));
+  const esi = payrollSettings.esiEnabled === false ? 0 : Number((grossEarnings * ((salaryStructure.esiPercent || 0) / 100)).toFixed(2));
+  const professionalTax = payrollSettings.professionalTaxEnabled === false ? 0 : Number(Number(salaryStructure.professionalTaxAmount || 0).toFixed(2));
   const incomeTax = Number((grossEarnings * ((salaryStructure.incomeTaxPercent || 0) / 100)).toFixed(2));
   const totalDeductions = leaveDeduction + providentFund + esi + professionalTax + incomeTax;
   const netSalary = Number((grossEarnings - totalDeductions).toFixed(2));
 
   return {
-    basic,
-    hra,
-    da,
-    specialAllowance,
-    overtime,
-    bonus: Number(Number(bonusAmount || 0).toFixed(2)),
-    incentive: Number(Number(incentiveAmount || 0).toFixed(2)),
+    basic: Number(payableBasic.toFixed(2)),
+    hra: Number(payableHra.toFixed(2)),
+    da: Number(payableDa.toFixed(2)),
+    specialAllowance: Number(payableSpecialAllowance.toFixed(2)),
+    overtime: Number(payableOvertime.toFixed(2)),
+    bonus: Number(payableBonus.toFixed(2)),
+    incentive: Number(payableIncentive.toFixed(2)),
     leaveDeduction,
     lop,
     providentFund,
@@ -49,8 +61,9 @@ export function calculatePayrollBreakdown({
     grossEarnings: Number(grossEarnings.toFixed(2)),
     totalDeductions: Number(totalDeductions.toFixed(2)),
     netSalary,
-    attendanceDays: Number(attendanceDays || effectiveDays),
-    approvedLeaveDays: Number(approvedLeaveDays || 0),
+    attendanceDays: effectiveAttendanceDays,
+    approvedLeaveDays: unpaidLeaveDays,
+    payableDays,
   };
 }
 
@@ -80,7 +93,14 @@ export async function submitPayrollRun(id) {
 
 export async function approvePayrollRun(id, payload = {}) {
   const existing = await service.get(id);
-  const updated = await service.update(id, { ...existing, status: 'HR Approval', approvedAt: new Date().toISOString(), approvalRemarks: payload.remarks || '' });
+  const nextStatus = existing.status === 'Review'
+    ? 'HR Approval'
+    : existing.status === 'HR Approval'
+      ? 'Finance Approval'
+      : existing.status === 'Finance Approval'
+        ? 'Processed'
+        : existing.status;
+  const updated = await service.update(id, { ...existing, status: nextStatus, approvedAt: new Date().toISOString(), approvalRemarks: payload.remarks || '' });
   return updated;
 }
 

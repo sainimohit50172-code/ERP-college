@@ -7,6 +7,7 @@ import AdmissionsPage from './pages/AdmissionsPage.jsx';
 import AttendancePage from './pages/AttendancePage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
 import EmployeeManagementPage from './pages/EmployeeManagementPage.jsx';
+import EmployeeIdSetupPage from './pages/EmployeeIdSetupPage.jsx';
 import StudentAttendancePage from './pages/StudentAttendancePage.jsx';
 import TeacherAttendancePage from './pages/TeacherAttendancePage.jsx';
 import EmployeeAttendancePage from './pages/EmployeeAttendancePage.jsx';
@@ -70,11 +71,14 @@ import DepartmentManagementPage from './pages/DepartmentManagementPage.jsx';
 import DesignationManagementPage from './pages/DesignationManagementPage.jsx';
 import HRMSetupPage from './pages/HRMSetupPage.jsx';
 import HRMDepartmentSettingPage from './pages/HRMDepartmentSettingPage.jsx';
+import HRMHolidayMasterPage from './pages/HRMHolidayMasterPage.jsx';
 import HRMLeaveGroupPage from './pages/HRMLeaveGroupPage.jsx';
 import HRMLeaveCyclePage from './pages/HRMLeaveCyclePage.jsx';
 import HRMLeavePreferencePage from './pages/HRMLeavePreferencePage.jsx';
+import HRMQualificationMasterPage from './pages/HRMQualificationMasterPage.jsx';
 import HRMSocialCategoryPage from './pages/HRMSocialCategoryPage.jsx';
 import OrganizationManagementPage from './pages/OrganizationManagementPage.jsx';
+import EntityLocationsPage from './pages/EntityLocationsPage.jsx';
 import HRDocumentsPage from './pages/HRDocumentsPage.jsx';
 import EmployeeProfilePage from './pages/EmployeeProfilePage.jsx';
 import ProfilePage from './pages/employees/ProfilePage.jsx';
@@ -82,6 +86,7 @@ import HelpdeskRaiseTicketPage from './pages/HelpdeskRaiseTicketPage.jsx';
 import LeaveManagementPage from './pages/LeaveManagementPage.jsx';
 import MyLeavesPage from './pages/MyLeavesPage.jsx';
 import PayrollManagementPage from './pages/PayrollManagementPage.jsx';
+import PayrollSettingPage from './pages/PayrollSettingPage.jsx';
 import SalarySlipPage from './pages/SalarySlipPage.jsx';
 import EmployeeAttendanceRegularizationPage from './pages/EmployeeAttendanceRegularizationPage.jsx';
 import FinanceAccountingPage from './pages/FinanceAccountingPage.jsx';
@@ -291,6 +296,7 @@ function App() {
               <Route path="teachers" element={<ProtectedRoute moduleKey="teachers"><TeacherManagementPage /></ProtectedRoute>} />
               <Route path="teachers/:teacherId" element={<ProtectedRoute moduleKey="teachers"><TeacherProfilePage /></ProtectedRoute>} />
               <Route path="employees" element={<ProtectedRoute moduleKey="employees"><EmployeeManagementPage /></ProtectedRoute>} />
+              <Route path="settings/hrm/employee-id-setup" element={<ProtectedRoute moduleKey="settings"><EmployeeIdSetupPage /></ProtectedRoute>} />
               <Route path="employees/profile" element={<ProtectedRoute moduleKey="employees"><ProfilePage /></ProtectedRoute>} />
               <Route path="employees/helpdesk" element={<ProtectedRoute moduleKey="employees"><HelpdeskRaiseTicketPage /></ProtectedRoute>} />
               <Route path="employees/user-preference" element={<ProtectedRoute moduleKey="employees"><UsersPreferencesPage /></ProtectedRoute>} />
@@ -330,9 +336,12 @@ function App() {
               <Route path="employees/reports/pf-challan" element={<ProtectedRoute moduleKey="employees"><PlaceholderPage title="PF Challan Report" /></ProtectedRoute>} />
               <Route path="leave-management" element={<ProtectedRoute moduleKey="leaveManagement"><LeaveManagementPage /></ProtectedRoute>} />
               <Route path="payroll-management" element={<ProtectedRoute moduleKey="payroll"><PayrollManagementPage /></ProtectedRoute>} />
+              <Route path="payroll-setting" element={<ProtectedRoute moduleKey="payroll"><PayrollSettingPage /></ProtectedRoute>} />
+              <Route path="payroll-master" element={<ProtectedRoute moduleKey="payroll"><PayrollManagementPage /></ProtectedRoute>} />
               <Route path="finance-accounting" element={<ProtectedRoute moduleKey="finance"><FinanceAccountingPage /></ProtectedRoute>} />
               <Route path="designations" element={<ProtectedRoute moduleKey="designations"><DesignationManagementPage /></ProtectedRoute>} />
               <Route path="organizations" element={<ProtectedRoute moduleKey="organizations"><OrganizationManagementPage /></ProtectedRoute>} />
+              <Route path="settings/hrm/entity-locations" element={<ProtectedRoute moduleKey="organizations"><EntityLocationsPage /></ProtectedRoute>} />
               <Route path="hr-documents" element={<ProtectedRoute moduleKey="hrDocuments"><HRDocumentsPage /></ProtectedRoute>} />
               <Route path="courses" element={<ProtectedRoute moduleKey="students"><CourseManagementPage /></ProtectedRoute>} />
               <Route path="departments" element={<ProtectedRoute moduleKey="students"><DepartmentManagementPage /></ProtectedRoute>} />
@@ -537,11 +546,14 @@ function App() {
               <Route path="settings/institute" element={<ProtectedRoute moduleKey="settings"><InstituteSetupPage /></ProtectedRoute>} />
               <Route path="settings/hrm" element={<ProtectedRoute moduleKey="settings"><HRMSetupPage /></ProtectedRoute>} />
               <Route path="settings/hrm/department" element={<ProtectedRoute moduleKey="settings"><HRMDepartmentSettingPage /></ProtectedRoute>} />
+              <Route path="settings/hrm/qualification" element={<ProtectedRoute moduleKey="settings"><HRMQualificationMasterPage /></ProtectedRoute>} />
+              <Route path="settings/hrm/holiday-master" element={<ProtectedRoute moduleKey="settings"><HRMHolidayMasterPage /></ProtectedRoute>} />
               <Route path="settings/hrm/social-category" element={<ProtectedRoute moduleKey="settings"><HRMSocialCategoryPage /></ProtectedRoute>} />
               <Route path="settings/hrm/designations" element={<ProtectedRoute moduleKey="settings"><DesignationManagementPage /></ProtectedRoute>} />
               <Route path="settings/hrm/leave-group" element={<ProtectedRoute moduleKey="settings"><HRMLeaveGroupPage /></ProtectedRoute>} />
               <Route path="settings/hrm/leave-cycle" element={<ProtectedRoute moduleKey="settings"><HRMLeaveCyclePage /></ProtectedRoute>} />
               <Route path="settings/hrm/leave-preference" element={<ProtectedRoute moduleKey="settings"><HRMLeavePreferencePage /></ProtectedRoute>} />
+              <Route path="settings/hrm/payroll-setting" element={<ProtectedRoute moduleKey="settings"><PayrollSettingPage /></ProtectedRoute>} />
               <Route path="institute-setup" element={<ProtectedRoute moduleKey="settings"><InstituteSetupPage /></ProtectedRoute>} />
               <Route path="settings/institute/profile" element={<ProtectedRoute moduleKey="settings"><InstituteProfilePage /></ProtectedRoute>} />
               <Route path="settings/institute/sessions" element={<ProtectedRoute moduleKey="settings"><AcademicSessionListPage /></ProtectedRoute>} />

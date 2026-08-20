@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { ChevronDown } from 'lucide-react';
 
-export default function SearchableSelect({ options = [], value = '', onChange = () => {}, placeholder = '', required = false }) {
+export default function SearchableSelect({ options = [], value = '', onChange = () => {}, placeholder = '', required = false, id, name }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [highlight, setHighlight] = useState(0);
@@ -105,9 +105,12 @@ export default function SearchableSelect({ options = [], value = '', onChange = 
     <div className="relative" ref={ref}>
       <div className="relative">
         <input
+          id={id}
+          name={name}
           type="text"
           role="combobox"
           aria-expanded={open}
+          autoComplete="off"
           value={displayValue}
           onChange={(e) => { setQuery(e.target.value); setOpen(true); }}
           onFocus={() => setOpen(true)}

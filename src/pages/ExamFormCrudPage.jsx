@@ -51,17 +51,17 @@ function FormFields({ mode, register, errors }) {
         <div className="md:col-span-2">
           <span className="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-600">Registration Rules</span>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {preferenceFlags.map(([name, label]) => <label key={name} className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700"><input type="checkbox" {...register(name)} className="h-4 w-4 accent-emerald-600" />{label}</label>)}
+            {preferenceFlags.map(([name, label]) => <label key={name} htmlFor={`pref-${name}`} className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700"><input id={`pref-${name}`} type="checkbox" {...register(name)} className="h-4 w-4 accent-emerald-600" />{label}</label>)}
           </div>
         </div>
       )}
-      <label>
+      <label htmlFor="exam-status">
         <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-600">Status</span>
-        <select {...register('status')} className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none focus:border-emerald-500"><option>Active</option><option>Inactive</option><option>Draft</option></select>
+        <select id="exam-status" {...register('status')} className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none focus:border-emerald-500"><option>Active</option><option>Inactive</option><option>Draft</option></select>
       </label>
       {mode === 'headers' && <>
-        <label className="md:col-span-2"><span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-600">Header HTML</span><textarea rows={5} {...register('headerHtml', { required: 'Header HTML is required' })} className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-xs outline-none focus:border-emerald-500" />{errors.headerHtml && <span className="mt-1 block text-xs text-rose-600">{errors.headerHtml.message}</span>}</label>
-        <label className="md:col-span-2"><span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-600">Footer HTML</span><textarea rows={5} {...register('footerHtml', { required: 'Footer HTML is required' })} className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-xs outline-none focus:border-emerald-500" />{errors.footerHtml && <span className="mt-1 block text-xs text-rose-600">{errors.footerHtml.message}</span>}</label>
+        <label htmlFor="header-html" className="md:col-span-2"><span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-600">Header HTML</span><textarea id="header-html" rows={5} {...register('headerHtml', { required: 'Header HTML is required' })} className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-xs outline-none focus:border-emerald-500" />{errors.headerHtml && <span className="mt-1 block text-xs text-rose-600">{errors.headerHtml.message}</span>}</label>
+        <label htmlFor="footer-html" className="md:col-span-2"><span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-600">Footer HTML</span><textarea id="footer-html" rows={5} {...register('footerHtml', { required: 'Footer HTML is required' })} className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-xs outline-none focus:border-emerald-500" />{errors.footerHtml && <span className="mt-1 block text-xs text-rose-600">{errors.footerHtml.message}</span>}</label>
       </>}
     </div>
   );

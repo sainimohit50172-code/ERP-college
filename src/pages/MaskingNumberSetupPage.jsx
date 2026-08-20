@@ -234,47 +234,47 @@ export default function MaskingNumberSetupPage() {
                 </div>
               </div>
               <form onSubmit={saveItem} className="mt-6 grid gap-4 lg:grid-cols-[1.5fr_1fr]">
-                <label className="grid gap-2 text-sm text-slate-700">
+                <label htmlFor="masking-name" className="grid gap-2 text-sm text-slate-700">
                   <span className="font-semibold uppercase tracking-[0.24em] text-slate-500">Name *</span>
-                  <input value={formValues.name} onChange={(event) => handleInput('name', event.target.value)} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-emerald-500" />
+                  <input id="masking-name" name="name" value={formValues.name} onChange={(event) => handleInput('name', event.target.value)} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-emerald-500" />
                   {errors.name && <p className="text-xs text-rose-600">{errors.name}</p>}
                 </label>
-                <label className="grid gap-2 text-sm text-slate-700">
+                <label htmlFor="masking-status" className="grid gap-2 text-sm text-slate-700">
                   <span className="font-semibold uppercase tracking-[0.24em] text-slate-500">Status</span>
-                  <select value={formValues.status} onChange={(event) => handleInput('status', event.target.value)} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-emerald-500">
+                  <select id="masking-status" name="status" value={formValues.status} onChange={(event) => handleInput('status', event.target.value)} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-emerald-500">
                     {statusOptions.map((value) => <option key={value}>{value}</option>)}
                   </select>
                 </label>
-                <label className="grid gap-2 text-sm text-slate-700">
+                <label htmlFor="masking-gen-type" className="grid gap-2 text-sm text-slate-700">
                   <span className="font-semibold uppercase tracking-[0.24em] text-slate-500">Generation Type</span>
-                  <select value={formValues.generationType} onChange={(event) => handleInput('generationType', event.target.value)} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-emerald-500">
+                  <select id="masking-gen-type" name="generationType" value={formValues.generationType} onChange={(event) => handleInput('generationType', event.target.value)} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-emerald-500">
                     {generationTypeOptions.map((value) => (
                       <option key={value} value={value}>{value}</option>
                     ))}
                   </select>
                   {errors.generationType && <p className="text-xs text-rose-600">{errors.generationType}</p>}
                 </label>
-                <label className="grid gap-2 text-sm text-slate-700">
+                <label htmlFor="masking-prefix" className="grid gap-2 text-sm text-slate-700">
                   <span className="font-semibold uppercase tracking-[0.24em] text-slate-500">Prefix</span>
-                  <input value={formValues.prefix} onChange={(event) => handleInput('prefix', event.target.value)} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-emerald-500" />
+                  <input id="masking-prefix" name="prefix" value={formValues.prefix} onChange={(event) => handleInput('prefix', event.target.value)} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-emerald-500" />
                 </label>
-                <label className="grid gap-2 text-sm text-slate-700">
+                <label htmlFor="masking-suffix" className="grid gap-2 text-sm text-slate-700">
                   <span className="font-semibold uppercase tracking-[0.24em] text-slate-500">Suffix</span>
-                  <input value={formValues.suffix} onChange={(event) => handleInput('suffix', event.target.value)} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-emerald-500" />
+                  <input id="masking-suffix" name="suffix" value={formValues.suffix} onChange={(event) => handleInput('suffix', event.target.value)} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-emerald-500" />
                 </label>
-                <label className="grid gap-2 text-sm text-slate-700">
+                <label htmlFor="masking-start" className="grid gap-2 text-sm text-slate-700">
                   <span className="font-semibold uppercase tracking-[0.24em] text-slate-500">Start Number *</span>
-                  <input value={formValues.startNumber} onChange={(event) => handleInput('startNumber', event.target.value)} type="number" min="1" className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-emerald-500" />
+                  <input id="masking-start" name="startNumber" value={formValues.startNumber} onChange={(event) => handleInput('startNumber', event.target.value)} type="number" min="1" className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-emerald-500" />
                   {errors.startNumber && <p className="text-xs text-rose-600">{errors.startNumber}</p>}
                 </label>
-                <label className="grid gap-2 text-sm text-slate-700">
+                <label htmlFor="masking-end" className="grid gap-2 text-sm text-slate-700">
                   <span className="font-semibold uppercase tracking-[0.24em] text-slate-500">End Number *</span>
-                  <input value={formValues.endNumber} onChange={(event) => handleInput('endNumber', event.target.value)} type="number" min="1" className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-emerald-500" />
+                  <input id="masking-end" name="endNumber" value={formValues.endNumber} onChange={(event) => handleInput('endNumber', event.target.value)} type="number" min="1" className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-emerald-500" />
                   {errors.endNumber && <p className="text-xs text-rose-600">{errors.endNumber}</p>}
                 </label>
-                <label className="grid gap-2 text-sm text-slate-700">
+                <label htmlFor="masking-current" className="grid gap-2 text-sm text-slate-700">
                   <span className="font-semibold uppercase tracking-[0.24em] text-slate-500">Current Number</span>
-                  <input value={formValues.currentNumber} onChange={(event) => handleInput('currentNumber', event.target.value)} type="number" min="1" className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-emerald-500" />
+                  <input id="masking-current" name="currentNumber" value={formValues.currentNumber} onChange={(event) => handleInput('currentNumber', event.target.value)} type="number" min="1" className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-emerald-500" />
                   {errors.currentNumber && <p className="text-xs text-rose-600">{errors.currentNumber}</p>}
                 </label>
                 <label className="lg:col-span-2 grid gap-2 text-sm text-slate-700">

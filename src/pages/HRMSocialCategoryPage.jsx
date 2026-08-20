@@ -364,14 +364,6 @@ export default function HRMSocialCategoryPage() {
             ) : filteredCategories.length === 0 ? (
               <div className="flex min-h-[220px] flex-col items-center justify-center gap-3 px-6 text-center">
                 <p className="text-base font-semibold text-slate-800">No social categories found.</p>
-                <button
-                  onClick={handleOpenModal}
-                  type="button"
-                  className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all duration-150 hover:bg-emerald-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-400/50"
-                >
-                  <Plus className="h-4 w-4" />
-                  Add Social Category
-                </button>
               </div>
             ) : (
               <div className="overflow-hidden rounded-[16px] border border-white">

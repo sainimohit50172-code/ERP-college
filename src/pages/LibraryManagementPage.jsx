@@ -54,9 +54,9 @@ export default function LibraryManagementPage() {
   const [activeBook, setActiveBook] = useState(null);
   const pageSize = 6;
 
-  const { data: studentsData } = useResourceList('students', { page: 1, pageSize: 200 });
+  const { data: studentsData } = useResourceList('students', { page: 1, pageSize: 100 });
   const students = studentsData?.items || [];
-  const { data: teachersData } = useResourceList('teachers', { page: 1, pageSize: 200 });
+  const { data: teachersData } = useResourceList('teachers', { page: 1, pageSize: 100 });
   const teachers = teachersData?.items || [];
 
   const borrowerMap = useMemo(() => {
@@ -68,9 +68,9 @@ export default function LibraryManagementPage() {
 
   const refreshLibraryData = async () => {
     const [bookResponse, issueResponse, fineResponse] = await Promise.all([
-      listBooks({ page: 1, pageSize: 200 }),
-      listIssueRecords({ page: 1, pageSize: 200 }),
-      listFineRecords({ page: 1, pageSize: 200 }),
+      listBooks({ page: 1, pageSize: 100 }),
+      listIssueRecords({ page: 1, pageSize: 100 }),
+      listFineRecords({ page: 1, pageSize: 100 }),
     ]);
     setBooks(bookResponse?.items || []);
     setIssues(issueResponse?.items || []);

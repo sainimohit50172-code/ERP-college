@@ -224,18 +224,24 @@ export default function HelpdeskRaiseTicketPage() {
                 />
               </label>
               <div className="grid gap-5 lg:grid-cols-2">
-                <label className="block erp-card-action hover-gradient-border p-3">
+                <label htmlFor="contact-email" className="block erp-card-action hover-gradient-border p-3">
                   <span className="mb-2 block text-sm font-semibold text-slate-700">Contact Email</span>
                   <input
+                    id="contact-email"
+                    name="contactEmail"
+                    type="email"
                     value={form.contactEmail}
                     onChange={(event) => handleChange('contactEmail', event.target.value)}
                     placeholder="you@example.com"
                     className="w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
                   />
                 </label>
-                <label className="block erp-card-action hover-gradient-border p-3">
+                <label htmlFor="contact-phone" className="block erp-card-action hover-gradient-border p-3">
                   <span className="mb-2 block text-sm font-semibold text-slate-700">Contact Phone</span>
                   <input
+                    id="contact-phone"
+                    name="contactPhone"
+                    type="tel"
                     value={form.contactPhone}
                     onChange={(event) => handleChange('contactPhone', event.target.value)}
                     placeholder="98765 43210"
@@ -245,9 +251,11 @@ export default function HelpdeskRaiseTicketPage() {
               </div>
 
               <div className="grid gap-5 lg:grid-cols-3">
-                <label className="block erp-card-action hover-gradient-border p-3">
+                <label htmlFor="ticket-environment" className="block erp-card-action hover-gradient-border p-3">
                   <span className="mb-2 block text-sm font-semibold text-slate-700">Environment</span>
                   <select
+                    id="ticket-environment"
+                    name="environment"
                     value={form.environment}
                     onChange={(event) => handleChange('environment', event.target.value)}
                     className="w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
@@ -256,9 +264,11 @@ export default function HelpdeskRaiseTicketPage() {
                   </select>
                 </label>
 
-                <label className="block erp-card-action hover-gradient-border p-3">
+                <label htmlFor="affected-users" className="block erp-card-action hover-gradient-border p-3">
                   <span className="mb-2 block text-sm font-semibold text-slate-700">Affected Users</span>
                   <input
+                    id="affected-users"
+                    name="affectedUsers"
                     type="number"
                     min={0}
                     value={form.affectedUsers || ''}
@@ -268,9 +278,11 @@ export default function HelpdeskRaiseTicketPage() {
                   />
                 </label>
 
-                <label className="block erp-card-action hover-gradient-border p-3">
+                <label htmlFor="preferred-eta" className="block erp-card-action hover-gradient-border p-3">
                   <span className="mb-2 block text-sm font-semibold text-slate-700">Preferred ETA</span>
                   <input
+                    id="preferred-eta"
+                    name="preferredEta"
                     type="date"
                     value={form.preferredEta || ''}
                     onChange={(event) => handleChange('preferredEta', event.target.value)}
@@ -279,9 +291,11 @@ export default function HelpdeskRaiseTicketPage() {
                 </label>
               </div>
 
-              <label className="block erp-card-action hover-gradient-border p-3">
+              <label htmlFor="ticket-steps" className="block erp-card-action hover-gradient-border p-3">
                 <span className="mb-2 block text-sm font-semibold text-slate-700">Steps to Reproduce / Additional Notes</span>
                 <textarea
+                  id="ticket-steps"
+                  name="steps"
                   value={form.steps}
                   onChange={(event) => handleChange('steps', event.target.value)}
                   rows={4}
