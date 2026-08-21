@@ -27,6 +27,14 @@ const startupState = {
   lastHealthCheckOutcome: null,
 };
 
+function isExplicitBackendHealthCheckEnabled() {
+  const env = (typeof import.meta !== 'undefined' && import.meta && import.meta.env)
+    ? import.meta.env
+    : (typeof process !== 'undefined' && process && process.env ? process.env : {});
+
+  return env.VITE_ENABLE_BACKEND_HEALTH_CHECK === true || env.VITE_ENABLE_BACKEND_HEALTH_CHECK === 'true' || globalThis.__VITE_ENABLE_BACKEND_HEALTH_CHECK__ === true;
+}
+
 function now() {
   return Date.now();
 }
@@ -75,12 +83,22 @@ export function getRetryDelay(retryCount = 0) {
   return HEALTH_CHECK_DELAY_MS;
 }
 
+function isTerminalHealthFailure(status) {
+  return status === 404 || status === 500 || status === 502 || status === 503 || status === 504;
+}
+
 export async function waitForBackendHealth({ endpoint = DEFAULT_HEALTH_ENDPOINT, timeoutMs = 5000, retryDelayMs = HEALTH_CHECK_DELAY_MS, maxAttempts = isProductionRuntime ? MAX_HEALTH_CHECK_ATTEMPTS : DEV_HEALTH_ATTEMPTS } = {}) {
   if (startupState.ready) {
     return true;
   }
 
-  if (!startupState.ready && startupState.lastHealthCheckOutcome === 'error' && !startupState.healthCheckInFlight) {
+  if (!isProductionRuntime && !isExplicitBackendHealthCheckEnabled()) {
+    startupState.lastHealthCheckOutcome = 'skipped';
+    setBackendHealthState({ ready: false, startupWindow: false });
+    return false;
+  }
+
+  if (!startupState.ready && (!startupState.healthCheckInFlight && (startupState.lastHealthCheckOutcome === 'error' || isTerminalHealthFailure(startupState.lastHealthCheckOutcome)))) {
     setBackendHealthState({ ready: false, startupWindow: false });
     return false;
   }
@@ -117,8 +135,8 @@ export async function waitForBackendHealth({ endpoint = DEFAULT_HEALTH_ENDPOINT,
         }
 
         startupState.lastHealthCheckOutcome = response.status;
-        if (response.status === 404) {
-          setBackendHealthState({ ready: false, startupWindow: true });
+        if (isTerminalHealthFailure(response.status)) {
+          setBackendHealthState({ ready: false, startupWindow: false });
           return false;
         }
       } catch (error) {

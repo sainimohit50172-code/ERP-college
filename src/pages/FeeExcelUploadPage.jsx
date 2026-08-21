@@ -225,5 +225,6 @@ export default function FeeExcelUploadPage() {
         </div>
       </div>
     </div>
+    </div>
   );
 }

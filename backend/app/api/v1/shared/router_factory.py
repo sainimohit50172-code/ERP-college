@@ -312,7 +312,11 @@ def build_crud_router(
             service_result = await _call_service_method("dispatch")
         elif hasattr(service, "create_request"):
             service_result = await _call_service_method("create_request")
-        elif hasattr(service, "allocate_vehicle"):
+        elif hasattr(service, "allocate_vehicle") and all(
+            parameter in payload_data
+            for parameter in inspect.signature(service.allocate_vehicle).parameters
+            if inspect.signature(service.allocate_vehicle).parameters[parameter].default is inspect.Parameter.empty
+        ):
             service_result = await _call_service_method("allocate_vehicle")
         elif hasattr(service, "create"):
             service_result = await _call_service_method("create")

@@ -56,7 +56,7 @@ const quickActions = [
   { title: 'Academics', subtitle: 'Academic Setup', route: '/settings/institute/academics', icon: '🎓', color: '#10b981' },
   { title: 'Library Setup', subtitle: 'Library Details', route: '/library', icon: '📚', color: '#f59e0b' },
   { title: 'Advanced Setup', subtitle: 'Advanced Settings', route: '/settings', icon: '⚙️', color: '#6366f1' },
-  { title: 'Admission Setup', subtitle: 'Admission Details', route: '/admissions', icon: '🎯', color: '#ec4899' },
+  { title: 'Admission Setup', subtitle: 'Admission Details', route: '/admission/setup', icon: '🎯', color: '#ec4899' },
   { title: 'HRM Setup', subtitle: 'HRM Settings', route: '/settings/hrm', icon: '👥', color: '#14b8a6' },
   { title: 'Analytics Setup', subtitle: 'Analytics Details', route: '/reports', icon: '📊', color: '#f97316' },
   { title: 'Communication', subtitle: 'Communication Setting', route: '/notifications', icon: '💬', color: '#06b6d4' },

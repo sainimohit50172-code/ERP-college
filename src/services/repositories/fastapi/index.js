@@ -23,7 +23,7 @@ function createFastApiRepo(resource) {
     },
     remove: async (id) => {
       const res = await api.delete(`/${endpoint}/${id}`);
-      return res.data;
+      return res.data || { success: res.status >= 200 && res.status < 300 };
     },
     search: async (q) => {
       const res = await api.get(`/${endpoint}/search`, { params: { q } });

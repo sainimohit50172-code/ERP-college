@@ -311,5 +311,6 @@ export default function OtherIncomeAccountMapperPage() {
         </div>
       </div>
     </div>
+    </div>
   );
 }

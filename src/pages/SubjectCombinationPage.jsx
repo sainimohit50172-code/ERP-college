@@ -239,5 +239,6 @@ export default function SubjectCombinationPage() {
       </div>
 
     </div>
+    </div>
   );
 }

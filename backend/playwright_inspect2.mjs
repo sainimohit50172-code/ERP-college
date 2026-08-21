@@ -4,11 +4,11 @@ import fs from 'fs';
 (async () => {
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext();
-  await context.addInitScript(() => { try { localStorage.setItem('erp_demo_mode','true'); } catch(e){} });
+  await context.addInitScript(() => { try { localStorage.setItem('erp_demo_mode', 'true'); } catch (error) { console.warn('Unable to set demo mode', error); } });
   const page = await context.newPage();
-  page.on('console', (msg) => { try { console.log('PAGE_CONSOLE', msg.type(), msg.text()); } catch (e) {} });
-  page.on('requestfailed', (req) => { try { console.log('REQUEST_FAILED', req.url(), req.failure()?.errorText || 'failed'); } catch (e) {} });
-  page.on('request', (req) => { try { console.log('REQUEST', req.method(), req.url()); } catch(e){} });
+  page.on('console', (msg) => { try { console.log('PAGE_CONSOLE', msg.type(), msg.text()); } catch (error) { console.warn('Unable to log page console event', error); } });
+  page.on('requestfailed', (req) => { try { console.log('REQUEST_FAILED', req.url(), req.failure()?.errorText || 'failed'); } catch (error) { console.warn('Unable to log failed request', error); } });
+  page.on('request', (req) => { try { console.log('REQUEST', req.method(), req.url()); } catch (error) { console.warn('Unable to log request', error); } });
 
   const APP_URL = process.env.APP_URL || 'http://127.0.0.1:5174';
   await page.goto(`${APP_URL}/settings/fee-structure/payment-mode`, { waitUntil: 'domcontentloaded' });

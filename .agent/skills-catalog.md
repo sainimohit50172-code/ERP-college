@@ -1099,9 +1099,11 @@ api docs, reference,... _(risk: unknown)_
 - **codebase-audit-pre-push**: Deep audit before GitHub push: removes junk files, dead code, security holes, and optimization issues. Checks every file line-by-line for production readiness. _(risk: safe)_
 - **performance-optimizer**: Identifies and fixes performance bottlenecks in code, databases, and APIs. Measures before and after to prove improvements. _(risk: safe)_
 - **skill-check**: Validate Claude Code skills against the agentskills specification. Catches structural, semantic, and naming issues before users do. _(risk: safe)_
+- **agent-harness-fault-injection**: Use when an agent workflow needs deterministic recovery evidence for sandbox, MCP/tool, worker, checkpoint, memory, or orchestration failures. _(risk: safe)_
 - **agenttrace-session-audit**: Audit local AI coding-agent sessions with agenttrace for cost, tool failures, latency, anomalies, health, diffs, and CI gates. _(risk: safe)_
 - **ask-copilot**: Use GitHub Copilot CLI in non-interactive mode to ask questions, review code, or generate snippets without manual interaction. _(risk: critical)_
 - **ax-extract-workflow**: Reconstruct workflow behind a past coding-agent artifact using local ax sessions/commits/skills/tool traces. Use when asked how X was built. _(risk: safe)_
+- **boost-asio-pro**: Use when writing asynchronous C++ networking code with Boost.Asio or standalone Asio — TCP/UDP servers and clients, SSL/TLS, timers, strands, composed async ops. Covers io_context, co_spawn, awaitable, async_read/async_write, asio::spawn, yield_context, and pre-C++20 callback styles. _(risk: safe)_
 - **brooks-lint**: AI code reviewer grounded in classic software engineering books for catching design smells, coupling issues, and architectural risks. _(risk: safe)_
 - **cmux**: Control cmux workspaces, panes, surfaces, and agent sessions safely from macOS terminal workflows. _(risk: critical)_
 - **code-polish**: Rewrites unprofessional code comments into clear ones and performs non-semantic cleanup. Use to professionalize code without altering logic or behavior. _(risk: critical)_
@@ -1146,8 +1148,6 @@ api docs, reference,... _(risk: unknown)_
 - **unship**: Compare AI agent-made UI variants locally in a real app, then keep one and clean up unused temporary code. _(risk: critical)_
 - **using-lwc**: Use when project decisions, code structure, research, incidents, or verified context must survive future coding-agent sessions through LWC memory and graph indexes. _(risk: critical)_
 - **wp-site-health-auditor**: Turns a WordPress Site Health report into a risk-tiered, backup-first fix plan with exact WP-CLI/PHP snippets. Use for site health, recommended improvements, or critical issue reports. _(risk: critical)_
-- **agent-harness-fault-injection**: Use when an agent workflow needs deterministic recovery evidence for sandbox, MCP/tool, worker, checkpoint, memory, or orchestration failures. _(risk: safe)_
-- **boost-asio-pro**: Use when writing asynchronous C++ networking code with Boost.Asio or standalone Asio — TCP/UDP servers and clients, SSL/TLS, timers, strands, composed async ops. Covers io_context, co_spawn, awaitable, async_read/async_write, asio::spawn, yield_context, and pre-C++20 callback styles. _(risk: safe)_
 
 ## development-and-testing
 
@@ -1923,6 +1923,7 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 - **fact-check-x-complete**: Compare claims from one or more AI answers, verify their citations against public primary sources, and produce an evidence-linked fact-check report without installing a bundled browser runtime. _(risk: critical)_
 - **gemini-deep-research**: Run autonomous multi-step research with Google's Gemini Deep Research Agent: kick off a query, poll progress, and collect a cited report for market analysis or literature reviews. _(risk: critical)_
 - **ii-commons**: Deterministic search across arXiv, PubMed/PMC, and US policy corpora with daily freshness cutoffs. _(risk: safe)_
+- **multi-source-search**: Cross-validate web research and produce an offline-checkable evidence ledger with explicit source diversity, confidence, conflicts, and gaps. _(risk: safe)_
 - **news-sentiment-engine**: Multi-source RSS news aggregation with Claude-powered sentiment analysis and structured briefing output _(risk: critical)_
 - **papers-skill**: Skill for academic research workflows: search Semantic Scholar (200M+ papers), inspect citations, download arXiv PDFs, and extract PDF text. Bundles a self-contained Python CLI. _(risk: safe)_
 - **people-data**: Research LinkedIn professional profiles and public business-contact data, including email/phone lookup, people search, and YouTube channel business-email discovery. _(risk: safe)_
@@ -1930,7 +1931,6 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 - **research-prompt**: Turn vague research needs into one precise deep-research prompt with context and output criteria. _(risk: safe)_
 - **survey-generator**: Generate source-backed AI/ML survey paper artifacts with curated bibliographies and Fireworks/Kimi HTML rendering. _(risk: safe)_
 - **youtube-transcript**: Fetch YouTube transcripts through DeepAPI or local fallback tooling and save clean text output. _(risk: safe)_
-- **multi-source-search**: Cross-validate web research and produce an offline-checkable evidence ledger with explicit source diversity, confidence, conflicts, and gaps. _(risk: safe)_
 
 ## rust
 
@@ -2185,6 +2185,7 @@ calculations
 - **app-store-changelog**: Generate user-facing App Store release notes from git history since the last tag. _(risk: safe)_
 - **apple-notes-search**: Semantic + keyword search and connection-discovery across the user's own Apple Notes via the apple-notes MCP server. Use when the user wants to find, recall, or synthesize something from their notes, or surface non-obvious bridges/related notes. macOS, on-device. _(risk: critical)_
 - **atlas-ledger**: Companion to atlas-contract. Auto-invoked by its Final Audit on caught drift; also use after Post Reviews or user requests to record a mistake. Distills drift into WHEN/DON'T/INSTEAD clauses, writes to Atlas.md after confirmation. _(risk: critical)_
+- **audit-agent-run-evidence**: Use when an agent, harness, gateway, MCP workflow, or multi-step automation claims completion and the available traces, checkpoints, approvals, tool calls, or deployment records must be judged without trusting self-reported success. _(risk: safe)_
 - **automated-triage**: Triage Monte Carlo alerts interactively or build an automated workflow. Fetch, score, and troubleshoot alerts using MCP tools now, or design a reusable workflow that runs on a schedule. _(risk: critical)_
 - **awareness-stage-mapper**: One sentence - what this skill does and when to invoke it _(risk: safe)_
 - **axiom**: First-principles assumption auditor. Classifies each hidden assumption (fact / convention / belief / interest-driven), ranks by fragility × impact, and rebuilds conclusions from verified premises. Bilingual: auto-detects Chinese or English. _(risk: safe)_
@@ -2331,6 +2332,7 @@ calculations
 - **repo-maintainer**: Audit and repair repository hygiene across artifacts, dependencies, CI, docs, Git state, and code-quality signals. Use for repository maintenance, cleanup, health checks, or pre-release hardening. _(risk: critical)_
 - **resolving-merge-conflicts**: Use when you need to resolve an in-progress git merge/rebase conflict. _(risk: critical)_
 - **review-and-simplify-changes**: Review a git diff or explicit file scope for reuse, code quality, efficiency, clarity, and standards issues, then optionally apply safe Codex-driven fixes. Use when the user asks to "simplify code", "review changed code", "check for code reuse", "review code quality", "review... _(risk: critical)_
+- **review-multi-agent-orchestration**: Use when a supervisor, swarm, graph, planner-worker system, or parallel agent workflow needs review for task boundaries, shared state, branch joins, retries, cancellation, context handoffs, budgets, deadlocks, or human escalation before implementation or production rollout. _(risk: safe)_
 - **review-swarm**: Parallel read-only multi-agent review of a current git diff or explicit file scope to find behavioral regressions, security or privacy risks, performance or reliability issues, and contract or test coverage gaps. Use when the user asks for a review swarm, parallel review, diff review,... _(risk: safe)_
 - **robot-framework-skill**: Generates Robot Framework tests in keyword-driven syntax with Python. Supports SeleniumLibrary, RequestsLibrary, and custom keywords. Use when user mentions "Robot Framework", "*** Test Cases ***", "SeleniumLibrary", ".robot file". Triggers on: "Robot Framework", "*** Test Cases ***",... _(risk: critical)_
 - **sales-enablement**: Create sales collateral such as decks, one-pagers, objection docs, demo scripts, playbooks, and proposal templates. Use when a sales team needs assets that help reps move deals forward and close. _(risk: safe)_
@@ -2401,8 +2403,6 @@ calculations
 - **wp-guard**: Review generated or changed WordPress plugins, themes, and blocks for security, internationalization, performance, and API correctness. _(risk: offensive)_
 - **xvary-stock-research**: Thesis-driven equity analysis from public SEC EDGAR and market data; /analyze, /score, /compare workflows with bundled Python tools (Claude Code, Cursor, Codex). _(risk: safe)_
 - **yield-intelligence**: Passive income portfolio analysis — activate when user asks about dividend yields, Treasury rates, REIT income, monthly passive income goals, or portfolio yield optimization. Scans 4 asset classes, ranks by risk-adjusted return, and builds allocations targeting a specific monthly income. _(risk: safe)_
-- **audit-agent-run-evidence**: Use when an agent, harness, gateway, MCP workflow, or multi-step automation claims completion and the available traces, checkpoints, approvals, tool calls, or deployment records must be judged without trusting self-reported success. _(risk: safe)_
-- **review-multi-agent-orchestration**: Use when a supervisor, swarm, graph, planner-worker system, or parallel agent workflow needs review for task boundaries, shared state, branch joins, retries, cancellation, context handoffs, budgets, deadlocks, or human escalation before implementation or production rollout. _(risk: safe)_
 
 ## video
 

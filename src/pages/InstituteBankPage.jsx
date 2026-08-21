@@ -155,8 +155,8 @@ export default function InstituteBankPage() {
             className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-slate-50 p-2 text-slate-600 transition-all hover:bg-slate-100 hover:text-slate-900"
           >
             <ArrowLeft className="h-5 w-5" />
-          </div></button>
-          <Breadcrumb items=items={[
+          </button>
+          <Breadcrumb items={[
             { label: 'Dashboard', to: '/' },
             { label: 'Fee Structure', to: '/settings/fee-structure' },
             { label: 'Institute Bank' },
@@ -293,6 +293,7 @@ export default function InstituteBankPage() {
           </label>
         </form>
       </Modal>
+    </div>
     </div>
   );
 }

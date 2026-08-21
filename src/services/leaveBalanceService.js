@@ -2,7 +2,7 @@ const calculateLeaveBalanceSnapshot = ({ annualAllocation = 0, used = 0, pending
   totalAllocation: Number(annualAllocation) || 0,
   used: Number(used) || 0,
   pendingApproval: Number(pendingApproval) || 0,
-  availableBalance: Math.max(0, (Number(annualAllocation) || 0) + (Number(carryForward) || 0) - (Number(used) || 0) - (Number(pendingApproval) || 0)),
+  availableBalance: Math.max(0, (Number(annualAllocation) || 0) - (Number(used) || 0) - (Number(pendingApproval) || 0)),
   carryForward: Number(carryForward) || 0,
   expiredBalance: Number(expiredBalance) || 0,
 });

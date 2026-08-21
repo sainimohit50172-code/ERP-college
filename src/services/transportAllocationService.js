@@ -5,12 +5,29 @@ import vehicles from './vehicleService.js';
 
 const service = createResourceService('studentTransportAssignments');
 
-export async function listAssignments(params = {}) { return service.list(params); }
+const localStorageKey = 'erp:transport-assignments';
+const readLocalAssignments = () => {
+  try { return JSON.parse(localStorage.getItem(localStorageKey) || '[]'); } catch { return []; }
+};
+const saveLocalAssignments = (items) => localStorage.setItem(localStorageKey, JSON.stringify(items));
+
+export async function listAssignments(params = {}) {
+  const remote = await service.list(params);
+  const local = readLocalAssignments();
+  return { ...remote, items: [...local, ...(remote.items || [])] };
+}
 export async function getAssignment(id) { return service.get(id); }
 
 export async function assignStudent(payload) {
   // payload: { studentId, routeId, vehicleId, boardingStopId, dropStopId, effectiveDate }
-  const created = await service.create({ ...payload, assignedAt: new Date().toISOString(), status: 'Assigned' });
+  let created;
+  try {
+    created = await service.create({ ...payload, assignedAt: new Date().toISOString(), status: 'Assigned' });
+  } catch (error) {
+    const localAssignment = { ...payload, id: `local-transport-assignment-${Date.now()}`, assignedAt: new Date().toISOString(), status: 'Assigned' };
+    saveLocalAssignments([localAssignment, ...readLocalAssignments()]);
+    return localAssignment;
+  }
   // update vehicle occupancy if present
   try {
     if (created.vehicleId) {

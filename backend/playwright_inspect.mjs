@@ -4,7 +4,7 @@ import fs from 'fs';
 (async () => {
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext();
-  await context.addInitScript(() => { try { localStorage.setItem('erp_demo_mode','true'); } catch(e){} });
+  await context.addInitScript(() => { try { localStorage.setItem('erp_demo_mode', 'true'); } catch (error) { console.warn('Unable to set demo mode', error); } });
   const page = await context.newPage();
   const APP_URL = process.env.APP_URL || 'http://127.0.0.1:5174';
   await page.goto(`${APP_URL}/settings/fee-structure/payment-mode`, { waitUntil: 'domcontentloaded' });

@@ -316,7 +316,7 @@ export default function HRMQualificationMasterPage() {
               <button
                 type="button"
                 onClick={() => setSortDirection((current) => (current === 'asc' ? 'desc' : 'asc'))}
-                className="mt-1 inline-flex h-[20px] w-full items-center justify-center gap-1 rounded-md border border-slate-200 bg-white px-2 text-[10px] font-semibold text-slate-700 outline-none hover:bg-slate-100 focus:border-emerald-400"
+                className="mt-1 inline-flex h-[20px] w-fit items-center justify-center gap-1 rounded-md border border-slate-200 bg-white px-2 text-[10px] font-semibold text-slate-700 outline-none hover:bg-slate-100 focus:border-emerald-400"
               >
                 <ArrowUpDown className="h-3 w-3" />
                 {sortDirection === 'asc' ? 'Ascending' : 'Descending'}

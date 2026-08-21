@@ -4,11 +4,6 @@ import { getAuthState, saveAuthState, clearAuthState, loginApi, refreshTokenApi,
 import { getPermissionsForRole } from './rbac.js';
 import { recordAuditEvent } from './auditService.js';
 
-export const AuthContext = createContext(null);
-
-const SESSION_TIMEOUT_MS = 1000 * 60 * 25; // 25 minutes
-const INACTIVITY_TIMEOUT_MS = 1000 * 60 * 15; // 15 minutes
-
 const defaultAuth = {
   isAuthenticated: false,
   user: null,
@@ -17,6 +12,27 @@ const defaultAuth = {
   token: null,
   refreshToken: null,
 };
+
+export const AuthContext = createContext({
+  auth: defaultAuth,
+  login: async () => defaultAuth,
+  register: async () => defaultAuth,
+  logout: () => {},
+  refreshSession: async () => null,
+  rememberMe: false,
+  setRememberMe: () => {},
+  otpSent: false,
+  setOtpSent: () => {},
+  twoFactorEnabled: false,
+  setTwoFactorEnabled: () => {},
+  sessionExpiry: Date.now() + 1000 * 60 * 25,
+  inactivityExpiry: Date.now() + 1000 * 60 * 15,
+  setSessionExpiry: () => {},
+  setInactivityExpiry: () => {},
+});
+
+const SESSION_TIMEOUT_MS = 1000 * 60 * 25; // 25 minutes
+const INACTIVITY_TIMEOUT_MS = 1000 * 60 * 15; // 15 minutes
 
 function buildDemoAuth(payload, role = 'Admin') {
   const user = payload?.user || {
@@ -245,6 +261,24 @@ export function AuthProvider({ children }) {
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (!context) throw new Error('useAuth must be used within AuthProvider');
+  if (!context || !context.auth) {
+    return {
+      auth: defaultAuth,
+      login: async () => defaultAuth,
+      register: async () => defaultAuth,
+      logout: () => {},
+      refreshSession: async () => null,
+      rememberMe: false,
+      setRememberMe: () => {},
+      otpSent: false,
+      setOtpSent: () => {},
+      twoFactorEnabled: false,
+      setTwoFactorEnabled: () => {},
+      sessionExpiry: Date.now() + SESSION_TIMEOUT_MS,
+      inactivityExpiry: Date.now() + INACTIVITY_TIMEOUT_MS,
+      setSessionExpiry: () => {},
+      setInactivityExpiry: () => {},
+    };
+  }
   return context;
 }

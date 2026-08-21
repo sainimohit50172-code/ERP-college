@@ -23,6 +23,7 @@ test('uses a fixed one-second delay for health retries', () => {
 
 test('stops polling after a 404 health check response', async () => {
   resetStartupGate();
+  globalThis.__VITE_ENABLE_BACKEND_HEALTH_CHECK__ = true;
   let calls = 0;
   global.fetch = async () => {
     calls += 1;
@@ -34,10 +35,49 @@ test('stops polling after a 404 health check response', async () => {
   assert.equal(calls, 1);
 
   delete global.fetch;
+  delete globalThis.__VITE_ENABLE_BACKEND_HEALTH_CHECK__;
+});
+
+test('stops polling after a 502 health check response', async () => {
+  resetStartupGate();
+  globalThis.__VITE_ENABLE_BACKEND_HEALTH_CHECK__ = true;
+  let calls = 0;
+  global.fetch = async () => {
+    calls += 1;
+    return { ok: false, status: 502 };
+  };
+
+  const result = await waitForBackendHealth({ endpoint: '/api/v1/health', timeoutMs: 10000, retryDelayMs: 1, maxAttempts: 5 });
+  assert.equal(result, false);
+  assert.equal(calls, 1);
+
+  delete global.fetch;
+  delete globalThis.__VITE_ENABLE_BACKEND_HEALTH_CHECK__;
+});
+
+test('does not re-fetch after a prior 502 startup failure', async () => {
+  resetStartupGate();
+  globalThis.__VITE_ENABLE_BACKEND_HEALTH_CHECK__ = true;
+  let calls = 0;
+  global.fetch = async () => {
+    calls += 1;
+    return { ok: false, status: 502 };
+  };
+
+  const first = await waitForBackendHealth({ endpoint: '/api/v1/health', timeoutMs: 10000, retryDelayMs: 1, maxAttempts: 5 });
+  const second = await waitForBackendHealth({ endpoint: '/api/v1/health', timeoutMs: 10000, retryDelayMs: 1, maxAttempts: 5 });
+
+  assert.equal(first, false);
+  assert.equal(second, false);
+  assert.equal(calls, 1);
+
+  delete global.fetch;
+  delete globalThis.__VITE_ENABLE_BACKEND_HEALTH_CHECK__;
 });
 
 test('uses a single development health probe before giving up', async () => {
   resetStartupGate();
+  globalThis.__VITE_ENABLE_BACKEND_HEALTH_CHECK__ = true;
   let calls = 0;
   global.fetch = async () => {
     calls += 1;
@@ -49,4 +89,21 @@ test('uses a single development health probe before giving up', async () => {
   assert.equal(calls, 1);
 
   delete global.fetch;
+  delete globalThis.__VITE_ENABLE_BACKEND_HEALTH_CHECK__;
+});
+
+test('skips backend health polling during local development by default', async () => {
+  resetStartupGate();
+  let calls = 0;
+  global.fetch = async () => {
+    calls += 1;
+    return { ok: true, status: 200 };
+  };
+
+  const result = await waitForBackendHealth({ endpoint: '/api/v1/health', timeoutMs: 10000, retryDelayMs: 1, maxAttempts: 5 });
+  assert.equal(result, false);
+  assert.equal(calls, 0);
+
+  delete global.fetch;
+  delete globalThis.__VITE_ENABLE_BACKEND_HEALTH_CHECK__;
 });

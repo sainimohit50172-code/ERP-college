@@ -13,7 +13,7 @@ class Vehicle(Base):
     __tablename__ = "vehicles"
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
-    registration_no: Mapped[str] = mapped_column(String(64), nullable=False, unique=True)
+    vehicle_number: Mapped[str] = mapped_column('registration_no', String(64), nullable=False, unique=True)
     vehicle_type: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
     capacity: Mapped[Optional[int]] = mapped_column(default=0, nullable=True)
     status: Mapped[str] = mapped_column(Enum("Active", "Inactive", "Maintenance", name="vehicle_status"), nullable=False, default="Active")

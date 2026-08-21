@@ -226,6 +226,13 @@ import FeeStructureModulePage from './pages/FeeStructureModulePage.jsx';
 import FeeHeadGroupPage from './pages/FeeHeadGroupPage.jsx';
 import ProtectedRoute from './components/auth/ProtectedRoute.jsx';
 import AllocateSubjectPage from './pages/AllocateSubjectPage.jsx';
+import AdmissionSetupPage from './pages/AdmissionSetupPage.jsx';
+import AdmissionMasterDashboardPage from './pages/AdmissionMasterDashboardPage.jsx';
+import AdmissionStageSetupPage from './pages/AdmissionStageSetupPage.jsx';
+import AdmissionApplicationNumberSetupPage from './pages/AdmissionApplicationNumberSetupPage.jsx';
+import AdmissionHeadsPage from './pages/AdmissionHeadsPage.jsx';
+import AdmissionTagsPage from './pages/AdmissionTagsPage.jsx';
+import AdmissionSourcePage from './pages/AdmissionSourcePage.jsx';
 
 const RouteLoadingFallback = () => (
   <div className="flex min-h-[40vh] items-center justify-center px-6 py-10 text-sm text-slate-500">
@@ -268,6 +275,17 @@ function App() {
             <Route path="/" element={<RootLayout />}>
               <Route index element={<ProtectedRoute moduleKey="dashboard"><DashboardPage /></ProtectedRoute>} />
               <Route path="admissions" element={<ProtectedRoute moduleKey="admissions"><AdmissionsPage /></ProtectedRoute>} />
+              <Route path="admission/setup" element={<ProtectedRoute moduleKey="settings"><AdmissionSetupPage /></ProtectedRoute>} />
+              <Route path="admission/admissionMaster" element={<ProtectedRoute moduleKey="settings"><AdmissionMasterDashboardPage /></ProtectedRoute>} />
+              <Route path="admission/admissionMaster/application-number" element={<ProtectedRoute moduleKey="settings"><AdmissionApplicationNumberSetupPage /></ProtectedRoute>} />
+              <Route path="admission/admissionMaster/transaction-receipt" element={<ProtectedRoute moduleKey="settings"><ReceiptConfigurationPage /></ProtectedRoute>} />
+              <Route path="admission/admissionMaster/heads" element={<ProtectedRoute moduleKey="settings"><AdmissionHeadsPage /></ProtectedRoute>} />
+              <Route path="admission/admissionMaster/tags" element={<ProtectedRoute moduleKey="settings"><AdmissionTagsPage /></ProtectedRoute>} />
+              <Route path="admission/admissionMaster/source" element={<ProtectedRoute moduleKey="settings"><AdmissionSourcePage /></ProtectedRoute>} />
+              <Route path="admission/admissionMaster/:masterKey" element={<ProtectedRoute moduleKey="settings"><PlaceholderPage title="Admission Master Setup" /></ProtectedRoute>} />
+              <Route path="admission/stagesSetup" element={<ProtectedRoute moduleKey="settings"><AdmissionStageSetupPage /></ProtectedRoute>} />
+              <Route path="admission/admissionMaster/stages" element={<ProtectedRoute moduleKey="settings"><AdmissionStageSetupPage /></ProtectedRoute>} />
+              <Route path="admissions/stages-setup" element={<ProtectedRoute moduleKey="admissions"><AdmissionStageSetupPage /></ProtectedRoute>} />
               <Route path="admissions/follow-ups" element={<ProtectedRoute moduleKey="admissions"><FollowUpsPage /></ProtectedRoute>} />
               <Route path="admissions/follow-up-remark-report" element={<ProtectedRoute moduleKey="admissions"><FollowUpRemarkReportPage /></ProtectedRoute>} />
               <Route path="settings/institute/academics/assessment-group" element={<ProtectedRoute moduleKey="settings"><AssessmentGroupPage /></ProtectedRoute>} />

@@ -24,7 +24,7 @@ export default function BirthdayWidget() {
     <div className="rounded-[22px] border border-slate-200/80 bg-white p-5 shadow-[0_18px_50px_-26px_rgba(15,23,42,0.28)]">
       <div className="flex items-start justify-between gap-3 hover-gradient-border">
         <div>
-          <h3 className="text-lg font-semibold text-slate-900">Today's Birthdays & Anniversaries</h3>
+          <h3 className="text-lg font-semibold text-slate-900">Today&apos;s Birthdays &amp; Anniversaries</h3>
           <p className="mt-1 text-sm text-slate-500">A warm celebration for campus milestones</p>
         </div>
         <div className="rounded-2xl bg-rose-50 p-3 text-rose-600">

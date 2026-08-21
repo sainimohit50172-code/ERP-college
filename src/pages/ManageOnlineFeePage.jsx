@@ -352,5 +352,6 @@ export default function ManageOnlineFeePage() {
         )}
       </div>
     </div>
+    </div>
   );
 }

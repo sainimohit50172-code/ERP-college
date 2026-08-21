@@ -51,20 +51,16 @@ export const mapStudentPayload = (payload = {}) => {
   const lastName = payload.lastName || payload.last_name || embeddedLastName || '';
   const dateOfBirth = payload.dateOfBirth || payload.date_of_birth || payload.admissionDate || null;
 
-  const contact = {
-    ...(payload.email != null ? { email: payload.email } : {}),
-    ...(payload.phone != null ? { phone: payload.phone } : {}),
-  };
-
   return {
     admission_number: payload.admissionNo || payload.admission_number || '',
     first_name: firstName,
     last_name: lastName,
+    email: payload.email ?? null,
+    phone: payload.phone ?? null,
     date_of_birth: dateOfBirth,
     gender: payload.gender || null,
     status: payload.status || 'Active',
-    contact: Object.keys(contact).length > 0 ? contact : undefined,
-    meta: payload.meta ?? null,
+    ...(payload.meta != null ? { meta: payload.meta } : {}),
   };
 };
 
@@ -121,9 +117,47 @@ export const mapClassroomRecord = (record = {}) => ({
 export const mapTransportRoutePayload = (payload = {}) => ({
   ...payload,
   name: payload.name || '',
-  start_point: payload.start_point ?? payload.startPoint ?? '',
-  end_point: payload.end_point ?? payload.endPoint ?? '',
+  start_point: payload.start_point ?? payload.startPoint ?? payload.stops?.[0] ?? 'Start',
+  end_point: payload.end_point ?? payload.endPoint ?? payload.stops?.[payload.stops.length - 1] ?? 'End',
+  distance_km: Number(payload.distance_km ?? payload.distance ?? 0),
   status: payload.status ?? 'Active',
+});
+
+export const mapTransportVehiclePayload = (payload = {}) => ({
+  vehicle_number: payload.vehicle_number || payload.vehicleNumber || payload.registration || payload.registration_no || '',
+  vehicle_type: payload.vehicle_type || payload.vehicleType || payload.type || 'Bus',
+  capacity: Number(payload.capacity || 0),
+  status: payload.status || 'active',
+});
+
+export const mapTransportVehicleRecord = (record = {}) => ({
+  ...record,
+  id: record.id,
+  registration: record.registration || record.registration_no || record.vehicle_number || '',
+  registrationNo: record.registrationNo || record.registration_no || record.vehicle_number || '',
+  vehicleNumber: record.vehicleNumber || record.vehicle_number || record.registration_no || '',
+  vehicleType: record.vehicleType || record.vehicle_type || '',
+  type: record.type || record.vehicle_type || '',
+  capacity: record.capacity ?? 0,
+  status: record.status || 'Active',
+});
+
+export const mapTransportAssignmentPayload = (payload = {}) => ({
+  student_id: Number(payload.student_id ?? payload.studentId),
+  route_id: Number(payload.route_id ?? payload.routeId),
+  vehicle_id: Number(payload.vehicle_id ?? payload.vehicleId),
+  assignment_date: payload.assignment_date || payload.assignmentDate || payload.effectiveDate?.slice(0, 10),
+  status: String(payload.status || 'assigned').toLowerCase(),
+});
+
+export const mapTransportAssignmentRecord = (record = {}) => ({
+  ...record,
+  id: record.id,
+  studentId: record.studentId ?? record.student_id,
+  routeId: record.routeId ?? record.route_id,
+  vehicleId: record.vehicleId ?? record.vehicle_id,
+  assignmentDate: record.assignmentDate ?? record.assignment_date,
+  status: record.status || 'Assigned',
 });
 
 export const mapTransportRouteRecord = (record = {}) => ({
@@ -180,6 +214,7 @@ export const createResourceService = (resource) => {
         if (resource === 'students') return mapStudentRecord(payload);
         if (resource === 'classrooms') return mapClassroomRecord(payload);
         if (resource === 'transportRoutes') return mapTransportRouteRecord(payload);
+        if (resource === 'transportVehicles') return mapTransportVehicleRecord(payload);
         return payload;
       }
 
@@ -188,6 +223,8 @@ export const createResourceService = (resource) => {
       if (resource === 'students') return mapStudentRecord(payload);
       if (resource === 'classrooms') return mapClassroomRecord(payload);
       if (resource === 'transportRoutes') return mapTransportRouteRecord(payload);
+      if (resource === 'transportVehicles') return mapTransportVehicleRecord(payload);
+      if (resource === 'studentTransportAssignments') return mapTransportAssignmentRecord(payload);
       return payload;
     },
     create: async (payload) => {
@@ -197,6 +234,10 @@ export const createResourceService = (resource) => {
           ? mapClassroomPayload(payload)
           : resource === 'transportRoutes'
             ? mapTransportRoutePayload(payload)
+            : resource === 'transportVehicles'
+              ? mapTransportVehiclePayload(payload)
+              : resource === 'studentTransportAssignments'
+                ? mapTransportAssignmentPayload(payload)
             : payload;
       if (repo && typeof repo.create === 'function') {
         const result = await repo.create(body);
@@ -204,6 +245,7 @@ export const createResourceService = (resource) => {
         if (resource === 'students') return mapStudentRecord(payloadResult);
         if (resource === 'classrooms') return mapClassroomRecord(payloadResult);
         if (resource === 'transportRoutes') return mapTransportRouteRecord(payloadResult);
+        if (resource === 'transportVehicles') return mapTransportVehicleRecord(payloadResult);
         return payloadResult;
       }
 
@@ -212,6 +254,8 @@ export const createResourceService = (resource) => {
       if (resource === 'students') return mapStudentRecord(payloadResult);
       if (resource === 'classrooms') return mapClassroomRecord(payloadResult);
       if (resource === 'transportRoutes') return mapTransportRouteRecord(payloadResult);
+      if (resource === 'transportVehicles') return mapTransportVehicleRecord(payloadResult);
+      if (resource === 'studentTransportAssignments') return mapTransportAssignmentRecord(payloadResult);
       return payloadResult;
     },
     update: async (id, payload) => {
@@ -221,6 +265,10 @@ export const createResourceService = (resource) => {
           ? mapClassroomPayload(payload)
           : resource === 'transportRoutes'
             ? mapTransportRoutePayload(payload)
+            : resource === 'transportVehicles'
+              ? mapTransportVehiclePayload(payload)
+              : resource === 'studentTransportAssignments'
+                ? mapTransportAssignmentPayload(payload)
             : payload;
       if (repo && typeof repo.update === 'function') {
         const result = await repo.update(id, body);
@@ -228,6 +276,7 @@ export const createResourceService = (resource) => {
         if (resource === 'students') return mapStudentRecord(payloadResult);
         if (resource === 'classrooms') return mapClassroomRecord(payloadResult);
         if (resource === 'transportRoutes') return mapTransportRouteRecord(payloadResult);
+        if (resource === 'transportVehicles') return mapTransportVehicleRecord(payloadResult);
         return payloadResult;
       }
 
@@ -236,6 +285,8 @@ export const createResourceService = (resource) => {
       if (resource === 'students') return mapStudentRecord(payloadResult);
       if (resource === 'classrooms') return mapClassroomRecord(payloadResult);
       if (resource === 'transportRoutes') return mapTransportRouteRecord(payloadResult);
+      if (resource === 'transportVehicles') return mapTransportVehicleRecord(payloadResult);
+      if (resource === 'studentTransportAssignments') return mapTransportAssignmentRecord(payloadResult);
       return payloadResult;
     },
     remove: async (id) => {
@@ -244,7 +295,7 @@ export const createResourceService = (resource) => {
       }
 
       const res = await api.delete(`/${endpoint}/${id}`);
-      return unwrapApiResponse(res.data);
+      return unwrapApiResponse(res.data) || { success: res.status >= 200 && res.status < 300 };
     },
     search: async (q) => {
       if (repo && typeof repo.search === 'function') {
