@@ -4,6 +4,7 @@ import { Menu, Search, Download, Settings2, Bell, UserCircle2, X, ChevronDown, C
 import NotificationDropdown from './NotificationDropdown.jsx';
 import { useAuth } from '../../services/AuthContext.jsx';
 import { useERP } from '../../services/ERPContext.jsx';
+import universityLogo from '../../assets/haridwar-logo.svg';
 
 const feeDropdownItems = [
   { label: 'Collect Fee', route: '/fees', icon: CircleDollarSign },
@@ -120,7 +121,33 @@ export default function Topbar({ onToggleSidebar }) {
   }, [activeDropdown, isMobileNavOpen, isProfileMenuOpen, isQuickActionsOpen, isSearchOpen, isExportOpen]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-slate-200 bg-white px-3 py-3 md:left-[200px] md:w-[calc(100%-200px)]">
+    <header className="erp-topbar fixed inset-x-0 top-0 z-40 border-b border-slate-200 bg-white px-3 py-3 md:left-[200px] md:w-[calc(100%-200px)]" style={{ background: 'linear-gradient(180deg, #3a241b 0%, #292625 48%, #171717 100%)' }}>
+      <style>{`
+        .erp-topbar > div > div:first-child button,
+        .erp-topbar > div > div:first-child span,
+        .erp-topbar > div > div:nth-child(2) > div > button,
+        .erp-topbar > div > div:last-child > button,
+        .erp-topbar > div > div:last-child > div > button {
+          color: #ffffff !important;
+        }
+
+        .erp-topbar .navbar-year {
+          color: #111827 !important;
+        }
+
+        .erp-topbar > div > div:last-child > button,
+        .erp-topbar > div > div:last-child > div > button {
+          background: rgba(255, 255, 255, 0.1) !important;
+          border-color: rgba(255, 255, 255, 0.28) !important;
+        }
+
+        .erp-topbar > div > div:last-child > button:not([aria-label="Open raise ticket page"]),
+        .erp-topbar > div > div:last-child > div > button {
+          color: #111827 !important;
+          background: #ffffff !important;
+          border-color: #e2e8f0 !important;
+        }
+      `}</style>
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex min-w-0 items-center gap-3">
           <button
@@ -135,7 +162,7 @@ export default function Topbar({ onToggleSidebar }) {
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-sm font-semibold text-slate-700">C</div>
             <div className="flex min-w-0 items-center gap-2">
               <span className="truncate text-[14px] font-semibold text-slate-900">College ERP</span>
-              <span className="shrink-0 rounded-full bg-slate-100 px-2.5 py-1 text-[12px] font-medium text-slate-600">2026-27</span>
+              <span className="navbar-year relative z-10 shrink-0 rounded-full bg-white px-2.5 py-1 text-[12px] font-medium text-gray-900 opacity-100" style={{ color: '#111827', backgroundColor: '#ffffff', opacity: 1 }}>2026-27</span>
             </div>
           </div>
         </div>
@@ -395,8 +422,8 @@ export default function Topbar({ onToggleSidebar }) {
                 <p className="truncate text-[13px] font-semibold text-slate-900">Hello, {displayName}</p>
                 <p className="truncate text-[11px] text-slate-500">Nice to have you back!</p>
               </div>
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-700">
-                <UserCircle2 className="h-5 w-5" />
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-white p-0.5">
+                <img src={universityLogo} alt="Haridwar University" width="32" height="32" className="block h-8 w-8 max-h-8 max-w-8 object-contain" />
               </div>
             </button>
             {isProfileMenuOpen ? (

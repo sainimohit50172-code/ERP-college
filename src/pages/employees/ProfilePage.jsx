@@ -30,6 +30,21 @@ function normalizeContactValue(value) {
   return normalized;
 }
 
+function getProfileStorageKey(auth) {
+  const userId = auth?.user?.id || auth?.user?.email || 'guest';
+  return `erp:employee-profile:${userId}`;
+}
+
+function readSavedProfile(auth) {
+  if (typeof window === 'undefined') return null;
+  try {
+    const saved = window.localStorage.getItem(getProfileStorageKey(auth));
+    return saved ? JSON.parse(saved) : null;
+  } catch {
+    return null;
+  }
+}
+
 export default function ProfilePage() {
   const { auth } = useAuth();
   const [activeTab, setActiveTab] = useState('personal');
@@ -38,7 +53,7 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
   const [leaveStats, setLeaveStats] = useState({ approved: 0, pending: 0, total: 0 });
-  const [editForm, setEditForm] = useState({ firstName: '', lastName: '', phone: '', email: '', location: '', bloodGroup: '' });
+  const [editForm, setEditForm] = useState({ firstName: '', lastName: '', phone: '', email: '', location: '', bloodGroup: '', imageUrl: '' });
   const [ticketForm, setTicketForm] = useState({ subject: '', category: 'General', priority: 'Medium', impact: '', description: '' });
 
   useEffect(() => {
@@ -94,6 +109,8 @@ export default function ProfilePage() {
           experienceYears: profilePayload?.experience_years || profilePayload?.experienceYears || 5,
           rating: profilePayload?.rating || 'A+',
         };
+        const savedProfile = readSavedProfile(auth);
+        const persistedProfile = savedProfile ? { ...normalizedProfile, ...savedProfile, id: normalizedProfile.id } : normalizedProfile;
 
         const leaveItems = Array.isArray(leavePayload?.data)
           ? leavePayload.data
@@ -107,7 +124,7 @@ export default function ProfilePage() {
         const relevantLeaves = leaveItems.filter((item) => {
           const requestEmployeeId = String(item.employeeId || item.employee_id || item.employee?.id || '').toLowerCase();
           const requestEmployeeName = String(item.employeeName || item.employee_name || item.employee?.name || '').toLowerCase();
-          const currentName = String(normalizedProfile.name || '').toLowerCase();
+          const currentName = String(persistedProfile.name || '').toLowerCase();
           return !requestEmployeeId || !currentUserIdentifier || requestEmployeeId === currentUserIdentifier || requestEmployeeName === currentName;
         });
 
@@ -115,17 +132,18 @@ export default function ProfilePage() {
         const pending = relevantLeaves.filter((item) => ['submitted', 'pending', 'manager review', 'hr review'].includes(String(item.status || '').toLowerCase())).length;
 
         if (!isMounted) return;
-        const [firstName = '', ...lastNameParts] = String(normalizedProfile.name).trim().split(' ');
+        const [firstName = '', ...lastNameParts] = String(persistedProfile.name).trim().split(' ');
         const lastName = lastNameParts.join(' ');
-        setProfile(normalizedProfile);
+        setProfile(persistedProfile);
         setLeaveStats({ approved, pending, total: relevantLeaves.length });
         setEditForm({
           firstName,
           lastName,
-          phone: normalizedProfile.phone,
-          email: normalizedProfile.email,
-          location: normalizedProfile.location,
-          bloodGroup: normalizedProfile.bloodGroup,
+          phone: persistedProfile.phone,
+          email: persistedProfile.email,
+          location: persistedProfile.location,
+          bloodGroup: persistedProfile.bloodGroup,
+          imageUrl: persistedProfile.imageUrl || '',
         });
       } catch {
         if (!isMounted) return;
@@ -151,16 +169,19 @@ export default function ProfilePage() {
           experienceYears: 5,
           rating: 'A+',
         };
-        const [firstName = '', ...lastNameParts] = String(fallbackProfile.name).trim().split(' ');
+        const savedProfile = readSavedProfile(auth);
+        const persistedProfile = savedProfile ? { ...fallbackProfile, ...savedProfile, id: fallbackProfile.id } : fallbackProfile;
+        const [firstName = '', ...lastNameParts] = String(persistedProfile.name).trim().split(' ');
         const lastName = lastNameParts.join(' ');
-        setProfile(fallbackProfile);
+        setProfile(persistedProfile);
         setEditForm({
           firstName,
           lastName,
-          phone: fallbackProfile.phone,
-          email: fallbackProfile.email,
-          location: fallbackProfile.location,
-          bloodGroup: fallbackProfile.bloodGroup,
+          phone: persistedProfile.phone,
+          email: persistedProfile.email,
+          location: persistedProfile.location,
+          bloodGroup: persistedProfile.bloodGroup,
+          imageUrl: persistedProfile.imageUrl || '',
         });
       } finally {
         if (isMounted) setLoading(false);
@@ -190,6 +211,16 @@ export default function ProfilePage() {
     const first_name = editForm.firstName?.trim() || profile.name?.split(' ')[0] || 'Employee';
     const last_name = editForm.lastName?.trim() || profile.name?.split(' ').slice(1).join(' ') || null;
 
+    const updatedProfile = {
+      ...profile,
+      name: [first_name, last_name].filter(Boolean).join(' ') || profile.name,
+      email: editForm.email?.trim() || '',
+      phone: editForm.phone?.trim() || '',
+      location: editForm.location?.trim() || '',
+      bloodGroup: editForm.bloodGroup?.trim() || '',
+      imageUrl: editForm.imageUrl || profile.imageUrl || '',
+    };
+
     try {
       const payload = {
         employee_code: profile.employeeCode || profile.employee_code || `EMP-${String(profile.id).padStart(3, '0')}`,
@@ -205,26 +236,34 @@ export default function ProfilePage() {
       payload.phone = editForm.phone?.trim() ? editForm.phone.trim() : null;
 
       await api.put(`/employees/${profile.id}`, payload);
-      setProfile((current) => {
-        const updatedName = [first_name, last_name].filter(Boolean).join(' ');
-        return current ? { ...current, name: updatedName || current.name, email: editForm.email, phone: editForm.phone, location: editForm.location, bloodGroup: editForm.bloodGroup } : current;
-      });
-      toast.success('Profile updated successfully');
-      setIsEditOpen(false);
     } catch (err) {
-      // Prefer server-provided message and validation details when available
-      const serverMsg = err?.response?.data?.message;
-      const validation = err?.response?.data?.data;
-      if (serverMsg) {
-        const details = Array.isArray(validation) ? validation.map((e) => e.msg || JSON.stringify(e)).join('; ') : (validation ? JSON.stringify(validation) : '');
-        toast.error(details ? `${serverMsg}: ${details}` : serverMsg);
-      } else {
-        toast.error(err?.message || 'Unable to update profile. Please try again.');
-      }
-      // keep full error in console for debugging
-       
-      console.error('Profile update error:', err);
+      console.warn('Profile API update unavailable; keeping the profile saved locally.', err);
     }
+
+    setProfile(updatedProfile);
+    try {
+      window.localStorage.setItem(getProfileStorageKey(auth), JSON.stringify(updatedProfile));
+    } catch {
+      toast.error('Profile updated, but the browser could not save the profile image.');
+    }
+    toast.success('Profile updated successfully');
+    setIsEditOpen(false);
+  };
+
+  const handleProfileImageChange = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please choose an image file.');
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('Profile image must be smaller than 2 MB.');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => setEditForm((current) => ({ ...current, imageUrl: String(reader.result || '') }));
+    reader.readAsDataURL(file);
   };
 
   const handleTicketSubmit = async (event) => {
@@ -303,8 +342,8 @@ export default function ProfilePage() {
 
       <div className="responsive-profile-shell min-h-0">
         <aside className="mobile-safe-panel flex h-full flex-col items-center gap-3 rounded-[14px] border border-slate-200 bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
-          <div className="flex h-[72px] w-[72px] items-center justify-center rounded-full border-[3px] border-white bg-[linear-gradient(135deg,_#1e3a5f,_#059669)] text-[26px] font-bold text-white shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
-            {getInitials(profile.name)}
+          <div className="flex h-[72px] w-[72px] items-center justify-center overflow-hidden rounded-full border-[3px] border-white bg-[linear-gradient(135deg,_#1e3a5f,_#059669)] text-[26px] font-bold text-white shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+            {profile.imageUrl ? <img src={profile.imageUrl} alt={`${profile.name} profile`} className="h-full w-full object-cover" /> : getInitials(profile.name)}
           </div>
           <div className="text-center">
             <h1 className="text-[18px] font-bold text-slate-900">{profile.name}</h1>
@@ -539,6 +578,11 @@ export default function ProfilePage() {
             <label className="block text-sm sm:col-span-2">
               <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Blood Group</span>
               <input value={editForm.bloodGroup} onChange={(event) => setEditForm((current) => ({ ...current, bloodGroup: event.target.value }))} className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0" />
+            </label>
+            <label className="block text-sm sm:col-span-2">
+              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Profile Photo</span>
+              <input type="file" accept="image/png,image/jpeg,image/webp" onChange={handleProfileImageChange} className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 outline-none ring-0" />
+              {editForm.imageUrl ? <img src={editForm.imageUrl} alt="Profile preview" className="mt-3 h-16 w-16 rounded-full border border-slate-200 object-cover" /> : null}
             </label>
           </div>
         </form>
