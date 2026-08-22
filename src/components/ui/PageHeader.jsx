@@ -1,11 +1,11 @@
 export default function PageHeader({ title, subtitle, description, action }) {
   return (
-    <div className="mb-6 rounded-[20px] border border-slate-200/70 bg-white/95 px-5 py-5 shadow-sm sm:px-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="min-w-0">
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">{subtitle}</p>
-          <h1 className="mt-2 text-3xl font-semibold text-slate-950 sm:text-4xl">{title}</h1>
-          {description ? <p className="mt-3 max-w-3xl text-sm text-slate-500">{description}</p> : null}
+    <div className="erp-heading-strip mb-5 rounded-[12px] border border-slate-200 bg-slate-50/80 px-4 py-4 sm:px-5" data-page-heading-only={!action ? 'true' : undefined}>
+      <div className={`flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between ${action ? '' : 'hidden'}`}>
+        <div className="erp-heading-strip__content min-w-0">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-emerald-700">{subtitle}</p>
+          <h1 className="mt-1 text-2xl font-semibold text-slate-950 sm:text-3xl">{title}</h1>
+          {description ? <p className="mt-1 max-w-3xl text-xs text-slate-500">{description}</p> : null}
         </div>
         {action && <div>{action}</div>}
       </div>

@@ -114,20 +114,14 @@ export default function TuitionFeeCertificateGroupingPage() {
   return (
     <div className="min-h-[calc(100vh-7rem)] bg-[#e9edf1] px-4 py-4 sm:px-5 lg:px-6">
       <div className="mb-4 flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-slate-50 p-2 text-slate-600 transition-all hover:bg-slate-100 hover:text-slate-900"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </div></button>
-          <Breadcrumb items=items={[
+          <Breadcrumb items={[
           { label: 'Dashboard', to: '/' },
           { label: 'Settings', to: '/settings' },
           { label: 'Fee Structure', to: '/settings/fee-structure' },
           { label: 'Tuition Fee Certificate Grouping' },
         ]}
       />
+      </div>
 
       <div className="mt-2 flex items-center gap-3 pb-3 text-[1.65rem] font-semibold tracking-[-0.06em] text-slate-900 sm:text-[2.15rem]">
         <span>Tuition Fee Certificate Grouping</span>
@@ -315,8 +309,7 @@ export default function TuitionFeeCertificateGroupingPage() {
                         </div>
                       </td>
                     </tr>
-                  )),
-                )}
+                    ))) }
               </tbody>
             </table>
           </div>

@@ -9,11 +9,11 @@ import IconActionButton from '../components/ui/IconActionButton.jsx';
 import { useResourceList, useUpdateResource } from '../hooks/useResourceHooks';
 
 export default function UpdateRollNumberPage() {
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(12);
-  const [sortBy, setSortBy] = useState('first_name');
-  const [sortDirection, setSortDirection] = useState('asc');
-  const [search, setSearch] = useState('');
+  const page = 1;
+  const pageSize = 12;
+  const sortBy = 'first_name';
+  const sortDirection = 'asc';
+  const search = '';
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 

@@ -190,14 +190,6 @@ export default function SubjectMappingV2EditPage() {
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => navigate('/settings/institute/academics/subject-college-mapping-v2')}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
-                aria-label="Back to Subject Mapping V2"
-              >
-                <ArrowLeft className="h-4 w-4" />
-              </button>
               <Breadcrumb
                 items={[
                   { label: 'Dashboard', to: '/' },

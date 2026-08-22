@@ -241,13 +241,6 @@ export default function HRMSocialCategoryPage() {
           <div className="no-print mb-6 border-b border-slate-200/80 pb-5">
             <div className="mb-4">
               <div className="mb-4 flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => navigate(-1)}
-                  className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-slate-50 p-2 text-slate-600 transition-all hover:bg-slate-100 hover:text-slate-900"
-                >
-                  <ArrowLeft className="h-5 w-5" />
-                </button>
                 <Breadcrumb items={[{ label: 'Dashboard', to: '/' }, { label: 'HRM Master', to: '/settings/hrm' }, { label: 'Social Category' }]} />
               </div>
             </div>

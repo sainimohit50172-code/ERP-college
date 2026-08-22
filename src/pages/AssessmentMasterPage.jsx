@@ -88,9 +88,6 @@ export default function AssessmentMasterPage() {
     <div className="min-h-screen w-full min-w-0 px-[12px] pb-8 pt-4 lg:px-6">
       <div className="flex items-start justify-between gap-4 mb-6">
         <div className="flex items-start gap-4">
-          <button type="button" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-slate-50">
-            <ArrowLeft className="h-4 w-4" />
-          </button>
           <div>
             <Breadcrumb items={[{ label: 'Dashboard', to: '/' }, { label: 'Academics Setup', to: '/settings/academics' }, { label: 'Assessment', to: '/settings/assessment' }, { label: 'Assessment Master' }]} />
             <div className="flex items-baseline gap-3">

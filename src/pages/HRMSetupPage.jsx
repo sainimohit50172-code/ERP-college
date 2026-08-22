@@ -42,12 +42,11 @@ export default function HRMSetupPage() {
   return (
     <div className="no-hover-border min-h-[calc(100vh-7rem)] overflow-hidden rounded-[24px] border border-slate-200/80 bg-[linear-gradient(135deg,#f8fafc_0%,#ffffff_55%,#f8fafc_100%)] p-2.5 shadow-[0_18px_45px_rgba(15,23,42,0.06)] sm:p-3 lg:p-4">
       <div className="no-hover-border flex h-full flex-col rounded-[22px] border border-slate-200/70 bg-white/90 p-3 shadow-inner sm:p-4 lg:p-5">
-        <div className="mb-8">
+        <div className="mb-[27px]">
           <Breadcrumb items={[{ label: 'Dashboard', to: '/' }, { label: 'Institute Setup', to: '/settings/institute' }, { label: 'HRM Master' }]} />
           <div className="flex flex-col gap-2">
-            <span className="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-600">Dashboard</span>
+            <span className="relative -top-[5px] text-sm font-semibold uppercase tracking-[0.24em] text-emerald-600">Dashboard</span>
             <h1 className="text-3xl font-semibold tracking-tight text-slate-950">HRM Master Setup</h1>
-            <p className="max-w-2xl text-sm text-slate-500">Manage HR master data, employee setup, payroll configuration, and leave management from one comprehensive dashboard.</p>
           </div>
         </div>
 

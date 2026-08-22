@@ -233,15 +233,6 @@ export default function LeaveManagementPage() {
       <div className="flex h-full flex-col rounded-[22px] border border-slate-200/70 bg-white/90 p-3 shadow-inner sm:p-4 lg:p-5">
         <div className="mb-5 border-b border-slate-200/80 pb-4">
           <div className="mb-3 flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-slate-50 p-2 text-slate-600 transition-all hover:bg-slate-100 hover:text-slate-900"
-              title="Go back"
-              aria-label="Go back"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </button>
             <Breadcrumb items={[{ label: 'Dashboard', to: '/' }, { label: 'Institute Setup', to: '/settings/institute' }, { label: 'HRM Master', to: '/settings/hrm' }, { label: 'Leave Management' }]} />
           </div>
           <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">

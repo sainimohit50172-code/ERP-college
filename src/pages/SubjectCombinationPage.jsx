@@ -170,13 +170,6 @@ export default function SubjectCombinationPage() {
     <div className="space-y-6 px-4 pb-6 sm:px-0">
       <div className="rounded-[24px] border border-slate-200/70 bg-white/95 p-4 shadow-sm sm:p-6">
         <div className="mb-4 flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-slate-50 p-2 text-slate-600 transition-all hover:bg-slate-100 hover:text-slate-900"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </button>
             <Breadcrumb items={[{ label: 'Dashboard', to: '/' }, { label: 'Fee Structure', to: '/settings/fee-structure' }, { label: 'Subject Combination' }]} />
         <div className="flex flex-col gap-4 pb-5 pt-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex min-w-0 items-center gap-1.5"><h1 className="truncate text-[clamp(1.7rem,3vw,2.15rem)] font-medium tracking-tight text-slate-950">Subject Combination</h1><span className="truncate text-lg font-medium text-slate-900">| Subject Combination</span></div>

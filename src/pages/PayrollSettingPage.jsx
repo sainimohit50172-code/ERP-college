@@ -31,7 +31,6 @@ export default function PayrollSettingPage() {
       <div className="flex h-full flex-col rounded-[22px] border border-slate-200/70 bg-white/90 p-3 shadow-inner sm:p-4 lg:p-5">
         <div className="mb-5 border-b border-slate-200/80 pb-4">
           <div className="mb-3 flex items-center gap-2 text-[10px] text-slate-500">
-            <button type="button" onClick={() => navigate(-1)} aria-label="Go back" title="Go back" className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 hover:text-slate-900"><ArrowLeft className="h-3.5 w-3.5" /></button>
             <Breadcrumb items={[{ label: 'Dashboard', to: '/' }, { label: 'HRM Master', to: '/settings/hrm' }, { label: 'Payroll Setting' }]} />
           </div>
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">

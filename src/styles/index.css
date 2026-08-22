@@ -45,6 +45,10 @@ html::-webkit-scrollbar-thumb:hover {
   box-sizing: border-box;
 }
 
+.erp-content-wrapper button:has(> svg.lucide-arrow-left):not([data-pagination-control]) {
+  display: none !important;
+}
+
 .erp-content-wrapper {
   width: min(100%, 1600px);
   max-width: 100%;
@@ -60,6 +64,205 @@ html::-webkit-scrollbar-thumb:hover {
   width: 100%;
   max-width: none;
   box-sizing: border-box;
+}
+
+.erp-page-title-strip {
+  position: fixed;
+  top: 73px;
+  left: 10px;
+  right: 10px;
+  z-index: 35;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 80px;
+  margin: 5px 0 12px;
+  padding: 0 18px;
+  overflow: hidden;
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+.erp-page-title-strip__back {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  color: #475569;
+  background: transparent;
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+
+.erp-page-title-strip__back:hover {
+  color: #0f172a;
+}
+
+.erp-page-title-strip__content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.erp-page-title-strip__clock {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  padding: 8px 12px;
+  border: 1px solid #dbe4ec;
+  border-radius: 10px;
+  color: #475569;
+  background: linear-gradient(135deg, #f8fafc, #eef6f4);
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.05);
+  white-space: nowrap;
+}
+
+.erp-page-title-strip__clock-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #047857;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.erp-page-title-strip__clock-status::before {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.14);
+  content: '';
+}
+
+.erp-page-title-strip__clock-day,
+.erp-page-title-strip__clock-date {
+  color: #64748b;
+  font-size: 11px;
+}
+
+.erp-page-title-strip__clock-time {
+  padding-left: 10px;
+  border-left: 1px solid #cbd5e1;
+  color: #0f172a;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 640px) {
+  .erp-page-title-strip__clock {
+    gap: 6px;
+    padding: 7px 8px;
+  }
+
+  .erp-page-title-strip__clock-day {
+    display: none;
+  }
+
+  .erp-page-title-strip__clock-date {
+    font-size: 10px;
+  }
+
+  .erp-page-title-strip__clock-time {
+    padding-left: 6px;
+    font-size: 12px;
+  }
+}
+
+.erp-page-title-strip__path {
+  min-width: 0;
+  overflow: hidden;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .erp-page-title-strip {
+    left: 210px;
+    right: 25px;
+  }
+}
+
+.erp-page-title-strip__heading {
+  min-width: 0;
+  overflow: hidden;
+  color: #0f172a;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.coe-page-content-top {
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.erp-content-wrapper nav[aria-label="Breadcrumb"],
+.erp-content-wrapper h1 {
+  display: none !important;
+}
+
+.erp-heading-strip__content {
+  display: none !important;
+}
+
+.erp-heading-strip[data-page-heading-only="true"] {
+  display: none !important;
+}
+
+.erp-page-shell {
+  width: 100%;
+  min-height: calc(100vh - 132px);
+  padding: 5px;
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  border-radius: 22px;
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 55%, #f1f5f9 100%);
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+}
+
+/* Keep the shared page shell as the only full-page container surface. */
+.erp-page-shell > [class*="min-h-[calc(100vh-7rem)]"] {
+  margin: 0 !important;
+  padding: 5px !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.erp-page-shell > [class*="min-h-[calc(100vh-7rem)]"] > :first-child[class*="rounded-"] {
+  margin: 0 !important;
+  padding: 5px !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 640px) {
+  .erp-page-shell {
+    min-height: calc(100vh - 132px);
+    padding: 5px;
+    border-radius: 16px;
+  }
 }
 
 .login-page-wrapper {
@@ -164,6 +367,7 @@ html::-webkit-scrollbar-thumb:hover {
   --secondary-color: #6B7280;
   --muted-color: #9CA3AF;
   --brand-500: #10b981;
+  --sidebar-top-color: #3a241b;
   --primary-navy: #1e3a5f;
   --primary-navy-dark: #16374d;
   background-color: #ffffff;
@@ -333,7 +537,7 @@ table th {
   letter-spacing: 0.09em;
   text-transform: uppercase;
   white-space: normal !important;
-  background-color: #153a22 !important;
+  background-color: var(--sidebar-top-color) !important;
   color: white !important;
 }
 
@@ -357,11 +561,11 @@ table td {
 
 /* Override Tailwind emerald utilities for primary action buttons to use #16a34a */
 .bg-emerald-500, .bg-emerald-600, .bg-emerald-700 {
-  background-color: #153a22 !important;
-  border-color: #153a22!important;
+  background-color: rgb(58, 36, 27) !important;
+  border-color: #eafff1!important;
 }
 .text-emerald-700, .text-emerald-600 {
-  color: #153a22 !important;
+  color: rgb(58, 36, 27) !important;
 }
 
 /* Target only button-like primary filled actions to standardize sizing and interactions */
@@ -373,7 +577,7 @@ input[type="button"].bg-emerald-500,
 input[type="button"].bg-emerald-600,
 input[type="button"].bg-emerald-700,
 .btn.btn-primary {
-  background-color: #153a22!important;
+  background-color: rgb(58, 36, 27)!important;
   border: 1px solid #ebebeb !important;
   color: #ffffff !important;
   border-radius: 10px !important;
@@ -393,8 +597,8 @@ input[type="button"].bg-emerald-500:hover,
 input[type="button"].bg-emerald-600:hover,
 input[type="button"].bg-emerald-700:hover,
 .btn.btn-primary:hover {
-  background-color: #153a22!important;
-  border-color: #15803d !important;
+  background-color: rgb(58, 36, 27)!important;
+  border-color: #e9fff1 !important;
   box-shadow: 0 8px 20px rgba(22,163,74,0.25) !important;
 }
 
@@ -406,8 +610,8 @@ input[type="button"].bg-emerald-500:active,
 input[type="button"].bg-emerald-600:active,
 input[type="button"].bg-emerald-700:active,
 .btn.btn-primary:active {
-  background-color: #153a22 !important;
-  border-color: #153a22 !important;
+  background-color: rgb(58, 36, 27) !important;
+  border-color: #eefff4 !important;
 }
 
 button.btn-primary:focus,
@@ -462,7 +666,7 @@ input[type="button"][class*="bg-primary-navy"],
 input[type="button"][class*="bg-slate-900"],
 input[type="button"][class*="bg-slate-800"],
 input[type="button"][class*="bg-slate-950"] {
-  background-color: #153a22 !important;
+  background-color: rgb(58, 36, 27) !important;
   border-color: #153a22 !important;
   color: #ffffff !important;
   box-shadow: none !important;
@@ -486,8 +690,8 @@ input[type="button"][class*="bg-primary-navy"]:hover,
 input[type="button"][class*="bg-slate-900"]:hover,
 input[type="button"][class*="bg-slate-800"]:hover,
 input[type="button"][class*="bg-slate-950"]:hover {
-  background-color: #153a22 !important;
-  border-color: #153a22 !important;
+  background-color: rgb(58, 36, 27) !important;
+  border-color: #eafff1 !important;
   box-shadow: 0 8px 20px rgba(22,163,74,0.25) !important;
 }
 
@@ -503,8 +707,8 @@ input[type="button"][class*="bg-primary-navy"]:active,
 input[type="button"][class*="bg-slate-900"]:active,
 input[type="button"][class*="bg-slate-800"]:active,
 input[type="button"][class*="bg-slate-950"]:active {
-  background-color: #153a22 !important;
-  border-color: #153a22 !important;
+  background-color: rgb(58, 36, 27) !important;
+  border-color: rgb(248, 234, 229) !important;
 }
 
 button[class*="bg-[#1e3a5f]"]:focus,
@@ -520,7 +724,7 @@ input[type="button"][class*="bg-slate-900"]:focus,
 input[type="button"][class*="bg-slate-800"]:focus,
 input[type="button"][class*="bg-slate-950"]:focus {
   outline: none !important;
-  box-shadow: 0 0 0 4px rgba(22,163,74,0.35) !important;
+  box-shadow: 0 0 0 4px rgba(58, 36, 27) !important;
 }
 
 button[disabled][class*="bg-[#1e3a5f]"],
@@ -579,7 +783,7 @@ table td span {
   display: block;
 }
 .erp-table-header {
-  background-color: #0f381e !important;
+  background-color: rgb(58, 36, 27) !important;
   color: #ffffff;
   font-weight: 700;
   min-height: 50px;
@@ -843,7 +1047,7 @@ input, textarea, select {
 .btn:active { transform: translateY(0); }
 .btn[disabled], .btn:disabled { opacity: 0.56; cursor: not-allowed; transform: none; }
 .btn.loading { pointer-events: none; opacity: 0.9; }
-.btn-success { background-color: rgb(14, 69, 34) }
+.btn-success { background-color: rgb(47, 18, 18) }
 
 /* Modal improvements: ensure escape/cancel are consistent */
 .modal { background: white; border-radius: 0.75rem; box-shadow: 0 10px 30px rgba(2,6,23,0.12); }
@@ -852,7 +1056,7 @@ input, textarea, select {
 /*
   ERP Standard Table Header (global)
   Applies a single canonical header style across the entire app.
-  - Background: ERP green (#16a34a)
+  - Background: sidebar top color (#3a241b)
   - Text: white, bold, uppercase
   - Centered both vertically and horizontally
   - Consistent padding, letter-spacing and font-size
@@ -863,7 +1067,7 @@ input, textarea, select {
 table[data-erp-table] thead th,
 .erp-content-wrapper table thead th,
 table thead th {
-  background-color: rgb(14, 69, 34) !important;
+  background-color: var(--sidebar-top-color) !important;
   color: #ffffff !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;

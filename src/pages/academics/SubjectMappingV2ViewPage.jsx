@@ -52,11 +52,6 @@ export default function SubjectMappingV2ViewPage() {
             <p className="mt-2 text-sm text-slate-500">Review the subject college mapping details in read-only mode.</p>
           </div>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-            <Link to="/settings/institute/academics/subject-college-mapping-v2">
-              <Button variant="secondary" className="inline-flex items-center gap-2">
-                <ArrowLeft className="h-4 w-4" /> Back to list
-              </Button>
-            </Link>
             <Button variant="primary" className="inline-flex items-center gap-2" onClick={() => navigate(`/settings/institute/academics/subject-college-mapping/view/${mapping.id}`)}>
               Edit mapping
             </Button>

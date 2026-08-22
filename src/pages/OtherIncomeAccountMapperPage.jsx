@@ -112,13 +112,6 @@ export default function OtherIncomeAccountMapperPage() {
         <div className="overflow-hidden rounded-[18px] border border-slate-200 bg-[#f3f5f7] shadow-sm">
           <div className="flex items-center justify-between gap-4 px-5 py-4">
             <div className="mb-4 flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-slate-50 p-2 text-slate-600 transition-all hover:bg-slate-100 hover:text-slate-900"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </button>
             <Breadcrumb items={[
               { label: 'Dashboard', to: '/' },
               { label: 'Finance', to: '/finance' },

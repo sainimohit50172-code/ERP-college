@@ -122,13 +122,6 @@ export default function RefundableHeadsPage() {
     <div className="space-y-6 px-4 pb-6 sm:px-0">
       <div className="rounded-[24px] border border-slate-200/70 bg-white/95 p-4 shadow-sm sm:p-6">
         <div className="mb-4 flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-slate-50 p-2 text-slate-600 transition-all hover:bg-slate-100 hover:text-slate-900"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </button>
           <Breadcrumb items={[
             { label: 'Dashboard', to: '/' },
             { label: 'Fee Structure', to: '/settings/fee-structure' },

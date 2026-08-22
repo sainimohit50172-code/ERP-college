@@ -142,11 +142,6 @@ export default function EditSubjectCollegeMappingPage() {
             <h1 className="text-[40px] font-medium text-slate-900">Edit Subject College Mapping</h1>
             <div className="text-[13px] text-slate-500">Edit Subject College Mapping</div>
           </div>
-          <div>
-            <Link to="/settings/institute/academics/subject-college-mapping">
-              <Button variant="success" className="min-w-[190px] h-[40px] text-[13px] rounded-[10px]">Go Back</Button>
-            </Link>
-          </div>
         </div>
       </div>
 

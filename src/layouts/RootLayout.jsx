@@ -1,12 +1,14 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Sidebar from '../components/navigation/Sidebar.jsx';
 import Topbar from '../components/navigation/Topbar.jsx';
 import ErrorBoundary from '../components/ErrorBoundary.jsx';
-import BackNavigationButton from '../components/ui/BackNavigationButton.jsx';
+import PageTitleStrip from '../components/ui/PageTitleStrip.jsx';
 
 export default function RootLayout() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const location = useLocation();
+  const isDashboardRoute = location.pathname === '/';
 
   useEffect(() => {
     // lock body scroll when sidebar drawer is open on mobile
@@ -18,12 +20,12 @@ export default function RootLayout() {
       <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="relative min-h-screen w-full overflow-x-hidden transition-all duration-200 md:ml-[200px] md:w-[calc(100%-200px)] bg-[#f5f6fa]">
         <Topbar onToggleSidebar={() => setSidebarOpen((s) => !s)} />
-        <main className="min-h-screen overflow-x-hidden bg-[#f5f6fa] pb-24 pt-28 sm:pt-20">
+        <PageTitleStrip />
+        <main className="min-h-screen overflow-x-hidden bg-[#f5f6fa] pb-24 pt-[165px]">
           <div className="erp-content-wrapper">
             <ErrorBoundary>
               <div className="pt-1">
-                <BackNavigationButton />
-                <Outlet />
+                {isDashboardRoute ? <Outlet /> : <div className="erp-page-shell"><Outlet /></div>}
               </div>
             </ErrorBoundary>
           </div>

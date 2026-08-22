@@ -90,6 +90,7 @@ export default function ExaminationDashboard() {
               <div className="flex items-center gap-2 hover-gradient-border">
                 <button
                   type="button"
+                  data-pagination-control="true"
                   onClick={() => setSection1Page((prev) => Math.max(prev - 1, 0))}
                   disabled={section1Page === 0}
                   className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700 transition duration-300 hover:-translate-y-0.5 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
@@ -152,12 +153,6 @@ export default function ExaminationDashboard() {
                   className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition duration-300 hover:-translate-y-0.5 hover:bg-white"
                 >
                   {showSubjectDemo ? 'Hide Demo Data' : 'Show Demo Data'}
-                </button>
-                <button
-                  type="button"
-                  className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700 transition duration-300 hover:-translate-y-0.5 hover:bg-white hover-gradient-border"
-                >
-                  <ArrowLeft className="h-4 w-4" />
                 </button>
                 <button
                   type="button"
