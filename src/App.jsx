@@ -233,6 +233,7 @@ import AdmissionApplicationNumberSetupPage from './pages/AdmissionApplicationNum
 import AdmissionHeadsPage from './pages/AdmissionHeadsPage.jsx';
 import AdmissionTagsPage from './pages/AdmissionTagsPage.jsx';
 import AdmissionSourcePage from './pages/AdmissionSourcePage.jsx';
+import AdmissionSourceGroupPage from './pages/AdmissionSourceGroupPage.jsx';
 
 const RouteLoadingFallback = () => (
   <div className="flex min-h-[40vh] items-center justify-center px-6 py-10 text-sm text-slate-500">
@@ -282,6 +283,7 @@ function App() {
               <Route path="admission/admissionMaster/heads" element={<ProtectedRoute moduleKey="settings"><AdmissionHeadsPage /></ProtectedRoute>} />
               <Route path="admission/admissionMaster/tags" element={<ProtectedRoute moduleKey="settings"><AdmissionTagsPage /></ProtectedRoute>} />
               <Route path="admission/admissionMaster/source" element={<ProtectedRoute moduleKey="settings"><AdmissionSourcePage /></ProtectedRoute>} />
+              <Route path="admission/admissionMaster/source-group" element={<ProtectedRoute moduleKey="settings"><AdmissionSourceGroupPage /></ProtectedRoute>} />
               <Route path="admission/admissionMaster/:masterKey" element={<ProtectedRoute moduleKey="settings"><PlaceholderPage title="Admission Master Setup" /></ProtectedRoute>} />
               <Route path="admission/stagesSetup" element={<ProtectedRoute moduleKey="settings"><AdmissionStageSetupPage /></ProtectedRoute>} />
               <Route path="admission/admissionMaster/stages" element={<ProtectedRoute moduleKey="settings"><AdmissionStageSetupPage /></ProtectedRoute>} />

@@ -121,7 +121,7 @@ export default function Topbar({ onToggleSidebar }) {
   }, [activeDropdown, isMobileNavOpen, isProfileMenuOpen, isQuickActionsOpen, isSearchOpen, isExportOpen]);
 
   return (
-    <header className="erp-topbar fixed inset-x-0 top-0 z-40 border-b border-slate-200 bg-white px-3 py-3 md:left-[200px] md:w-[calc(100%-200px)]" style={{ background: 'linear-gradient(180deg, #3a241b 0%, #292625 48%, #171717 100%)' }}>
+    <header className="erp-topbar fixed inset-x-0 top-0 z-40 border-b border-slate-200 bg-white px-3 py-3 md:left-[200px] md:w-[calc(100%-200px)]" style={{ background: '#101824' }}>
       <style>{`
         .erp-topbar > div > div:first-child button,
         .erp-topbar > div > div:first-child span,

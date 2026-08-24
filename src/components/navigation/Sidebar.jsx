@@ -1495,7 +1495,7 @@ export default function Sidebar({ isOpen, onClose }) {
       {/* Desktop static sidebar */}
       <aside
         className="sidebar-surface hidden md:fixed md:left-0 md:top-0 md:z-50 md:flex md:flex-col md:overflow-y-auto md:py-4"
-        style={{ width: 200, height: '100vh', background: 'linear-gradient(180deg, #3a241b 0%, #292625 48%, #171717 100%)' }}
+        style={{ width: 200, height: '100vh', background: '#101824' }}
       >
         <div style={{ height: 64 }} className="flex items-center px-3">
           <div className="flex w-full items-center">
@@ -3604,7 +3604,7 @@ export default function Sidebar({ isOpen, onClose }) {
       {/* Mobile overlay sidebar */}
       <div className={`fixed inset-0 z-50 md:hidden ${isOpen ? 'block' : 'hidden'}`} role="dialog" aria-modal="true">
         <div className="fixed inset-0 bg-black/40" onClick={onClose} />
-        <aside className={`sidebar-surface fixed left-0 top-0 flex h-full w-[86vw] max-w-[320px] flex-col p-3 shadow-[0_35px_80px_rgba(7,43,22,0.18)] ${isOpen ? 'translate-x-0' : '-translate-x-full'}`} style={{ background: 'linear-gradient(180deg, #3a241b 0%, #292625 48%, #171717 100%)' }}>
+        <aside className={`sidebar-surface fixed left-0 top-0 flex h-full w-[86vw] max-w-[320px] flex-col p-3 shadow-[0_35px_80px_rgba(7,43,22,0.18)] ${isOpen ? 'translate-x-0' : '-translate-x-full'}`} style={{ background: '#101824' }}>
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-3xl bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-400/20">
