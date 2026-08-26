@@ -112,6 +112,19 @@ html::-webkit-scrollbar-thumb:hover {
   gap: 20px;
 }
 
+.erp-page-title-strip__icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  color: #ffffff;
+  background: #101824;
+  box-shadow: 0 8px 18px rgba(16, 24, 36, 0.16);
+}
+
 .erp-page-title-strip__clock {
   display: flex;
   flex: 0 0 auto;
@@ -121,7 +134,7 @@ html::-webkit-scrollbar-thumb:hover {
   padding: 8px 12px;
   border: 1px solid #dbe4ec;
   border-radius: 10px;
-  color: #475569;
+  color: #3c935f;
   background: linear-gradient(135deg, #f8fafc, #eef6f4);
   box-shadow: 0 3px 10px rgba(15, 23, 42, 0.05);
   white-space: nowrap;
@@ -141,7 +154,7 @@ html::-webkit-scrollbar-thumb:hover {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #101824;
+  background: #09ba5b;
   box-shadow: 0 0 0 3px #c3c3c3;
   content: '';
 }
@@ -366,8 +379,8 @@ html::-webkit-scrollbar-thumb:hover {
   --body-color: #374151;
   --secondary-color: #6B7280;
   --muted-color: #9CA3AF;
-  --brand-500: #10b981;
-  --sidebar-top-color: #3a241b;
+  --brand-500: #101824;
+  --sidebar-top-color: #101824;
   --primary-navy: #1e3a5f;
   --primary-navy-dark: #16374d;
   background-color: #ffffff;
@@ -432,7 +445,7 @@ button, input, textarea, select {
 /* Button system */
 .btn { @apply inline-flex items-center justify-center gap-2 rounded-2xl px-3 py-2 text-sm font-medium transition-transform; }
 .btn:focus { outline: 2px solid rgba(0, 2, 2, 0.12); outline-offset: 2px; }
-.btn-primary { background-color: rgb(15, 67, 34); color: white; box-shadow: 0 8px 24px rgba(22,163,74,0.14); }
+.btn-primary { background-color: #101824; color: white; box-shadow: 0 8px 24px rgba(13, 16, 55, 0.14); }
 .btn-primary:hover { transform: scale(1.04); background-color: #101824; }
 .btn-secondary { background-color: white; border: 1px solid rgba(15,23,42,0.06); color: var(--heading-color); }
 .btn-danger { background-color: #ef4444; color: white; }
@@ -517,7 +530,8 @@ textarea:hover,
 /* Compact tables for ERP pages */
 table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   font-size: 0.72rem;
   table-layout: fixed;
 }
@@ -529,10 +543,14 @@ table td {
   min-width: 0 !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.92) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.92) !important;
+  vertical-align: middle !important;
+  text-align: center !important;
+  background-color: transparent;
 }
 
 table th {
-  text-align: left !important;
   font-size: 0.68rem !important;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -541,9 +559,20 @@ table th {
   color: white !important;
 }
 
+table th:last-child,
+table td:last-child {
+  border-right: none !important;
+}
+
+table tbody tr:last-child td {
+  border-bottom: none !important;
+}
+
 table td {
   font-size: 0.72rem !important;
   white-space: nowrap !important;
+  color: #334155;
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 .student-list-table {
@@ -551,7 +580,7 @@ table td {
 }
 
 .student-list-table th {
-  text-align: left !important;
+  text-align: center !important;
   white-space: normal !important;
 }
 
@@ -753,7 +782,8 @@ table td span {
 /* Compact ERP data tables */
 table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   font-size: 0.75rem;
   table-layout: fixed;
 }
@@ -763,6 +793,10 @@ table td {
   padding: 0.55rem 0.85rem !important;
   line-height: 1.4;
   min-width: 0 !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.92) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.92) !important;
+  vertical-align: middle !important;
+  text-align: center !important;
 }
 
 table th {
@@ -771,11 +805,24 @@ table th {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   white-space: normal;
+  background-color: #101824 !important;
+  color: #ffffff !important;
 }
 
 table td {
   font-size: 0.75rem !important;
   white-space: normal;
+  background-color: rgba(255, 255, 255, 0.95);
+  color: #334155;
+}
+
+table th:last-child,
+table td:last-child {
+  border-right: none !important;
+}
+
+table tbody tr:last-child td {
+  border-bottom: none !important;
 }
 
 table th span,
@@ -785,23 +832,24 @@ table td span {
 .erp-table-header {
   background-color: #101824 !important;
   color: #ffffff;
-  font-weight: 700;
-  min-height: 50px;
+  font-weight: 600;
+  min-height: 40px;
   background-clip: padding-box;
 }
 .erp-table-header th {
   background: transparent !important;
   background-color: transparent !important;
   color: inherit;
-  font-weight: inherit;
+  font-weight: 600;
   vertical-align: middle;
-  padding: 1rem 1.25rem !important;
+  padding: 0.55rem 0.85rem !important;
   border-radius: 0;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   white-space: normal;
   text-align: center !important;
-  height: 56px;
+  height: 40px !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.9) !important;
 }
 .erp-table-header th:first-child {
   border-top-left-radius: 12px;
@@ -1069,11 +1117,13 @@ table[data-erp-table] thead th,
 table thead th {
   background-color: var(--sidebar-top-color) !important;
   color: #ffffff !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.08em !important;
-  padding: 0.75rem 1rem !important;
-  font-size: 0.72rem !important;
+  padding: 0.55rem 0.85rem !important;
+  font-size: 0.75rem !important;
+  line-height: 1.25 !important;
+  height: 40px !important;
   text-align: center !important;
   vertical-align: middle !important;
   white-space: normal !important;

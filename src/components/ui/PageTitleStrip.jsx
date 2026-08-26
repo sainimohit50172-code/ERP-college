@@ -1,5 +1,24 @@
-import { useEffect, useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { createElement, useEffect, useState } from 'react';
+import {
+  Activity,
+  ArrowLeft,
+  BarChart3,
+  BookOpen,
+  Building2,
+  CalendarDays,
+  ClipboardList,
+  CreditCard,
+  GraduationCap,
+  Headphones,
+  LayoutDashboard,
+  Library,
+  Megaphone,
+  Settings,
+  ShieldCheck,
+  Truck,
+  UserRound,
+  UsersRound,
+} from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const toTitle = (pathname) => {
@@ -17,6 +36,29 @@ const toPath = (pathname) => {
 
   return segments.length ? ['Dashboard', ...segments].join(' > ') : 'Dashboard';
 };
+
+const pageIcons = [
+  { match: /^\/$/, icon: LayoutDashboard },
+  { match: /admission|application|enquir|lead|counsel|follow-up/, icon: ClipboardList },
+  { match: /student|academic|subject|semester|section|course|classroom|result|grade|transcript|promotion/, icon: GraduationCap },
+  { match: /teacher|employee|hr|leave|payroll|department|designation|organization/, icon: UsersRound },
+  { match: /attendance|lecture-attendance/, icon: Activity },
+  { match: /exam|coe|marks|dmc|seating|invigilator/, icon: ClipboardList },
+  { match: /fee|payment|receipt|finance|account|income|expense|asset|stock|vendor|purchase/, icon: CreditCard },
+  { match: /library|book|opac/, icon: Library },
+  { match: /hostel/, icon: Building2 },
+  { match: /transport|vehicle|driver|route|fuel/, icon: Truck },
+  { match: /lms|syllabus|assignment|question-bank|study|video|online-test/, icon: BookOpen },
+  { match: /security|visitor|gate-pass|incident/, icon: ShieldCheck },
+  { match: /report|analytics|dashboard/, icon: BarChart3 },
+  { match: /notification|announcement|marketing|campaign/, icon: Megaphone },
+  { match: /helpdesk|ticket/, icon: Headphones },
+  { match: /calendar|timetable|schedule/, icon: CalendarDays },
+  { match: /settings|preference|config|setup|permission|audit|password/, icon: Settings },
+  { match: /profile|user/, icon: UserRound },
+];
+
+const getPageIcon = (pathname) => pageIcons.find(({ match }) => match.test(pathname))?.icon || LayoutDashboard;
 
 const readPageIdentity = (pathname) => {
   const pageRoot = document.querySelector('.erp-page-shell') || document.querySelector('.erp-content-wrapper');
@@ -40,6 +82,7 @@ export default function PageTitleStrip() {
   const navigate = useNavigate();
   const [identity, setIdentity] = useState(() => ({ path: 'Dashboard', title: 'Dashboard' }));
   const [currentTime, setCurrentTime] = useState(() => new Date());
+  const pageIcon = getPageIcon(location.pathname);
 
   useEffect(() => {
     const clockId = window.setInterval(() => setCurrentTime(new Date()), 1000);
@@ -80,6 +123,9 @@ export default function PageTitleStrip() {
           <ArrowLeft className="h-5 w-5" aria-hidden="true" />
         </button>
       )}
+      <div className="erp-page-title-strip__icon" aria-hidden="true">
+        {createElement(pageIcon, { className: 'h-5 w-5' })}
+      </div>
       <div className="erp-page-title-strip__content">
         <div className="erp-page-title-strip__path">{identity.path}</div>
         <div className="erp-page-title-strip__heading">{identity.title}</div>

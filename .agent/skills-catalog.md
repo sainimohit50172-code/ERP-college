@@ -1,6 +1,6 @@
 # AI Agent Skills — Full Catalog
 
-> Auto-generated. Total: **2025 skills** across **116 categories**.
+> Auto-generated. Total: **2028 skills** across **116 categories**.
 > When asked "what skill should I use?", browse this file and suggest the most relevant skill IDs.
 > Install a skill: `Ctrl+Shift+/` → search for the skill ID → press Enter.
 
@@ -262,6 +262,7 @@ Chat widget, Messages, PromptInput, Avatar, LLM _(risk: unknown)_
 
 - **pakistan-payments-stack**: Design and implement production-grade Pakistani payment integrations (JazzCash, Easypaisa, bank/PSP rails, optional Raast) for SaaS with PKR billing, webhook reliability, and reconciliation. _(risk: safe)_
 - **2slides-ppt-generator**: AI-powered presentation generation via the 2slides API — create slides from text, match a reference image style, summarize documents into decks, add AI voice narration, and export pages/audio. Use for any "make slides", "create a deck", or "slides from this document" request. _(risk: safe)_
+- **famulor-skill**: Operate Famulor assistants, communication history, campaigns, knowledge, automations, telephony, and workspace administration through its hosted MCP server. _(risk: critical)_
 - **riffkit**: Riff a winning TikTok into your own short video — study a proven video's emotion formula and regenerate it with your product, character, and language (9 supported). Also makes UGC ad creative. _(risk: critical)_
 - **sendblue-api**: Send and receive iMessage, SMS, and RCS from application code via the Sendblue HTTP API — text, media, group messages, send styles, reactions, typing indicators, status callbacks, and inbound webhooks. _(risk: critical)_
 - **sendblue-cli**: Send iMessage and SMS from the shell via the @sendblue/cli npm package — outbound sends, contact management, and account setup with no API client or webhook server required. _(risk: critical)_
@@ -968,7 +969,6 @@ font atlas, text layout, font family, font size, text shaping,
 makepad 字体, makepad 文字, makepad 排版, makepad 字形
  _(risk: unknown)_
 - **rayden-use**: Build and maintain Rayden UI components and screens in Figma via Figma MCP with full design token enforcement _(risk: safe)_
-- **uizze-ui-research**: Use when building or reviewing web and iOS UI and you need real references from the free UIZZE public catalog, a structured design contract, a consent-gated rendered HTML/CSS preview, or a hard pre-ship finish gate. _(risk: safe)_
 - **uxui-principles**: Evaluate interfaces against 168 research-backed UX/UI principles, detect antipatterns, and inject UX context into AI coding sessions. _(risk: safe)_
 
 ## design-it
@@ -1132,6 +1132,7 @@ api docs, reference,... _(risk: unknown)_
 - **lore**: Markdown project memory for AI agents. Use for decisions, architecture, conventions, monorepo scopes, `.lore/`, or `lore` commands; not native `/init`/`/compact` or generic init/compress/audit/query. _(risk: safe)_
 - **ontoly-software-graph**: Use Ontoly's deterministic Software Graph, MCP server, and agent skills for architecture review, request tracing, impact analysis, and dependency analysis. _(risk: critical)_
 - **performance-optimization**: Optimizes application performance. Use when performance requirements exist, when you suspect performance regressions, or when Core Web Vitals or load times need improvement. Use when profiling reveals bottlenecks that need fixing. _(risk: critical)_
+- **poka-yoke**: Mistake-proof code, config and process: make the wrong action impossible or self-announcing rather than documented. _(risk: safe)_
 - **prototype**: Build a throwaway prototype to flesh out a design — a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route. _(risk: safe)_
 - **push-skill-to-github**: Commit and push skill changes to the configured skills repository after review and validation. _(risk: critical)_
 - **python-development**: You are a Python project architecture expert specializing in scaffolding production-ready Python applications. Generate complete project structures with modern tooling (uv, FastAPI, Django), type hint (Alias for python-development-python-scaffold) _(risk: critical)_
@@ -1139,6 +1140,7 @@ api docs, reference,... _(risk: unknown)_
 - **rayden-code**: Generate React code with Rayden UI components using correct props, tokens, and premium layout patterns _(risk: safe)_
 - **runapi-cli**: Generate AI images, videos, and music/audio from agents using the RunAPI CLI. _(risk: critical)_
 - **setup-matt-pocock-skills**: Configure this repo for the engineering skills — set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills. _(risk: safe)_
+- **spec-driven-loop**: Freeze PRD, technical design, and acceptance criteria before medium-to-large Codex work; coordinate agents with explicit ownership, then judge delivery from diffs, tests, and evidence. _(risk: safe)_
 - **squirrel**: Full-cycle AI coding skill: plans, builds, tests, lints, fixes bugs, and writes production-grade docs. Auto-detects project state and adapts its 8-phase pipeline. _(risk: safe)_
 - **tdd**: Test-driven development. Use when the user wants to build features or fix bugs test-first, mentions "red-green-refactor", or wants integration tests. _(risk: safe)_
 - **technical-change-tracker**: Track code changes with structured JSON records, state machine enforcement, and AI session handoff for bot continuity _(risk: safe)_
@@ -1314,7 +1316,7 @@ makepad Markdown, makepad Html, TextFlow, rich... _(risk: unknown)_
 - **webapp-testing**: Toolkit for interacting with and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing browser screenshots, and viewing browse... _(risk: unknown)_
 - **zod-validation-expert**: Expert in Zod — TypeScript-first schema validation. Covers parsing, custom errors, refinements, type inference, and integration with React Hook Form, Next.js, and tRPC. _(risk: safe)_
 - **zustand-store-ts**: Create Zustand stores with TypeScript, subscribeWithSelector middleware, and proper state/action separation. Use when building React state management, creating global stores, or implementing reacti... _(risk: unknown)_
-- **anti-ui-slop**: Stop coding agents from shipping generic UI with UIZZE's 800,000+ real web and iOS screens, product-specific contracts, required states, and a hard finish gate. _(risk: safe)_
+- **anti-ui-slop**: Stop coding agents from shipping generic UI. Extend the product's design system, use UIZZE evidence only when useful, cover required states, and inspect the rendered result. _(risk: safe)_
 - **astro**: Build content-focused websites with Astro — zero JS by default, islands architecture, multi-framework components, and Markdown/MDX support. _(risk: safe)_
 - **design-it**: Routes frontend design tasks to 48 specific UI styles. Triggers for websites, app screens, or UI components requesting a specific aesthetic. _(risk: safe)_
 - **design-taste-frontend**: Use when building high-agency frontend interfaces with strict design taste, calibrated color, responsive layout, and motion rules. _(risk: safe)_
@@ -1868,6 +1870,7 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 
 - **progressive-estimation**: Estimate AI-assisted and hybrid human+agent development work with research-backed PERT statistics and calibration feedback loops _(risk: safe)_
 - **feature-tracking**: Maintain durable feature-level memory across AI coding sessions with lightweight Markdown tracks for status, source-of-truth docs, decisions, risks, and changes. _(risk: critical)_
+- **project-state-governor**: Govern evidence-backed canonical project state across sessions, branches, reviews, and research cycles without inventing product intent. _(risk: critical)_
 - **to-issues**: Break a plan, spec, or PRD into independently-grabbable issues on the project issue tracker using tracer-bullet vertical slices. _(risk: safe)_
 - **to-prd**: Turn the current conversation into a PRD and publish it to the project issue tracker — no interview, just synthesis of what you've already discussed. _(risk: safe)_
 

@@ -246,15 +246,15 @@ export default function AdmissionTransactionsPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            <div className="rounded-2xl bg-white px-4 py-3 shadow-sm ring-1 ring-slate-200">
-              <label htmlFor="session" className="text-sm font-medium uppercase tracking-[0.24em] text-slate-500">
+            <div className="rounded-2xl bg-white px-3 py-2 shadow-sm ring-1 ring-slate-200">
+              <label htmlFor="session" className="text-xs font-medium uppercase tracking-[0.24em] text-slate-500">
                 Select Session
               </label>
               <select
                 id="session"
                 value={session}
                 onChange={(event) => setSession(event.target.value)}
-                className="mt-2 w-full bg-transparent text-sm text-slate-900 outline-none"
+                className="mt-1 w-full bg-transparent text-xs text-slate-900 outline-none"
               >
                 {SESSION_OPTIONS.map((option) => (
                   <option key={option} value={option}>
@@ -266,7 +266,7 @@ export default function AdmissionTransactionsPage() {
             <button
               type="button"
               onClick={() => setIsAddOpen(true)}
-              className="inline-flex items-center gap-2 rounded-2xl bg-slate-950 px-4 py-3 text-sm font-semibold text-white shadow-sm shadow-slate-200 transition hover:bg-slate-800"
+              className="inline-flex items-center gap-2 rounded-2xl bg-[#101824] px-4 py-3 text-sm font-semibold text-white shadow-sm shadow-slate-200 transition hover:bg-[#0b111a]"
             >
               <Plus size={16} /> Add Transaction
             </button>
@@ -499,7 +499,7 @@ export default function AdmissionTransactionsPage() {
               <button
                 type="button"
                 onClick={handleApplyFilter}
-                className="rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 hover-gradient-border"
+                className="rounded-2xl bg-[#101824] px-5 py-3 text-sm font-semibold text-white hover:bg-[#0b111a] hover-gradient-border"
               >
                 Go →
               </button>

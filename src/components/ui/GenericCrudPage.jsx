@@ -25,7 +25,7 @@ export default function GenericCrudPage({
   const [editItem, setEditItem] = useState(null);
   const [formValues, setFormValues] = useState(defaultFormValues);
 
-  const { data, isLoading } = useResourceList(resource, { page: 1, pageSize: 200 });
+  const { data, isLoading } = useResourceList(resource, { page: 1, pageSize: 100 });
   const items = data?.items || [];
   const createMutation = useCreateResource(resource);
   const updateMutation = useUpdateResource(resource);

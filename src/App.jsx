@@ -23,6 +23,13 @@ import SettingsPage from './pages/SettingsPage.jsx';
 import InstituteSetupPage from './pages/InstituteSetupPage.jsx';
 import InstituteSetupPage2 from './pages/InstituteSetupPage2.jsx';
 import InstituteProfilePage from './pages/InstituteProfilePage.jsx';
+import LibrarySetupPage from './pages/LibrarySetupPage.jsx';
+import LibraryLanguagesPage from './pages/LibraryLanguagesPage.jsx';
+import LibraryCoreSetupPage from './pages/LibraryCoreSetupPage.jsx';
+import LibraryVendorPage from './pages/LibraryVendorPage.jsx';
+import ComplianceCertificateNamesPage from './pages/ComplianceCertificateNamesPage.jsx';
+import ComplianceCertificatePage from './pages/ComplianceCertificatePage.jsx';
+import WebTabsPage from './pages/WebTabsPage.jsx';
 import AcademicSessionListPage from './pages/AcademicSessionListPage.jsx';
 import StudentListPage from './pages/StudentListPage.jsx';
 import StudentCollegeWisePage from './pages/StudentCollegeWisePage.jsx';
@@ -150,7 +157,16 @@ import ApplicationsPage from './pages/ApplicationsPage.jsx';
 import AdmissionTransactionsPage from './pages/AdmissionTransactionsPage.jsx';
 import AlumniPage from './pages/AlumniPage.jsx';
 import LibraryBooksPage from './pages/LibraryBooksPage.jsx';
+import LibraryBookRackPage from './pages/LibraryBookRackPage.jsx';
 import LibraryCategoriesPage from './pages/LibraryCategoriesPage.jsx';
+import LibraryAvailabilityPage from './pages/LibraryAvailabilityPage.jsx';
+import LibrarySubCategoriesPage from './pages/LibrarySubCategoriesPage.jsx';
+import LibrarySubjectsPage from './pages/LibrarySubjectsPage.jsx';
+import LibraryIssueTypesPage from './pages/LibraryIssueTypesPage.jsx';
+import LibraryReturnDatesPage from './pages/LibraryReturnDatesPage.jsx';
+import LibraryMemberIdPage from './pages/LibraryMemberIdPage.jsx';
+import LibraryMembershipPage from './pages/LibraryMembershipPage.jsx';
+import LibraryReceiptIdCounterPage from './pages/LibraryReceiptIdCounterPage.jsx';
 import LibraryMembersPage from './pages/LibraryMembersPage.jsx';
 import LibraryIssuesPage from './pages/LibraryIssuesPage.jsx';
 import LibraryReturnsPage from './pages/LibraryReturnsPage.jsx';
@@ -230,10 +246,17 @@ import AdmissionSetupPage from './pages/AdmissionSetupPage.jsx';
 import AdmissionMasterDashboardPage from './pages/AdmissionMasterDashboardPage.jsx';
 import AdmissionStageSetupPage from './pages/AdmissionStageSetupPage.jsx';
 import AdmissionApplicationNumberSetupPage from './pages/AdmissionApplicationNumberSetupPage.jsx';
+import AdmissionOperatorConfigPage from './pages/AdmissionOperatorConfigPage.jsx';
+import AdmissionIvrOutboundCallPage from './pages/AdmissionIvrOutboundCallPage.jsx';
+import AdmissionTeamsPage from './pages/AdmissionTeamsPage.jsx';
+import CounselorRoundRobinPage from './pages/CounselorRoundRobinPage.jsx';
 import AdmissionHeadsPage from './pages/AdmissionHeadsPage.jsx';
 import AdmissionTagsPage from './pages/AdmissionTagsPage.jsx';
 import AdmissionSourcePage from './pages/AdmissionSourcePage.jsx';
 import AdmissionSourceGroupPage from './pages/AdmissionSourceGroupPage.jsx';
+import AdmissionSeatsPage from './pages/AdmissionSeatsPage.jsx';
+import CounselorMapperPage from './pages/CounselorMapperPage.jsx';
+import DuplicateFieldMasterPage from './pages/DuplicateFieldMasterPage.jsx';
 
 const RouteLoadingFallback = () => (
   <div className="flex min-h-[40vh] items-center justify-center px-6 py-10 text-sm text-slate-500">
@@ -279,11 +302,18 @@ function App() {
               <Route path="admission/setup" element={<ProtectedRoute moduleKey="settings"><AdmissionSetupPage /></ProtectedRoute>} />
               <Route path="admission/admissionMaster" element={<ProtectedRoute moduleKey="settings"><AdmissionMasterDashboardPage /></ProtectedRoute>} />
               <Route path="admission/admissionMaster/application-number" element={<ProtectedRoute moduleKey="settings"><AdmissionApplicationNumberSetupPage /></ProtectedRoute>} />
+              <Route path="admission/admissionMaster/operator-config" element={<ProtectedRoute moduleKey="settings"><AdmissionOperatorConfigPage /></ProtectedRoute>} />
+              <Route path="admission/admissionMaster/ivr-outbound-call" element={<ProtectedRoute moduleKey="settings"><AdmissionIvrOutboundCallPage /></ProtectedRoute>} />
+              <Route path="admission/admissionMaster/teams" element={<ProtectedRoute moduleKey="settings"><AdmissionTeamsPage /></ProtectedRoute>} />
+              <Route path="admission/admissionMaster/counselor-round-robin" element={<ProtectedRoute moduleKey="settings"><CounselorRoundRobinPage /></ProtectedRoute>} />
               <Route path="admission/admissionMaster/transaction-receipt" element={<ProtectedRoute moduleKey="settings"><ReceiptConfigurationPage /></ProtectedRoute>} />
               <Route path="admission/admissionMaster/heads" element={<ProtectedRoute moduleKey="settings"><AdmissionHeadsPage /></ProtectedRoute>} />
               <Route path="admission/admissionMaster/tags" element={<ProtectedRoute moduleKey="settings"><AdmissionTagsPage /></ProtectedRoute>} />
               <Route path="admission/admissionMaster/source" element={<ProtectedRoute moduleKey="settings"><AdmissionSourcePage /></ProtectedRoute>} />
               <Route path="admission/admissionMaster/source-group" element={<ProtectedRoute moduleKey="settings"><AdmissionSourceGroupPage /></ProtectedRoute>} />
+              <Route path="admission/admissionMaster/seats" element={<ProtectedRoute moduleKey="settings"><AdmissionSeatsPage /></ProtectedRoute>} />
+              <Route path="admission/admissionMaster/counselor-mapper" element={<ProtectedRoute moduleKey="settings"><CounselorMapperPage /></ProtectedRoute>} />
+              <Route path="admission/admissionMaster/duplicate-fields" element={<ProtectedRoute moduleKey="settings"><DuplicateFieldMasterPage /></ProtectedRoute>} />
               <Route path="admission/admissionMaster/:masterKey" element={<ProtectedRoute moduleKey="settings"><PlaceholderPage title="Admission Master Setup" /></ProtectedRoute>} />
               <Route path="admission/stagesSetup" element={<ProtectedRoute moduleKey="settings"><AdmissionStageSetupPage /></ProtectedRoute>} />
               <Route path="admission/admissionMaster/stages" element={<ProtectedRoute moduleKey="settings"><AdmissionStageSetupPage /></ProtectedRoute>} />
@@ -385,9 +415,23 @@ function App() {
               <Route path="question-bank" element={<ProtectedRoute moduleKey="questionBank"><QuestionBankPage /></ProtectedRoute>} />
               <Route path="internal-marks" element={<ProtectedRoute moduleKey="internalMarks"><InternalMarksPage /></ProtectedRoute>} />
               <Route path="practical-marks" element={<ProtectedRoute moduleKey="practicalMarks"><PracticalMarksPage /></ProtectedRoute>} />
-              <Route path="library" element={<ProtectedRoute moduleKey="library"><LibraryManagementPage /></ProtectedRoute>} />
+              <Route path="library" element={<ProtectedRoute moduleKey="library"><LibrarySetupPage /></ProtectedRoute>} />
+              <Route path="library/setup" element={<ProtectedRoute moduleKey="library"><LibraryCoreSetupPage /></ProtectedRoute>} />
+              <Route path="library/vendors" element={<ProtectedRoute moduleKey="library"><LibraryVendorPage /></ProtectedRoute>} />
+              <Route path="library/racks" element={<ProtectedRoute moduleKey="library"><LibraryBookRackPage /></ProtectedRoute>} />
+              <Route path="library/management" element={<ProtectedRoute moduleKey="library"><LibraryManagementPage /></ProtectedRoute>} />
+              <Route path="settings/library" element={<ProtectedRoute moduleKey="settings"><LibrarySetupPage /></ProtectedRoute>} />
               <Route path="library/books" element={<ProtectedRoute moduleKey="library"><LibraryBooksPage /></ProtectedRoute>} />
               <Route path="library/categories" element={<ProtectedRoute moduleKey="library"><LibraryCategoriesPage /></ProtectedRoute>} />
+              <Route path="library/availability" element={<ProtectedRoute moduleKey="library"><LibraryAvailabilityPage /></ProtectedRoute>} />
+              <Route path="library/subcategories" element={<ProtectedRoute moduleKey="library"><LibrarySubCategoriesPage /></ProtectedRoute>} />
+              <Route path="library/subjects" element={<ProtectedRoute moduleKey="library"><LibrarySubjectsPage /></ProtectedRoute>} />
+              <Route path="library/issue-types" element={<ProtectedRoute moduleKey="library"><LibraryIssueTypesPage /></ProtectedRoute>} />
+              <Route path="library/return-dates" element={<ProtectedRoute moduleKey="library"><LibraryReturnDatesPage /></ProtectedRoute>} />
+              <Route path="library/member-id" element={<ProtectedRoute moduleKey="library"><LibraryMemberIdPage /></ProtectedRoute>} />
+              <Route path="library/membership" element={<ProtectedRoute moduleKey="library"><LibraryMembershipPage /></ProtectedRoute>} />
+              <Route path="library/receipt-id-counter" element={<ProtectedRoute moduleKey="library"><LibraryReceiptIdCounterPage /></ProtectedRoute>} />
+              <Route path="library/languages" element={<ProtectedRoute moduleKey="library"><LibraryLanguagesPage /></ProtectedRoute>} />
               <Route path="library/members" element={<ProtectedRoute moduleKey="library"><LibraryMembersPage /></ProtectedRoute>} />
               <Route path="library/issues" element={<ProtectedRoute moduleKey="library"><LibraryIssuesPage /></ProtectedRoute>} />
               <Route path="library/returns" element={<ProtectedRoute moduleKey="library"><LibraryReturnsPage /></ProtectedRoute>} />
@@ -607,9 +651,9 @@ function App() {
               <Route path="settings/institute/preferences" element={<ProtectedRoute moduleKey="settings"><InstitutePreferencePage /></ProtectedRoute>} />
               <Route path="settings/institute/template-preference" element={<ProtectedRoute moduleKey="settings"><InstitutePreferencePage /></ProtectedRoute>} />
               <Route path="settings/institute/permission-groups" element={<ProtectedRoute moduleKey="settings"><PermissionMatrixPage /></ProtectedRoute>} />
-              <Route path="settings/institute/web-tabs" element={<ProtectedRoute moduleKey="settings"><PlaceholderPage title="Web Tabs" /></ProtectedRoute>} />
-              <Route path="settings/institute/compliance-certificate-names" element={<ProtectedRoute moduleKey="settings"><PlaceholderPage title="Compliance Certificate Names" /></ProtectedRoute>} />
-              <Route path="settings/institute/compliance-certificate" element={<ProtectedRoute moduleKey="settings"><PlaceholderPage title="Compliance Certificate" /></ProtectedRoute>} />
+              <Route path="settings/institute/web-tabs" element={<ProtectedRoute moduleKey="settings"><WebTabsPage /></ProtectedRoute>} />
+              <Route path="settings/institute/compliance-certificate-names" element={<ProtectedRoute moduleKey="settings"><ComplianceCertificateNamesPage /></ProtectedRoute>} />
+              <Route path="settings/institute/compliance-certificate" element={<ProtectedRoute moduleKey="settings"><ComplianceCertificatePage /></ProtectedRoute>} />
               <Route path="settings/institute/student-fields" element={<ProtectedRoute moduleKey="settings"><StudentFieldsManagementPage /></ProtectedRoute>} />
               <Route path="settings/institute/student-master" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={<RouteLoadingFallback />}><LazyStudentMasterSetupPage /></Suspense></ProtectedRoute>} />
               <Route path="settings/institute/student-master/new" element={<ProtectedRoute moduleKey="settings"><Suspense fallback={<RouteLoadingFallback />}><LazyStudentMasterSetupPage /></Suspense></ProtectedRoute>} />

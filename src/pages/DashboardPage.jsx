@@ -165,7 +165,7 @@ export default function DashboardPage () {
                   </div>
                   <div className="mt-4 grid flex-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     {reportCards.map((card) => (
-                      <button key={card.id} type="button" onClick={() => navigate('/reports')} className="hover-gradient-border flex min-h-[92px] flex-col items-center justify-center rounded-2xl bg-slate-900 px-3 py-3 text-center text-white transition hover:-translate-y-0.5 hover:shadow-lg hover:bg-slate-800 cursor-pointer">
+                      <button key={card.id} type="button" onClick={() => navigate('/reports')} className="hover-gradient-border flex min-h-[92px] flex-col items-center justify-center rounded-2xl bg-[#101824] px-3 py-3 text-center text-white transition hover:-translate-y-0.5 hover:shadow-lg hover:bg-[#1a2635] cursor-pointer">
                         <card.icon className="h-5 w-5" />
                         <div className="mt-2 text-[12px] font-semibold">{card.label}</div>
                       </button>

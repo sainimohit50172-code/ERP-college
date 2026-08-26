@@ -1,22 +1,17 @@
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   BarChart3,
   BookOpen,
   Bus,
-  ChevronLeft,
   ChevronRight,
-  Clock3,
-  Fuel,
   MapPinned,
+  Pencil,
   Plus,
   RefreshCw,
   Search,
-  ShieldCheck,
   Sparkles,
+  Trash2,
   UserCog,
-  Users,
-  Wrench,
   X,
   Eye,
 } from 'lucide-react';
@@ -108,7 +103,6 @@ function getStatusClasses(status) {
 }
 
 export default function InstituteTransportPage() {
-  const navigate = useNavigate();
   const [vehicles, setVehicles] = useState(initialVehicles);
   const [search, setSearch] = useState('');
   const [routeFilter, setRouteFilter] = useState('All');
@@ -145,26 +139,6 @@ export default function InstituteTransportPage() {
   const driverOptions = ['All', ...Array.from(new Set(vehicles.map((vehicle) => vehicle.driver)))];
   const typeOptions = ['All', ...Array.from(new Set(vehicles.map((vehicle) => vehicle.vehicleType)))];
   const statusOptions = ['All', 'Active', 'Maintenance', 'Inactive', 'Reserved'];
-
-  const analytics = [
-    { label: 'Total Vehicles', value: vehicles.length, icon: Bus },
-    { label: 'Active Vehicles', value: vehicles.filter((item) => item.status === 'Active').length, icon: ShieldCheck },
-    { label: 'Drivers', value: Array.from(new Set(vehicles.map((item) => item.driver))).length, icon: UserCog },
-    { label: 'Students Using Transport', value: vehicles.reduce((sum, item) => sum + Number(item.currentStudents || 0), 0), icon: Users },
-    { label: 'Routes', value: Array.from(new Set(vehicles.map((item) => item.route))).length, icon: MapPinned },
-    { label: 'Today\'s Trips', value: 24, icon: Clock3 },
-    { label: 'Monthly Revenue (Demo)', value: '₹4.8L', icon: Sparkles },
-    { label: 'Pending Maintenance', value: vehicles.filter((item) => item.status === 'Maintenance').length, icon: Wrench },
-  ];
-
-  const quickActions = [
-    { title: 'Assign Route', description: 'Map vehicles to routes and stopping points.', type: 'route' },
-    { title: 'Allocate Students', description: 'Balance occupancy for every vehicle trip.', type: 'vehicle' },
-    { title: 'Manage Drivers', description: 'Review driver availability and shifts.', type: 'driver' },
-    { title: 'Service Schedule', description: 'Plan maintenance and inspection windows.', type: 'vehicle' },
-    { title: 'Fuel Log', description: 'Track fuel consumption and trip efficiency.', type: 'vehicle' },
-    { title: 'Transport Reports', description: 'Open analytics for transport operations.', type: 'report' },
-  ];
 
   const resetForm = () => {
     setForm(emptyForm);
@@ -430,46 +404,46 @@ export default function InstituteTransportPage() {
 
         <div className="mt-6 overflow-x-auto rounded-3xl border border-slate-200">
           <table className="min-w-full divide-y divide-slate-200 text-sm text-slate-700">
-            <thead>
-              <tr className="bg-emerald-600 text-left uppercase tracking-[0.12em] text-white">
-                <th className="px-4 py-4">#</th>
-                <th className="px-4 py-4">Vehicle No.</th>
-                <th className="px-4 py-4">Vehicle Name</th>
-                <th className="px-4 py-4">Vehicle Type</th>
-                <th className="px-4 py-4">Route</th>
-                <th className="px-4 py-4">Driver</th>
-                <th className="px-4 py-4">Capacity</th>
-                <th className="px-4 py-4">Current Students</th>
-                <th className="px-4 py-4">Status</th>
-                <th className="px-4 py-4">Last Service</th>
-                <th className="px-4 py-4">Action</th>
+            <thead className="text-center">
+              <tr className="bg-emerald-600 text-center uppercase tracking-[0.12em] text-white">
+                <th className="border-r border-white/60 px-4 py-4">#</th>
+                <th className="border-r border-white/60 px-4 py-4">Vehicle No.</th>
+                <th className="border-r border-white/60 px-4 py-4">Vehicle Name</th>
+                <th className="border-r border-white/60 px-4 py-4">Vehicle Type</th>
+                <th className="border-r border-white/60 px-4 py-4">Route</th>
+                <th className="border-r border-white/60 px-4 py-4">Driver</th>
+                <th className="border-r border-white/60 px-4 py-4">Capacity</th>
+                <th className="border-r border-white/60 px-4 py-4">Current Students</th>
+                <th className="border-r border-white/60 px-4 py-4">Status</th>
+                <th className="border-r border-white/60 px-4 py-4">Last Service</th>
+                <th className="border-r border-white/60 px-4 py-4">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 bg-white text-sm">
+            <tbody className="divide-y divide-slate-200 bg-white text-center text-sm">
               {filteredVehicles.map((vehicle, index) => (
                 <tr key={vehicle.id} className={index % 2 === 0 ? 'bg-slate-50' : 'bg-white'}>
-                  <td className="whitespace-nowrap px-4 py-4 font-medium text-slate-900">{index + 1}</td>
-                  <td className="whitespace-nowrap px-4 py-4 font-medium text-slate-900">{vehicle.vehicleNumber}</td>
-                  <td className="px-4 py-4 text-slate-700">{vehicle.vehicleName}</td>
-                  <td className="whitespace-nowrap px-4 py-4">{vehicle.vehicleType}</td>
-                  <td className="whitespace-nowrap px-4 py-4">{vehicle.route}</td>
-                  <td className="whitespace-nowrap px-4 py-4">{vehicle.driver}</td>
-                  <td className="whitespace-nowrap px-4 py-4">{vehicle.capacity}</td>
-                  <td className="whitespace-nowrap px-4 py-4">{vehicle.currentStudents}</td>
-                  <td className="whitespace-nowrap px-4 py-4">
+                  <td className="whitespace-nowrap border-r border-white px-4 py-4 text-center font-medium text-slate-900">{index + 1}</td>
+                  <td className="whitespace-nowrap border-r border-white px-4 py-4 text-center font-medium text-slate-900">{vehicle.vehicleNumber}</td>
+                  <td className="border-r border-white px-4 py-4 text-center text-slate-700">{vehicle.vehicleName}</td>
+                  <td className="whitespace-nowrap border-r border-white px-4 py-4 text-center">{vehicle.vehicleType}</td>
+                  <td className="whitespace-nowrap border-r border-white px-4 py-4 text-center">{vehicle.route}</td>
+                  <td className="whitespace-nowrap border-r border-white px-4 py-4 text-center">{vehicle.driver}</td>
+                  <td className="whitespace-nowrap border-r border-white px-4 py-4 text-center">{vehicle.capacity}</td>
+                  <td className="whitespace-nowrap border-r border-white px-4 py-4 text-center">{vehicle.currentStudents}</td>
+                  <td className="whitespace-nowrap border-r border-white px-4 py-4 text-center">
                     <span className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${getStatusClasses(vehicle.status)}`}>{vehicle.status}</span>
                   </td>
-                  <td className="whitespace-nowrap px-4 py-4">{vehicle.lastService}</td>
-                  <td className="whitespace-nowrap px-4 py-4">
-                    <div className="flex flex-wrap items-center justify-center gap-1.5">
-                      <button type="button" title="View" aria-label="View" onClick={() => { setSelectedVehicle(vehicle); setIsViewOpen(true); }} className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-sky-200 bg-sky-50 text-sky-700 transition hover:bg-sky-100 hover-gradient-border">
-                        <Eye className="h-4 w-4" />
+                  <td className="whitespace-nowrap border-r border-white px-4 py-4 text-center">{vehicle.lastService}</td>
+                  <td className="whitespace-nowrap border-r border-white px-4 py-4 text-center">
+                    <div className="flex flex-nowrap items-center justify-center gap-1">
+                      <button type="button" title="View" aria-label="View" onClick={() => { setSelectedVehicle(vehicle); setIsViewOpen(true); }} className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-0 bg-sky-50 text-sky-700 transition hover:bg-sky-100 hover-gradient-border">
+                        <Eye className="h-3.5 w-3.5" />
                       </button>
-                      <button type="button" title="Edit" aria-label="Edit" onClick={() => openEditModal(vehicle)} className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 transition hover:bg-emerald-100 hover-gradient-border">
-                        <Pencil className="h-4 w-4" />
+                      <button type="button" title="Edit" aria-label="Edit" onClick={() => openEditModal(vehicle)} className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-0 bg-emerald-50 text-emerald-700 transition hover:bg-emerald-100 hover-gradient-border">
+                        <Pencil className="h-3.5 w-3.5" />
                       </button>
-                      <button type="button" title="Delete" aria-label="Delete" onClick={() => confirmDelete(vehicle)} className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-rose-200 bg-rose-50 text-rose-700 transition hover:bg-rose-100 hover-gradient-border">
-                        <Trash2 className="h-4 w-4" />
+                      <button type="button" title="Delete" aria-label="Delete" onClick={() => confirmDelete(vehicle)} className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-0 bg-rose-50 text-rose-700 transition hover:bg-rose-100 hover-gradient-border">
+                        <Trash2 className="h-3.5 w-3.5" />
                       </button>
                     </div>
                   </td>
@@ -478,49 +452,6 @@ export default function InstituteTransportPage() {
             </tbody>
           </table>
         </div>
-      </section>
-
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {analytics.map((item) => {
-          const Icon = item.icon;
-          return (
-            <button key={item.label} type="button" onClick={() => {
-              if (item.label === 'Drivers') {
-                setDetailModal({ title: 'Driver Details', body: 'Driver roster, route assignment and availability can be reviewed from the transport operations module.' });
-              } else if (item.label === 'Routes') {
-                setDetailModal({ title: 'Route Details', body: 'Route coverage, estimated time, and boarding points are updated centrally from the planning workspace.' });
-              } else {
-                setDetailModal({ title: item.label, body: 'The analytics card is interactive and mirrors the overall transport workspace.' });
-              }
-            }} className="rounded-[24px] border border-slate-200/80 bg-white p-5 text-left shadow-sm transition hover-gradient-border">
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">{item.label}</p>
-                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
-                  <Icon className="h-4 w-4" />
-                </div>
-              </div>
-              <p className="mt-4 text-3xl font-semibold text-slate-900">{item.value}</p>
-            </button>
-          );
-        })}
-      </section>
-
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {quickActions.map((action) => (
-          <button key={action.title} type="button" onClick={() => {
-            if (action.type === 'route') {
-              setDetailModal({ title: 'Route Details', body: 'Assign and review transport routes, travel time, and stop clusters for each service corridor.' });
-            } else if (action.type === 'driver') {
-              setDetailModal({ title: 'Driver Details', body: 'Review driver shift availability, contact details and route assignments from a single panel.' });
-            } else {
-              setDetailModal({ title: action.title, body: 'The quick action is wired to the transport operations workspace and opens a live detail view.' });
-            }
-          }} className="rounded-[24px] border border-slate-200/80 bg-white p-5 text-left shadow-sm transition hover-gradient-border">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-600">Quick action</p>
-            <h3 className="mt-2 text-xl font-semibold text-slate-900">{action.title}</h3>
-            <p className="mt-2 text-sm text-slate-600">{action.description}</p>
-          </button>
-        ))}
       </section>
 
       {isAddOpen && (

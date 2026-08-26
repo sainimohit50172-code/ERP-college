@@ -321,6 +321,7 @@ export default function Sidebar({ isOpen, onClose }) {
   const LIBRARY_ITEMS = {
     left: {
       library: [
+        { id: 'library-setup', label: 'Library Setup', to: '/settings/library', favorite: true },
         { id: 'books', label: 'Books', to: '/library/books', favorite: true },
         { id: 'issue-book', label: 'Issue Book', to: '/library/issue-book' },
         { id: 'issue-book-college-wise', label: 'Issue Book College Wise', to: '/library/issue-book-college-wise' },
