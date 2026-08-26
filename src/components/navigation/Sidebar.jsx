@@ -942,13 +942,15 @@ export default function Sidebar({ isOpen, onClose }) {
 
   const handleNavItemMouseEnter = (e) => {
     if (e.currentTarget.dataset.active === 'true') return;
-    e.currentTarget.style.background = 'rgba(255,255,255,0.07)';
-    e.currentTarget.style.color = '#ffffff';
+    e.currentTarget.dataset.sidebarHovered = 'true';
+    e.currentTarget.style.background = '#ffffff';
+    e.currentTarget.style.color = '#000000';
     e.currentTarget.style.borderLeft = '3px solid #4ade80';
   };
 
   const handleNavItemMouseLeave = (e) => {
     if (e.currentTarget.dataset.active === 'true') return;
+    delete e.currentTarget.dataset.sidebarHovered;
     e.currentTarget.style.background = 'transparent';
     e.currentTarget.style.color = '#86efac';
     e.currentTarget.style.borderLeft = '3px solid transparent';
@@ -956,8 +958,9 @@ export default function Sidebar({ isOpen, onClose }) {
 
   const handleDropdownItemMouseEnter = (e) => {
     const el = e.currentTarget;
-    el.style.background = '#f0fdf4';
-    el.style.color = '#059669';
+    el.dataset.sidebarHovered = 'true';
+    el.style.background = '#ffffff';
+    el.style.color = '#000000';
     el.style.borderLeft = '3px solid #059669';
     el.style.fontWeight = '600';
     el.style.paddingLeft = '9px';
@@ -965,6 +968,7 @@ export default function Sidebar({ isOpen, onClose }) {
 
   const handleDropdownItemMouseLeave = (e) => {
     const el = e.currentTarget;
+    delete el.dataset.sidebarHovered;
     el.style.background = 'white';
     el.style.color = '#334155';
     el.style.borderLeft = '3px solid transparent';
@@ -1484,6 +1488,14 @@ export default function Sidebar({ isOpen, onClose }) {
 
         .sidebar-surface svg {
           color: #ffffff !important;
+          stroke: currentColor;
+        }
+
+        .sidebar-surface [data-sidebar-hovered='true'],
+        .sidebar-surface [data-sidebar-hovered='true'] *,
+        .sidebar-surface [data-sidebar-hovered='true'] svg {
+          background-color: #ffffff !important;
+          color: #000000 !important;
           stroke: currentColor;
         }
 
