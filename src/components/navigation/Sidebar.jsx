@@ -1503,6 +1503,60 @@ export default function Sidebar({ isOpen, onClose }) {
         .sidebar-surface nav * {
           font-weight: 400 !important;
         }
+
+        @media (max-width: 767px) {
+          .mobile-nav-panel {
+            position: fixed !important;
+            top: 58px !important;
+            right: 8px !important;
+            left: 8px !important;
+            width: auto !important;
+            max-height: calc(100vh - 76px) !important;
+            overflow-y: auto !important;
+          }
+
+          .employee-portal-dropdown,
+          .library-dropdown,
+          .front-desk-dropdown,
+          .communication-dropdown,
+          .hostel-dropdown,
+          .analytics-dropdown,
+          .transport-dropdown,
+          .advanced-dropdown,
+          .bulk-operations-dropdown,
+          .admission-dropdown,
+          .student-dropdown,
+          .fee-dropdown,
+          .attendance-dropdown,
+          .examination-dropdown,
+          .coe-dropdown,
+          .feedback-dropdown,
+          .university-communication-dropdown,
+          .lesson-dropdown,
+          .hrm-dropdown {
+            left: 8px !important;
+            right: 8px !important;
+            top: 58px !important;
+            width: auto !important;
+            max-width: calc(100vw - 16px) !important;
+            height: calc(100vh - 74px) !important;
+            max-height: calc(100vh - 74px) !important;
+            display: block !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+            padding: 8px !important;
+          }
+
+          .library-dropdown > div,
+          .coe-dropdown > div {
+            border-right: 0 !important;
+          }
+
+          .library-dropdown,
+          .coe-dropdown {
+            grid-template-columns: 1fr !important;
+          }
+        }
       `}</style>
       
       {/* Desktop static sidebar */}

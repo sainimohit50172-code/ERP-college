@@ -131,8 +131,15 @@ export default function Topbar({ onToggleSidebar }) {
           color: #ffffff !important;
         }
 
-        .erp-topbar .navbar-year {
-          color: #111827 !important;
+        .erp-topbar > div > div:first-child .navbar-year,
+        .erp-topbar > div > div:first-child .navbar-year * {
+          position: relative;
+          z-index: 2;
+          color: #000000 !important;
+          background-color: #ffffff !important;
+          opacity: 1 !important;
+          text-shadow: none !important;
+          visibility: visible !important;
         }
 
         .erp-topbar > div > div:last-child > button,
@@ -234,7 +241,7 @@ export default function Topbar({ onToggleSidebar }) {
               <MoreHorizontal className="h-4 w-4" />
             </button>
             {isMobileNavOpen ? (
-              <div className="absolute right-0 top-full z-30 mt-2 w-[220px] rounded-[10px] border border-slate-200 bg-white p-2 shadow-[0_16px_36px_rgba(15,23,42,0.12)]">
+              <div className="mobile-nav-panel absolute right-0 top-full z-30 mt-2 w-[220px] rounded-[10px] border border-slate-200 bg-white p-2 shadow-[0_16px_36px_rgba(15,23,42,0.12)]">
                 {navLinks.map((link) => (
                   <button
                     key={link.label}
