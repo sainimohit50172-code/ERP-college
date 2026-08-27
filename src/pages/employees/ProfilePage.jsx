@@ -1,256 +1,48 @@
-import { useEffect, useMemo, useState } from 'react';
-import { CalendarDays, Clock3, Edit2, FileText, Hash, Mail, MapPin, Phone, Ticket } from 'lucide-react';
+import { useState } from 'react';
+import { BadgeCheck, BriefcaseBusiness, Building2, CheckCircle2, Edit3, Mail, Phone, Save, UserRound, X } from 'lucide-react';
 import { toast } from 'react-toastify';
-import api from '../../api/axios.js';
-import Modal from '../../components/ui/Modal.jsx';
-import { useAuth } from '../../services/AuthContext.jsx';
+import { useQueryClient } from '@tanstack/react-query';
+import { useCreateResource, useUpdateResource } from '../../hooks/useResourceHooks.js';
 
-const tabs = ['personal', 'work', 'documents'];
-const skillTags = ['Management', 'Communication', 'Leadership', 'MS Office', 'Excel'];
+const initialForm = {
+  employee_code: '',
+  first_name: '',
+  last_name: '',
+  email: '',
+  phone: '',
+  designation: '',
+  department: '',
+  qualification: '',
+  status: 'Active',
+  photo_url: '',
+};
 
-function getInitials(name = '') {
-  return name
-    .split(' ')
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase() || '')
-    .join('') || 'AD';
-}
+const fields = [
+  { name: 'employee_code', label: 'Employee code', placeholder: 'EMP-0001', icon: BadgeCheck, required: true },
+  { name: 'first_name', label: 'First name', placeholder: 'Enter first name', icon: UserRound, required: true },
+  { name: 'last_name', label: 'Last name', placeholder: 'Enter last name', icon: UserRound, required: true },
+  { name: 'email', label: 'Email address', placeholder: 'employee@university.edu', icon: Mail, type: 'email' },
+  { name: 'phone', label: 'Phone number', placeholder: '+91 00000 00000', icon: Phone },
+  { name: 'designation', label: 'Designation', placeholder: 'Assistant Professor', icon: BriefcaseBusiness },
+  { name: 'department', label: 'Department', placeholder: 'Computer Science', icon: Building2 },
+  { name: 'qualification', label: 'Qualification', placeholder: 'M.Tech / Ph.D.', icon: BadgeCheck },
+];
 
-function formatValue(value, fallback = 'Not provided') {
-  if (value === null || value === undefined || value === '') return fallback;
-  return value;
-}
-
-function normalizeContactValue(value) {
-  const normalized = String(value || '').trim();
-  if (!normalized || normalized.toLowerCase() === 'not provided') {
-    return null;
-  }
-  return normalized;
-}
-
-function getProfileStorageKey(auth) {
-  const userId = auth?.user?.id || auth?.user?.email || 'guest';
-  return `erp:employee-profile:${userId}`;
-}
-
-function readSavedProfile(auth) {
-  if (typeof window === 'undefined') return null;
-  try {
-    const saved = window.localStorage.getItem(getProfileStorageKey(auth));
-    return saved ? JSON.parse(saved) : null;
-  } catch {
-    return null;
-  }
+function getProfileName(profile) {
+  return [profile.first_name, profile.last_name].filter(Boolean).join(' ');
 }
 
 export default function ProfilePage() {
-  const { auth } = useAuth();
-  const [activeTab, setActiveTab] = useState('personal');
-  const [isEditOpen, setIsEditOpen] = useState(false);
-  const [isTicketOpen, setIsTicketOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [profile, setProfile] = useState(null);
-  const [leaveStats, setLeaveStats] = useState({ approved: 0, pending: 0, total: 0 });
-  const [editForm, setEditForm] = useState({ firstName: '', lastName: '', phone: '', email: '', location: '', bloodGroup: '', imageUrl: '' });
-  const [ticketForm, setTicketForm] = useState({ subject: '', category: 'General', priority: 'Medium', impact: '', description: '' });
+  const queryClient = useQueryClient();
+  const createProfile = useCreateResource('employees');
+  const updateProfile = useUpdateResource('employees');
+  const [form, setForm] = useState(initialForm);
+  const [createdProfile, setCreatedProfile] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() => {
-    let isMounted = true;
+  const updateField = (name, value) => setForm((current) => ({ ...current, [name]: value }));
 
-    const loadData = async () => {
-      setLoading(true);
-      try {
-        const employeeId = auth?.user?.employeeId || auth?.user?.employee_id || auth?.user?.id;
-
-        const [profileResult, leaveResult] = await Promise.allSettled([
-          (async () => {
-            try {
-              const meResponse = await api.get('/auth/me');
-              const payload = meResponse?.data?.data || meResponse?.data?.item || meResponse?.data?.employee || meResponse?.data;
-              if (payload) return payload;
-            } catch {
-              // fall through to explicit employee lookup
-            }
-
-            if (!employeeId) {
-              throw new Error('No employee id');
-            }
-
-            const detailResponse = await api.get(`/employees/${employeeId}`);
-            return detailResponse?.data?.data || detailResponse?.data?.item || detailResponse?.data?.employee || detailResponse?.data;
-          })(),
-          api.get('/leave-requests/').catch(() => ({ data: [] })),
-        ]);
-
-        const profilePayload = profileResult.status === 'fulfilled' ? profileResult.value : null;
-        const leavePayload = leaveResult.status === 'fulfilled' ? leaveResult.value : { data: [] };
-
-        const normalizedProfile = {
-          id: profilePayload?.id || profilePayload?.employee_id || employeeId || auth?.user?.id || 'EMP-001',
-          name: formatValue(profilePayload?.name || auth?.user?.name, 'Admin'),
-          email: formatValue(profilePayload?.email || auth?.user?.email, 'admin@example.com'),
-          phone: formatValue(profilePayload?.phone || profilePayload?.mobile, 'Not provided'),
-          location: formatValue(profilePayload?.location || profilePayload?.city || profilePayload?.address, 'Mumbai'),
-          designation: formatValue(profilePayload?.designation || profilePayload?.job_title, 'System Administrator'),
-          department: formatValue(profilePayload?.department, 'Administration'),
-          joinDate: formatValue(profilePayload?.join_date || profilePayload?.joinDate || profilePayload?.created_at, 'Jan 2024'),
-          employeeCode: formatValue(profilePayload?.employee_code || profilePayload?.employeeCode || profilePayload?.code || `EMP-${String(profilePayload?.id || employeeId || 1).padStart(3, '0')}`, 'EMP-001'),
-          bloodGroup: formatValue(profilePayload?.blood_group || profilePayload?.bloodGroup, 'O+'),
-          gender: formatValue(profilePayload?.gender, 'Male'),
-          dateOfBirth: formatValue(profilePayload?.date_of_birth || profilePayload?.dateOfBirth, 'Not provided'),
-          emergencyContact: formatValue(profilePayload?.emergency_contact || profilePayload?.emergencyContact, 'Not provided'),
-          employmentType: formatValue(profilePayload?.employment_type || profilePayload?.employmentType, 'Full Time'),
-          reportingManager: formatValue(profilePayload?.reporting_manager || profilePayload?.reportingManager, 'N/A'),
-          workLocation: formatValue(profilePayload?.work_location || profilePayload?.workLocation || profilePayload?.location, 'Head Office'),
-          shiftTiming: formatValue(profilePayload?.shift_timing || profilePayload?.shiftTiming, '09:00 - 18:00'),
-          employeeStatus: formatValue(profilePayload?.status || profilePayload?.employee_status, 'Active'),
-          experienceYears: profilePayload?.experience_years || profilePayload?.experienceYears || 5,
-          rating: profilePayload?.rating || 'A+',
-        };
-        const savedProfile = readSavedProfile(auth);
-        const persistedProfile = savedProfile ? { ...normalizedProfile, ...savedProfile, id: normalizedProfile.id } : normalizedProfile;
-
-        const leaveItems = Array.isArray(leavePayload?.data)
-          ? leavePayload.data
-          : Array.isArray(leavePayload?.items)
-            ? leavePayload.items
-            : Array.isArray(leavePayload)
-              ? leavePayload
-              : [];
-
-        const currentUserIdentifier = String(employeeId || auth?.user?.id || '').toLowerCase();
-        const relevantLeaves = leaveItems.filter((item) => {
-          const requestEmployeeId = String(item.employeeId || item.employee_id || item.employee?.id || '').toLowerCase();
-          const requestEmployeeName = String(item.employeeName || item.employee_name || item.employee?.name || '').toLowerCase();
-          const currentName = String(persistedProfile.name || '').toLowerCase();
-          return !requestEmployeeId || !currentUserIdentifier || requestEmployeeId === currentUserIdentifier || requestEmployeeName === currentName;
-        });
-
-        const approved = relevantLeaves.filter((item) => String(item.status || '').toLowerCase() === 'approved').length;
-        const pending = relevantLeaves.filter((item) => ['submitted', 'pending', 'manager review', 'hr review'].includes(String(item.status || '').toLowerCase())).length;
-
-        if (!isMounted) return;
-        const [firstName = '', ...lastNameParts] = String(persistedProfile.name).trim().split(' ');
-        const lastName = lastNameParts.join(' ');
-        setProfile(persistedProfile);
-        setLeaveStats({ approved, pending, total: relevantLeaves.length });
-        setEditForm({
-          firstName,
-          lastName,
-          phone: persistedProfile.phone,
-          email: persistedProfile.email,
-          location: persistedProfile.location,
-          bloodGroup: persistedProfile.bloodGroup,
-          imageUrl: persistedProfile.imageUrl || '',
-        });
-      } catch {
-        if (!isMounted) return;
-        const fallbackProfile = {
-          id: auth?.user?.id || 'EMP-001',
-          name: auth?.user?.name || 'Admin',
-          email: auth?.user?.email || 'admin@example.com',
-          phone: 'Not provided',
-          location: 'Mumbai',
-          designation: 'System Administrator',
-          department: 'Administration',
-          joinDate: 'Jan 2024',
-          employeeCode: 'EMP-001',
-          bloodGroup: 'O+',
-          gender: 'Male',
-          dateOfBirth: 'Not provided',
-          emergencyContact: 'Not provided',
-          employmentType: 'Full Time',
-          reportingManager: 'N/A',
-          workLocation: 'Head Office',
-          shiftTiming: '09:00 - 18:00',
-          employeeStatus: 'Active',
-          experienceYears: 5,
-          rating: 'A+',
-        };
-        const savedProfile = readSavedProfile(auth);
-        const persistedProfile = savedProfile ? { ...fallbackProfile, ...savedProfile, id: fallbackProfile.id } : fallbackProfile;
-        const [firstName = '', ...lastNameParts] = String(persistedProfile.name).trim().split(' ');
-        const lastName = lastNameParts.join(' ');
-        setProfile(persistedProfile);
-        setEditForm({
-          firstName,
-          lastName,
-          phone: persistedProfile.phone,
-          email: persistedProfile.email,
-          location: persistedProfile.location,
-          bloodGroup: persistedProfile.bloodGroup,
-          imageUrl: persistedProfile.imageUrl || '',
-        });
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    };
-
-    loadData();
-    return () => {
-      isMounted = false;
-    };
-  }, [auth]);
-
-  const quickStats = useMemo(() => [
-    { value: leaveStats.approved || 12, label: 'Leaves Taken', color: '#3b82f6' },
-    { value: leaveStats.pending || 3, label: 'Pending', color: '#f59e0b' },
-    { value: `${profile?.experienceYears || 5}yr`, label: 'Experience', color: '#10b981' },
-    { value: profile?.rating || 'A+', label: 'Rating', color: '#8b5cf6' },
-  ], [leaveStats.approved, leaveStats.pending, profile?.experienceYears, profile?.rating]);
-
-  const handleSave = async (event) => {
-    event.preventDefault();
-    if (!profile?.id) {
-      toast.error('Profile id is unavailable.');
-      return;
-    }
-
-    const first_name = editForm.firstName?.trim() || profile.name?.split(' ')[0] || 'Employee';
-    const last_name = editForm.lastName?.trim() || profile.name?.split(' ').slice(1).join(' ') || null;
-
-    const updatedProfile = {
-      ...profile,
-      name: [first_name, last_name].filter(Boolean).join(' ') || profile.name,
-      email: editForm.email?.trim() || '',
-      phone: editForm.phone?.trim() || '',
-      location: editForm.location?.trim() || '',
-      bloodGroup: editForm.bloodGroup?.trim() || '',
-      imageUrl: editForm.imageUrl || profile.imageUrl || '',
-    };
-
-    try {
-      const payload = {
-        employee_code: profile.employeeCode || profile.employee_code || `EMP-${String(profile.id).padStart(3, '0')}`,
-        first_name,
-        last_name,
-        designation: profile.designation,
-        department: profile.department,
-        status: profile.employeeStatus || 'Active',
-      };
-
-      // Convert empty strings to null so Pydantic Optional fields validate correctly
-      payload.email = editForm.email?.trim() ? editForm.email.trim() : null;
-      payload.phone = editForm.phone?.trim() ? editForm.phone.trim() : null;
-
-      await api.put(`/employees/${profile.id}`, payload);
-    } catch (err) {
-      console.warn('Profile API update unavailable; keeping the profile saved locally.', err);
-    }
-
-    setProfile(updatedProfile);
-    try {
-      window.localStorage.setItem(getProfileStorageKey(auth), JSON.stringify(updatedProfile));
-    } catch {
-      toast.error('Profile updated, but the browser could not save the profile image.');
-    }
-    toast.success('Profile updated successfully');
-    setIsEditOpen(false);
-  };
-
-  const handleProfileImageChange = (event) => {
+  const handlePhotoChange = (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith('image/')) {
@@ -258,407 +50,112 @@ export default function ProfilePage() {
       return;
     }
     if (file.size > 2 * 1024 * 1024) {
-      toast.error('Profile image must be smaller than 2 MB.');
+      toast.error('Profile photo must be smaller than 2 MB.');
       return;
     }
     const reader = new FileReader();
-    reader.onload = () => setEditForm((current) => ({ ...current, imageUrl: String(reader.result || '') }));
+    reader.onload = () => updateField('photo_url', String(reader.result || ''));
     reader.readAsDataURL(file);
   };
 
-  const handleTicketSubmit = async (event) => {
+  const resetForm = () => {
+    setForm(initialForm);
+    setCreatedProfile(null);
+    setIsEditing(false);
+  };
+
+  const submitProfile = async (event) => {
     event.preventDefault();
-    if (!ticketForm.subject.trim()) {
-      toast.error('Please provide a ticket subject.');
+    const payload = {
+      employee_code: form.employee_code.trim(),
+      first_name: form.first_name.trim(),
+      last_name: form.last_name.trim(),
+      email: form.email.trim() || null,
+      phone: form.phone.trim() || null,
+      designation: form.designation.trim() || null,
+      department: form.department.trim() || null,
+      status: form.status,
+    };
+
+    if (!payload.employee_code || !payload.first_name || !payload.last_name) {
+      toast.error('Employee code, first name and last name are required.');
       return;
     }
 
-    const lodgedById = auth?.user?.employeeId || auth?.user?.employee_id || auth?.user?.id || 0;
-    const ticketPayload = {
-      lodged_by_type: 'Employee',
-      lodged_by_id: Number(lodgedById),
-      requester_email: normalizeContactValue(profile?.email),
-      requester_phone: normalizeContactValue(profile?.phone),
-      category: ticketForm.category?.trim() || 'General',
-      priority: ticketForm.priority || 'Medium',
-      impact: ticketForm.impact?.trim() || null,
-      subject: ticketForm.subject.trim(),
-      description: ticketForm.description.trim() || null,
-      status: 'Open',
-    };
-
     try {
-      await api.post('/helpdesk/tickets/', ticketPayload);
-      toast.success('Ticket raised successfully');
-      setTicketForm({ subject: '', category: 'General', priority: 'Medium', impact: '', description: '' });
-      setIsTicketOpen(false);
-    } catch {
-      toast.error('Unable to raise ticket. Please try again.');
+      const result = isEditing
+        ? await updateProfile.mutateAsync({ id: createdProfile.id, payload })
+        : await createProfile.mutateAsync(payload);
+      const saved = { ...payload, ...(result || {}), id: result?.id || createdProfile?.id };
+      setCreatedProfile(saved);
+      setForm(saved);
+      setIsEditing(false);
+      queryClient.invalidateQueries({ queryKey: ['employees'], exact: false });
+      toast.success(isEditing ? 'Employee profile updated.' : 'Employee profile created.');
+    } catch (error) {
+      toast.error(error?.message || 'Unable to save employee profile.');
     }
   };
 
-  const documentCards = [
-    { title: 'Aadhar Card', status: 'Uploaded' },
-    { title: 'PAN Card', status: 'Uploaded' },
-    { title: 'Degree Certificate', status: 'Pending' },
-    { title: 'Experience Letter', status: 'Pending' },
-  ];
-
-  if (loading || !profile) {
-    return (
-      <div className="flex h-[calc(100vh-88px)] items-center justify-center overflow-hidden rounded-[20px] border border-slate-200 bg-white p-6 text-slate-600 shadow-sm">
-        Loading your profile…
-      </div>
-    );
-  }
+  const isSaving = createProfile.isPending || updateProfile.isPending;
 
   return (
-    <div className="mx-[10px] min-h-[calc(100vh-88px)] w-auto max-w-none overflow-x-hidden overflow-y-auto bg-white px-[10px] py-4 sm:px-[10px] lg:px-[10px]">
-<div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-2 text-sm">
-            <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">My Profile</span>
-            <span className="text-slate-400">/</span>
-            <span className="text-[13px] font-semibold text-slate-600">Profile</span>
+    <div className="min-h-[calc(100vh-10rem)] overflow-x-hidden rounded-[24px] border border-slate-200/80 bg-[linear-gradient(145deg,#f8fafc_0%,#ffffff_48%,#effaf5_100%)] p-3 shadow-sm sm:p-5">
+      <div className="mx-auto max-w-[1180px] space-y-5">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-emerald-700">Employee Portal / Profile</p>
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">Create employee profile</h1>
+            <p className="mt-2 max-w-2xl text-sm text-slate-500">Create a complete employee identity that can be used across the ERP.</p>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <button
-              type="button"
-              onClick={() => setIsTicketOpen(true)}
-              className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-[13px] font-semibold text-slate-700 transition duration-200 hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
-            >
-              <Ticket size={14} />
-              Raise Ticket
-            </button>
-            <button
-              type="button"
-              onClick={() => setIsEditOpen(true)}
-              className="inline-flex items-center gap-2 rounded-lg bg-[linear-gradient(135deg,_#1e3a5f,_#0d3b2e)] px-4 py-2 text-[13px] font-semibold text-white transition duration-200 hover:brightness-110"
-            >
-              <Edit2 size={14} />
-              Edit Profile
-            </button>
-          </div>
-      </div>
+          <div className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-800">Employee master</div>
+        </div>
 
-      <div className="responsive-profile-shell min-h-0">
-        <aside className="mobile-safe-panel flex h-full flex-col items-center gap-3 rounded-[14px] border border-slate-200 bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
-          <div className="flex h-[72px] w-[72px] items-center justify-center overflow-hidden rounded-full border-[3px] border-white bg-[linear-gradient(135deg,_#1e3a5f,_#059669)] text-[26px] font-bold text-white shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
-            {profile.imageUrl ? <img src={profile.imageUrl} alt={`${profile.name} profile`} className="h-full w-full object-cover" /> : getInitials(profile.name)}
-          </div>
-          <div className="text-center">
-            <h1 className="text-[18px] font-bold text-slate-900">{profile.name}</h1>
-            <p className="mt-1 text-[12px] text-slate-500">{profile.designation}</p>
-          </div>
-          <div className="flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[11px] font-semibold text-emerald-700">
-            <span className="h-2 w-2 rounded-full bg-emerald-500" />
-            Active
-          </div>
-          <div className="rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-[11px] font-semibold text-emerald-700">
-            {profile.department}
-          </div>
-
-          <div className="my-1 h-px w-full bg-slate-100" />
-
-          <div className="flex w-full flex-col gap-2">
-            {[
-              { icon: Mail, label: 'Email', value: profile.email, color: '#3b82f6' },
-              { icon: Phone, label: 'Phone', value: profile.phone, color: '#10b981' },
-              { icon: MapPin, label: 'Location', value: profile.location, color: '#f59e0b' },
-              { icon: CalendarDays, label: 'Joined', value: `Joined: ${profile.joinDate}`, color: '#8b5cf6' },
-              { icon: Hash, label: 'Employee Code', value: profile.employeeCode, color: '#64748b' },
-            ].map(({ icon: Icon, label, value, color }) => (
-              <div key={label} className="flex items-center gap-2">
-                <div className="flex h-7 w-7 items-center justify-center rounded-full" style={{ backgroundColor: `${color}15` }}>
-                  <Icon size={16} style={{ color }} />
-                </div>
-                <div className="min-w-0">
-                  <div className="text-[11px] text-slate-400">{label}</div>
-                  <div className="truncate text-[12px] font-medium text-slate-700">{value}</div>
-                </div>
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-start">
+          <aside className="w-full rounded-[22px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6 lg:w-[300px] lg:flex-none">
+            <div className="flex flex-col items-center text-center">
+              <div className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-full border-4 border-emerald-100 bg-[#101824] text-3xl font-bold text-emerald-100 shadow-[0_10px_24px_rgba(16,24,36,0.2)]">
+                {form.photo_url ? <img src={form.photo_url} alt="Employee profile preview" className="h-full w-full object-cover" /> : <UserRound className="h-12 w-12" />}
               </div>
-            ))}
-          </div>
-
-          <div className="mt-auto h-px w-full bg-slate-100" />
-
-          <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-            {quickStats.map((stat) => (
-              <div key={stat.label} className="rounded-lg border border-slate-200 bg-slate-50 p-2 text-center transition duration-200 hover:border-slate-300 hover:shadow-sm">
-                <div className="text-[16px] font-bold" style={{ color: stat.color }}>{stat.value}</div>
-                <div className="mt-1 text-[10px] uppercase tracking-[0.08em] text-slate-400">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </aside>
-
-        <section className="mobile-safe-panel flex h-full flex-col rounded-[14px] border border-slate-200 bg-white p-4 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
-          <div className="flex gap-2">
-            {tabs.map((tab) => (
-              <button
-                key={tab}
-                type="button"
-                onClick={() => setActiveTab(tab)}
-                className={`rounded-md px-3 py-2 text-[12px] font-semibold transition duration-200 ${activeTab === tab ? 'bg-slate-900 text-white' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-700'}`}
-              >
-                {tab === 'personal' ? 'Personal Info' : tab === 'work' ? 'Work Details' : 'Documents'}
-              </button>
-            ))}
-          </div>
-
-          <div className="mt-4 flex-1 overflow-hidden">
-            {activeTab === 'personal' && (
-              <div className="responsive-card-grid h-full gap-3">
-                {[
-                  { label: 'Full Name', value: profile.name },
-                  { label: 'Employee Code', value: profile.employeeCode },
-                  { label: 'Email Address', value: profile.email },
-                  { label: 'Phone Number', value: profile.phone },
-                  { label: 'Date of Birth', value: profile.dateOfBirth },
-                  { label: 'Gender', value: profile.gender },
-                  { label: 'Blood Group', value: profile.bloodGroup },
-                  { label: 'Emergency Contact', value: profile.emergencyContact },
-                ].map((item) => (
-                  <div key={item.label} className="rounded-[18px] bg-transparent p-px transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:bg-gradient-to-r hover:from-cyan-400 hover:via-violet-500 hover:to-pink-500">
-                    <div className="rounded-[17px] border border-slate-200 bg-white p-3 transition duration-300 hover:border-b-4 hover:border-slate-300">
-                      <div className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-400">{item.label}</div>
-                      <div className="mt-2 text-[13px] font-semibold text-slate-800">{item.value}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {activeTab === 'work' && (
-              <div className="responsive-card-grid h-full gap-3">
-                {[
-                  { label: 'Department', value: profile.department },
-                  { label: 'Designation', value: profile.designation },
-                  { label: 'Employment Type', value: profile.employmentType },
-                  { label: 'Join Date', value: profile.joinDate },
-                  { label: 'Reporting Manager', value: profile.reportingManager },
-                  { label: 'Work Location', value: profile.workLocation },
-                  { label: 'Shift Timing', value: profile.shiftTiming },
-                  { label: 'Employee Status', value: profile.employeeStatus },
-                ].map((item) => (
-                  <div key={item.label} className="rounded-[18px] bg-transparent p-px transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:bg-gradient-to-r hover:from-cyan-400 hover:via-violet-500 hover:to-pink-500">
-                    <div className="rounded-[17px] border border-slate-200 bg-white p-3 transition duration-300 hover:border-b-4 hover:border-slate-300">
-                      <div className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-400">{item.label}</div>
-                      <div className="mt-2 text-[13px] font-semibold text-slate-800">{item.value}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {activeTab === 'documents' && (
-              <div className="responsive-card-grid h-full gap-3">
-                {documentCards.map((doc) => (
-                  <div key={doc.title} className="rounded-[18px] bg-gradient-to-r from-cyan-400 via-violet-500 to-pink-500 p-[1px] transition duration-300 hover:shadow-lg">
-                    <div className="rounded-[17px] border border-dashed border-slate-300 bg-slate-50 p-3 hover:border-transparent">
-                      <div className="flex items-center gap-2">
-                        <FileText size={18} className="text-slate-400" />
-                        <div className="text-[12px] font-semibold text-slate-700">{doc.title}</div>
-                      </div>
-                      <div className="mt-4 flex items-center justify-between">
-                        <span className="text-[11px] text-slate-400">{doc.status}</span>
-                        <button type="button" className="rounded-md border border-slate-200 bg-white px-2 py-1 text-[11px] font-semibold text-slate-600 transition hover:bg-slate-100 hover-gradient-border">
-                          {doc.status === 'Uploaded' ? 'View' : 'Upload'}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
-
-        <aside className="mobile-safe-panel flex h-full flex-col gap-[12px]">
-          <div className="flex-none rounded-[12px] border border-slate-200 bg-white p-3 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
-            <div className="flex items-center justify-between">
-              <div className="text-[13px] font-semibold text-slate-800">Attendance</div>
-              <div className="text-[11px] text-slate-400">This Month</div>
+              <label className="mt-4 inline-flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-emerald-300 hover:bg-emerald-50">
+                <Edit3 className="h-3.5 w-3.5 text-emerald-700" /> Upload profile photo
+                <input type="file" accept="image/png,image/jpeg,image/webp" onChange={handlePhotoChange} className="hidden" />
+              </label>
+              <h2 className="mt-5 max-w-full truncate text-xl font-semibold text-slate-950">{getProfileName(form) || 'New employee'}</h2>
+              <p className="mt-1 truncate text-sm text-slate-500">{form.designation || 'Designation not added'}</p>
+              <p className="mt-1 truncate text-xs text-emerald-700">{form.qualification || 'Qualification not added'}</p>
             </div>
-            <div className="mt-4 flex flex-col items-center">
-              <svg width="72" height="72" viewBox="0 0 120 120" className="-rotate-90">
-                <circle cx="60" cy="60" r="44" stroke="#e2e8f0" strokeWidth="8" fill="none" />
-                <circle cx="60" cy="60" r="44" stroke="#10b981" strokeWidth="8" fill="none" strokeDasharray={2 * Math.PI * 44} strokeDashoffset={2 * Math.PI * 44} />
-              </svg>
-              <div className="mt-2 text-[14px] font-bold text-slate-900">0%</div>
-              <div className="text-[11px] text-slate-400">0/0 days present</div>
-            </div>
-            <div className="mt-4 flex justify-between text-center">
-              <div>
-                <div className="text-[14px] font-bold text-emerald-600">0</div>
-                <div className="text-[10px] text-slate-400">Present</div>
-              </div>
-              <div>
-                <div className="text-[14px] font-bold text-red-500">0</div>
-                <div className="text-[10px] text-slate-400">Absent</div>
-              </div>
-              <div>
-                <div className="text-[14px] font-bold text-amber-500">0</div>
-                <div className="text-[10px] text-slate-400">Leave</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex-1 rounded-[12px] border border-slate-200 bg-white p-3 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
-            <div className="text-[13px] font-semibold text-slate-800">Skills & Expertise</div>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {skillTags.map((skill) => (
-                <span key={skill} className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[11px] font-semibold text-slate-600">
-                  {skill}
-                </span>
-              ))}
-              <span className="rounded-full border border-dashed border-slate-300 px-3 py-1 text-[11px] font-semibold text-slate-400">+ Add Skill</span>
-            </div>
-          </div>
-
-          <div className="flex-none rounded-[12px] border border-slate-200 bg-white p-3 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
-            <div className="text-[13px] font-semibold text-slate-800">Recent Activity</div>
-            <div className="mt-2 space-y-2">
+            <div className="my-6 h-px bg-slate-100" />
+            <div className="space-y-4">
               {[
-                { icon: CalendarDays, text: 'Leave Approved', meta: '2 days ago', color: '#10b981' },
-                { icon: FileText, text: 'Profile Updated', meta: '1 week ago', color: '#3b82f6' },
-                { icon: Clock3, text: 'Late Arrival', meta: 'Yesterday', color: '#f59e0b' },
-              ].map(({ icon: Icon, text, meta, color }) => (
-                <div key={text} className="flex items-center gap-2 border-b border-slate-100 py-2 last:border-b-0">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-full" style={{ backgroundColor: `${color}15` }}>
-                    <Icon size={14} style={{ color }} />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="text-[12px] font-medium text-slate-700">{text}</div>
-                    <div className="text-[11px] text-slate-400">{meta}</div>
-                  </div>
-                </div>
-              ))}
+                ['Mobile number', form.phone, Phone],
+                ['Email address', form.email, Mail],
+                ['Department', form.department, Building2],
+                ['Employee code', form.employee_code, BadgeCheck],
+              ].map(([label, value, Icon]) => <div key={label} className="flex min-w-0 items-start gap-3"><div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700"><Icon className="h-4 w-4" /></div><div className="min-w-0"><p className="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400">{label}</p><p className="mt-1 truncate text-xs font-semibold text-slate-700">{value || 'Not provided'}</p></div></div>)}
             </div>
-          </div>
-        </aside>
+            <div className="mt-6 rounded-xl border border-emerald-100 bg-emerald-50 p-3 text-xs leading-5 text-emerald-900">This profile will be available across employee, attendance and HRM workflows after creation.</div>
+          </aside>
+
+          <section className="min-w-0 flex-1 rounded-[22px] border border-slate-200 bg-white p-5 shadow-sm sm:p-7 lg:min-h-[520px]">
+            <div className="mb-6 flex items-start gap-4 border-b border-slate-100 pb-5">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#101824] text-emerald-200"><UserRound className="h-6 w-6" /></div>
+              <div><h2 className="text-xl font-semibold text-slate-950">Employee fields</h2><p className="mt-1 text-sm text-slate-500">Add the details that will be used across the ERP employee directory.</p></div>
+            </div>
+            <form onSubmit={submitProfile} className="grid gap-5 sm:grid-cols-2">
+              {fields.map(({ name, label, placeholder, icon: Icon, type = 'text', required }) => (
+                <label key={name} htmlFor={`profile-${name}`} className="block text-xs font-bold text-slate-600">
+                  <span className="flex items-center gap-2"><Icon className="h-4 w-4 text-emerald-700" />{label}{required ? <span className="text-rose-500">*</span> : null}</span>
+                  <input id={`profile-${name}`} name={name} autoComplete={{ employee_code: 'off', first_name: 'given-name', last_name: 'family-name', email: 'email', phone: 'tel', designation: 'organization-title', department: 'organization', qualification: 'off' }[name]} required={required} type={type} value={form[name] || ''} onChange={(event) => updateField(name, event.target.value)} placeholder={placeholder} className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-medium text-slate-900 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-100" />
+                </label>
+              ))}
+              <label htmlFor="profile-status" className="block text-xs font-bold text-slate-600"><span className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-700" />Profile status</span><select id="profile-status" name="status" autoComplete="off" value={form.status} onChange={(event) => updateField('status', event.target.value)} className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-medium text-slate-900 outline-none focus:border-emerald-500"><option>Active</option><option>On Leave</option><option>Resigned</option></select></label>
+              <div className="flex flex-col-reverse gap-3 pt-2 sm:col-span-2 sm:flex-row sm:justify-end"><button type="button" onClick={resetForm} className="btn btn-secondary"><X className="h-4 w-4" />Reset</button><button type="submit" disabled={isSaving} className="btn btn-primary"><Save className="h-4 w-4" />{isSaving ? 'Saving...' : isEditing ? 'Update profile' : 'Create profile'}</button></div>
+            </form>
+          </section>
+        </div>
+        {createdProfile ? <div className="rounded-[22px] border border-emerald-200 bg-emerald-50 p-5"><p className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-700">Saved successfully</p><p className="mt-2 text-sm font-semibold text-emerald-950">{getProfileName(createdProfile)}</p><p className="mt-1 text-xs text-emerald-800">{createdProfile.employee_code}</p><button type="button" onClick={() => { setForm(createdProfile); setIsEditing(true); }} className="mt-4 inline-flex items-center gap-2 text-xs font-bold text-emerald-800 hover:text-emerald-950"><Edit3 className="h-4 w-4" />Edit this profile</button></div> : null}
       </div>
-
-      <Modal
-        title="Edit Profile"
-        isOpen={isEditOpen}
-        onClose={() => setIsEditOpen(false)}
-        footer={
-          <>
-            <button type="button" onClick={() => setIsEditOpen(false)} className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-50">
-              Cancel
-            </button>
-            <button type="submit" form="profile-edit-form" className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 hover-gradient-border">
-              Save Changes
-            </button>
-          </>
-        }
-      >
-        <form id="profile-edit-form" onSubmit={handleSave} className="space-y-4">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <label className="block text-sm">
-              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">First Name</span>
-              <input value={editForm.firstName} onChange={(event) => setEditForm((current) => ({ ...current, firstName: event.target.value }))} className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0" />
-            </label>
-            <label className="block text-sm">
-              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Last Name</span>
-              <input value={editForm.lastName} onChange={(event) => setEditForm((current) => ({ ...current, lastName: event.target.value }))} className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0" />
-            </label>
-            <label className="block text-sm">
-              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Phone</span>
-              <input value={editForm.phone} onChange={(event) => setEditForm((current) => ({ ...current, phone: event.target.value }))} className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0" />
-            </label>
-            <label className="block text-sm">
-              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Email</span>
-              <input value={editForm.email} onChange={(event) => setEditForm((current) => ({ ...current, email: event.target.value }))} className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0" />
-            </label>
-            <label className="block text-sm">
-              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Location</span>
-              <input value={editForm.location} onChange={(event) => setEditForm((current) => ({ ...current, location: event.target.value }))} className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0" />
-            </label>
-            <label className="block text-sm sm:col-span-2">
-              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Blood Group</span>
-              <input value={editForm.bloodGroup} onChange={(event) => setEditForm((current) => ({ ...current, bloodGroup: event.target.value }))} className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0" />
-            </label>
-            <label className="block text-sm sm:col-span-2">
-              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Profile Photo</span>
-              <input type="file" accept="image/png,image/jpeg,image/webp" onChange={handleProfileImageChange} className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 outline-none ring-0" />
-              {editForm.imageUrl ? <img src={editForm.imageUrl} alt="Profile preview" className="mt-3 h-16 w-16 rounded-full border border-slate-200 object-cover" /> : null}
-            </label>
-          </div>
-        </form>
-      </Modal>
-
-      <Modal
-        title="Raise Ticket"
-        isOpen={isTicketOpen}
-        onClose={() => setIsTicketOpen(false)}
-        footer={
-          <>
-            <button type="button" onClick={() => setIsTicketOpen(false)} className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-50">
-              Cancel
-            </button>
-            <button type="submit" form="ticket-form" className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 hover-gradient-border">
-              Submit Ticket
-            </button>
-          </>
-        }
-      >
-        <form id="ticket-form" onSubmit={handleTicketSubmit} className="space-y-4">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <label className="block text-sm">
-              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Subject</span>
-              <input
-                value={ticketForm.subject}
-                onChange={(event) => setTicketForm((current) => ({ ...current, subject: event.target.value }))}
-                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0"
-                placeholder="Issue subject"
-                required
-              />
-            </label>
-            <label className="block text-sm">
-              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Category</span>
-              <input
-                value={ticketForm.category}
-                onChange={(event) => setTicketForm((current) => ({ ...current, category: event.target.value }))}
-                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0"
-                placeholder="General"
-              />
-            </label>
-            <label className="block text-sm">
-              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Priority</span>
-              <select
-                value={ticketForm.priority}
-                onChange={(event) => setTicketForm((current) => ({ ...current, priority: event.target.value }))}
-                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0"
-              >
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-                <option value="Critical">Critical</option>
-              </select>
-            </label>
-            <label className="block text-sm">
-              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Impact</span>
-              <input
-                value={ticketForm.impact}
-                onChange={(event) => setTicketForm((current) => ({ ...current, impact: event.target.value }))}
-                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0"
-                placeholder="Impact summary"
-              />
-            </label>
-            <label className="block text-sm sm:col-span-2">
-              <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Description</span>
-              <textarea
-                value={ticketForm.description}
-                onChange={(event) => setTicketForm((current) => ({ ...current, description: event.target.value }))}
-                rows={5}
-                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none"
-                placeholder="Describe the issue in detail"
-              />
-            </label>
-          </div>
-        </form>
-      </Modal>
     </div>
   );
 }

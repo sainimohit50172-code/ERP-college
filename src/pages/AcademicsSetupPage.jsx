@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, ScanSearch } from 'lucide-react';
+import { motion } from 'framer-motion';
 import Breadcrumb from '../components/ui/Breadcrumb.jsx';
-import SetupCard from '../components/ui/SetupCard.jsx';
 import { academicsModuleConfig } from './academics/academicsModuleConfig.js';
 
 const academicsCards = academicsModuleConfig.map((card) => ({
@@ -103,7 +103,7 @@ export default function AcademicsSetupPage() {
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-1 gap-[18px] md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {skeletonCards.map((item) => (
               <div
                 key={item}
@@ -126,18 +126,27 @@ export default function AcademicsSetupPage() {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-[18px] md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredCards.map((card) => {
               const Icon = card.icon;
               return (
-                <SetupCard
+                <motion.button
                   key={card.title}
-                  icon={Icon}
-                  title={card.title}
-                  subtitle={card.subtitle}
-                  ariaLabel={`Open ${card.title}`}
+                  type="button"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2, delay: filteredCards.indexOf(card) * 0.035 }}
+                  whileHover={{ y: -5, scale: 1.01 }}
+                  aria-label={`Open ${card.title}`}
                   onClick={() => card.route && navigate(card.route)}
-                />
+                  className="group flex min-h-[190px] flex-col items-center justify-center rounded-[18px] border border-slate-200 bg-white p-5 text-center shadow-[0_10px_30px_rgba(15,23,42,0.05)] transition-all duration-200 hover:border-sky-300 hover:shadow-[0_18px_40px_rgba(15,23,42,0.1)] focus:outline-none focus:ring-2 focus:ring-sky-300"
+                >
+                  <div className="mb-4 flex h-[58px] w-[58px] items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-sky-700 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:border-sky-200 group-hover:bg-sky-50">
+                    <Icon className="h-7 w-7" />
+                  </div>
+                  <h2 className="text-lg font-semibold leading-tight text-slate-900 transition-colors group-hover:text-sky-700">{card.title}</h2>
+                  <p className="mt-2 max-w-[190px] text-sm leading-5 text-slate-500">{card.subtitle}</p>
+                </motion.button>
               );
             })}
           </div>

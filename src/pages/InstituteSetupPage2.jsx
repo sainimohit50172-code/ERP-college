@@ -24,28 +24,28 @@ import {
 } from 'lucide-react';
 
 const setupCards = [
-  { title: 'Fee Head', description: 'Fee Head Section', icon: Receipt },
-  { title: 'Fee Head Group', description: 'Fee Head Group Section', icon: FileCog },
-  { title: 'Fee Category', description: 'Fee Category Section', icon: Folder },
-  { title: 'Admission Category', description: 'Admission Category Master', icon: Users },
-  { title: 'Installments', description: 'Installments Section', icon: HandCoins },
-  { title: 'Term Groups', description: 'Setting Term Group', icon: CalendarDays },
-  { title: 'Fee Group', description: 'Fee Group Section', icon: Layers3 },
-  { title: 'Concession', description: 'Concession Section', icon: BadgePercent },
-  { title: 'Receipt Setting', description: 'Receipt Setting', icon: Receipt },
-  { title: 'Fine Config', description: 'Fine Config Setting', icon: FileCog },
-  { title: 'Miscellaneous Remark', description: 'Miscellaneous Remark Setting', icon: FileText },
-  { title: 'Receipt Remark', description: 'Receipt Remark Setting', icon: FileText },
-  { title: 'Other Income Head', description: 'Other Income Head Setting', icon: Wallet },
-  { title: 'Institute Bank', description: 'Institute Bank Master', icon: Landmark },
-  { title: 'Subject Combination', description: 'Subject Combination', icon: Blocks },
-  { title: 'Payment Mode', description: 'Payment Mode Setup', icon: CreditCard },
-  { title: 'Liability Heads', description: 'Liability Heads Setup', icon: Shield },
-  { title: 'Refundable Heads', description: 'Refundable Heads Setup', icon: RotateCcw },
-  { title: 'Fee Excel Upload', description: 'Fee Excel Upload Setup', icon: Sheet },
-  { title: 'Other Income Account Mapper', description: 'Other Income Account Mapper Setup', icon: GitBranch },
-  { title: 'Manage Online Fee', description: 'Manage Online Fee', icon: Globe },
-  { title: 'Tuition Fee Certificate Grouping', description: 'Tuition Fee Certificate Grouping', icon: Files },
+  { title: 'Fee Head', description: 'Fee Head Section', icon: Receipt, route: '/settings/fee-structure/fee-head' },
+  { title: 'Fee Head Group', description: 'Fee Head Group Section', icon: FileCog, route: '/settings/fee-structure/fee-head-group' },
+  { title: 'Fee Category', description: 'Fee Category Section', icon: Folder, route: '/settings/fee-structure/fee-category' },
+  { title: 'Admission Category', description: 'Admission Category Master', icon: Users, route: '/settings/fee-structure/admission-category' },
+  { title: 'Installments', description: 'Installments Section', icon: HandCoins, route: '/settings/fee-structure/installments' },
+  { title: 'Term Groups', description: 'Setting Term Group', icon: CalendarDays, route: '/settings/fee-structure/term-groups' },
+  { title: 'Fee Group', description: 'Fee Group Section', icon: Layers3, route: '/settings/fee-structure/fee-group' },
+  { title: 'Concession', description: 'Concession Section', icon: BadgePercent, route: '/settings/fee-structure/concession' },
+  { title: 'Receipt Setting', description: 'Receipt Setting', icon: Receipt, route: '/settings/fee-structure/receipt-setting' },
+  { title: 'Fine Config', description: 'Fine Config Setting', icon: FileCog, route: '/settings/fee-structure/fine-config' },
+  { title: 'Miscellaneous Remark', description: 'Miscellaneous Remark Setting', icon: FileText, route: '/settings/fee-structure/miscellaneous-remark' },
+  { title: 'Receipt Remark', description: 'Receipt Remark Setting', icon: FileText, route: '/settings/fee-structure/receipt-remark' },
+  { title: 'Other Income Head', description: 'Other Income Head Setting', icon: Wallet, route: '/settings/fee-structure/other-income-head' },
+  { title: 'Institute Bank', description: 'Institute Bank Master', icon: Landmark, route: '/settings/fee-structure/institute-bank' },
+  { title: 'Subject Combination', description: 'Subject Combination', icon: Blocks, route: '/settings/fee-structure/subject-combination' },
+  { title: 'Payment Mode', description: 'Payment Mode Setup', icon: CreditCard, route: '/settings/fee-structure/payment-mode' },
+  { title: 'Liability Heads', description: 'Liability Heads Setup', icon: Shield, route: '/settings/fee-structure/liability-heads' },
+  { title: 'Refundable Heads', description: 'Refundable Heads Setup', icon: RotateCcw, route: '/settings/fee-structure/refundable-heads' },
+  { title: 'Fee Excel Upload', description: 'Fee Excel Upload Setup', icon: Sheet, route: '/settings/fee-structure/fee-excel-upload' },
+  { title: 'Other Income Account Mapper', description: 'Other Income Account Mapper Setup', icon: GitBranch, route: '/settings/fee-structure/other-income-account-mapper' },
+  { title: 'Manage Online Fee', description: 'Manage Online Fee', icon: Globe, route: '/settings/fee-structure/manage-online-fee' },
+  { title: 'Tuition Fee Certificate Grouping', description: 'Tuition Fee Certificate Grouping', icon: Files, route: '/settings/fee-structure/tuition-fee-certificate-grouping' },
 ];
 
 export default function InstituteSetupPage2() {
@@ -68,28 +68,30 @@ export default function InstituteSetupPage2() {
           </div>
         </div>
 
-        <div className="grid flex-1 grid-cols-1 gap-[18px] md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid flex-1 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {cards.map((card, index) => {
             const Icon = card.icon;
             return (
-              <motion.article
+              <motion.button
+                type="button"
                 key={card.title}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.18, delay: index * 0.03 }}
-                whileHover={{ y: -6, scale: 1.01, boxShadow: '0 20px 40px rgba(15, 23, 42, 0.12)' }}
-                className="group hover-gradient-border flex h-[220px] flex-col items-center justify-center rounded-[18px] border border-slate-200 bg-white p-5 text-center shadow-[0_10px_30px_rgba(15,23,42,0.05)] transition-all duration-200 hover:border-emerald-300 hover:shadow-[0_18px_40px_rgba(15,23,42,0.1)]"
+                whileHover={{ y: -5, scale: 1.01 }}
+                onClick={() => navigate(card.route)}
+                className="group hover-gradient-border flex min-h-[190px] w-full flex-col items-center justify-center rounded-[18px] border border-slate-200 bg-white p-5 text-center shadow-[0_10px_30px_rgba(15,23,42,0.05)] transition-all duration-200 hover:border-sky-300 hover:shadow-[0_18px_40px_rgba(15,23,42,0.1)] focus:outline-none focus:ring-2 focus:ring-sky-300"
               >
-                <div className="mb-4 flex h-[62px] w-[62px] items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-emerald-600 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:border-emerald-200 group-hover:bg-emerald-50 group-hover:text-emerald-700">
-                  <Icon className="h-[34px] w-[34px]" />
+                <div className="mb-4 flex h-[58px] w-[58px] items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-sky-700 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:border-sky-200 group-hover:bg-sky-50">
+                  <Icon className="h-7 w-7" />
                 </div>
-                <h2 className="text-[22px] font-semibold leading-tight text-slate-900 transition-colors duration-200 group-hover:text-emerald-700">
+                <h2 className="text-lg font-semibold leading-tight text-slate-900 transition-colors duration-200 group-hover:text-sky-700">
                   {card.title}
                 </h2>
-                <p className="mt-2 max-w-[180px] text-[14px] leading-5 text-slate-500">
+                <p className="mt-2 max-w-[190px] text-sm leading-5 text-slate-500">
                   {card.description}
                 </p>
-              </motion.article>
+              </motion.button>
             );
           })}
         </div>
@@ -97,7 +99,7 @@ export default function InstituteSetupPage2() {
         <div className="mt-5 flex items-center justify-end gap-4">
           <button
             type="button"
-            onClick={() => console.log('Institute Setup Page 3')}
+            onClick={() => navigate('/settings/fee-structure')}
             className="inline-flex h-[42px] w-[95px] items-center justify-center rounded-[999px] bg-emerald-600 px-4 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(16,185,129,0.25)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-emerald-700"
           >
             Next

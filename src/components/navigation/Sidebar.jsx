@@ -49,7 +49,7 @@ const MENU_ITEMS = [
   { id: 'users', label: 'Users', to: '/settings/users', icon: UserCog },
   { id: 'library', label: 'Library', to: '/library', icon: BookOpen },
   { id: 'front-desk', label: 'Front Desk', to: '/security', icon: Monitor },
-  { id: 'communication', label: 'Communication', to: '/notifications', icon: Phone },
+  { id: 'communication', label: 'Communication', to: '/communication', icon: Phone },
   { id: 'transport', label: 'Transport', to: '/transport', icon: Bus },
   { id: 'hostel', label: 'Hostel', to: '/hostel', icon: Hotel },
   { id: 'advanced', label: 'Advanced', to: '/settings', icon: Settings2 },
@@ -892,6 +892,7 @@ export default function Sidebar({ isOpen, onClose }) {
         setShowHostelDropdown(false);
         setShowAnalyticsDropdown(false);
         setShowTransportDropdown(false);
+        setShowBulkOperationsDropdown(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);

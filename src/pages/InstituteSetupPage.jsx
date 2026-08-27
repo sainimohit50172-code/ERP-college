@@ -58,7 +58,7 @@ export default function InstituteSetupPage() {
           </div>
         </div>
 
-        <div className="grid flex-1 grid-cols-1 gap-[18px] md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid flex-1 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {setupCards.map((card, index) => {
             const Icon = card.icon;
             return (
@@ -67,20 +67,20 @@ export default function InstituteSetupPage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.18, delay: index * 0.03 }}
-                whileHover={{ y: -6, scale: 1.01, boxShadow: '0 20px 40px rgba(15, 23, 42, 0.12)' }}
-                className={"group hover-gradient-border flex h-[220px] flex-col items-center justify-center rounded-[18px] border border-slate-200 bg-white p-5 text-center shadow-[0_10px_30px_rgba(15,23,42,0.05)] transition-all duration-200 hover:border-emerald-300 hover:shadow-[0_18px_40px_rgba(15,23,42,0.1)] " + (card.route ? 'cursor-pointer' : '')}
+                whileHover={{ y: -5, scale: 1.01 }}
+                className={"group hover-gradient-border flex min-h-[190px] flex-col items-center justify-center rounded-[18px] border border-slate-200 bg-white p-5 text-center shadow-[0_10px_30px_rgba(15,23,42,0.05)] transition-all duration-200 hover:border-sky-300 hover:shadow-[0_18px_40px_rgba(15,23,42,0.1)] " + (card.route ? 'cursor-pointer' : '')}
                 onClick={() => card.route && navigate(card.route)}
                 onKeyDown={(e) => card.route && (e.key === 'Enter' || e.key === ' ') && navigate(card.route)}
                 role={card.route ? 'button' : undefined}
                 tabIndex={card.route ? 0 : undefined}
               >
-                <div className="mb-4 flex h-[62px] w-[62px] items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-emerald-600 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:border-emerald-200 group-hover:bg-emerald-50 group-hover:text-emerald-700">
-                  <Icon className="h-[34px] w-[34px]" />
+                <div className="mb-4 flex h-[58px] w-[58px] items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-sky-700 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:border-sky-200 group-hover:bg-sky-50">
+                  <Icon className="h-7 w-7" />
                 </div>
-                <h2 className="text-[22px] font-semibold leading-tight text-slate-900 transition-colors duration-200 group-hover:text-emerald-700">
+                <h2 className="text-lg font-semibold leading-tight text-slate-900 transition-colors duration-200 group-hover:text-sky-700">
                   {card.title}
                 </h2>
-                <p className="mt-2 max-w-[180px] text-[14px] leading-5 text-slate-500">
+                <p className="mt-2 max-w-[190px] text-sm leading-5 text-slate-500">
                   {card.description}
                 </p>
               </motion.article>

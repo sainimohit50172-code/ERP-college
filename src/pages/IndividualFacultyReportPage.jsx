@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { ArrowRight, Download } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Download } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function IndividualFacultyReportPage() {
+  const navigate = useNavigate();
   const [session, setSession] = useState('2026-27 Odd');
   const [college, setCollege] = useState('College A');
   const [employee, setEmployee] = useState('John Doe');
@@ -20,7 +22,16 @@ export default function IndividualFacultyReportPage() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-slate-900">
-      <div className="mx-auto max-w-[1240px] py-8">
+      <div className="w-full max-w-none py-8">
+        <button
+          type="button"
+          className="page-back-button mb-5 inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-200"
+          onClick={() => navigate(-1)}
+          title="Back"
+          aria-label="Go back"
+        >
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+        </button>
         <div className="space-y-4">
           <div className="text-sm uppercase tracking-[0.28em] text-slate-500">Dashboard &gt; Individual Faculty Report</div>
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">

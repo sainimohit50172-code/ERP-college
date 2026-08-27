@@ -59,21 +59,21 @@ export default function HRMSetupPage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.18, delay: index * 0.03 }}
-                whileHover={{ y: -6, scale: 1.01, boxShadow: '0 20px 40px rgba(15, 23, 42, 0.12)' }}
+                whileHover={{ y: -5, scale: 1.01 }}
                 onClick={() => card.route && navigate(card.route)}
                 onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && card.route && navigate(card.route)}
                 role="button"
                 tabIndex={0}
                 aria-label={`${card.title}: ${card.subtitle}`}
-                className={`group flex h-[220px] flex-col items-center justify-center rounded-[18px] border border-slate-200 bg-white p-5 text-center shadow-[0_10px_30px_rgba(15,23,42,0.05)] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-300 ${card.route ? 'hover:border-emerald-300 hover:shadow-[0_18px_40px_rgba(15,23,42,0.1)] hover:cursor-pointer' : 'cursor-default'}`}
+                className={`group flex min-h-[190px] flex-col items-center justify-center rounded-[18px] border border-slate-200 bg-white p-5 text-center shadow-[0_10px_30px_rgba(15,23,42,0.05)] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-sky-300 ${card.route ? 'hover:border-sky-300 hover:shadow-[0_18px_40px_rgba(15,23,42,0.1)] hover:cursor-pointer' : 'cursor-default'}`}
               >
-                <div className="mb-4 flex h-[62px] w-[62px] items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-emerald-600 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:border-emerald-200 group-hover:bg-emerald-50 group-hover:text-emerald-700">
-                  <Icon className="h-[34px] w-[34px]" />
+                <div className="mb-4 flex h-[58px] w-[58px] items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-sky-700 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:border-sky-200 group-hover:bg-sky-50">
+                  <Icon className="h-7 w-7" />
                 </div>
-                <h2 className="text-[22px] font-semibold leading-tight text-slate-900 transition-colors duration-200 group-hover:text-emerald-700">
+                <h2 className="text-lg font-semibold leading-tight text-slate-900 transition-colors duration-200 group-hover:text-sky-700">
                   {card.title}
                 </h2>
-                <p className="mt-2 max-w-[180px] text-[14px] leading-5 text-slate-500">
+                <p className="mt-2 max-w-[190px] text-sm leading-5 text-slate-500">
                   {card.subtitle}
                 </p>
               </motion.article>

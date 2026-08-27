@@ -16,7 +16,6 @@ import {
   Settings,
   ShieldCheck,
   Truck,
-  UserRound,
   UsersRound,
 } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -55,7 +54,6 @@ const pageIcons = [
   { match: /helpdesk|ticket/, icon: Headphones },
   { match: /calendar|timetable|schedule/, icon: CalendarDays },
   { match: /settings|preference|config|setup|permission|audit|password/, icon: Settings },
-  { match: /profile|user/, icon: UserRound },
 ];
 
 const getPageIcon = (pathname) => pageIcons.find(({ match }) => match.test(pathname))?.icon || LayoutDashboard;
@@ -124,7 +122,7 @@ export default function PageTitleStrip() {
         </button>
       )}
       <div className="erp-page-title-strip__icon" aria-hidden="true">
-        {createElement(pageIcon, { className: 'h-5 w-5' })}
+        {createElement(pageIcon, { className: 'h-6 w-6' })}
       </div>
       <div className="erp-page-title-strip__content">
         <div className="erp-page-title-strip__path">{identity.path}</div>

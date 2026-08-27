@@ -128,19 +128,17 @@ export default function AdmissionMasterDashboardPage() {
                 {...(module.route ? { to: module.route } : {})}
                 key={module.title}
                 aria-label={`${module.title}: ${module.subtitle}`}
-                className="group flex h-full min-h-[220px] max-h-[240px] flex-col justify-between overflow-hidden rounded-[18px] border border-slate-200 bg-white p-7 shadow-sm transition duration-300 ease-out hover:-translate-y-2.5 hover:scale-[1.02] hover:border-emerald-500 hover:shadow-[0_24px_55px_rgba(15,23,42,0.12)] focus:outline-none focus:ring-2 focus:ring-emerald-300"
+                className="group flex min-h-[190px] flex-col items-center justify-center overflow-hidden rounded-[18px] border border-slate-200 bg-white p-5 text-center shadow-[0_10px_30px_rgba(15,23,42,0.05)] transition-all duration-200 hover:-translate-y-1 hover:scale-[1.01] hover:border-sky-300 hover:shadow-[0_18px_40px_rgba(15,23,42,0.1)] focus:outline-none focus:ring-2 focus:ring-sky-300"
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.36, delay: index * 0.05 }}
               >
-                <div className="flex items-center justify-between gap-4">
-                  <div className="rounded-full bg-[#F5F8FC] p-3 text-emerald-600 transition duration-300 group-hover:bg-emerald-600 group-hover:text-white">
-                    <Icon size={46} aria-hidden="true" />
-                  </div>
+                <div className="mb-4 flex h-[58px] w-[58px] items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-sky-700 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:border-sky-200 group-hover:bg-sky-50">
+                  <Icon className="h-7 w-7" aria-hidden="true" />
                 </div>
-                <div className="mt-8 flex flex-1 flex-col justify-center gap-3 text-left">
-                  <h2 className="text-xl font-semibold text-slate-900 transition duration-300 group-hover:text-emerald-600">{module.title}</h2>
-                  <p className="text-sm leading-6 text-slate-500 transition duration-300 group-hover:text-slate-700">{module.subtitle}</p>
+                <div className="flex flex-col items-center justify-center">
+                  <h2 className="text-lg font-semibold leading-tight text-slate-900 transition-colors group-hover:text-sky-700">{module.title}</h2>
+                  <p className="mt-2 max-w-[190px] text-sm leading-5 text-slate-500">{module.subtitle}</p>
                 </div>
               </Card>
             );

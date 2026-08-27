@@ -47,7 +47,7 @@ const admissionDropdownItems = [
 const navLinks = [
   { label: 'Fee', to: '/fees', hasDropdown: true, dropdownItems: feeDropdownItems },
   { label: 'Admission', to: '/admissions', hasDropdown: true, dropdownItems: admissionDropdownItems },
-  { label: 'Advanced', to: '/settings', hasDropdown: true, dropdownItems: advancedDropdownItems },
+  { label: 'Advanced', to: '/settings/advanced', hasDropdown: true, dropdownItems: advancedDropdownItems },
   { label: 'Analytics', to: '/reports', hasDropdown: true, dropdownItems: analyticsDropdownItems },
 ];
 
@@ -56,11 +56,11 @@ const quickActions = [
   { title: 'Fee Structure', subtitle: 'Fee Details', route: '/settings/fee-structure', icon: '💰', color: '#8b5cf6' },
   { title: 'Academics', subtitle: 'Academic Setup', route: '/settings/institute/academics', icon: '🎓', color: '#10b981' },
   { title: 'Library Setup', subtitle: 'Library Details', route: '/library', icon: '📚', color: '#f59e0b' },
-  { title: 'Advanced Setup', subtitle: 'Advanced Settings', route: '/settings', icon: '⚙️', color: '#6366f1' },
+  { title: 'Advanced Setup', subtitle: 'Advanced Settings', route: '/settings/advanced', icon: '⚙️', color: '#6366f1' },
   { title: 'Admission Setup', subtitle: 'Admission Details', route: '/admission/setup', icon: '🎯', color: '#ec4899' },
   { title: 'HRM Setup', subtitle: 'HRM Settings', route: '/settings/hrm', icon: '👥', color: '#14b8a6' },
   { title: 'Analytics Setup', subtitle: 'Analytics Details', route: '/reports', icon: '📊', color: '#f97316' },
-  { title: 'Communication', subtitle: 'Communication Setting', route: '/notifications', icon: '💬', color: '#06b6d4' },
+  { title: 'Communication', subtitle: 'Communication Setting', route: '/communication', icon: '💬', color: '#06b6d4' },
   { title: 'COE Master', subtitle: 'COE Master Setup', route: '/settings/coe', icon: '🏫', color: '#ef4444' },
 ];
 
@@ -334,17 +334,17 @@ export default function Topbar({ onToggleSidebar }) {
               <Settings2 className="h-4 w-4" />
             </button>
             {isQuickActionsOpen ? (
-              <div className="fixed inset-0 z-40 flex items-start justify-end bg-black/20">
-                <div className="relative h-full w-[320px] max-w-full bg-white p-5 shadow-2xl">
-                  <div className="flex h-full flex-col">
-                    <div className="mb-4 flex items-center justify-between">
+              <div className="fixed left-0 right-4 top-[68px] z-40 flex h-[calc(100dvh-68px)] items-start justify-end overflow-x-hidden bg-black/20 sm:right-4" onClick={() => setQuickActionsOpen(false)}>
+                <div className="quick-actions-panel relative box-border h-fit max-h-full w-[min(320px,100%)] max-w-full overflow-x-hidden overflow-y-auto rounded-l-[20px] bg-white p-4 shadow-2xl sm:p-5" onClick={(event) => event.stopPropagation()}>
+                  <div className="flex flex-col">
+                    <div className="mb-3 flex shrink-0 items-center justify-between">
                       <p className="text-base font-semibold text-slate-900">User Quick Actions</p>
                       <button type="button" onClick={() => setQuickActionsOpen(false)} className="rounded-full p-2 text-slate-500 hover:bg-slate-100">
                         <X className="h-4 w-4" />
                       </button>
                     </div>
-                    <div className="flex-1 overflow-y-auto pr-1" style={{ maxHeight: 'calc(100vh - 6.5rem)' }}>
-                      <div className="grid gap-3 sm:grid-cols-2">
+                      <div className="overflow-x-hidden pr-1">
+                        <div className="grid grid-cols-[repeat(2,minmax(0,1fr))] gap-2 sm:gap-3">
                         {quickActions.map((action) => (
                           <button
                             key={action.title}
@@ -354,13 +354,13 @@ export default function Topbar({ onToggleSidebar }) {
                               setQuickActionsOpen(false);
                               setActiveDropdown(null);
                             }}
-                            className="group rounded-[10px] border border-[#e2e8f0] bg-white p-4 text-left transition hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
+                            className="quick-action-card group w-full min-w-0 rounded-[10px] border border-[#e2e8f0] bg-white p-3 text-left transition hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] sm:p-4"
                           >
-                            <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-2xl text-base" style={{ backgroundColor: `${action.color}26`, color: action.color }}>
+                            <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-2xl text-base" style={{ backgroundColor: `${action.color}26`, color: action.color }}>
                               {action.icon}
                             </div>
-                            <p className="text-[13px] font-semibold text-slate-950">{action.title}</p>
-                            <p className="mt-1 text-[11px] text-slate-500">{action.subtitle}</p>
+                            <p className="truncate text-[13px] font-semibold text-slate-950">{action.title}</p>
+                            <p className="mt-1 truncate text-[11px] text-slate-500">{action.subtitle}</p>
                           </button>
                         ))}
                       </div>
@@ -439,7 +439,7 @@ export default function Topbar({ onToggleSidebar }) {
                   type="button"
                   onClick={() => {
                     setProfileMenuOpen(false);
-                    navigate('/settings');
+                    navigate('/employees/profile');
                   }}
                   className="flex w-full items-center gap-2 px-4 py-3 text-left text-sm text-slate-700 hover:bg-slate-50"
                 >

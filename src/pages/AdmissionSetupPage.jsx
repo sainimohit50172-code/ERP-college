@@ -33,7 +33,7 @@ export default function AdmissionSetupPage() {
           </div>
         </div>
 
-        <section className="grid gap-4 sm:grid-cols-2">
+          <section className="grid gap-4 sm:grid-cols-2">
           {cards.map((card, index) => {
             const Icon = card.icon;
             return (
@@ -41,7 +41,7 @@ export default function AdmissionSetupPage() {
                 to={card.route}
                 key={card.title}
                 aria-label={`${card.title}: ${card.subtitle}`}
-                className="group flex h-full min-h-[220px] max-h-[240px] flex-col justify-between overflow-hidden rounded-[18px] border border-slate-200 bg-white p-7 shadow-sm transition duration-300 ease-out hover:-translate-y-2.5 hover:scale-[1.02] hover:border-emerald-500 hover:shadow-[0_24px_55px_rgba(15,23,42,0.12)] focus:outline-none focus:ring-2 focus:ring-emerald-300"
+                className="group flex h-full min-h-[220px] max-h-[240px] flex-col justify-between overflow-hidden rounded-[18px] border border-slate-200 bg-white p-7 text-left shadow-sm transition duration-300 ease-out hover:-translate-y-2.5 hover:scale-[1.02] hover:border-emerald-500 hover:shadow-[0_24px_55px_rgba(15,23,42,0.12)] focus:outline-none focus:ring-2 focus:ring-emerald-300"
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.36, delay: index * 0.05 }}
@@ -49,7 +49,7 @@ export default function AdmissionSetupPage() {
                 <div className="w-fit rounded-full bg-[#F5F8FC] p-3 text-emerald-600 transition duration-300 group-hover:bg-emerald-600 group-hover:text-white">
                   <Icon size={46} aria-hidden="true" />
                 </div>
-                <div className="mt-8 flex flex-1 flex-col justify-center gap-3 text-left">
+                <div className="mt-8 flex flex-1 flex-col justify-center gap-3">
                   <h2 className="text-xl font-semibold text-slate-900 transition duration-300 group-hover:text-emerald-600">{card.title}</h2>
                   <p className="text-sm leading-6 text-slate-500 transition duration-300 group-hover:text-slate-700">{card.subtitle}</p>
                 </div>

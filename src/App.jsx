@@ -20,6 +20,10 @@ import FollowUpRemarkReportPage from './pages/FollowUpRemarkReportPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import SettingsPage from './pages/SettingsPage.jsx';
+import AdvancedSetupPage from './pages/AdvancedSetupPage.jsx';
+import AdvancedMasterPage from './pages/AdvancedMasterPage.jsx';
+import CommunicationSetupPage from './pages/CommunicationSetupPage.jsx';
+import CommunicationWorkflowPage from './pages/CommunicationWorkflowPage.jsx';
 import InstituteSetupPage from './pages/InstituteSetupPage.jsx';
 import InstituteSetupPage2 from './pages/InstituteSetupPage2.jsx';
 import InstituteProfilePage from './pages/InstituteProfilePage.jsx';
@@ -587,21 +591,28 @@ function App() {
               <Route path="notifications/assignment" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Assignment" /></ProtectedRoute>} />
               <Route path="notifications/notes" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Notes" /></ProtectedRoute>} />
               <Route path="notifications/notes-new" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Notes New" /></ProtectedRoute>} />
-              <Route path="notifications/circular" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Circular" /></ProtectedRoute>} />
-              <Route path="notifications/notice" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Notice" /></ProtectedRoute>} />
+              <Route path="notifications/circular" element={<ProtectedRoute moduleKey="notifications"><CommunicationWorkflowPage type="circular" /></ProtectedRoute>} />
+              <Route path="notifications/notice" element={<ProtectedRoute moduleKey="notifications"><CommunicationWorkflowPage type="notice" /></ProtectedRoute>} />
               <Route path="notifications/syllabus" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Syllabus" /></ProtectedRoute>} />
-              <Route path="notifications/date-sheet" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Date Sheet" /></ProtectedRoute>} />
+              <Route path="notifications/date-sheet" element={<ProtectedRoute moduleKey="notifications"><CommunicationWorkflowPage type="dateSheet" /></ProtectedRoute>} />
               <Route path="notifications/e-learning" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="E-Learning" /></ProtectedRoute>} />
               <Route path="notifications/time-table" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Time Table" /></ProtectedRoute>} />
-              <Route path="communication" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Communication" /></ProtectedRoute>} />
-              <Route path="communication/send-text-sms" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Send Text SMS" /></ProtectedRoute>} />
-              <Route path="communication/send-whatsapp-message" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Send Whatsapp Message" /></ProtectedRoute>} />
-              <Route path="communication/report" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Report" /></ProtectedRoute>} />
-              <Route path="communication/employee-announcement" element={<ProtectedRoute moduleKey="notifications"><PlaceholderPage title="Employee Announcement" /></ProtectedRoute>} />
+              <Route path="communication" element={<ProtectedRoute moduleKey="notifications"><CommunicationSetupPage /></ProtectedRoute>} />
+              <Route path="communication/send-text-sms" element={<ProtectedRoute moduleKey="notifications"><CommunicationWorkflowPage type="sms" /></ProtectedRoute>} />
+              <Route path="communication/send-whatsapp-message" element={<ProtectedRoute moduleKey="notifications"><CommunicationWorkflowPage type="whatsapp" /></ProtectedRoute>} />
+              <Route path="communication/report" element={<ProtectedRoute moduleKey="notifications"><CommunicationWorkflowPage type="report" /></ProtectedRoute>} />
+              <Route path="communication/employee-announcement" element={<ProtectedRoute moduleKey="notifications"><CommunicationWorkflowPage type="announcement" /></ProtectedRoute>} />
               <Route path="lesson" element={<ProtectedRoute><PlaceholderPage title="Lesson" /></ProtectedRoute>} />
               <Route path="lesson/management" element={<ProtectedRoute moduleKey="lms"><PlaceholderPage title="Lesson Management" /></ProtectedRoute>} />
               <Route path="lesson/subject-wise-report" element={<ProtectedRoute moduleKey="lms"><PlaceholderPage title="Subject Wise Report" /></ProtectedRoute>} />
               <Route path="settings" element={<ProtectedRoute moduleKey="settings"><SettingsPage /></ProtectedRoute>} />
+              <Route path="settings/advanced" element={<ProtectedRoute moduleKey="settings"><AdvancedSetupPage /></ProtectedRoute>} />
+              <Route path="settings/advanced/specialisation" element={<ProtectedRoute moduleKey="settings"><AdvancedMasterPage type="specialisation" /></ProtectedRoute>} />
+              <Route path="settings/advanced/event-type" element={<ProtectedRoute moduleKey="settings"><AdvancedMasterPage type="event-type" /></ProtectedRoute>} />
+              <Route path="settings/advanced/event-group" element={<ProtectedRoute moduleKey="settings"><AdvancedMasterPage type="event-group" /></ProtectedRoute>} />
+              <Route path="settings/advanced/feedback-parameter" element={<ProtectedRoute moduleKey="settings"><AdvancedMasterPage type="feedback-parameter" /></ProtectedRoute>} />
+              <Route path="settings/advanced/criteria-master" element={<ProtectedRoute moduleKey="settings"><AdvancedMasterPage type="criteria-master" /></ProtectedRoute>} />
+              <Route path="settings/advanced/submission-category" element={<ProtectedRoute moduleKey="settings"><AdvancedMasterPage type="submission-category" /></ProtectedRoute>} />
               <Route path="settings/fee-structure" element={<ProtectedRoute moduleKey="settings"><FeeStructureDashboardPage /></ProtectedRoute>} />
               <Route path="settings/fee-structure/fee-head" element={<ProtectedRoute moduleKey="settings"><FeeHeadManagementPage /></ProtectedRoute>} />
               <Route path="settings/fee-structure/fee-head-group" element={<ProtectedRoute moduleKey="settings"><FeeHeadGroupPage /></ProtectedRoute>} />

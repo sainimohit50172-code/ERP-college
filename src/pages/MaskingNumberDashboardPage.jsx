@@ -47,7 +47,7 @@ export default function MaskingNumberDashboardPage() {
                 key={card.title}
                 to={card.route}
                 aria-label={`${card.title}: ${card.subtitle}`}
-                className="group flex h-full min-h-[220px] max-h-[240px] flex-col justify-between overflow-hidden rounded-[18px] border border-slate-200 bg-white p-7 shadow-sm transition duration-300 ease-out hover:-translate-y-2.5 hover:scale-[1.02] hover:border-slate-900 hover:shadow-[0_24px_55px_rgba(15,23,42,0.14)] focus:outline-none focus:ring-2 focus:ring-slate-300"
+                className="group flex h-full min-h-[220px] max-h-[240px] flex-col justify-between overflow-hidden rounded-[18px] border border-slate-200 bg-white p-7 text-left shadow-sm transition duration-300 ease-out hover:-translate-y-2.5 hover:scale-[1.02] hover:border-slate-900 hover:shadow-[0_24px_55px_rgba(15,23,42,0.14)] focus:outline-none focus:ring-2 focus:ring-slate-300"
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.36, delay: index * 0.05 }}

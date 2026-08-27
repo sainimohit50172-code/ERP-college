@@ -6,7 +6,7 @@ export default function ExportButton({ onExcel, onCsv, onPdf, onPrint }) {
       <button
         type="button"
         onClick={onExcel}
-        className="hover-gradient-border inline-flex items-center gap-2 rounded-3xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800 transition hover:bg-emerald-100"
+        className="btn btn-secondary inline-flex items-center gap-2 rounded-3xl px-4 py-3 text-sm font-semibold transition hover:bg-slate-50"
         style={{ '--hover-gradient-radius': '24px' }}
       >
         <FileSpreadsheet className="h-4 w-4" />
@@ -15,7 +15,7 @@ export default function ExportButton({ onExcel, onCsv, onPdf, onPrint }) {
       <button
         type="button"
         onClick={onCsv}
-        className="hover-gradient-border inline-flex items-center gap-2 rounded-3xl bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
+        className="btn btn-secondary inline-flex items-center gap-2 rounded-3xl px-4 py-3 text-sm font-semibold transition hover:bg-slate-50"
         style={{ '--hover-gradient-radius': '24px' }}
       >
         <Download className="h-4 w-4" />
@@ -24,7 +24,7 @@ export default function ExportButton({ onExcel, onCsv, onPdf, onPrint }) {
       <button
         type="button"
         onClick={onPdf}
-        className="hover-gradient-border inline-flex items-center gap-2 rounded-3xl bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
+        className="btn btn-secondary inline-flex items-center gap-2 rounded-3xl px-4 py-3 text-sm font-semibold transition hover:bg-slate-50"
         style={{ '--hover-gradient-radius': '24px' }}
       >
         <FileText className="h-4 w-4" />
@@ -33,7 +33,7 @@ export default function ExportButton({ onExcel, onCsv, onPdf, onPrint }) {
       <button
         type="button"
         onClick={onPrint}
-        className="hover-gradient-border inline-flex items-center gap-2 rounded-3xl bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
+        className="btn btn-secondary inline-flex items-center gap-2 rounded-3xl px-4 py-3 text-sm font-semibold transition hover:bg-slate-50"
         style={{ '--hover-gradient-radius': '24px' }}
       >
         <Printer className="h-4 w-4" />

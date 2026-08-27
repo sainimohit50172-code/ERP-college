@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, Users, Layers, ClipboardList, ClipboardCheck, BarChart3, SlidersHorizontal } from 'lucide-react';
 import Breadcrumb from '../components/ui/Breadcrumb.jsx';
-import Button from '../components/ui/Button.jsx';
 
 const phaseGroups = [
   {
@@ -103,24 +103,22 @@ export default function AcademicsManagementPage() {
                   {group.items.map((item) => {
                     const Icon = item.icon;
                     return (
-                      <div key={item.title} className="grid gap-3 rounded-[22px] border border-slate-200 bg-white p-4 shadow-[0_10px_30px_rgba(15,23,42,0.04)] sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:items-center">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-600 shadow-lg">
-                          <Icon className="h-5 w-5 text-white" />
+                      <motion.button
+                        key={item.title}
+                        type="button"
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2, delay: groupIndex * 0.04 }}
+                        whileHover={{ y: -5, scale: 1.01 }}
+                        onClick={() => navigate(item.route)}
+                        className="group flex min-h-[190px] w-full flex-col items-center justify-center rounded-[18px] border border-slate-200 bg-white p-5 text-center shadow-[0_10px_30px_rgba(15,23,42,0.05)] transition-all duration-200 hover:border-sky-300 hover:shadow-[0_18px_40px_rgba(15,23,42,0.1)] focus:outline-none focus:ring-2 focus:ring-sky-300"
+                      >
+                        <div className="mb-4 flex h-[58px] w-[58px] items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-sky-700 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:border-sky-200 group-hover:bg-sky-50">
+                          <Icon className="h-7 w-7" />
                         </div>
-                        <div className="min-w-0">
-                          <p className="text-sm font-semibold text-slate-900">{item.title}</p>
-                          <p className="mt-2 text-sm leading-6 text-slate-600">{item.description}</p>
-                        </div>
-                        <div className="flex items-center justify-end sm:justify-center">
-                          <Button
-                            variant="primary"
-                            className="rounded-2xl px-4 py-2 text-sm font-semibold"
-                            onClick={() => navigate(item.route)}
-                          >
-                            Continue
-                          </Button>
-                        </div>
-                      </div>
+                        <h2 className="text-lg font-semibold leading-tight text-slate-900 transition-colors group-hover:text-sky-700">{item.title}</h2>
+                        <p className="mt-2 max-w-[220px] text-sm leading-5 text-slate-500">{item.description}</p>
+                      </motion.button>
                     );
                   })}
                 </div>

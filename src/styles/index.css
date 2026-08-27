@@ -45,7 +45,7 @@ html::-webkit-scrollbar-thumb:hover {
   box-sizing: border-box;
 }
 
-.erp-content-wrapper button:has(> svg.lucide-arrow-left):not([data-pagination-control]) {
+.erp-content-wrapper button:has(> svg.lucide-arrow-left):not([data-pagination-control]):not(.page-back-button) {
   display: none !important;
 }
 
@@ -117,12 +117,13 @@ html::-webkit-scrollbar-thumb:hover {
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  color: #ffffff;
-  background: #101824;
-  box-shadow: 0 8px 18px rgba(16, 24, 36, 0.16);
+  width: 44px;
+  height: 44px;
+  border-radius: 0;
+  border: 0 !important;
+  color: #2563eb !important;
+  background: transparent;
+  box-shadow: none;
 }
 
 .erp-page-title-strip__clock {
@@ -156,7 +157,11 @@ html::-webkit-scrollbar-thumb:hover {
   border-radius: 50%;
   background: #09ba5b;
   box-shadow: 0 0 0 3px #c3c3c3;
-  content: '';
+}
+
+.erp-page-title-strip__icon svg {
+  color: #2563eb !important;
+  stroke: #2563eb !important;
 }
 
 .erp-page-title-strip__clock-day,
@@ -671,6 +676,52 @@ input[disabled][type="button"].bg-emerald-700,
   box-shadow: none !important;
 }
 
+/* Keep page-level create and primary actions aligned with the sidebar theme. */
+button[class*="bg-sky-400"],
+button[class*="bg-sky-500"],
+button[class*="bg-sky-600"],
+button[class*="bg-blue-600"],
+button[class*="bg-\[#0f5132\]"],
+button[class*="bg-emerald-400"],
+button[class*="bg-emerald-500"],
+button[class*="bg-emerald-600"],
+button[class*="bg-emerald-700"] {
+  background-color: var(--sidebar-top-color) !important;
+  border-color: var(--sidebar-top-color) !important;
+  color: #ffffff !important;
+}
+
+button[class*="bg-sky-400"]:hover,
+button[class*="bg-sky-500"]:hover,
+button[class*="bg-sky-600"]:hover,
+button[class*="bg-blue-600"]:hover,
+button[class*="bg-\[#0f5132\]"]:hover,
+button[class*="bg-emerald-400"]:hover,
+button[class*="bg-emerald-500"]:hover,
+button[class*="bg-emerald-600"]:hover,
+button[class*="bg-emerald-700"]:hover {
+  background-color: var(--sidebar-top-color) !important;
+  border-color: var(--sidebar-top-color) !important;
+  color: #ffffff !important;
+}
+
+/* Export, filter, print, reset, and other secondary actions stay white. */
+button[class*="bg-slate-800"],
+button[class*="bg-slate-900"],
+button[class*="bg-slate-950"] {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+button[class*="bg-slate-800"]:hover,
+button[class*="bg-slate-900"]:hover,
+button[class*="bg-slate-950"]:hover {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
 /*
   Ensure any button/link/input that currently uses navy/blue utility classes
   is visually converted to the new primary green without changing non-button
@@ -885,6 +936,35 @@ table td span {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.quick-actions-panel {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.quick-actions-panel .quick-action-card,
+.quick-actions-panel .quick-action-card:hover {
+  transform: none !important;
+}
+
+/* Final action hierarchy: sidebar navy for primary actions, white for secondary actions. */
+button[class*="bg-slate-800"],
+button[class*="bg-slate-900"],
+button[class*="bg-slate-950"] {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #334155 !important;
+  box-shadow: none !important;
+}
+
+button[class*="bg-slate-800"]:hover,
+button[class*="bg-slate-900"]:hover,
+button[class*="bg-slate-950"]:hover {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: none !important;
 }
 .overflow-x-auto table th.action-header,
 .overflow-x-auto table td.action-cell {
