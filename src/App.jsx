@@ -238,6 +238,13 @@ import LibraryWebOpacPage from './pages/LibraryWebOpacPage.jsx';
 import DailyCollectionReportPage from './pages/DailyCollectionReportPage.jsx';
 import AdmissionSummaryReportPage from './pages/AdmissionSummaryReportPage.jsx';
 import SubjectCombinationReportPage from './pages/SubjectCombinationReportPage.jsx';
+import SubjectWiseCountReportPage from './pages/SubjectWiseCountReportPage.jsx';
+import StudentAllocatedSubjectReportPage from './pages/StudentAllocatedSubjectReportPage.jsx';
+import StudentExportDataPage from './pages/StudentExportDataPage.jsx';
+import UniversityDataPage from './pages/UniversityDataPage.jsx';
+import StudentStrengthReportPage from './pages/StudentStrengthReportPage.jsx';
+import StudentGenderCategoryReportPage from './pages/StudentGenderCategoryReportPage.jsx';
+import StudentFeedbackReportPage from './pages/StudentFeedbackReportPage.jsx';
 import IndividualFacultyReportPage from './pages/IndividualFacultyReportPage.jsx';
 import FeedbackSummaryReportPage from './pages/FeedbackSummaryReportPage.jsx';
 import StudentFeedbackPage from './pages/StudentFeedbackPage.jsx';
@@ -337,6 +344,16 @@ function App() {
               <Route path="students/allocate-subject" element={<ProtectedRoute moduleKey="students"><AllocateSubjectPage /></ProtectedRoute>} />
               <Route path="students/allocate-subjects" element={<ProtectedRoute moduleKey="students"><AllocateSubjectPage /></ProtectedRoute>} />
               <Route path="students/session" element={<ProtectedRoute moduleKey="students"><StudentSessionManagementPage /></ProtectedRoute>} />
+              <Route path="students/reports/allocated-subjects" element={<ProtectedRoute moduleKey="students"><StudentAllocatedSubjectReportPage /></ProtectedRoute>} />
+              <Route path="students/reports/allocated-subjects/:college" element={<ProtectedRoute moduleKey="students"><StudentAllocatedSubjectReportPage /></ProtectedRoute>} />
+              <Route path="students/reports/subject-wise" element={<ProtectedRoute moduleKey="students"><SubjectWiseCountReportPage /></ProtectedRoute>} />
+              <Route path="students/reports/subject-combination" element={<ProtectedRoute moduleKey="students"><SubjectCombinationReportPage /></ProtectedRoute>} />
+              <Route path="students/reports/export" element={<ProtectedRoute moduleKey="students"><StudentExportDataPage /></ProtectedRoute>} />
+              <Route path="students/reports/university" element={<ProtectedRoute moduleKey="students"><UniversityDataPage /></ProtectedRoute>} />
+              <Route path="students/reports/strength" element={<ProtectedRoute moduleKey="students"><StudentStrengthReportPage /></ProtectedRoute>} />
+              <Route path="students/reports/gender-wise" element={<ProtectedRoute moduleKey="students"><StudentGenderCategoryReportPage /></ProtectedRoute>} />
+              <Route path="students/reports/feedback" element={<ProtectedRoute moduleKey="students"><StudentFeedbackReportPage /></ProtectedRoute>} />
+              <Route path="students/reports/subject-wise/:college" element={<ProtectedRoute moduleKey="students"><SubjectWiseCountReportPage /></ProtectedRoute>} />
               <Route path="students/:studentId" element={<ProtectedRoute moduleKey="students"><StudentProfilePage /></ProtectedRoute>} />
               <Route path="parents" element={<ProtectedRoute moduleKey="students"><ParentsPage /></ProtectedRoute>} />
               <Route path="enquiries" element={<ProtectedRoute moduleKey="admissions"><EnquiriesPage /></ProtectedRoute>} />

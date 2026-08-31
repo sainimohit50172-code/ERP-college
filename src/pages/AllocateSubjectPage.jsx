@@ -37,12 +37,26 @@ export default function AllocateSubjectPage() {
     document.title = 'Allocate Subject - Academics Setup';
   }, []);
 
+  useEffect(() => {
+    const handleBrowserBack = () => {
+      setSelectedCollege('');
+      setRows([]);
+      setShowTable(false);
+      setSelectedIds([]);
+      setCurrentPage(1);
+    };
+
+    window.addEventListener('popstate', handleBrowserBack);
+    return () => window.removeEventListener('popstate', handleBrowserBack);
+  }, []);
+
   const handleGo = async () => {
     if (!selectedCollege) {
       window.alert('Please select a college before continuing.');
       return;
     }
 
+    window.history.pushState({ allocateSubjectCollege: selectedCollege }, '', window.location.href);
     setLoading(true);
     setShowTable(false);
     setSelectedIds([]);
@@ -200,11 +214,9 @@ export default function AllocateSubjectPage() {
     );
   };
 
-  const rowCountText = `${Math.min(visibleRows.length, 250)} entries`;
-
   useEffect(() => {
     if (currentPage > totalPages) {
-      setCurrentPage(totalPages);
+      void Promise.resolve().then(() => setCurrentPage(totalPages));
     }
   }, [currentPage, totalPages]);
 

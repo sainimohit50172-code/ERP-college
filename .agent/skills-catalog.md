@@ -1,6 +1,6 @@
 # AI Agent Skills — Full Catalog
 
-> Auto-generated. Total: **2074 skills** across **118 categories**.
+> Auto-generated. Total: **2098 skills** across **119 categories**.
 > When asked "what skill should I use?", browse this file and suggest the most relevant skill IDs.
 > Install a skill: `Ctrl+Shift+/` → search for the skill ID → press Enter.
 
@@ -20,12 +20,30 @@
 ## agent-orchestration
 
 - **agent-self-scheduling**: Schedule AI agent runs with cron, loops, or external clocks while avoiding unsafe tight autonomous timers. _(risk: critical)_
+- **agy-delegate**: Delegate coding tasks to the Google Antigravity CLI (`agy`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
+- **aider-delegate**: Delegate coding tasks to Aider (`aider`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
+- **claude-delegate**: Delegate coding tasks to a separate Claude Code CLI process or Claude session only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
+- **cline-delegate**: Delegate coding tasks to the Cline CLI (`cline`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
+- **codex-delegate**: Delegate coding tasks to the OpenAI Codex CLI only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
 - **codex-subagent**: Launch Codex CLI as an isolated subagent for bounded coding, review, or verification tasks. _(risk: critical)_
+- **commandcode-delegate**: Delegate coding tasks to the Command Code CLI (`cmd`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
+- **copilot-delegate**: Delegate coding tasks to the GitHub Copilot CLI (`copilot`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
+- **cursor-delegate**: Delegate coding tasks to the Cursor Agent CLI (`cursor-agent`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
+- **delegate-setup**: Configure approved delegation lanes across installed implementer CLIs, including optional model and effort choices, then write global or project config only after explicit user approval. _(risk: safe)_
 - **delegating-to-agents**: Delegate bounded work to other AI agents while preserving context, ownership, and progress checks. _(risk: critical)_
 - **goal-loop**: Draft and explain persistent goal-loop prompts for long-running agent work with clear stop conditions. _(risk: safe)_
 - **grok-build**: Delegate well-specified implementation tasks to xAI's Grok Build CLI running headlessly while the orchestrating agent plans, writes task specs, reviews every diff, and owns the result. _(risk: critical)_
+- **grok-delegate**: Delegate coding tasks to the Grok Build CLI only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
+- **kimi-delegate**: Delegate coding tasks to the Kimi Code CLI (`kimi`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
 - **multi-agent-task-orchestrator**: Route tasks to specialized AI agents with anti-duplication, quality gates, and 30-minute heartbeat monitoring _(risk: safe)_
+- **omp-delegate**: Delegate coding tasks to Oh My Pi (`omp`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
+- **opencode-delegate**: Delegate coding tasks to the OpenCode CLI only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
 - **orchestrate**: Coordinate focused subagents on substantial work, keep their ownership non-overlapping, and integrate verified results. Use for large-scope Codex tasks; keep trivial work with the coordinator. _(risk: safe)_
+- **pi-delegate**: Delegate coding tasks to the Pi coding agent CLI (`pi`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
+- **qoder-delegate**: Delegate coding tasks to the Qoder CLI (`qodercli`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
+- **vibe-delegate**: Delegate coding tasks to the Mistral Vibe CLI (`vibe`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
+- **warp-delegate**: Delegate coding tasks to the Warp Agent CLI (`oz`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
+- **zcode-delegate**: Delegate coding tasks to the Z.AI ZCode CLI only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
 
 ## agent-squad
 
@@ -229,11 +247,13 @@ Chat widget, Messages, PromptInput, Avatar, LLM _(risk: unknown)_
 - **odw**: Dynamic multi-agent workflows — plan first, then orchestrate parallel agents with adversarial verification via the local odw daemon. Use when the user asks for a "workflow", says "ultracode", or hands you a task spanning many files/items that benefits from parallel agents. _(risk: critical)_
 - **routerbase-model-gateway**: Integrate RouterBase as an OpenAI-compatible model gateway for routing GPT, Claude, Gemini, media, audio, and embedding requests. _(risk: safe)_
 - **runaway-guard**: Cost-safety discipline for paid AI / inference APIs: treat $-cost as a third complexity dimension alongside time and space. Forces a written per-run $-cap, per-day $-cap, max-iterations bound, concurrency limit, and a matching provider-dashboard hard cap BEFORE any call site is written. _(risk: safe)_
+- **sandbase-mcp**: Discover, inspect, and invoke 2,000+ AI models and APIs through SandBase's local MCP bridge with explicit schema and cost checks. _(risk: critical)_
 - **train-sentence-transformers**: Train or fine-tune sentence-transformers models across `SentenceTransformer` (bi-encoder; dense or static embedding model; for retrieval, similarity, clustering, classification, paraphrase mining, dedup, multimodal), `CrossEncoder` (reranker; pair scoring for two-stage retrieval / pair... _(risk: critical)_
 - **trl-training**: Train and fine-tune transformer language models using TRL (Transformers Reinforcement Learning). Supports SFT, DPO, GRPO, KTO, RLOO and Reward Model training via CLI commands. _(risk: critical)_
 - **unified-ai-gateway**: Operate and evaluate Unified AI System through nine governed MCP tools, including provider-free prompt enhancement, while preserving fake-provider, authorization, and evidence boundaries. _(risk: critical)_
 - **unslop-commit**: Rewrites commit messages so they sound like a careful human engineer wrote them. Strips AI/marketing slop ("comprehensive solution", "robust implementation", "leverage", "enhance", "seamlessly", "This commit..."). Keeps Conventional Commits format. Subject ≤72 chars (aim ≤50),... _(risk: critical)_
 - **unslop-file**: Humanize natural-language memory files (CLAUDE.md, todos, preferences, docs) by removing AI-isms and adding burstiness while preserving every code block, URL, path, command, and heading exactly. Two modes: --deterministic (fast, regex-based, no API) and LLM (default, calls Claude for... _(risk: critical)_
+- **unsloth-finetuning**: Fine-tune and post-train LLMs with Unsloth Core on a single consumer GPU: VRAM sizing, LoRA/QLoRA, GRPO/DPO, chat-template correctness, and GGUF export. _(risk: critical)_
 
 ## ai-research
 
@@ -745,6 +765,8 @@ GitHub Actions, CI, action, marketplace _(risk: unknown)_
 - **sharp-edges**: sharp-edges _(risk: unknown)_
 - **uncle-bob-craft**: Use when performing code review, writing or refactoring code, or discussing architecture; complements clean-code and does not replace project linter/formatter. _(risk: safe)_
 - **verification-before-completion**: Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evide... _(risk: unknown)_
+- **babysit-pr**: Babysit a pull request through its bot review rounds: verify, fix, reply, resolve. Use for any babysit or watch-the-PR ask. _(risk: safe)_
+- **debate-review**: Two-model debate review of a GitHub PR, GitLab MR, Azure DevOps PR, or local working tree, posted as inline comments or printed. Use for any PR/MR review request, or a local review before a PR exists. _(risk: safe)_
 - **vibers-code-review**: Human review workflow for AI-generated GitHub projects with spec-based feedback, security review, and follow-up PRs from the Vibers service. _(risk: critical)_
 
 ## coding
@@ -1132,6 +1154,7 @@ api docs, reference,... _(risk: unknown)_
 - **global-chat-agent-discovery**: Discover and search 18K+ MCP servers and AI agents across 6+ registries using Global Chat's cross-protocol directory and MCP server. _(risk: safe)_
 - **go-in-depth**: Go in depth harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report. _(risk: safe)_
 - **go-rust-reverse**: Reverse engineer stripped Go and Rust binaries: runtime recognition, pclntab/module metadata recovery, panic-string analysis, and idiomatic decompilation strategies. _(risk: safe)_
+- **graceful-shutdown**: Implement graceful shutdown for servers and workers: drain connections, finish in-flight work, release resources, and exit cleanly on SIGTERM/SIGINT. _(risk: safe)_
 - **improve-codebase-architecture**: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick. _(risk: safe)_
 - **instructree**: Map, explain, and lint repository-scoped coding-agent instructions before changing code. _(risk: safe)_
 - **jq**: Expert jq usage for JSON querying, filtering, transformation, and pipeline integration. Practical patterns for real shell workflows. _(risk: safe)_
@@ -1915,6 +1938,10 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 
 - **dos-verify-done-claims**: Before accepting an agent's 'done / shipped / fixed' claim, verify it against ground truth (git ancestry + the commit's own diff) using the DOS kernel's `dos verify` and `dos commit-audit` — never the agent's own narration. _(risk: critical)_
 - **pre-ship-gate**: A ship gate that runs before any production deploy: checks the silent failure modes that make a deploy 'succeed' while prod stays broken, then verifies the live revision instead of trusting deploy output. _(risk: safe)_
+
+## reasoning
+
+- **falsify**: The scientific thinking protocol for AI agents. Use when facing complex, ambiguous, or high-stakes questions where guessing is costly: hypothesis → attempt to break it → evidence → calibrated conclusion. _(risk: safe)_
 
 ## reliability
 
