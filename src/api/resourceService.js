@@ -25,6 +25,7 @@ export const normalizeApiListResponse = (response, params = {}, resource = 'stud
     if (resource === 'students') return mapStudentRecord(item);
     if (resource === 'classrooms') return mapClassroomRecord(item);
     if (resource === 'transportRoutes') return mapTransportRouteRecord(item);
+    if (resource === 'studentTransportAssignments') return mapTransportAssignmentRecord(item);
     return item;
   });
   const page = Number(payload?.page || params.page || 1);
@@ -143,12 +144,18 @@ export const mapTransportVehicleRecord = (record = {}) => ({
 });
 
 export const mapTransportAssignmentPayload = (payload = {}) => ({
-  student_id: Number(payload.student_id ?? payload.studentId),
-  route_id: Number(payload.route_id ?? payload.routeId),
-  vehicle_id: Number(payload.vehicle_id ?? payload.vehicleId),
+  student_id: normalizeTransportIdentifier(payload.student_id ?? payload.studentId),
+  route_id: normalizeTransportIdentifier(payload.route_id ?? payload.routeId),
+  vehicle_id: normalizeTransportIdentifier(payload.vehicle_id ?? payload.vehicleId),
   assignment_date: payload.assignment_date || payload.assignmentDate || payload.effectiveDate?.slice(0, 10),
   status: String(payload.status || 'assigned').toLowerCase(),
 });
+
+function normalizeTransportIdentifier(value) {
+  if (value === null || value === undefined || value === '') return value;
+  const numericValue = Number(value);
+  return Number.isFinite(numericValue) && String(value).trim() !== '' ? numericValue : value;
+}
 
 export const mapTransportAssignmentRecord = (record = {}) => ({
   ...record,
@@ -215,6 +222,7 @@ export const createResourceService = (resource) => {
         if (resource === 'classrooms') return mapClassroomRecord(payload);
         if (resource === 'transportRoutes') return mapTransportRouteRecord(payload);
         if (resource === 'transportVehicles') return mapTransportVehicleRecord(payload);
+        if (resource === 'studentTransportAssignments') return mapTransportAssignmentRecord(payload);
         return payload;
       }
 
@@ -246,6 +254,7 @@ export const createResourceService = (resource) => {
         if (resource === 'classrooms') return mapClassroomRecord(payloadResult);
         if (resource === 'transportRoutes') return mapTransportRouteRecord(payloadResult);
         if (resource === 'transportVehicles') return mapTransportVehicleRecord(payloadResult);
+        if (resource === 'studentTransportAssignments') return mapTransportAssignmentRecord(payloadResult);
         return payloadResult;
       }
 
@@ -277,6 +286,7 @@ export const createResourceService = (resource) => {
         if (resource === 'classrooms') return mapClassroomRecord(payloadResult);
         if (resource === 'transportRoutes') return mapTransportRouteRecord(payloadResult);
         if (resource === 'transportVehicles') return mapTransportVehicleRecord(payloadResult);
+        if (resource === 'studentTransportAssignments') return mapTransportAssignmentRecord(payloadResult);
         return payloadResult;
       }
 

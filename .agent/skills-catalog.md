@@ -1,6 +1,6 @@
 # AI Agent Skills — Full Catalog
 
-> Auto-generated. Total: **2098 skills** across **119 categories**.
+> Auto-generated. Total: **2111 skills** across **120 categories**.
 > When asked "what skill should I use?", browse this file and suggest the most relevant skill IDs.
 > Install a skill: `Ctrl+Shift+/` → search for the skill ID → press Enter.
 
@@ -20,30 +20,30 @@
 ## agent-orchestration
 
 - **agent-self-scheduling**: Schedule AI agent runs with cron, loops, or external clocks while avoiding unsafe tight autonomous timers. _(risk: critical)_
-- **agy-delegate**: Delegate coding tasks to the Google Antigravity CLI (`agy`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
-- **aider-delegate**: Delegate coding tasks to Aider (`aider`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
-- **claude-delegate**: Delegate coding tasks to a separate Claude Code CLI process or Claude session only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
-- **cline-delegate**: Delegate coding tasks to the Cline CLI (`cline`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
-- **codex-delegate**: Delegate coding tasks to the OpenAI Codex CLI only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
+- **agy-delegate**: Delegate coding tasks to the Google Antigravity CLI (`agy`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: critical)_
+- **aider-delegate**: Delegate coding tasks to Aider (`aider`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: critical)_
+- **claude-delegate**: Delegate coding tasks to a separate Claude Code CLI process or Claude session only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: critical)_
+- **cline-delegate**: Delegate coding tasks to the Cline CLI (`cline`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: critical)_
+- **codex-delegate**: Delegate coding tasks to the OpenAI Codex CLI only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: critical)_
 - **codex-subagent**: Launch Codex CLI as an isolated subagent for bounded coding, review, or verification tasks. _(risk: critical)_
-- **commandcode-delegate**: Delegate coding tasks to the Command Code CLI (`cmd`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
-- **copilot-delegate**: Delegate coding tasks to the GitHub Copilot CLI (`copilot`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
-- **cursor-delegate**: Delegate coding tasks to the Cursor Agent CLI (`cursor-agent`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
+- **commandcode-delegate**: Delegate coding tasks to the Command Code CLI (`cmd`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: critical)_
+- **copilot-delegate**: Delegate coding tasks to the GitHub Copilot CLI (`copilot`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: critical)_
+- **cursor-delegate**: Delegate coding tasks to the Cursor Agent CLI (`cursor-agent`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: critical)_
 - **delegate-setup**: Configure approved delegation lanes across installed implementer CLIs, including optional model and effort choices, then write global or project config only after explicit user approval. _(risk: safe)_
 - **delegating-to-agents**: Delegate bounded work to other AI agents while preserving context, ownership, and progress checks. _(risk: critical)_
 - **goal-loop**: Draft and explain persistent goal-loop prompts for long-running agent work with clear stop conditions. _(risk: safe)_
 - **grok-build**: Delegate well-specified implementation tasks to xAI's Grok Build CLI running headlessly while the orchestrating agent plans, writes task specs, reviews every diff, and owns the result. _(risk: critical)_
-- **grok-delegate**: Delegate coding tasks to the Grok Build CLI only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
-- **kimi-delegate**: Delegate coding tasks to the Kimi Code CLI (`kimi`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
+- **grok-delegate**: Delegate coding tasks to the Grok Build CLI only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: critical)_
+- **kimi-delegate**: Delegate coding tasks to the Kimi Code CLI (`kimi`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: critical)_
 - **multi-agent-task-orchestrator**: Route tasks to specialized AI agents with anti-duplication, quality gates, and 30-minute heartbeat monitoring _(risk: safe)_
-- **omp-delegate**: Delegate coding tasks to Oh My Pi (`omp`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
-- **opencode-delegate**: Delegate coding tasks to the OpenCode CLI only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
+- **omp-delegate**: Delegate coding tasks to Oh My Pi (`omp`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: critical)_
+- **opencode-delegate**: Delegate coding tasks to the OpenCode CLI only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: critical)_
 - **orchestrate**: Coordinate focused subagents on substantial work, keep their ownership non-overlapping, and integrate verified results. Use for large-scope Codex tasks; keep trivial work with the coordinator. _(risk: safe)_
-- **pi-delegate**: Delegate coding tasks to the Pi coding agent CLI (`pi`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
-- **qoder-delegate**: Delegate coding tasks to the Qoder CLI (`qodercli`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
-- **vibe-delegate**: Delegate coding tasks to the Mistral Vibe CLI (`vibe`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
-- **warp-delegate**: Delegate coding tasks to the Warp Agent CLI (`oz`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
-- **zcode-delegate**: Delegate coding tasks to the Z.AI ZCode CLI only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: safe)_
+- **pi-delegate**: Delegate coding tasks to the Pi coding agent CLI (`pi`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: critical)_
+- **qoder-delegate**: Delegate coding tasks to the Qoder CLI (`qodercli`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: critical)_
+- **vibe-delegate**: Delegate coding tasks to the Mistral Vibe CLI (`vibe`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: critical)_
+- **warp-delegate**: Delegate coding tasks to the Warp Agent CLI (`oz`) only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: critical)_
+- **zcode-delegate**: Delegate coding tasks to the Z.AI ZCode CLI only when the user explicitly requests it, while the orchestrator retains review and landing responsibility. _(risk: critical)_
 
 ## agent-squad
 
@@ -490,6 +490,8 @@ applications.
 - **neon-functions**: Long-running, serverless Node.js HTTP functions deployed onto your Neon branch, with DATABASE_URL injected automatically and compute that runs next to your data. Use when a user wants to host an API, an AI agent with long streaming responses, a WebSocket or server-sent-events (SSE)... _(risk: critical)_
 - **openapi-spec-generator**: Generate complete, production-ready OpenAPI 3.x and Swagger 2.0 specifications from natural language descriptions, code, or partial specs. Use this skill whenever the user mentions OpenAPI, Swagger, API spec, REST API documentation, YAML/JSON API schema, endpoint documentation, API... _(risk: critical)_
 - **postman-collection-generator**: Generate complete, import-ready Postman Collection v2.1 JSON files from natural language API descriptions or cURL commands. Use this skill whenever the user describes an API in plain English ("I have a REST API with these endpoints..."), pastes cURL commands, or asks to "create a... _(risk: critical)_
+- **upstash-ratelimit**: Add rate limiting to API routes, middleware, and edge functions with @upstash/ratelimit: sliding window, fixed window, and token bucket backed by Upstash Redis. _(risk: critical)_
+- **upstash-redis**: Use the @upstash/redis HTTP client for caching, sessions, counters, and Redis data structures from serverless and edge runtimes without connection pooling. _(risk: critical)_
 - **x402-express-wrapper**: Wrapper oficial de M2MCent (Node.js) para inyectar muros de pago x402 en APIs o servidores Model Context Protocol (MCP). Usar al construir nuevos servicios que requieran monetización máquina a máquina. _(risk: critical)_
 
 ## blockchain-web3
@@ -765,7 +767,7 @@ GitHub Actions, CI, action, marketplace _(risk: unknown)_
 - **sharp-edges**: sharp-edges _(risk: unknown)_
 - **uncle-bob-craft**: Use when performing code review, writing or refactoring code, or discussing architecture; complements clean-code and does not replace project linter/formatter. _(risk: safe)_
 - **verification-before-completion**: Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evide... _(risk: unknown)_
-- **babysit-pr**: Babysit a pull request through its bot review rounds: verify, fix, reply, resolve. Use for any babysit or watch-the-PR ask. _(risk: safe)_
+- **babysit-pr**: Babysit a pull request through its bot review rounds: verify, fix, reply, resolve. Use for any babysit or watch-the-PR ask. _(risk: critical)_
 - **debate-review**: Two-model debate review of a GitHub PR, GitLab MR, Azure DevOps PR, or local working tree, posted as inline comments or printed. Use for any PR/MR review request, or a local review before a PR exists. _(risk: safe)_
 - **vibers-code-review**: Human review workflow for AI-generated GitHub projects with spec-based feedback, security review, and follow-up PRs from the Vibers service. _(risk: critical)_
 
@@ -811,6 +813,7 @@ GitHub Actions, CI, action, marketplace _(risk: unknown)_
 - **seo-image-gen**: Generate SEO-focused images such as OG cards, hero images, schema assets, product visuals, and infographics. Use when image generation is part of an SEO workflow or content publishing task. _(risk: critical)_
 - **seo-plan**: Strategic SEO planning for new or existing websites. Industry-specific templates, competitive analysis, content strategy, and implementation roadmap. Use when user says "SEO plan", "SEO strategy", "content strategy", "site architecture", or "SEO roadmap".
  _(risk: critical)_
+- **slideops**: Turn a repository into a cited HTML slide deck and detect the day it drifts from the code. Citations record file, lines, and hash; a stdlib check reports CURRENT, MOVED, or CHANGED. _(risk: critical)_
 - **wordpress-centric-high-seo-optimized-blogwriting-skill**: Generate clean, human-sounding, SEO-optimized WordPress blog posts with optional Yoast metadata, JSON-LD schema markup, and image SEO planning. Supports modular batch output. _(risk: safe)_
 - **youtube-seo-optimizer**: Generate complete YouTube & podcast SEO packages with live-researched keywords — titles, descriptions, tags, hashtags, chapters, and audit fixes. Use for new or underperforming content.
  _(risk: safe)_
@@ -1180,6 +1183,8 @@ api docs, reference,... _(risk: unknown)_
 - **unship**: Compare AI agent-made UI variants locally in a real app, then keep one and clean up unused temporary code. _(risk: critical)_
 - **using-lwc**: Use when project decisions, code structure, research, incidents, or verified context must survive future coding-agent sessions through LWC memory and graph indexes. _(risk: critical)_
 - **wp-site-health-auditor**: Turns a WordPress Site Health report into a risk-tiered, backup-first fix plan with exact WP-CLI/PHP snippets. Use for site health, recommended improvements, or critical issue reports. _(risk: critical)_
+- **laravel-development-workflow**: Build and fix existing Laravel applications through root-cause diagnosis, repository-native implementation, regression coverage, and risk-based verification. _(risk: critical)_
+- **orca-replay**: Answers questions about a past agent run from its recording rather than from memory, and replays or forks that run. Use when asked why an earlier run did something, or to reproduce a failure. _(risk: critical)_
 
 ## development-and-testing
 
@@ -1208,6 +1213,16 @@ api docs, reference,... _(risk: unknown)_
 ## document-processing
 
 - **writer**: Document creation, format conversion (ODT/DOCX/PDF), mail merge, and automation with LibreOffice Writer. _(risk: safe)_
+
+## document-verification
+
+- **check-identity-pack**: Run an AFP 100-point or AUSTRAC safe-harbour identity check over a set of documents, and report exactly what's missing. Use when the user asks to check identity documents, verify someone's ID for onboarding, or assess whether a document pack satisfies Australian identity requirements. _(risk: critical)_
+- **detect-ai-text**: Estimate whether a document's prose was written by AI, with the linguistic tells and honest abstention on non-prose. Use when the user asks whether an essay, report, CV, submission, or article was AI-generated — for triage, not proof. _(risk: critical)_
+- **extract-document-data**: Extract structured, grounded fields from documents — values cite their page, missing values abstain instead of hallucinating. Use for parsing invoices, payslips, statements, contracts. _(risk: critical)_
+- **find-matching-tenders**: Find open AU/NZ government tenders matching what a company does, ranked by fit with why and gap analysis. Use when the user asks to find tenders, bid opportunities, government contracts, or RFPs for their business (or a client's). _(risk: critical)_
+- **screen-adverse-media**: Screen a person or organisation for adverse media coverage, PEP status, and sanctions exposure — corroboration-gated, returns "review" never "guilty". Use when the user asks to screen someone before onboarding, partnership, or investment; for AML/CTF flows; or for ongoing counterparty monitoring. _(risk: critical)_
+- **verify-citations**: Verify citations and references in a document, report, or article against real sources. Use when the user asks to fact-check, verify references, check citations, or validate evidence in research reports, tender responses, whitepapers, or academic writing. _(risk: critical)_
+- **verify-document**: Check whether a document (PDF or image) shows signs of tampering or forgery before you rely on it. Use when the user asks to verify a payslip, invoice, bank statement, ID document, contract, or any document where authenticity matters. _(risk: critical)_
 
 ## dotnet
 
@@ -1374,7 +1389,6 @@ makepad Markdown, makepad Html, TextFlow, rich... _(risk: unknown)_
 - **review-animations**: Use when reviewing animation and motion code against a strict craft, performance, accessibility, and interaction-quality bar. _(risk: safe)_
 - **stitch-design-taste**: Use when generating Google Stitch DESIGN.md systems for premium typography, color, layout, motion intent, and anti-generic UI rules. _(risk: safe)_
 - **sveltekit**: Build full-stack web applications with SvelteKit — file-based routing, SSR, SSG, API routes, and form actions in one framework. _(risk: safe)_
-- **ui-slop-score**: Score a rendered web or iOS screen for generic UI risk before it ships. Use when a user asks whether a UI looks generic or needs an honest pre-merge visual review. _(risk: safe)_
 
 ## fullstack
 
@@ -1686,7 +1700,7 @@ strategy and planning.
 - **fal-workflow**: Generate workflow JSON files for chaining AI models _(risk: safe)_
 - **videodb**: Video and audio perception, indexing, and editing. Ingest files/URLs/live streams, build visual/spoken indexes, search with timestamps, edit timelines, add overlays/subtitles, generate media, and create real-time alerts. _(risk: safe)_
 - **videodb-skills**: Upload, stream, search, edit, transcribe, and generate AI video and audio using the VideoDB SDK. _(risk: safe)_
-- **atlas-cloud-media**: Generate Atlas Cloud images and videos through its asynchronous media API with schema-first model selection and credential-safe polling. _(risk: safe)_
+- **atlas-cloud-media**: Generate Atlas Cloud images and videos through its asynchronous media API with schema-first model selection and credential-safe polling. _(risk: critical)_
 - **generate-nanobanana**: Generate and edit images/video with Google's Gemini media models (Nano Banana 2/Pro, Gemini Omni Flash), with cost-approval gates, reference-image support, and a prompt/output log per call. _(risk: critical)_
 - **image-generator**: Generate and edit images using Gemini's Nano Banana Pro model (gemini-3-pro-image-preview). Use this skill when the user asks you to generate images, create visuals, edit photos, create logos, generate product mockups, or perform any image generation/editing task. _(risk: safe)_
 - **muapi-media**: Generate images and videos with MuAPI's schema-driven asynchronous media API while protecting keys, polling, and output downloads. _(risk: critical)_
@@ -1974,6 +1988,7 @@ add data to Google Sheets, find a spreadsheet, check sheet...
 - **research-prompt**: Turn vague research needs into one precise deep-research prompt with context and output criteria. _(risk: safe)_
 - **survey-generator**: Generate source-backed AI/ML survey paper artifacts with curated bibliographies and Fireworks/Kimi HTML rendering. _(risk: safe)_
 - **youtube-transcript**: Fetch YouTube transcripts through DeepAPI or local fallback tooling and save clean text output. _(risk: safe)_
+- **entropy-box**: Entropy Box knowledge-compiler for embodied-AI: turns bounded requirements into grounded workflows via Solution Consult, Search, Lookup, and Evidence. Do not use it to control physical robots. _(risk: critical)_
 
 ## reverse-engineering
 
@@ -2345,7 +2360,7 @@ calculations
 - **lookdev**: Human-in-the-loop web studio to tune AI-generated output by eye. Stand up a local interactive studio (sliders, pickers, drag handles) or an inline edit/highlight/comment annotation studio for prose & media, instead of guessing values or shipping a static comparison grid. _(risk: safe)_
 - **lookdev-auto**: Automated visual tuning: a vision or video model rates rendered variants in a loop. Render several labeled variants into one artifact, ask the model to rate them and suggest better values, render the suggestions, ask it to pick the best, repeat until good — the model is the eye, you run the loop. _(risk: safe)_
 - **loss-aversion-designer**: One sentence - what this skill does and when to invoke it _(risk: safe)_
-- **lovable-cleanup**: Audits and strips Lovable scaffolding from Vite + React projects — removes lovable-tagger, swaps placeholder assets, prunes unused Radix deps, and cleans generated docs so the codebase ships as yours. _(risk: safe)_
+- **lovable-cleanup**: Audits and strips Lovable scaffolding from Vite + React projects — removes lovable-tagger, swaps placeholder assets, prunes unused Radix deps, cleans generated docs, and neutralizes stale favicon/CDN caching so the codebase ships as yours. _(risk: safe)_
 - **macos-menubar-tuist-app**: Build, refactor, or review SwiftUI macOS menubar apps that use Tuist. _(risk: safe)_
 - **macos-reverse**: Authorized macOS and Mach-O reverse engineering: codesign inspection, Objective-C/Swift recovery, endpoint-security surfaces, and Apple-platform malware analysis. _(risk: safe)_
 - **macos-screen-recorder**: macOS screen recorder that captures the main display PLUS system audio via ScreenCaptureKit — no BlackHole/loopback driver, no sudo, just the standard Screen Recording permission. CLI-driven; fills the headless-screen-recording-with-system-sound gap QuickTime and `screencapture -v` can't. _(risk: critical)_
@@ -2579,3 +2594,4 @@ before implementation to verify project context.
 - **bulletmind**: Convert input into clean, structured, hierarchical bullet points for summarization, note-taking, and structured thinking. _(risk: safe)_
 - **short**: Rewrite the previous response more briefly while preserving the substance. _(risk: safe)_
 - **unslop**: Post-process AI-generated text through the unslop CLI to strip AI writing patterns before publishing _(risk: safe)_
+- **email-issue-fixer**: Fix small email mistakes without touching the writer's voice, and strip tracking parameters from links on request. Always returns the corrected draft plus a change list. _(risk: safe)_

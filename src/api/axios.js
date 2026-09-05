@@ -1,4 +1,5 @@
 import axios from 'axios';
+import safeLog from '../utils/safeLogger.js';
 import { toast } from '../utils/toast.js';
 import { getApiBaseUrl } from './apiConfig.js';
 import { getRetryDelay, shouldSuppressStartupToast } from './startupReadiness.js';
@@ -27,7 +28,7 @@ function resolveAxiosBaseURL(baseURL) {
 if (isProductionRuntime && API_BASE) {
   // In production, avoid verbose logging; only surface the resolved base when explicitly enabled.
   if (!isProductionRuntime && import.meta.env && import.meta.env.DEBUG_API_BASE) {
-    console.info('[api-config] Using production API base URL:', API_BASE);
+    safeLog.info('[api-config] Using production API base URL:', API_BASE);
   }
 }
 
@@ -36,6 +37,75 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
   timeout: DEFAULT_TIMEOUT,
 });
+
+const SENSITIVE_LOG_KEYS = new Set([
+  'password',
+  'token',
+  'access_token',
+  'refresh_token',
+  'secret',
+  'apikey',
+  'api_key',
+  'clientsecret',
+  'client_secret',
+  'confirmPassword',
+  'otp',
+  'authorization',
+  'cookie',
+]);
+
+export function redactSensitiveFields(value, seen = new WeakMap()) {
+  if (value === null || value === undefined) {
+    return value;
+  }
+
+  if (typeof value === 'string') {
+    return value;
+  }
+
+  if (typeof value === 'number' || typeof value === 'boolean' || typeof value === 'bigint') {
+    return value;
+  }
+
+  if (typeof value === 'function') {
+    return '[Function]';
+  }
+
+  if (value instanceof Date) {
+    return value;
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((item) => redactSensitiveFields(item, seen));
+  }
+
+  if (typeof value === 'object') {
+    if (seen.has(value)) {
+      return '[Circular]';
+    }
+    seen.set(value, true);
+
+    const output = {};
+    Object.entries(value).forEach(([key, item]) => {
+      const normalizedKey = String(key).toLowerCase();
+      if (SENSITIVE_LOG_KEYS.has(normalizedKey) || SENSITIVE_LOG_KEYS.has(String(key))) {
+        output[key] = '[REDACTED]';
+        return;
+      }
+
+      output[key] = redactSensitiveFields(item, seen);
+    });
+
+    seen.delete(value);
+    return output;
+  }
+
+  return value;
+}
+
+function shouldLogApiRuntime() {
+  return import.meta.env && import.meta.env.DEV === true;
+}
 
 function getApiBasePath(baseURL = '') {
   if (typeof baseURL !== 'string' || !baseURL.trim()) return '';
@@ -92,7 +162,7 @@ api.interceptors.request.use((config) => {
   if (isProductionRuntime && !API_BASE) {
     if (!productionApiConfigErrorLogged) {
       productionApiConfigErrorLogged = true;
-      console.warn('[api-config] Missing VITE_API_BASE_URL in production. Falling back to /api for request routing.');
+      safeLog.warn('[api-config] Missing VITE_API_BASE_URL in production. Falling back to /api for request routing.');
     }
   }
 
@@ -115,24 +185,26 @@ api.interceptors.request.use((config) => {
     // ignore; best-effort cleanup
   }
   const resolvedUrl = `${config.baseURL || ''}${typeof config.url === 'string' ? config.url : ''}`;
-  // Only log requests during development to avoid leaking production details
-  if (!isProductionRuntime) {
-    console.info('[api-request]', config.method?.toUpperCase?.() || 'REQUEST', resolvedUrl, config.data);
+  const safeRequestData = shouldLogApiRuntime() ? redactSensitiveFields(config.data) : undefined;
+  if (shouldLogApiRuntime()) {
+    safeLog.info('[api-request]', config.method?.toUpperCase?.() || 'REQUEST', resolvedUrl, safeRequestData);
   }
   return config;
 }, (error) => {
-  if (!isProductionRuntime) console.error('[api-request-error]', error);
+  if (shouldLogApiRuntime()) safeLog.error('[api-request-error]', error);
   return Promise.reject(error);
 });
 
 api.interceptors.response.use((response) => {
-  console.info('[api-response]', response.status, response.config?.url, response.data);
+  if (shouldLogApiRuntime()) {
+    safeLog.info('[api-response]', response.status, response.config?.url, redactSensitiveFields(response.data));
+  }
   return response;
 }, (error) => {
   const original = error.config || {};
   const suppressStartupErrors = shouldSuppressStartupToast(error, original);
-  if (!suppressStartupErrors) {
-    console.error('[api-response-error]', error?.response?.status, error?.config?.url, error?.response?.data || error?.message);
+  if (!suppressStartupErrors && shouldLogApiRuntime()) {
+    safeLog.error('[api-response-error]', error?.response?.status, error?.config?.url, redactSensitiveFields(error?.response?.data || error?.message));
   }
   return Promise.reject(error);
 });

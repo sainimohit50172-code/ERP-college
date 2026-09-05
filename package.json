@@ -9,7 +9,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "test": "node --test tests/**/*.mjs src/api/*.test.js",
+    "test": "npm run test:node && npm run test:vitest",
+    "test:node": "node --test tests/**/*.mjs src/api/apiConfig.test.js src/api/startupReadiness.test.js src/services/repositoryProvider.test.js",
+    "test:vitest": "vitest run",
     "regression:verify": "node scripts/regression-verify.js"
   },
   "dependencies": {

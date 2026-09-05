@@ -201,6 +201,14 @@ import TransportEmployeeAssignmentsPage from './pages/TransportEmployeeAssignmen
 import TransportFuelPage from './pages/TransportFuelPage.jsx';
 import TransportMaintenancePage from './pages/TransportMaintenancePage.jsx';
 import FeeCollectionPage from './pages/FeeCollectionPage.jsx';
+import OnlineFeeCollectionPage from './pages/OnlineFeeCollectionPage.jsx';
+import MiscellaneousFeePage from './pages/MiscellaneousFeePage.jsx';
+import FeeUpdatePage from './pages/FeeUpdatePage.jsx';
+import OtherIncomeCollectionPage from './pages/OtherIncomeCollectionPage.jsx';
+import OtherIncomeTransactionsPage from './pages/OtherIncomeTransactionsPage.jsx';
+import TransactionListPage from './pages/TransactionListPage.jsx';
+import FeeAdjustmentPage from './pages/FeeAdjustmentPage.jsx';
+import OnlineTransactionListPage from './pages/OnlineTransactionListPage.jsx';
 import ScholarshipsPage from './pages/ScholarshipsPage.jsx';
 import PaymentsPage from './pages/PaymentsPage.jsx';
 import ReceiptsPage from './pages/ReceiptsPage.jsx';
@@ -576,7 +584,33 @@ function App() {
               <Route path="inventory/purchase-orders" element={<ProtectedRoute moduleKey="inventory"><PurchaseOrdersPage /></ProtectedRoute>} />
               <Route path="inventory/goods-receipts" element={<ProtectedRoute moduleKey="inventory"><GoodsReceiptsPage /></ProtectedRoute>} />
               <Route path="inventory/asset-assignments" element={<ProtectedRoute moduleKey="inventory"><AssetAssignmentsPage /></ProtectedRoute>} />
+              <Route path="fees/collect" element={<ProtectedRoute moduleKey="fees"><FeeCollectionPage /></ProtectedRoute>} />
+              <Route path="fees/collect-online" element={<ProtectedRoute moduleKey="fees"><OnlineFeeCollectionPage /></ProtectedRoute>} />
+              <Route path="fees/miscellaneous" element={<ProtectedRoute moduleKey="fees"><MiscellaneousFeePage /></ProtectedRoute>} />
               <Route path="fee-collection" element={<ProtectedRoute moduleKey="fees"><FeeCollectionPage /></ProtectedRoute>} />
+              <Route path="fees/update" element={<ProtectedRoute moduleKey="fees"><FeeUpdatePage /></ProtectedRoute>} />
+              <Route path="fees/other-income" element={<ProtectedRoute moduleKey="fees"><OtherIncomeCollectionPage /></ProtectedRoute>} />
+              <Route path="fees/other-income-transactions" element={<ProtectedRoute moduleKey="fees"><OtherIncomeTransactionsPage /></ProtectedRoute>} />
+              <Route path="fees/transactions" element={<ProtectedRoute moduleKey="fees"><TransactionListPage /></ProtectedRoute>} />
+              <Route path="fees/adjustment" element={<ProtectedRoute moduleKey="fees"><FeeAdjustmentPage /></ProtectedRoute>} />
+              <Route path="fees/online-transactions" element={<ProtectedRoute moduleKey="fees"><OnlineTransactionListPage /></ProtectedRoute>} />
+              <Route path="fees/concession" element={<ProtectedRoute moduleKey="fees"><PlaceholderPage title="Concession Report" /></ProtectedRoute>} />
+              <Route path="fees/refund" element={<ProtectedRoute moduleKey="fees"><PlaceholderPage title="Refund" /></ProtectedRoute>} />
+              <Route path="fees/refund-transactions" element={<ProtectedRoute moduleKey="fees"><PlaceholderPage title="Refund Transaction List" /></ProtectedRoute>} />
+              <Route path="fees/refund-report" element={<ProtectedRoute moduleKey="fees"><PlaceholderPage title="Refund Report" /></ProtectedRoute>} />
+              <Route path="fees/reports/combined-daily" element={<ProtectedRoute moduleKey="fees"><PlaceholderPage title="Combined Daily Collection Report" /></ProtectedRoute>} />
+              <Route path="fees/reports/daily" element={<ProtectedRoute moduleKey="fees"><PlaceholderPage title="Daily Fee Report" /></ProtectedRoute>} />
+              <Route path="fees/reports/fee-head" element={<ProtectedRoute moduleKey="fees"><PlaceholderPage title="Fee Head Collection Report" /></ProtectedRoute>} />
+              <Route path="fees/reports/payment-mode" element={<ProtectedRoute moduleKey="fees"><PlaceholderPage title="Payment Mode Collection Report" /></ProtectedRoute>} />
+              <Route path="fees/reports/due-fee" element={<ProtectedRoute moduleKey="fees"><PlaceholderPage title="Due Fee Report" /></ProtectedRoute>} />
+              <Route path="fees/reports/due-fee-college" element={<ProtectedRoute moduleKey="fees"><PlaceholderPage title="Due Fee Report College Wise" /></ProtectedRoute>} />
+              <Route path="fees/reports/transport-due" element={<ProtectedRoute moduleKey="fees"><PlaceholderPage title="Transport Due Fee Report" /></ProtectedRoute>} />
+              <Route path="fees/reports/sibling-wise" element={<ProtectedRoute moduleKey="fees"><PlaceholderPage title="Due Fee Report Sibling Wise" /></ProtectedRoute>} />
+              <Route path="fees/reports/summary-college" element={<ProtectedRoute moduleKey="fees"><PlaceholderPage title="Fee Summary College Wise" /></ProtectedRoute>} />
+              <Route path="fees/reports/summary-category" element={<ProtectedRoute moduleKey="fees"><PlaceholderPage title="Fee Summary Category Wise" /></ProtectedRoute>} />
+              <Route path="fees/reports/summary-head" element={<ProtectedRoute moduleKey="fees"><PlaceholderPage title="Fee Summary Head Wise" /></ProtectedRoute>} />
+              <Route path="fees/reports/summary-combined" element={<ProtectedRoute moduleKey="fees"><PlaceholderPage title="Fee Summary Combined Head Wise" /></ProtectedRoute>} />
+              <Route path="fees/reports/student-payment" element={<ProtectedRoute moduleKey="fees"><PlaceholderPage title="Student Payment Summary" /></ProtectedRoute>} />
               <Route path="scholarships" element={<ProtectedRoute moduleKey="fees"><ScholarshipsPage /></ProtectedRoute>} />
               <Route path="payments" element={<ProtectedRoute moduleKey="fees"><PaymentsPage /></ProtectedRoute>} />
               <Route path="receipts" element={<ProtectedRoute moduleKey="fees"><ReceiptsPage /></ProtectedRoute>} />

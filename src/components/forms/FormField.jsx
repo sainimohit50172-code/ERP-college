@@ -12,6 +12,7 @@ export default function FormField({
   contentClassName = '',
   htmlFor,
   id,
+  name,
 }) {
   const generatedFieldId = React.useId().replace(/:/g, '');
   const childId = React.isValidElement(children) ? children.props.id : undefined;
@@ -22,6 +23,7 @@ export default function FormField({
   const content = React.isValidElement(children)
     ? React.cloneElement(children, {
         id: childId || fieldId,
+        name: children.props.name || name,
         'aria-invalid': children.props['aria-invalid'] ?? Boolean(error),
         'aria-describedby': [children.props['aria-describedby'], hint && !error ? hintId : undefined, error ? errorId : undefined]
           .filter(Boolean)
@@ -66,4 +68,5 @@ FormField.propTypes = {
   contentClassName: PropTypes.string,
   htmlFor: PropTypes.string,
   id: PropTypes.string,
+  name: PropTypes.string,
 };

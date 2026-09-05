@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import safeLog from '../utils/safeLogger.js';
 import { getAuthState, saveAuthState, clearAuthState, loginApi, refreshTokenApi, registerApi } from './authService.js';
 import { getPermissionsForRole } from './rbac.js';
 import { recordAuditEvent } from './auditService.js';
@@ -85,9 +86,10 @@ export function AuthProvider({ children }) {
       let data = null;
       try {
         if (import.meta.env.DEV) {
-          console.info('[AuthContext] login request', {
+          safeLog.info('[AuthContext] login request', {
             username: payload?.username || payload?.email,
             role: payload?.role,
+            password: payload?.password,
           });
         }
 
@@ -95,7 +97,7 @@ export function AuthProvider({ children }) {
         data = response?.data || response || null;
 
         if (import.meta.env.DEV) {
-          console.info('[AuthContext] login response', {
+          safeLog.info('[AuthContext] login response', {
             payload: { username: payload?.username || payload?.email, role: payload?.role },
             responseData: data,
           });
@@ -124,8 +126,8 @@ export function AuthProvider({ children }) {
           return nextAuth;
         }
         if (import.meta.env.DEV) {
-          console.error('[AuthContext] login failed', {
-            payload: { username: payload?.username || payload?.email, role: payload?.role },
+          safeLog.error('[AuthContext] login failed', {
+            payload: { username: payload?.username || payload?.email, role: payload?.role, password: payload?.password },
             error,
           });
         }

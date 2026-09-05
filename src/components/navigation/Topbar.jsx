@@ -8,15 +8,15 @@ import universityLogo from '../../assets/haridwar-logo.svg';
 
 const feeDropdownItems = [
   { label: 'Collect Fee', route: '/fees', icon: CircleDollarSign },
-  { label: 'Collect Fee Online', route: '/fees', icon: CircleDollarSign },
-  { label: 'Collect Miscellaneous Fee', route: '/fees', icon: CircleDollarSign },
-  { label: 'Other Income', route: '/fees', icon: CircleDollarSign },
+  { label: 'Collect Fee Online', route: '/fees/collect-online', icon: CircleDollarSign },
+  { label: 'Collect Miscellaneous Fee', route: '/fees/miscellaneous', icon: CircleDollarSign },
+  { label: 'Other Income', route: '/fees/other-income', icon: CircleDollarSign },
   { label: 'Refund', route: '/fees', icon: CircleDollarSign },
   { label: 'Fee Reports', route: '/fees', icon: FileText },
   { label: 'Fee Summary', route: '/fees', icon: FileText },
-  { label: 'Transaction List', route: '/fees', icon: FileText },
-  { label: 'Fee Adjustment', route: '/fees', icon: CircleDollarSign },
-  { label: 'Online Transaction List', route: '/fees', icon: FileText },
+  { label: 'Transaction List', route: '/fees/transactions', icon: FileText },
+  { label: 'Fee Adjustment', route: '/fees/adjustment', icon: CircleDollarSign },
+  { label: 'Online Transaction List', route: '/fees/online-transactions', icon: FileText },
 ];
 
 const advancedDropdownItems = [

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import ProtectedRoute from '../components/auth/ProtectedRoute.jsx';
 import { AuthContext } from '../services/AuthContext.jsx';
 
@@ -21,6 +21,19 @@ function renderWithAuth(authValue) {
 }
 
 describe('ProtectedRoute', () => {
+  it('does not emit render-time debug logs while evaluating auth state', () => {
+    const debugSpy = vi.spyOn(console, 'debug').mockImplementation(() => {});
+
+    renderWithAuth({
+      isAuthenticated: true,
+      permissions: { dashboard: ['view'] },
+      loadingPermissions: false,
+    });
+
+    expect(debugSpy).not.toHaveBeenCalled();
+    debugSpy.mockRestore();
+  });
+
   it('renders a loading state while auth is pending', () => {
     renderWithAuth({
       isAuthenticated: true,

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../../services/AuthContext.jsx';
 import { hasPermission } from '../../services/rbac.js';
@@ -20,20 +21,33 @@ export default function ProtectedRoute({ moduleKey, action = 'view', children })
   const permissionLoadErrorWithoutCache = auth?.permissionsStatus === 'error' && !hasPermissions;
   const canAccess = moduleKey ? hasPermission(permissions, moduleKey, action) : true;
 
-  if (import.meta.env.DEV) {
-    console.debug('[ProtectedRoute]', {
-      moduleKey,
-      action,
-      isAuthenticated,
-      isPermissionLoading,
-      hasPermissions,
-      hasLoadedPermissions,
-      explicitPermissionDenied,
-      permissionLoadErrorWithoutCache,
-      canAccess,
-      permissionsStatus: auth?.permissionsStatus,
-    });
-  }
+  useEffect(() => {
+    if (import.meta.env.DEV) {
+      console.debug('[ProtectedRoute]', {
+        moduleKey,
+        action,
+        isAuthenticated,
+        isPermissionLoading,
+        hasPermissions,
+        hasLoadedPermissions,
+        explicitPermissionDenied,
+        permissionLoadErrorWithoutCache,
+        canAccess,
+        permissionsStatus: auth?.permissionsStatus,
+      });
+    }
+  }, [
+    action,
+    auth?.permissionsStatus,
+    canAccess,
+    explicitPermissionDenied,
+    hasLoadedPermissions,
+    hasPermissions,
+    isAuthenticated,
+    isPermissionLoading,
+    moduleKey,
+    permissionLoadErrorWithoutCache,
+  ]);
 
   if (!isAuthenticated) {
     return <Navigate to="/auth/login" replace />;

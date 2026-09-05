@@ -1,4 +1,5 @@
 import api from '../api/axios';
+import safeLog from '../utils/safeLogger.js';
 
 const AUTH_STORAGE_KEY = 'erp_auth';
 
@@ -35,7 +36,7 @@ function logAuthError(context, error) {
       baseURL: error?.config?.baseURL || null,
     },
   };
-  console.error(`[auth-service] ${context} failed`, payload, error);
+  safeLog.error(`[auth-service] ${context} failed`, payload, error);
   return payload;
 }
 
@@ -102,7 +103,7 @@ export async function loginApi(payload) {
     return response.data;
   } catch (error) {
     if (shouldUseDemoAuthFallback(error, import.meta?.env || {})) {
-      console.warn('[auth-service] Backend unavailable in production. Falling back to demo auth for login.');
+      safeLog.warn('[auth-service] Backend unavailable in production. Falling back to demo auth for login.');
       return buildDemoLoginResponse(body).data;
     }
     const errorDetails = logAuthError('login', error);

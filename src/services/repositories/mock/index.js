@@ -1,4 +1,5 @@
 import createMockResourceRepo from './resourceRepository.js';
+import { feePayments } from '../../erpData.js';
 
 // Provide a small set of named mock repos used by the app. Keep lightweight — pages call via provider.
 const vendors = createMockResourceRepo('vendors', [
@@ -243,6 +244,37 @@ const taxComponents = createMockResourceRepo('taxComponents', [
   },
 ]);
 
+const payments = createMockResourceRepo('payments', feePayments.map((payment) => ({
+  ...payment,
+  paymentId: payment.id,
+  receiptNumber: `RCT-${payment.id}`,
+  paidAt: payment.date,
+  paymentMethod: payment.method,
+  studentName: payment.studentId,
+})),
+);
+
+const receipts = createMockResourceRepo('receipts', feePayments.map((payment) => ({
+  id: `receipt-${payment.id}`,
+  receiptNumber: `RCT-${payment.id}`,
+  studentId: payment.studentId,
+  studentName: payment.studentId,
+  amount: payment.amount,
+  paymentMethod: payment.method,
+  date: payment.date,
+})),
+);
+
+
+const hostelRooms = createMockResourceRepo('hostelRooms');
+const hostelAllocations = createMockResourceRepo('hostelAllocations');
+const hostelLeaves = createMockResourceRepo('hostelLeaves');
+const libraryBooks = createMockResourceRepo('libraryBooks');
+const transports = createMockResourceRepo('transports');
+const transportVehicles = createMockResourceRepo('transportVehicles');
+const transportRoutes = createMockResourceRepo('transportRoutes');
+const studentTransportAssignments = createMockResourceRepo('studentTransportAssignments');
+const otherIncome = createMockResourceRepo('otherIncome');
 export default {
   vendors,
   examCalendars,
@@ -256,4 +288,15 @@ export default {
   payrollRuns,
   payslips,
   taxComponents,
+  payments,
+  receipts,
+  hostelRooms,
+  hostelAllocations,
+  hostelLeaves,
+  libraryBooks,
+  transports,
+  transportVehicles,
+  transportRoutes,
+  studentTransportAssignments,
+  otherIncome,
 };
